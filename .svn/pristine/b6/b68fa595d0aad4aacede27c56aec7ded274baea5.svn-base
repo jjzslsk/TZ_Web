@@ -1,0 +1,120 @@
+layui.use(['element','form','layer'], function(){
+    var element = layui.element;
+        layer = layui.layer;
+
+        element.on('tab(demo)', function(data){
+            console.log(data.index); //得到当前Tab的所在下标
+            if (data.index == 0) {
+                $(".main-plane").show()
+                $(".main-section").hide()
+                $(".main-temporal").hide()
+                $(".main-sounding").hide()
+            }else if(data.index == 1){
+                $(".main-plane").hide()
+                $(".main-section").show()
+                $(".main-temporal").hide()
+                $(".main-sounding").hide()
+            }else if(data.index == 2){
+                $(".main-plane").hide()
+                $(".main-section").hide()
+                $(".main-temporal").show()
+                $(".main-sounding").hide()
+            }else if(data.index == 3){
+                $(".main-plane").hide()
+                $(".main-section").hide()
+                $(".main-temporal").hide()
+                $(".main-sounding").show()
+            }
+        });
+
+  });
+
+const http = new EasyHttp;
+
+function getData(param){
+    http.get(system_url +'/ssd/system/ssd-sys-role/selectRoleTreeList?', param,
+        function (res) {
+            console.log(res)
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
+ }
+
+ function postJson(param){
+    http.postJson(system_url + '/ssd/system/ssd-sys-role-user/addRoleUser', param,
+        function (res) {
+            console.log(res)
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
+ }
+
+ function postForm(param){
+    http.postForm(system_url + '/ssd/system/ssd-sys-role/addRole', param,
+        function (res) {
+            console.log(res)
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
+ }
+
+ function delData(param){
+    http.delete(system_url + '/ssd/system/ssd-sys-role/deleteRoleById', param,
+        function (res) {
+            console.log(res)
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
+ }
+
+ function putData(param){
+    http.put(system_url + '/ssd/product/ssd-product-publish/doPublish', param,
+        function (res) {
+            console.log(res)
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
+ }
+
+
+$("#getExport").click(function(){
+var param = `&pageIndex=1&pageSize=10`
+    getData(param)
+});
+$("#formExport").click(function(){
+    postForm({name:'111',code:'222'})
+});
+$("#jsonExport").click(function(){
+    postJson({user:'222',code:'333'})
+});
+$("#delExport").click(function(){
+    delData({id:"1f6c4caa9b8648f28be4fce9e888eccb"})
+});
+$("#putExport").click(function(){
+    putData({user:'小明',id:'123'})
+});
+
+
+$("#click_browse").click(function(){
+    $(".browse-box").show()
+    $(".stamps-box").hide()
+});
+
+$("#click_stamps").click(function(){
+    $(".browse-box").hide()
+    $(".stamps-box").show()
+});
+
+
+
+

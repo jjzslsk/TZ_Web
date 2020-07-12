@@ -1,0 +1,844 @@
+<template>
+  <div class="product-made-home">
+    <div class="wrap-box">
+      <div class="left-box">
+        <!-- <common-left-tree
+          @success="submitSuccess"
+          title="产品导航"
+          :isHeader='true'
+          :data="treeData"
+          @click-item="onTreeClickItem"
+          :defaultExpandAll="true"
+        >
+          <div slot="head-search" class="head-search">
+            <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="searchText"></el-input>
+          </div>
+          <div slot="append" class>
+            <div>
+              <span class="title">分类操作：</span>
+              <common-left-tree-actions
+                @success="submitSuccess"
+                :lastItemClicked="lastItemClicked"
+                @append="onTreeAppend"
+                @edit="onTreeEdit"
+                @delete="onTreeDelete('requestProductInfoTpyeTreeDel')"
+              ></common-left-tree-actions>
+            </div>
+            <div>
+              <span class="title">产品操作：</span>
+              <common-left-tree-actions
+                @success="submitSuccess"
+                :lastItemClicked="lastItemClicked"
+                @append="onTreeAppendMinor"
+                @edit="onTreeEditMinor"
+                @delete="onTreeDeleteMinor('requestProductClassTreeDelMinor')"
+              ></common-left-tree-actions>
+            </div>
+          </div>
+        </common-left-tree> -->
+      <common-left-tree @success="submitSuccess" class="left-tree" title="产品导航" :searchText='searchText' :isHeader='true' :data="treeData" @click-item="onTreeClickItem" :defaultExpandAll="true">
+        <div slot="head-search" class="head-search">
+            <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="searchText"></el-input>
+        </div>
+      <div slot="append" class="">
+        <div>
+        <span class="title">分类操作：</span><common-left-tree-actions @success="submitSuccess" :lastItemClicked="lastItemClicked" @append="onTreeAppend" @edit="onTreeEdit" @delete="delProductClassify()"></common-left-tree-actions>
+        </div>
+        <div>
+        <span class="title">产品操作：</span><common-left-tree-actions @success="submitSuccess" :lastItemClicked="lastItemClicked" @append="onTreeAppendMinor" @edit="onTreeEditMinor" @delete="templateProductClassify()"></common-left-tree-actions>
+        </div>
+      </div>
+      </common-left-tree> 
+
+      </div>
+      <dialog-form
+        @success="submitSuccess"
+        :title="dialogTitle + '产品分类'"
+        :visible.sync="visibleDialogFormLeftTree"
+        :getPayload="()=>formLeftTree"
+        :confirmDisabled="!formLeftTree.name||formLeftTree.name===undefined"
+        remote="requestDialogFormProductInfoTpyeInput"
+        v-if="formLeftTree"
+      >
+        <!-- <template v-slot:default="{ form }"> -->
+        <template>
+          <el-form-item label="分类名称" label-width="120px">
+            <el-input v-model="formLeftTree.name" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="上级分类" label-width="120px">
+            <el-select v-model="formLeftTree.pid" placeholder="请选择">
+              <el-option
+                v-for="item in treeDataList"
+                :label="item.label"
+                :value="item.id"
+                :key="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="排序" label-width="120px">
+            <el-input v-model="formLeftTree.sort" autocomplete="off"></el-input>
+          </el-form-item>
+        </template>
+      </dialog-form>
+
+      <dialog-form
+        @success="submitSuccess"
+        :title="dialogTitle + '产品'"
+        :visible.sync="visibleDialogformLeftTreeMinor"
+        :getPayload="()=>formItem"
+        :confirmDisabled="!formItem.XXXPROP_AREA_1"
+        remote="requestDialogFormAreaItemInput"
+        v-if="formItem"
+      >
+        <!-- <template v-slot:default="{ form }"> -->
+        <template>
+          <el-form-item label="模板名称" label-width="120px">
+            <!-- <el-input v-model="formLeftTreeMinor.radioType" autocomplete="off"></el-input> -->
+          </el-form-item>
+          <el-form-item label="模板类型" label-width="120px">
+            <el-select placeholder="请选择">
+              <el-option
+
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="唯一标识" label-width="120px">
+            <!-- <el-input v-model="formLeftTreeMinor.radioType" autocomplete="off"></el-input> -->
+          </el-form-item>
+          <el-form-item label="排序" label-width="120px">
+            <!-- <el-input v-model="formLeftTreeMinor.radioType" autocomplete="off"></el-input> -->
+          </el-form-item>
+        </template>
+      </dialog-form>
+      <dialog-form
+        @success="submitSuccess"
+        title="服务用户绑定"
+        :visible.sync="visibleDialogTree"
+        :getPayload="()=>formItem"
+        :confirmDisabled="true"
+        remote="requestDialogFormAreaItemInput"
+        v-if="formTabTree"
+      >
+        <template>
+          <el-tabs v-model="tabsListValue" type="card" @tab-click="handleClick">
+            <el-tab-pane
+              :key="item.name"
+              v-for="(item, index) in tabsList"
+              :label="item.title"
+              :name="item.name"
+            >
+              <el-tree
+                :data="tabTree"
+                show-checkbox
+                default-expand-all
+                node-key="id"
+                ref="tree"
+                highlight-current
+                :props="defaultProps"
+              ></el-tree>
+            </el-tab-pane>
+          </el-tabs>
+        </template>
+      </dialog-form>
+      <dialog-form
+        @success="submitSuccess"
+        title="参考资料绑定"
+        :visible.sync="visibleDialogConsult"
+        :getPayload="()=>formItem"
+        :confirmDisabled="true"
+        remote="requestDialogFormAreaItemInput"
+        v-if="formConsult"
+      >
+        <template>
+          <el-tabs v-model="tabsListValue" type="card" @tab-click="handleClick">
+            <el-tab-pane
+              :key="item.name"
+              v-for="(item, index) in tabsList1"
+              :label="item.title"
+              :name="item.name"
+            >
+              <div class="consult">
+                <el-row :gutter="10">
+                  <el-col :span="6">
+                    <div class="consult-left">
+                      <div class="top">
+                        <div class="select-all">
+                          <el-checkbox v-model="form">参考资料</el-checkbox>
+                        </div>
+                      </div>
+                      <div class="tree">
+                        <el-tree
+                          :data="tabTree"
+                          show-checkbox
+                          default-expand-all
+                          node-key="id"
+                          ref="tree"
+                          highlight-current
+                          :props="defaultProps"
+                        ></el-tree>
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span="18">
+                    <div class="consult-right">
+                      <div class="consult-list">
+                        <template>
+                          <el-table :data="tableData" style="width: 100%">
+                            <el-table-column prop="name" label="素材名称" width="180"></el-table-column>
+                            <el-table-column prop="material" label="素材编号" width="180"></el-table-column>
+                            <el-table-column prop="type" label="素材类型"></el-table-column>
+                            <el-table-column prop="num" label="显示顺序" width="100"></el-table-column>
+                            <el-table-column fixed="right" label="操作" width="100">
+                              <template slot-scope="scope">
+                                <i class="el-icon-bottom"></i>
+                                <i class="el-icon-top"></i>
+                                <i class="el-icon-delete"></i>
+                                <!-- <el-button type="text" size="small">编辑</el-button> -->
+                              </template>
+                            </el-table-column>
+                          </el-table>
+                        </template>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
+        </template>
+      </dialog-form>
+
+      <div class="center-box">
+        <div class="top-title">
+          <div class="text">产品属性</div>
+        </div>
+        {{InfoForm}}
+        <div class="content-box">
+          <el-form label-width="80px">
+            <div class="form-item">
+              <div class="item-title">产品信息</div>
+              {{lastItemClicked}}
+              <div class="item-content">
+                <el-form-item label="产品标识">
+                  <el-input v-model="InfoForm.code"></el-input>
+                </el-form-item>
+                <el-form-item label=" 产品名称">
+                  <el-input v-model="InfoForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="文本格式">
+                  <el-radio-group v-model="InfoForm.type">
+                    <el-radio label="word"></el-radio>
+                    <el-radio label="txt"></el-radio>
+                  </el-radio-group>
+                </el-form-item>
+                <el-form-item label="班次">
+                  <el-radio-group v-model="InfoForm.job_id">
+                    <el-radio label="SX">首席</el-radio>
+                    <el-radio label="DQYB">短期预报</el-radio>
+                    <el-radio label="DLYB">短临预报</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+                <el-divider></el-divider>
+              </div>
+              <div class="item-title">发布设置</div>
+              <div class="item-content">
+                <el-form-item label="发布方式">
+                  <div class="checkbox-box">
+                    <el-checkbox-group v-model="InfoForm.publishChannel" size="small">
+                      <el-checkbox v-for="item in wayTpye" :label="item.id" :key="item.id" border>{{item.name}}</el-checkbox>
+                    </el-checkbox-group>
+                  </div>
+                </el-form-item>
+                <el-form-item label="预约发布">
+                  <el-col :span="4">
+                    <el-switch v-model="InfoForm.subscribePublish" active-text="开" inactive-text="关"></el-switch>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-time-picker placeholder="预约时间" v-model="InfoForm.subscribeTime" style="width: 100%;"></el-time-picker>
+                  </el-col>
+                  <el-col :span="12"></el-col>
+                </el-form-item>
+                <el-form-item label="制作提醒">
+                  <el-col :span="4">
+                    <el-switch v-model="InfoForm.remindMake"></el-switch>
+                  </el-col>
+                  <el-col :span="18"></el-col>
+                </el-form-item>
+                <el-form-item label="制作时间">
+                  <template>
+                    <el-tabs v-model="InfoForm.name" type="border-card" @tab-click="handleClick">
+                      <el-tab-pane label="月" name="first">
+                        <template>
+                          <el-checkbox
+                            :indeterminate="isIndeterminate"
+                            v-model="checkAll"
+                            @change="handleCheckAllChange"
+                          >全选</el-checkbox>
+                          <div style="margin: 0px 0 0 0;"></div>
+                          <el-checkbox-group
+                            v-model="checkedCities"
+                            @change="handleCheckedCitiesChange"
+                          >
+                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                          </el-checkbox-group>
+                        </template>
+                      </el-tab-pane>
+                      <el-tab-pane label="日" name="second">1</el-tab-pane>
+                      <el-tab-pane label="周" name="third"></el-tab-pane>
+                      <el-tab-pane label="时" name="fourth"></el-tab-pane>
+                      <el-tab-pane label="分" name="fourth1"></el-tab-pane>
+                    </el-tabs>
+                  </template>
+                </el-form-item>
+                <el-divider></el-divider>
+                <div class="footer">
+                  <el-button type="primary" size="small" @click="save()">保存</el-button>
+                  <el-button type="primary" size="small" @click="onTab()">服务用户绑定</el-button>
+                  <el-button type="primary" size="small" @click="onConsult()">参考资料绑定</el-button>
+                </div>
+              </div>
+            </div>
+          </el-form>
+        </div>
+      </div>
+      <div class="right-box">
+        <div class="top-title">
+          <div class="text">模板绑定</div>
+        </div>
+        <div class="content-box">
+          <el-row>
+            <el-button plain v-for="item in templateData" :key="item.id">{{item.label}}</el-button>
+          </el-row>
+        </div>
+        <el-divider></el-divider>
+        <div class="footer">
+          <el-button type="primary" size="small">使用</el-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import {
+  requestProductInfoTpyeTreeDel,
+  requestProductInfoTpyeTreeList,
+  requestProductTabTreeList,
+  requestProductTabsList,
+  requestProductClassTreeList,
+  requestProductInfoTreeItem,
+  requestProductInfoSave
+} from "@/remote/";
+import PageOffice from "@/components/page-office/";
+import {
+  common,
+  witchCommonList,
+  withCommonLeftTree
+} from "../../mixins/index";
+import { mapActions, mapGetters } from "vuex";
+const cityOptions = ["1", "2", "3", "4", "5", "6", "7"];
+export default {
+  mixins: [common, witchCommonList, withCommonLeftTree],
+  components: {
+    PageOffice
+  },
+  data() {
+    return {
+      cityOptions: ['上海', '北京', '广州', '深圳'],
+      tableData: [
+        {
+          material: "MaxTemp",
+          name: "最高气温",
+          num:'2',
+          type: "图片"
+        },
+        {
+          material: "MaxTemp",
+          name: "最低气温",
+          num:'2',
+          type: "图片"
+        },
+        {
+          material: "MaxTemp",
+          name: "最大风",
+          num:'2',
+          type: "图片"
+        },
+        {
+          material: "MaxTemp",
+          name: "1小时降雨",
+          num:'2',
+          type: "图片"
+        }
+      ],
+
+      checkAll: false,
+      checkedCities: ["2", "3"],
+      cities: cityOptions,
+      isIndeterminate: true,
+
+      form: null,
+      defaultProps: {
+        children: "children",
+        label: "label"
+      },
+      tabTree: [],
+      menuData: [],
+      userOrgId: null,
+      visibleDialogFormItemClassify: false,
+      visibleDialogFormItemProduct: false,
+      formItem: null,
+      radioType: "word",
+      checkList: ["值班记录", "每日预报产品"],
+      topTitle: "",
+      searchText: "",
+      tabsListValue: "2",
+      tabsList: [],
+      tabsList1: [
+        {name:'图片资料',id:'01',title:'图片资料'},
+        {name:'文字资料',id:'02',title:'文字资料'},
+      ],
+      wayTpye: [
+        {name:'微博',id:'wb'},
+        {name:'微信',id:'wx'},
+        {name:'短信',id:'dx'},
+        {name:'邮件',id:'yj'},
+        {name:'传真',id:'cz'},
+        {name:'FTP',id:'FTP'},
+        {name:'LED显示屏',id:'led'},
+        {name:'多媒体显示屏',id:'leds'},
+      ],
+      treeData: [],
+      treeDataList: [],
+      templateData:[],
+      InfoForm:{
+        publishChannel:[]
+      },
+    };
+  },
+  watch: {
+    searchText(val) {
+      this.$refs.tree.filter(val);
+    }
+  },
+  mounted() {
+    this.requestData();
+  },
+  computed:{
+      ...mapGetters(['accountOrgId']),
+    },
+  methods: {
+    save(){
+      requestProductInfoSave(this.InfoForm).then(res=>{
+
+      })
+    },
+    handleCheckAllChange(val) {
+      this.checkedCities = val ? cityOptions : [];
+      this.isIndeterminate = false;
+    },
+    handleCheckedCitiesChange(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.cities.length;
+      this.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.cities.length;
+    },
+
+    handleClick(tab, event) {
+      console.log(tab, event);
+    },
+    //初始化页面数据
+    requestData() {
+      this.getAccountInfo().then(res => {
+        //获取当前用户机构id
+        // if (res.success && res.data) {
+        //   this.userOrgId = res.data.orgId;
+        // }
+      });
+      requestProductInfoTpyeTreeList().then(res => {
+        this.treeData = res.data.list;
+        this.treeDataList = [];
+        this.treeOfList(res.data.list);
+      });
+      requestProductTabTreeList().then(res => {
+        this.tabTree = res.data.list;
+      });
+      requestProductTabsList().then(res => {
+        // this.tabsList = res.data.list;
+        this.tabsList = [
+          {name:'短信',id:'01',title:'短信'},
+          {name:'邮件',id:'02',title:'邮件'},
+        ]
+      });
+
+      requestProductClassTreeList().then(res => {
+          this.templateData = [],
+          this.templateOfList(res.data.list)
+        });
+
+    },
+       templateOfList(tree){
+          tree.map(item => {
+            if(true){
+              console.log(item)
+            }
+            this.templateData.push(item)
+            if(item.children){
+              this.templateOfList(item.children)
+            }
+          })
+      },
+    submitSuccess(res) {
+      this.requestData();
+    },
+    ...mapActions(["gotAccountInfo", "getAccountInfo", "getMenuInfo"]),
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
+    treeOfList(tree) {
+      tree.map(item => {
+        this.treeDataList.push(item);
+        if (item.children) {
+          this.treeOfList(item.children);
+        }
+      });
+    },
+    delItemProductClassify() {
+      let vm = this;
+      if (vm.topTitle) {
+        requestProductInfoTpyeTreeDel({
+          id: vm.topTitle
+        }).then(res => {
+          vm.$message.success("删除成功!");
+          // this.$refs.table.fetchData();
+        });
+      }
+    },
+    saveModule() {},
+    handleNodeClick(data) {
+      let vm = this;
+      requestProductInfoTreeItem({id:data.id}).then(res=>{
+        this.InfoForm = res.data.list[0]
+      })
+      console.log(data);
+      vm.formItem = data;
+      vm.topTitle = "";
+      vm.topTitle = data.label;
+    },
+
+    inputItemClassifyEdit(item) {
+      if (!this.formItem) {
+        alert("请选择父节点");
+        return;
+      }
+      this.formItem = this.getFormItemByInputItemClassify(item);
+      this.visibleDialogFormItemClassify = true;
+    },
+
+        // 增补节点（新增子节点）
+        onTreeAppendMinor() {
+            const {
+                lastItemClicked
+            } = this;
+            if (lastItemClicked == undefined) {
+                this.$message.warning("请先选择要添加的父节点!");
+                return;
+            }
+            this.formItem = this.getFormItemLeftByInputItemMinor();
+            this.visibleDialogformLeftTreeMinor = true;
+            this.dialogTitle = '新增'
+            console.log('新增11', this.formItem)
+        },
+
+      delProductClassify() {
+            const {
+                lastItemClicked,
+            } = this;
+            // if (lastItemClicked.moduleType !== 'productType') {
+            //     this.$message.warning("请选择正确的产品分类");
+            //     return;
+            // }
+
+            requestProductInfoTpyeTreeDel({id: lastItemClicked.id}).then(res => {
+                this.visibleDialog = false;
+                res.message && this.$message.success(res.message);
+                this.requestData()
+            })
+        },
+
+    inputItemClassify(item) {
+      this.formItem = this.getFormItemByInputItemClassify(item);
+      this.visibleDialogFormItemClassify = true;
+    },
+    inputItemProduct(item) {
+      this.formItem = this.getFormItemByInputItemProduct(item);
+      this.visibleDialogFormItemProduct = true;
+    },
+    getFormItemByInputItemClassify(item = {}) {
+      this.getAccountInfo().then(res => {
+        //获取当前用户机构id
+        // if (res.success && res.data) {
+        //   this.formItem.orgId = res.data.orgId;
+        // }
+      });
+      const { lastItemClicked } = this;
+      const lastKeyItemClicked = lastItemClicked && lastItemClicked.id;
+      console.log(lastItemClicked);
+      return {
+        // "XXXPROP_ORGAN_id": "",
+        remark: "123",
+        pid: "",
+        name: "",
+        sort: "",
+        orgId: ""
+        // "XXXPROP_ORGAN_4": lastItemClicked && (lastItemClicked.XXXPROP_ORGAN_4 || 0) + 1 + "",
+        // "XXXPROP_ORGAN_5": lastKeyItemClicked,
+        // lastItemClicked,
+        // ...item
+      };
+    },
+    getFormItemLeftByInputItem(item) {
+      const { lastItemClicked } = this;
+      console.log("lastItemClicked:", lastItemClicked);
+      console.log("item:", item);
+      return item
+        ? {
+            id: item.id,
+            name: item.label,
+            sort: item.sort,
+            pid: item.parentId,
+            orgId: this.accountOrgId
+          }
+        : {
+            name: "",
+            sort: "",
+            // pid: lastItemClicked.pid,
+            orgId: this.accountOrgId
+            // remark:"",
+          };
+    },
+    getFormItemLeftByInputItemMinor(item) {
+      const { lastItemClicked } = this;
+      console.log("lastItemClicked:", lastItemClicked);
+      console.log("item:", item);
+      return { 123: "123" };
+      // return item ?  {name:item.label,sort:item.sort,pid:item.parentId,orgId:this.userOrgId} : {
+      //     name: '',
+      //     sort: '',
+      //     pid: lastItemClicked.pid,
+      //     orgId:this.userOrgId
+      // };
+    },
+    getFormItemByInputItemProduct(item = {}) {
+      const { lastItemClicked } = this;
+      const lastKeyItemClicked = lastItemClicked && lastItemClicked.id;
+      return {
+        // "XXXPROP_ORGAN_id": "",
+        XXXPROP_ORGAN_1: "",
+        XXXPROP_ORGAN_2: "",
+        XXXPROP_ORGAN_3: "",
+        XXXPROP_ORGAN_4:
+          lastItemClicked && (lastItemClicked.XXXPROP_ORGAN_4 || 0) + 1 + "",
+        XXXPROP_ORGAN_5: lastKeyItemClicked,
+        XXXPROP_ORGAN_6: "",
+        lastItemClicked,
+        ...item
+      };
+    }
+  }
+};
+</script>
+
+<style lang="postcss" scoped>
+.product-made-home {
+  background: #f6f6f6;
+  padding: 15px 20px 0 0;
+  height: 100%;
+  box-sizing: border-box;
+  .wrap-box {
+    display: flex;
+    justify-content: space-between;
+    .left-box {
+      width: 280px;
+      position: relative;
+      background: #fff;
+      .content-box {
+        padding: 10px 20px 0;
+        .tree-box {
+          margin-top: 23px;
+        }
+      }
+      .tool-box {
+        padding: 30px 20px;
+        position: relative;
+        bottom: 0px;
+        .line-interval {
+          width: 100%;
+          height: 1px;
+          background: #e4e7ed;
+          margin-bottom: 30px;
+        }
+        .classify-tool {
+          display: flex;
+          justify-content: space-between;
+          height: 35px;
+          line-height: 35px;
+          .title {
+            font-size: 14px;
+            font-family: Microsoft YaHei;
+            color: rgba(96, 98, 102, 1);
+          }
+          .icon-boxborder: 1px solid rgba(235, 238, 245, 1);
+          border-radius: 6px;
+          width: 165px;
+          .iconfont {
+            display: inline-block;
+            width: 30%;
+            text-align: center;
+            font-size: 15px;
+            border-right: 1px solid #ebeef5;
+          }
+          .iconfont:last-child {
+            border-right: none;
+          }
+          .tianjia {
+            color: #67c241;
+          }
+          .bianji {
+            color: #409eff;
+          }
+          .shanchu {
+            color: #f46d6a;
+          }
+        }
+      }
+      .product-tool {
+        margin-top: 14px;
+      }
+    }
+  }
+  .center-box {
+    flex: 1;
+    background: #fff;
+    margin-left: 18px;
+    .content-box {
+      padding: 0 30px 33px;
+      .item-title {
+        padding: 20px 0;
+        font-size: 16px;
+      }
+      .item-content {
+        padding: 20px 20px;
+        font-size: 14px;
+        .checkbox-box {
+          /* display: flex;
+              flex-wrap:wrap;
+              align-content:flex-start; */
+          .el-checkbox {
+            margin: 5px 5px !important;
+          }
+        }
+        .footer {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+  }
+  .right-box {
+    flex: 0.5;
+    background: #fff;
+    margin-left: 22px;
+    .content-box {
+      padding: 10px 20px 0 20px;
+      .el-button {
+        margin: 5px 5px !important;
+      }
+    }
+    .footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+.top-title {
+  padding: 20px;
+  border-bottom: 1px solid rgb(26, 87, 211);
+  display: flex;
+  justify-content: space-between;
+  .text {
+    font-size: 18px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: rgba(48, 49, 51, 1);
+  }
+}
+.no-border {
+  border-bottom: none;
+}
+
+.title {
+  font-size: 14px;
+  font-family: Microsoft YaHei;
+  color: rgba(96, 98, 102, 1);
+}
+.common-left {
+  width: 100% !important;
+  margin-right: 0;
+}
+.common-left .el-card {
+  border: 0px solid #ebeef5;
+}
+.common-left-tree-actions {
+  display: inline-block;
+  text-align: center;
+  padding: 1em 0;
+}
+.left-box .text {
+  margin-top: 15px;
+}
+.consult {
+  .consult-left {
+    .top {
+      background: rgba(246, 247, 251, 1);
+      border: 1px solid rgba(228, 231, 237, 1);
+      border-radius: 5px 5px 0 0;
+      .select-all {
+        font-size: 13px;
+        padding: 14px;
+      }
+    }
+    .tree {
+      border: 1px solid rgba(228, 231, 237, 1);
+      border-radius: 0 0 5px 5px;
+      padding: 14px;
+    }
+  }
+  .consult-right {
+    .consult-list {
+      .el-table {
+        .el-icon-bottom,.el-icon-top{
+          color: #409eff;
+          padding-right: 6px;
+        }
+        .el-icon-delete{
+          color: #F56C6C;
+          padding-right: 6px;
+        }
+      }
+    }
+  }
+}
+</style>
+<style lang="postcss">
+.product-made-home {
+  .left-box {
+    .el-input__inner {
+      border-radius: 16px;
+    }
+  }
+}
+</style>

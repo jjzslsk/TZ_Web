@@ -1,0 +1,66 @@
+<template>
+<div v-if="form.type == 'statistics'">
+    <div class="dialog-table-title">2019年09月夜餐费补贴统计表</div>
+    <table class="dialog-table-info">
+        <tr>
+            <td>部门：台州市气象台</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <table-block ref="table" remote="requestNightStaticsList" :formatPayload="formatPayload" :hidePagination="true" :show-summary="true">
+        <el-table-column prop="XXXPROP_NIGHT_STATICSS_id" label="序号" width="80px"></el-table-column>
+        <el-table-column prop="XXXPROP_NIGHT_STATICSS_1" label="姓名" width="120px" />
+        <el-table-column prop="XXXPROP_NIGHT_STATICSS_2" label="早晨天数" width="80px" />
+        <el-table-column prop="XXXPROP_NIGHT_STATICSS_3" label="具体日期" />
+        <el-table-column prop="XXXPROP_NIGHT_STATICSS_4" label="夜间天数" width="80px" />
+        <el-table-column prop="XXXPROP_NIGHT_STATICSS_5" label="具体日期" />
+    </table-block>
+    <table class="dialog-table-info">
+        <tr>
+            <td>批准：</td>
+            <td>审核：</td>
+            <td>制表：韦小明</td>
+        </tr>
+    </table>
+</div>
+<div v-else>
+    <div class="dialog-table-title">夜间值班未补休补助费发放表</div>
+    <table class="dialog-table-info">
+        <tr>
+            <td>部门：台州市气象台</td>
+            <td></td>
+            <td>日期：2019年9月</td>
+        </tr>
+    </table>
+    <table-block ref="table" remote="requestNightDistributionList" key="requestNightDistributionList" :formatPayload="formatPayload" :hidePagination="true" :show-summary="true">
+        <el-table-column prop="XXXPROP_NIGHT_DISTRIBUTION_id" label="序号" width="80px"></el-table-column>
+        <el-table-column prop="XXXPROP_NIGHT_DISTRIBUTION_1" label="姓名" width="120px" />
+        <el-table-column prop="XXXPROP_NIGHT_DISTRIBUTION_2" label="未补休天数" width="120px" />
+        <el-table-column prop="XXXPROP_NIGHT_DISTRIBUTION_3" label="具体日期" />
+        <el-table-column prop="XXXPROP_NIGHT_DISTRIBUTION_4" label="补助金额(元)" width="120px" />
+        <el-table-column label="签名" />
+    </table-block>
+    <table class="dialog-table-info">
+        <tr>
+            <td>批准：</td>
+            <td>审核：</td>
+            <td>制表：韦小明</td>
+        </tr>
+    </table>
+</div>
+</template>
+
+<script>
+export default {
+    props: ['form'],
+    methods: {
+        formatPayload() {
+            return this.form;
+        }
+    }
+}
+</script>
+
+<style scoped>
+</style>

@@ -1,0 +1,31 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "rowCount": 120,
+        "pageSize": 10,
+        "pageIndex": 3,
+        "list": [{
+            "XXXPROP_ROLE_id": "1",
+            "XXXPROP_ROLE_1": "系统管理员（管理员）",
+            "XXXPROP_ROLE_2": "XTGLY"
+        },{
+            "XXXPROP_ROLE_id": "2",
+            "XXXPROP_ROLE_1": "基础权限",
+            "XXXPROP_ROLE_2": "JCQX"
+        },{
+            "XXXPROP_ROLE_id": "3",
+            "XXXPROP_ROLE_1": "测试其他角色",
+            "XXXPROP_ROLE_2": "CS"
+        },{
+            "XXXPROP_ROLE_id": "4",
+            "XXXPROP_ROLE_1": "测试其他角色",
+            "XXXPROP_ROLE_2": "CS"
+        },{
+            "XXXPROP_ROLE_id": "5",
+            "XXXPROP_ROLE_1": "测试其他角色",
+            "XXXPROP_ROLE_2": "CS"
+        }]
+    }
+}

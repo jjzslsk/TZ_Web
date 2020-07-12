@@ -1,0 +1,184 @@
+import commonLeftTree from '../components/common-left-tree.vue';
+import commonLeftTreeActions from '../components/common-left-tree-actions.vue';
+export const common = {
+    components: {commonLeftTree, commonLeftTreeActions}
+}
+import * as remote from '@/common/remote/'
+// 包含pagelist
+export const witchCommonList = {
+    data() {
+        return {
+            typeIndex:'index',
+            query: {},
+            visibleDialogFormItem: false,
+            formItem: null
+        };
+    },
+    watch: {
+        "$route.query": {
+            handler: function(data) {
+                this.query = {
+                    ...this.query,
+                    ...data
+                };
+            },
+            immediate: true
+        },
+        currentPage(data){
+            console.log(data)
+        },
+        pageSize(data){
+            console.log(data)
+        },
+        pageIndex(data){
+            console.log(data)
+        },
+    },
+    
+    methods: {
+        //序号
+        // typeIndex(index){
+            // console.log('index:',index)
+            // console.log('currentPage:',this.currentPage)
+            // console.log('pageSize:',this.pageSize)
+            // return index + (this.currentPage-1)*this.pageSize +1;
+            // return index
+        // },
+        // indexMethod (index) {
+        //     console.log('index:',index)
+        //     console.log('index:',this.index)
+        //     console.log('index:',this.index)
+            // let curpage = this.page.pagination.pageData.page   //单前页码，具体看组件取值
+            // let limitpage = this.page.pagination.pageData.limit    //每页条数，具体是组件取值
+            // return (index+1) + (curpage-1)*limitpage
+        // },
+        search() {
+            this.$router.replace({
+                query: this.query
+            });
+        },
+        // 格式化参数函数
+        formatPayload(data) {
+            // const userInfo = JSON.parse(localStorage.getItem('loginData',))
+            const payload = {
+                pageIndex: data.currentPage || 1,
+                pageSize: 5,
+                // id:userInfo.userId,
+                ...data
+            };
+            console.log('payload:',payload)
+
+            if (payload.leftTreeKeyPath) {
+                payload.parentId = payload.leftTreeKeyPath[payload.leftTreeKeyPath.length - 1];
+                delete payload.leftTreeKeyPath;
+            }
+            return this.formatPayloadLeft(payload);
+        },
+        formatPayloadLeft(payload){return payload},
+        inputItem(item) {
+            this.formItem = this.getFormItemByInputItem(item);
+            this.visibleDialogFormItem = true;
+            console.log('formItem:',this.formItem)
+        },
+        onConfirmUpdate(res){
+            this.$refs.table.fetchData();
+        },
+        onConfirmDelete({
+            id
+        }) {
+            this.actionOfListDelItem({
+                id
+            }).then(res => {
+                this.$message.success("删除成功!");
+                this.$refs.table.fetchData();
+                this.$emit("success", res);
+            });
+        }
+    }
+}
+// 包含左侧菜单
+export const withCommonLeftTree = {
+    data() {
+        return {
+            visibleDialogFormLeftTree: false,
+            visibleDialogformLeftTreeMinor:false,
+            formLeftTree: null,
+            formLeftTreeMinor:null,
+            lastItemClicked: null
+        };
+    },
+    methods: {
+        onTreeClickItem(item) {
+            console.log('click-tree-item', item);
+            this.lastItemClicked = item;
+            this.$router.replace({
+                query: {
+                    id: item.id
+                }
+            })
+            this.handleNodeClick(item)
+        },
+        onConfirmUpdate(res){
+            this.$refs.table.fetchData();
+        },
+        // 增补节点（添加子节点）
+        onTreeAppend() {
+            this.formLeftTree = this.getFormItemLeftByInputItem();
+            this.visibleDialogFormLeftTree = true;
+            console.log('添加',this.formLeftTree)
+        },
+        // 编辑节点
+        onTreeEdit() {
+            const {
+                lastItemClicked
+            } = this;
+            this.formLeftTree = this.getFormItemLeftByInputItem(lastItemClicked);
+            this.visibleDialogFormLeftTree = true;
+            console.log('编辑',this.formLeftTree)
+        },
+        // 删除节点
+        onTreeDelete(data) {
+            const vm = this;
+            remote[data]({id:vm.lastItemClicked.id}).then(res => {
+                vm.visibleDialog = false;
+                res.message && vm.$message.success(res.message);
+                vm.$emit("success", res);
+            })
+                // vm.$emit("success", 'res');
+
+            // this.$message({
+            //     type: 'success',
+            //     message: '删除成功!'
+            // });
+        },
+        // 增补节点（添加子节点）
+        onTreeAppendMinor() {
+            this.formLeftTreeMinor = this.getFormItemLeftByInputItemMinor();
+            this.visibleDialogformLeftTreeMinor = true;
+            console.log('添加',this.formLeftTreeMinor)
+        },
+        // 编辑节点
+        onTreeEditMinor() {
+            // const {
+            //     lastItemClicked
+            // } = this;
+            // this.formLeftTreeMinor = this.getFormItemLeftByInputItemMinor(lastItemClicked);
+            // this.visibleDialogformLeftTreeMinor = true;
+            // console.log('编辑',this.formLeftTreeMinor)
+        },
+        // 删除节点
+        onTreeDeleteMinor(data) {
+            const vm = this;
+            remote[data]({id:vm.lastItemClicked.id}).then(res => {
+                vm.visibleDialog = false;
+                res.message && vm.$message.success(res.message);
+                vm.$emit("success", res);
+            })
+            this.submitSuccess()
+            // this.$message({
+            //     type: 'success',
+            //     message: '删除成功!'
+            // });
+        },
+    }
+}

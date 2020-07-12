@@ -1,0 +1,97 @@
+<template>
+<div>
+<el-tree v-if="data" :data="data" class="c-tree" defaultExpandAll ref="tree" node-key="id" :current-node-key="keyCurrentNode" highlight-current :default-expanded-keys="keysExpandedDefault" :show-checkbox="showCheckbox" :default-expand-all="defaultExpandAll" :default-checked-keys="defaultCheckedKeys"
+  :props="propsTree" @node-click="handleNodeClick" :filter-node-method="filterNode">
+    <!--
+        空间不够
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+            <span>{{ node.label }}</span>
+            <span>
+                <el-button type="text" size="mini" @click.stop="() => $emit('append',data)">
+                    增补
+                </el-button>
+                <el-button type="text" size="mini" @click.stop="() => $emit('edit',data)">
+                    编辑
+                </el-button>
+                <el-button type="text" size="mini" @click.stop="() => $emit('delete',data)">
+                    删除
+                </el-button>
+            </span>
+        </span> -->
+</el-tree>
+
+<el-tree v-else class="c-tree" ref="tree" node-key="id" :current-node-key="keyCurrentNode" highlight-current :default-expanded-keys="keysExpandedDefault" :show-checkbox="showCheckbox" :default-expand-all="false" :default-checked-keys="defaultCheckedKeys"
+  :props="propsTree" @node-click="handleNodeClick" lazy :load="onLoadTree">
+</el-tree>
+</div>
+</template>
+
+<script>
+import * as remote from '@/remote/'
+export default {
+    props: ['remote','data','searchText','keysExpandedDefault', 'keyCurrentNode', 'showCheckbox', 'defaultCheckedKeys','defaultExpandAll'],
+    data() {
+        return {
+            propsTree: {},
+        }
+    },
+    watch: {
+      searchText(val) {
+        this.$refs.tree.filter(val);
+      }
+    },
+    methods: {
+      filterNode(value, data) {
+        if (!value) return true;
+        return data.label.indexOf(value) !== -1;
+      },
+        handleNodeClick(data, node) {
+            const {
+                id,
+                isLeaf
+            } = data;
+            if (isLeaf) {
+                // debugger
+                const tree = this.$refs.tree;
+                // const currentNode = tree.getCurrentNode();
+                // if (currentNode) {
+                // }
+                if (tree) {
+                    const nodePath = tree.getNodePath(node);
+                    const keyPath = nodePath.reduce((p, c) => {
+                        p.push(c.id);
+                        return p;
+                    }, []);
+                    // debugger
+                    this.$emit('select-path', keyPath);
+                }
+                this.$emit('select-item', data);
+            }
+            this.$emit('click-item', data);
+        },
+        onLoadTree(node, resolve) {
+            if(this.data) return
+            remote[this.remote]({
+                node
+            }).then(res => {
+                const {
+                    data
+                } = res;
+                const {
+                    keyCurrentNode
+                } = this;
+
+                const [item] = data.filter((item) => item.id == keyCurrentNode)
+                if (item) {
+                    this.$emit('select-item', item);
+                    this.$emit('click-item', item);
+                }
+                resolve(data);
+            });
+        },
+    }
+}
+</script>
+
+<style lang="css" scoped>
+</style>

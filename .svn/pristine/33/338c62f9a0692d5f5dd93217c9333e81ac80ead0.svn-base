@@ -1,0 +1,19 @@
+<template>
+<div class="list-table">
+    <slot name="actions"></slot>
+    <el-table :height="height" :data="rows" border style="width: 100%" v-bind="$attrs">
+        <slot></slot>
+    </el-table>
+
+    <el-pagination layout="prev, pager, next" @current-change="$emit('current-change',$event)" v-bind="$attrs" v-if="!hidePagination" />
+</div>
+</template>
+
+<script>
+export default {
+    props: ['rows', 'hidePagination','height']
+}
+</script>
+
+<style scoped>
+</style>

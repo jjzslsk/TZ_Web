@@ -1,0 +1,7 @@
+import * as options from './opitons'
+export const mapFrontOptions = (optionKeys, {
+    afterFix = "Options"
+} = {}) => optionKeys.reduce((p, c) => {
+    p[c + afterFix] = () => options[c]
+    return p;
+}, {})

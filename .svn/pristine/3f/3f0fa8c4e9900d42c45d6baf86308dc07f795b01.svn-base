@@ -1,0 +1,51 @@
+{
+    "success": true,
+    "code": 0,
+    "message": "查询预警信号发布状态渠道统计数据成功！",
+    "data": {
+        "totals": {
+            "sendFail": 1,
+            "successRate": "2%",
+            "sendSuccess": 3,
+            "pushFail": 4,
+            "pushSuccess": 5,
+            "pushing": 6
+        },
+        "resultList": [{
+            "sendFail": 11,
+            "publishChannel": "EMAIL",
+            "sendSuccess": 12,
+            "pushFail": 13,
+            "pushSuccess": 14,
+            "pushing": 15
+        }, {
+            "sendFail": 21,
+            "publishChannel": "FAX",
+            "sendSuccess": 22,
+            "pushFail": 23,
+            "pushSuccess": 24,
+            "pushing": 25
+        }, {
+            "sendFail": 31,
+            "publishChannel": "FTP",
+            "sendSuccess": 32,
+            "pushFail": 33,
+            "pushSuccess": 34,
+            "pushing": 35
+        }, {
+            "sendFail": 41,
+            "publishChannel": "WeChat",
+            "sendSuccess": 42,
+            "pushFail": 43,
+            "pushSuccess": 44,
+            "pushing": 45
+        }, {
+            "sendFail": 51,
+            "publishChannel": "WEIBO",
+            "sendSuccess": 52,
+            "pushFail": 53,
+            "pushSuccess": 54,
+            "pushing": 55
+        }]
+    }
+}

@@ -1,0 +1,879 @@
+<template>
+  <div class="weather-situation-page">
+    <div class="wrap-box">
+      <div class="left-box">
+        <div class="weather-forecast forecast-box">
+          <div class="title-box">
+            <span class="bold-title">天气警报</span>
+            <span class="more" @click="toMore('天气警报')">更多+</span>
+          </div>
+          <div class="content-wrap-box">
+            <div class="content-box border-top" v-for="item in alarmList" :key="item.id">
+              <i class="iconfont" :class='item.icon'></i>
+              <div class="item">
+                <div class="title-F56C6C">{{item.publishOrg+'发布'+item.alarmName}}</div>
+                <div class="time">{{item.publishTime}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="city-forecast forecast-box">
+          <div class="title-box">
+            <span class="bold-title">市县预警</span>
+            <span class="more" @click="toMore('市县预警')">更多+</span>
+          </div>
+          <div class="content-wrap-box">
+            <div class="content-box border-top" v-for="item in earlyList" :key="item.id">
+              <img-alarm class="pic yujing-img" :info="item|alermInfo"></img-alarm>
+              <!-- <img src="@/assets/img/yujing/0005-3ico.png" alt="" class="yujing-img"> -->
+              <div class="item">
+                <div class="title-F56C6C title-606266">{{item.title}}</div>
+                <div class="time">{{item.publishTime}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="short-forecast forecast-box">
+          <div class="tab-top">
+            <el-tabs v-model="activeName">
+              <el-tab-pane v-for="(item,index) in shortForecas" :label="item.name" :name="item.id" :key="index">
+                <div class="tab-content">
+                  <div class="item-text">
+                    {{item.content}}
+                 </div>
+                </div>
+              </el-tab-pane>
+            </el-tabs>
+          </div>
+        </div>
+        <div class="short-forecast forecast-box">
+          <div class="tab-top">
+            <el-tabs v-model="activeName2">
+              <el-tab-pane v-for="(item,index) in cityByForecasts" :label="item.name" :name="item.id" :key="index">
+                <div class="tab-content">
+                  <div class="item-text">
+                    {{item.content}}
+                 </div>
+                </div>
+              </el-tab-pane>
+            </el-tabs>
+          </div>
+        </div>
+      </div>
+      <div class="right-box">
+        <div class="right-top">
+          <div class="top-left">
+            <div class="map-wrap">
+              <div class="map-left">
+                <img src="/static/images/map1.png" alt="">
+              </div>
+              <div class="map-right">
+                <img src="/static/images/map4.png" alt="">
+              </div>
+            </div>
+          </div>
+          <div class="top-right">
+            <div class="short-forecast forecast-box">
+              <div class="tab-top">
+                <el-tabs v-model="notice">
+                  <el-tab-pane label="通知栏" name="1">
+                    <div class="tab-content">
+                      <div class="item-text">
+                        天气预报：今天多云到阴；明天多云，夜里阴有时有小雨；后天阴有时有小雨
+                      </div>
+                      <div class="item-text">今天白天最高温度：20-22度；明天早晨最低温度：</div>
+                    </div>
+                    <div class="tab-content">
+                      <div class="item-text">
+                        天气预报：今天多云到阴；明天多云，夜里阴有时有小雨；后天阴有时有小雨
+                      </div>
+                      <div class="item-text">今天白天最高温度：20-22度；明天早晨最低温度：</div>
+                    </div>
+                  </el-tab-pane>
+                  <el-tab-pane label="天气资讯" name="2">
+                    <div class="tab-content">
+                      <div class="item-text">今天白天最高温度：20-22度；明天早晨最低温度：</div>
+                      <div class="item-text">
+                        天气预报：今天多云到阴；明天多云，夜里阴有时有小雨；后天阴有时有小雨
+                      </div>
+                    </div>
+                    <div class="tab-content">
+                      <div class="item-text">今天白天最高温度：20-22度；明天早晨最低温度：</div>
+                      <div class="item-text">
+                        天气预报：今天多云到阴；明天多云，夜里阴有时有小雨；后天阴有时有小雨
+                      </div>
+                    </div>
+                  </el-tab-pane>
+                </el-tabs>
+              </div>
+            </div>
+
+            <div class="weather-forecast forecast-box file">
+              <div class="title-box">
+                <span class="bold-title">省级决策服务材料</span>
+                <!-- <span class="more">更多+</span> -->
+              </div>
+              <div class="content-wrap-box">
+                <!-- <div class="content-box"> -->
+                  <!-- <i class="iconfont hanchao"></i>
+                  <div class="item">
+                    <div class="title-F56C6C">台州市气象台发布寒潮警台州市气象台发布寒潮警</div>
+                    <div class="time">2020-02-11 10:00</div>
+                  </div> -->
+                  <p class="material">浙江省气候评价(2019年11月)。。。。。。。。。。</p>
+                  <p class="material">浙江省气候评价(2019年11月)。。。。。。。。。。</p>
+                  <p class="material">浙江省气候评价(2019年11月)。。。。。。。。。。</p>
+                  <p class="material">浙江省气候评价(2019年11月)。。。。。。。。。。</p>
+                  <p class="material">浙江省气候评价(2019年11月)。。。。。。。。。。</p>
+                <!-- </div> -->
+                <!-- <div class="content-box border-top">
+                  <i class="iconfont baoxue"></i>
+                  <div class="item">
+                    <div class="title-F56C6C">仙台市气象台发布暴雪。。。。。。。。。。</div>
+                    <div class="time">2020-02-11 10:00</div>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="right-bottom">
+          <div class="bottom-left">
+            <el-tabs tab-position="left" v-model="bottomTab" type="border-card" style="height: 200px;">
+              <el-tab-pane label="7天趋势预报图" name="7天趋势预报图">
+                <div class="title">
+                  7天趋势预报图
+                </div>
+                <div class="forecast-info tabs-pane">
+                  <div class="info-left">
+                        <el-radio-group v-model="radio1">
+                          <el-radio-button label="月"></el-radio-button>
+                          <el-radio-button label="旬"></el-radio-button>
+                          <el-radio-button label="日"></el-radio-button>
+                        </el-radio-group>
+                    <!-- <div class="but-box">
+                      <div class="but but-top" >月</div>
+                      <div class="but but-centre">旬</div>
+                      <div class="but but-bottom">日</div>
+                    </div> -->
+                  </div>
+
+                  <div class="echarts-box info-right" v-if="radio1 == '月'" >
+                      <chart-result class="chart-line" v-if="chartResult"></chart-result>
+                      <div class="chart-hint">
+                          <div class="content">
+                            历史最高温度：<span class="color-t">-></span> 
+                          </div>
+                          <div class="content">
+                            历史最低温度：<span class="color-b">-></span> 
+                          </div>
+                      </div>
+                  </div>
+                  <div class="echarts-box info-right" v-if="radio1 == '旬'" >
+                      <chart-result class="chart-line" v-if="chartResult"></chart-result>
+                      <!-- <chart-result v-if="chartResult"></chart-result> -->
+                      <!-- <chart-bar class="chart-bar" v-if="chartResult"></chart-bar> -->
+                  </div>
+                  <div class="echarts-box info-right" v-if="radio1 == '日'" >
+                      <chart-result class="chart-line" v-if="chartResult"></chart-result>
+                      <!-- <chart-result v-if="chartResult"></chart-result> -->
+                  </div>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane class="tab-pane-box-pro" label="降水监测"  name="降水监测">
+                <div class="title">
+                  降水监测
+                </div>
+                <div class="pro-item">
+                  <progress-content :progress='bottomTabList.rainfall'></progress-content>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane class="tab-pane-box-pro" label="风力监测" name="风力监测">
+                <div class="title">
+                  风力监测
+                </div>
+                <div class="pro-item">
+                  <progress-content :progress='bottomTabList.wind'></progress-content>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane class="tab-pane-box-pro" label="能见度监测" name="能见度监测">
+                <div class="title">
+                  能见度监测
+                </div>
+               <div class="pro-item">
+                  <progress-content :progress='bottomTabList.visibility'></progress-content>
+                </div>
+              </el-tab-pane>
+            </el-tabs>
+          </div>
+          <div class="bottom-right">
+            <div class="short-forecast forecast-box">
+              <div class="tab-top">
+                <span class="short-title">
+                    3天降水分布图
+                  </span>
+                <el-tabs v-model="threeRainfall">
+                  <el-tab-pane label="第一天" name="1">
+                    <div class="tab-content">
+                      <div class="img">
+                        <img src="/static/images/map3.png" alt="">
+                      </div>
+                      </div>
+                  </el-tab-pane>
+                  <el-tab-pane label="第二天" name="2">
+                    <div class="tab-content">
+                      <div class="img">
+                        <img src="/static/images/map11.png" alt="">
+                      </div>
+                    </div>
+                  </el-tab-pane>
+                  <el-tab-pane label="第三天" name="3">
+                    <div class="tab-content">
+                      <div class="img">
+                        <img src="/static/images/map2.png" alt="">
+                      </div>
+                    </div>
+                  </el-tab-pane>
+                </el-tabs>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import chartResult from './../components/chart-result'
+import chartBar from './../components/chart-bar'
+import progressContent from './../components/progress-content'
+import {
+    requestWarningAlarm,
+    requestWarningEarly,
+    requestWarningShort,
+    requestWarningTemporary,
+    requestWarningForecast,
+    requestWarningCity,
+    requestWarningObj,
+    requestWarningBottomTabList
+} from "@/remote/";
+import {
+    transformAlarmsInfo
+} from "@/common/tools/"
+import {
+    common,
+    witchCommonList,
+    withCommonLeftTree
+} from '../../mixins/index';
+import echarts from 'echarts'
+
+  export default {
+    mixins: [common, witchCommonList, withCommonLeftTree],
+    components: {
+        chartResult,
+        chartBar,
+        progressContent
+    },
+    data() {
+      return {
+        bottomTabList:null,
+        bottomTab:'7天趋势预报图',
+        alarmList:null,
+        earlyList:null,
+        chartResult:false,
+        radio1: '月',
+        threeRainfall:'1',//三天降水
+        notice:'1',//通知栏
+        activeName: '1',
+        activeName2:'1',
+        shortForecas:[
+          {
+            id:'1',
+            name:'短临预报',
+            content:'暂无数据'
+          },
+          {
+            id:'2',
+            name:'短期预报',
+            content:'暂无数据'
+          }
+        ],
+        cityByForecasts:[
+          {
+            id:'1',
+            name:'十天预报',
+            content:'暂无数据'
+          },
+          {
+            id:'2',
+            name:'城市预报',
+            content:'暂无数据',
+          }
+        ],
+      }
+    },
+    mounted(){
+      this.requestData()
+      // window.addEventListener('resize',function() {myChart.resize()});
+    },
+    methods:{
+      requestData(){
+        this.chartResult = true
+        requestWarningAlarm().then(res=>{
+          this.alarmList = res.data
+          this.alarmList.forEach(element => {
+            element.icon = element.alarmCode.split(",")[0]
+          });
+        })
+        requestWarningEarly().then(res=>{
+          this.earlyList = res.data
+        })
+
+        requestWarningShort().then(res=>{
+          let resData = res.data
+          JSON.stringify(resData) == "{}"? this.shortForecas[0].content = '暂无数据':this.shortForecas[0].content = resData.content
+        })
+        requestWarningTemporary().then(res=>{
+            let resData = res.data
+          JSON.stringify(resData) == "{}"? this.shortForecas[0].content = '暂无数据':this.shortForecas[1].content = resData.content
+        })
+
+        requestWarningForecast().then(res=>{
+          let resData = res.data
+          JSON.stringify(resData) == "{}"? this.cityByForecasts[0].content = '暂无数据':this.cityByForecasts[0].content = resData.content
+        })
+        requestWarningCity().then(res=>{
+            let resData = res.data
+          JSON.stringify(resData) == "{}"? this.cityByForecasts[0].content = '暂无数据':this.cityByForecasts[1].content = resData.content
+        })
+        requestWarningBottomTabList().then(res=>{
+          this.bottomTabList = res.data
+        })
+      },
+      toMore(data){
+        if(data == '天气警报'){this.$router.push({path:'/weather-warning/trace/warning'})}
+        if(data == '市县预警'){this.$router.push({path:'/weather-warning/trace/alarm'})}
+      }
+    },
+    filters: {
+        alermInfo(val) {
+            if (val) {
+                return transformAlarmsInfo({
+                    // type: val.XXXPROP_TRACE_ALARM_TYPE,
+                    code: val.code,
+                    level: val.level
+                })
+            }
+        }
+    }
+  }
+</script>
+
+<style lang='postcss' scoped>
+.weather-situation-page{
+  .wrap-box{
+    display: flex;
+    justify-content: space-between;
+    background: #F6F7FB;
+    padding-top:20px;
+    .left-box{
+      width: 290px;
+      .forecast-box{
+        background: #fff;
+        border:1px solid rgba(221, 221, 221, 1);
+        margin-bottom:20px;
+        .content-wrap-box{
+          padding: 0px 25px;
+        }
+        .content-box{
+          padding: 20px 0px 13px 0px;
+          display: flex;
+          justify-content: space-between;
+          .taifengxiaoxi,
+          .taifengjingbao,
+          .taifengjinjijingbao,
+          .baoyu,
+          .daoxue,
+          .lengkongqi,
+          .qianglengkongqi,
+          .hanchao1,
+          .jiangwenbaogao,
+          .yanhanjingbao,
+          .gaowenbaogao,
+          .kurejingbao,
+          .diwenbaogao01,
+          .nongwujingbao,
+          .mai,
+          .dafengjingbao,
+          .leibaojingbao,
+            {
+              font-size: 28px;
+              color:#409EFF;
+              margin-right:10px;
+            }
+          .yujing-img{
+            width: 52px;
+            height: 45px;
+            margin-right:10px;
+          }
+          .item{
+            .title-F56C6C{
+              width: 190px;
+              font-size:14px;
+              font-family:Microsoft YaHei;
+              color:rgba(245,108,108,1);
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              word-break: break-all;
+              margin-bottom:10px;
+            }
+            .title-606266{
+              color: #606266;
+            }
+            .time{
+              font-size:13px;
+              font-family:Microsoft YaHei;
+              color:rgba(144,147,153,1);
+            }
+          }
+        }
+        .tab-content{
+          padding: 5px 20px;
+          .item-text{
+            font-size:14px;
+            font-family:Microsoft YaHei;
+            color:rgba(96,98,102,1);
+            line-height:22px;
+          }
+        }
+      }
+      .ten-days-forecast{
+        margin-bottom: 10px;
+      }
+    }
+    .right-box{
+      flex: 1;
+      margin-left: 20px;
+      .right-top{
+        display: flex;
+        justify-content: space-between;
+        .top-left{
+          width: calc(100% - 310px);
+          .map-wrap{
+            display: flex;
+            .map-left{
+              width: 50%;
+              img{
+                height: calc(100vh - 431px);
+                width: 100%;
+              }
+            }
+            .map-right{
+              width: 50%;
+              img{
+                height: calc(100vh - 431px);
+                width: 100%;
+              }
+            }
+          }
+        }
+        .top-right{
+          margin-left:20px;
+          width: 290px;
+          height: calc(100vh - 431px);
+            .forecast-box{
+              height: calc(50%-20px);
+              background: #fff;
+              border:1px solid rgba(221, 221, 221, 1);
+              margin-bottom:20px;
+              .content-wrap-box{
+                height: calc(100%-50px);
+                overflow: auto;
+                padding: 0px 25px;
+              }
+              .content-box{
+                padding: 20px 0px 13px 0px;
+                display: flex;
+                justify-content: space-between;
+                .hanchao,.baoxue{
+                  font-size: 28px;
+                  color:#409EFF;
+                  margin-right:10px;
+                }
+                .yujing-img{
+                  width: 52px;
+                  height: 45px;
+                  margin-right:10px;
+                }
+                .item{
+                  .title-F56C6C{
+                    width: 190px;
+                    font-size:14px;
+                    font-family:Microsoft YaHei;
+                    color:rgba(245,108,108,1);
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    word-break: break-all;
+                    margin-bottom:10px;
+                  }
+                  .title-606266{
+                    color: #606266;
+                  }
+                  .time{
+                    font-size:13px;
+                    font-family:Microsoft YaHei;
+                    color:rgba(144,147,153,1);
+                  }
+                }
+              }
+              .tab-content{
+                padding: 5px 20px;
+                .item-text{
+                  font-size:14px;
+                  font-family:Microsoft YaHei;
+                  color:rgba(96,98,102,1);
+                  line-height:22px;
+                }
+              }
+            }
+           .material{
+             font-size: 14px;
+            font-family: Microsoft YaHei;
+            color: #606266;
+            line-height: 22px;
+             border-bottom: solid 1px #ccc;
+             margin: 8px 0 4px 0;
+              display: inline-block;
+              white-space: nowrap; 
+              width: 100%; 
+              overflow: hidden;
+              text-overflow:ellipsis;
+           } 
+           .file{
+             margin-bottom: 0px !important;
+             height: calc(50% - 4px)!important;
+           }
+        }
+      }
+      .right-bottom{
+        /* background: cornflowerblue; */
+        height: 300px;
+        width: 100%;
+        margin-top:20px;
+        display: flex;
+        justify-content: space-between;
+        .bottom-left{
+          width: calc(100%-450px);
+          position: relative;
+          .el-tabs {
+            height: 100% !important;
+          }
+          .title {
+            position: absolute;
+          }
+          .forecast-info {
+            /* background: darkgoldenrod; */
+            display: flex;
+            justify-content: space-between;
+            height: 100%;
+            .info-left {
+              height: 100% !important;
+              display:flex;
+              width: 100px;
+              justify-content: center;
+              margin-top:40px;
+              .but-box{
+                margin: 30px;
+                  .but{
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  text-align: content;
+                  height: 50px;
+                  width:40px;
+                  font-size: 14px;
+                  /* padding: 7px 15px; */
+                  color: #fff;
+                  background-color: #409eff;
+                  border-color: #409eff;
+                  line-height: 1;
+                  white-space: nowrap;
+                  cursor: pointer;
+                  -webkit-appearance: none;
+                  text-align: center;
+                  -webkit-box-sizing: border-box;
+                  box-sizing: border-box;
+                  outline: 0;
+                  margin: 0;
+                  -webkit-transition: .1s;
+                  transition: .1s;
+                  font-weight: 500;
+                }
+                .but-top{
+                  border-radius: 4px 4px 0 0;
+                }
+                .but-centre{
+                  border-top: 1px #eee solid;
+                  border-bottom: 1px #eee solid;
+                }
+                .but-bottom{
+                  border-radius: 0 0 4px 4px;
+                }
+              }
+              
+            }
+            .info-right{
+              position: relative;
+              /* background: darkcyan; */
+              width: calc(100%-100px);
+              .chart-hint {
+                  top: 6px;
+                  right: 10px;
+                  color:#555;
+                  position:absolute;
+                  font-size:12px;
+                .content{
+                  .color-t {
+                    color: red;
+                  }
+                  .color-b {
+                    color: green;
+                  }
+                  margin-bottom:4px;
+                  display: block;
+                }
+              }
+            }
+          }
+        }
+        .bottom-right{
+          width: 430px;
+          margin-left: 20px;
+          background: #fff;
+          .img{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            img{
+              width: 310px;
+              height: 240px;
+            }
+          }
+            .forecast-box{
+              background: #fff;
+              border:1px solid rgba(221, 221, 221, 1);
+              margin-bottom:20px;
+              .content-wrap-box{
+                padding: 0px 25px;
+              }
+              .content-box{
+                padding: 20px 0px 13px 0px;
+                display: flex;
+                justify-content: space-between;
+                .taifengxiaoxi,
+                .taifengjingbao,
+                .taifengjinjijingbao,
+                .baoyu,
+                .daoxue,
+                .lengkongqi,
+                .qianglengkongqi,
+                .hanchao1,
+                {
+                  font-size: 28px;
+                  color:#409EFF;
+                  margin-right:10px;
+                }
+                .yujing-img{
+                  width: 52px;
+                  height: 45px;
+                  margin-right:10px;
+                }
+                .item{
+                  .title-F56C6C{
+                    width: 190px;
+                    font-size:14px;
+                    font-family:Microsoft YaHei;
+                    color:rgba(245,108,108,1);
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    word-break: break-all;
+                    margin-bottom:10px;
+                  }
+                  .title-606266{
+                    color: #606266;
+                  }
+                  .time{
+                    font-size:13px;
+                    font-family:Microsoft YaHei;
+                    color:rgba(144,147,153,1);
+                  }
+                }
+              }
+              .tab-content{
+                padding: 5px 20px;
+                .item-text{
+                  font-size:14px;
+                  font-family:Microsoft YaHei;
+                  color:rgba(96,98,102,1);
+                  line-height:22px;
+                }
+              }
+            }
+        }
+      }
+    }
+    .title-box{
+      padding: 0 10px 0 20px;
+      height: 50px;
+      line-height: 50px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom:1px solid rgba(221, 221, 221, 1);
+      .bold-title{
+        font-size:15px;
+        font-family:Microsoft YaHei;
+        font-weight:bold;
+        color:rgba(48,49,51,1);
+      }
+      .more{
+        font-size:13px;
+        font-family:Microsoft YaHei;
+        color:rgba(144,147,153,1);
+        cursor: pointer;
+      }
+    }
+    .border-top{
+      border-top:1px solid rgba(221, 221, 221, 1);
+    }
+  }
+}
+</style>
+<style>
+.weather-situation-page{
+
+  .tab-top .el-tabs__nav{
+    margin-left: 20px;
+  }
+  .el-tabs__item{
+    font-size:15px;
+    font-family:Microsoft YaHei;
+    color:rgba(48,49,51,1);
+  }
+  .bottom-left {
+    .el-tabs__item {
+      height: 25% !important;
+    }
+    .el-radio-button:nth-child(1){
+      display: block;
+      .el-radio-button__inner{
+        border-radius: 4px 4px 0 0;
+        height: 50px;
+        width:40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .el-radio-button:nth-child(2){
+      display: block;
+      .el-radio-button__inner{
+        border-radius: 0;
+        /* border-left: 1px solid #dcdfe6;
+        border-right: 1px solid #dcdfe6; */
+        height: 50px;
+        width:40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .el-radio-button:nth-child(3){
+      display: block;
+      .el-radio-button__inner{
+        border-radius: 0 0 4px 4px;
+        height: 50px;
+        width:40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+  .right-bottom {
+    .el-tabs__content {
+      /* background: darkgreen; */
+      height: 100% !important;
+      .el-tab-pane {
+      /* background: darkgoldenrod; */
+      height: 100% !important;
+      .tabs-pane {
+          height: calc(100% - 55px) !important;
+      }
+    }
+    .tab-pane-box-pro {
+      .pro-item{
+        display: flex!important;
+        align-items: center!important;
+        justify-content: center!important;
+        .el-progress {
+          margin: 30px;
+          .el-progress-circle {
+            height: 200px!important;
+            width: 200px!important;
+          }
+        }
+      }
+      }
+    }
+    .bottom-right{
+      position: relative;
+      .el-tabs__nav-scroll {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 20px;
+      }
+    }
+    .short-title {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      display: inline;
+      font-size: 15px;
+      font-family: Microsoft YaHei;
+      font-weight: 700;
+      color: #303133;
+    }
+  }
+}
+.echarts-box {
+  position: relative;
+    #chart_example{
+        position: absolute;
+        top: -110px;
+        width: 90%;
+        height: 500px;
+        border: 1px solid rgba(255, 0, 0, 0);
+        margin: 0 auto;
+        
+      }
+  .chart-line {
+    /* background: red; */
+    /* height: 200px !important; */
+    canvas {
+      /* height: 200px !important; */
+    }
+  }
+  .chart-bar {
+    /* background: blue; */
+    height: 200px !important;
+  }
+   canvas {
+      /* height: 200px !important; */
+    }
+}
+</style>

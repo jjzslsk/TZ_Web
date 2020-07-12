@@ -1,0 +1,41 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "rowCount": 120,
+        "pageSize": 10,
+        "pageIndex": 3,
+        "list": [{
+            "XXXPROP_HISTORY_id": "1",
+            "XXXPROP_HISTORY_1": "张三",
+            "XXXPROP_HISTORY_2": "2019-10-01 08：30",
+            "XXXPROP_HISTORY_3": "重大活动",
+            "XXXPROP_HISTORY_4": "2019台州国际人才合作洽谈大会将于本月7日举行"
+        }, {
+            "XXXPROP_HISTORY_id": "2",
+            "XXXPROP_HISTORY_1": "李四",
+            "XXXPROP_HISTORY_2": "2019-10-01 18：30",
+            "XXXPROP_HISTORY_3": "应急响应",
+            "XXXPROP_HISTORY_4": "日常任务"
+        }, {
+            "XXXPROP_HISTORY_id": "3",
+            "XXXPROP_HISTORY_1": "张三",
+            "XXXPROP_HISTORY_2": "2019-10-01 08：30",
+            "XXXPROP_HISTORY_3": "重大活动",
+            "XXXPROP_HISTORY_4": "2019台州国际人才合作洽谈大会将于本月7日举行"
+        }, {
+            "XXXPROP_HISTORY_id": "4",
+            "XXXPROP_HISTORY_1": "张三",
+            "XXXPROP_HISTORY_2": "2019-10-01 08：30",
+            "XXXPROP_HISTORY_3": "重大活动",
+            "XXXPROP_HISTORY_4": "2019台州国际人才合作洽谈大会将于本月7日举行"
+        }, {
+            "XXXPROP_HISTORY_id": "5",
+            "XXXPROP_HISTORY_1": "张三",
+            "XXXPROP_HISTORY_2": "2019-10-01 08：30",
+            "XXXPROP_HISTORY_3": "重大活动",
+            "XXXPROP_HISTORY_4": "2019台州国际人才合作洽谈大会将于本月7日举行"
+        }]
+    }
+}

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../../layui/css/layui.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+      <!-- <button class="layui-icon layui-icon-export" id="getExport">get</button>
+      <button class="layui-icon layui-icon-export" id="formExport">提交form</button>
+      <button class="layui-icon layui-icon-export" id="jsonExport">提交Json</button>
+      <button class="layui-icon layui-icon-export" id="delExport">del</button>
+      <button class="layui-icon layui-icon-export" id="putExport">put</button> -->
+<body class="forecast">
+  <div class="left">
+    <div class="layui-tab layui-tab-card" lay-filter="demo">
+      <ul class="layui-tab-title">
+        <li class="layui-this">平面图</li>
+        <li>剖面图 </li>
+        <li>时序图</li>
+        <li>探空图</li>
+      </ul>
+      <div class="layui-tab-content">
+        <!-- 平面图 -->
+        <div class="layui-tab-item plane layui-show">
+          <div class="layui-collapse">
+            <div class="layui-colla-item ground-box" >
+              <h2 class="layui-colla-title">地面要素</h2>
+              <div class="layui-colla-content layui-show" id="groundFactor">
+              </div>
+            </div>
+            <div class="layui-colla-item factor-box">
+              <h2 class="layui-colla-title">高空要素</h2>
+              <div class="layui-colla-content layui-show">
+                <div class="factor-num">
+                  <span class="left-icon icon">
+                    <i class="layui-icon layui-icon-left"></i>
+                  </span>
+                  <ul>
+                    <li>925hPa</li>
+                    <li>850hPa</li>
+                    <li>700hPa</li>
+                  </ul>
+                  <span class="right-icon icon">
+                    <i class="layui-icon layui-icon-right"></i>
+                  </span>
+                </div>
+                <div class="factor-item" id="upperAir">
+                </div>
+              </div>
+            </div>
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">综合分析</h2>
+              <div class="layui-colla-content layui-show">
+                <ul id="synthesize">
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 平面图-end -->
+
+        <!-- 剖面图 -->
+        <div class="layui-tab-item section">
+          <div class="layui-collapse">
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">站点选择</h2>
+              <div class="layui-colla-content layui-show">
+                <div class="layui-row but-row">
+                  <div class="button-item is-active">椒江</div>
+                  <div class="button-item">天台</div>
+                  <div class="button-item">三门</div>
+                </div>
+                <div class="layui-row but-row">
+                  <div class="button-item">仙居</div>
+                  <div class="button-item">临海</div>
+                  <div class="button-item">黄岩</div>
+                </div>
+                <div class="layui-row but-row">
+                  <div class="button-item">路桥</div>
+                  <div class="button-item">温岭</div>
+                  <div class="button-item">玉环</div>
+                </div>
+                <div class="layui-row but-row">
+                  <div class="button-item">神仙居</div>
+                  <div class="button-item">江南长城</div>
+                  <div class="button-item">劳务农庄</div>
+                </div>
+              </div>
+            </div>
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">综合分析</h2>
+              <div class="layui-colla-content layui-show">
+                <ul id="sectionAnalyze">
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 剖面图-end -->
+
+        <!-- 时序图 -->
+        <div class="layui-tab-item temporal layui-form">
+          <div class="layui-collapse">
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">时间选择</h2>
+              <div class="layui-colla-content layui-show controls">
+                <div class="layui-row but-row">
+                  <button type="button" class="layui-btn layui-btn-primary layui-btn-xs">
+                    <i class="layui-icon layui-icon-left"></i> 
+                  </button>
+                  <input type="text" class="layui-input" id="temporalDate">
+                  <button type="button" class="layui-btn layui-btn-primary layui-btn-xs">
+                    <i class="layui-icon layui-icon-right"></i> 
+                  </button>
+                  <button type="button" class="layui-btn layui-btn-primary layui-btn-xs">
+                    最新
+                  </button>
+                </div>
+                <div class="layui-row but-row">
+                    <input type="radio" name="sex" value="8" title="08">
+                    <input type="radio" name="sex" value="20" title="20" checked>
+                </div>
+              </div>
+            </div>
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">站点选择</h2>
+              <div class="layui-colla-content layui-show">
+                <div class="layui-row but-row">
+                  <div class="button-item is-active">椒江</div>
+                  <div class="button-item">天台</div>
+                  <div class="button-item">三门</div>
+                </div>
+                <div class="layui-row but-row">
+                  <div class="button-item">仙居</div>
+                  <div class="button-item">临海</div>
+                  <div class="button-item">黄岩</div>
+                </div>
+                <div class="layui-row but-row">
+                  <div class="button-item">路桥</div>
+                  <div class="button-item">温岭</div>
+                  <div class="button-item">玉环</div>
+                </div>
+                <div class="layui-row but-row">
+                  <div class="button-item">神仙居</div>
+                  <div class="button-item">江南长城</div>
+                  <div class="button-item">劳务农庄</div>
+                </div>
+              </div>
+            </div>
+            <div class="layui-colla-item floor-factor">
+              <h2 class="layui-colla-title">地面要素</h2>
+              <div class="layui-colla-content layui-show">
+                <div class="layui-row but-row">
+                  <input class="item-checkbox" type="checkbox" name="" title="写作" lay-skin="primary" checked>
+                  <input class="item-checkbox" type="checkbox" name="" title="发呆" lay-skin="primary"> 
+                  <input class="item-checkbox" type="checkbox" name="" title="发呆" lay-skin="primary"> 
+                  <input class="item-checkbox" type="checkbox" name="" title="发呆" lay-skin="primary"> 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 时序图-end-->
+
+        <!-- 探空图 -->
+        <div class="layui-tab-item sounding layui-form">
+          <div class="layui-collapse">
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">时间选择</h2>
+              <div class="layui-colla-content layui-show controls">
+                <div class="layui-row but-row">
+                  <button type="button" class="layui-btn layui-btn-primary layui-btn-xs">
+                    <i class="layui-icon layui-icon-left"></i> 
+                  </button>
+                  <input type="text" class="layui-input" id="soundingDate">
+                  <button type="button" class="layui-btn layui-btn-primary layui-btn-xs">
+                    <i class="layui-icon layui-icon-right"></i> 
+                  </button>
+                  <button type="button" class="layui-btn layui-btn-primary layui-btn-xs">
+                    最新
+                  </button>
+                </div>
+                <div class="layui-row but-row">
+                    <input type="radio" name="sex" value="8" title="08">
+                    <input type="radio" name="sex" value="20" title="20" checked>
+                </div>
+              </div>
+            </div>
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">站点选择</h2>
+              <div class="layui-colla-content layui-show">
+                <div class="layui-row but-row">
+                  <div class="button-item is-active">椒江</div>
+                  <div class="button-item">天台</div>
+                  <div class="button-item">三门</div>
+                </div>
+                <div class="layui-row but-row">
+                  <div class="button-item">仙居</div>
+                  <div class="button-item">临海</div>
+                  <div class="button-item">黄岩</div>
+                </div>
+                <div class="layui-row but-row">
+                  <div class="button-item">路桥</div>
+                  <div class="button-item">温岭</div>
+                  <div class="button-item">玉环</div>
+                </div>
+                <div class="layui-row but-row">
+                  <div class="button-item">神仙居</div>
+                  <div class="button-item">江南长城</div>
+                  <div class="button-item">劳务农庄</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 探空图-end -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 平面图 main -->
+  <div class="main main-plane">
+    <div class="tools">
+      <div class="model model-li-plane">
+        <span>
+          模式：
+        </span>
+        <ul>
+        </ul>
+      </div>
+      <div class="scope">
+        <span>
+          范围：
+        </span>
+        <ul id="cityArr">
+          <!-- <li class="is-active">全国</li>
+          <li>华东</li>
+          <li>浙江</li>
+          <li>台州</li> -->
+        </ul>
+      </div>
+    </div>
+    <div class="content">
+      <div class="page-but">
+        <div class="layui-btn-group">
+          <button type="button" class="layui-btn" id="click_browse">浏览</button>
+          <button type="button" class="layui-btn" id="click_stamps">邮票</button>
+        </div>
+        <div class="but-right">
+          <span class="but-txt">制作动画</span>
+          <span class="but-txt">下载</span>
+        </div>
+      </div>
+
+      <div class="content-map browse-box">
+        <div class="browse">
+          <div class="title">2020-01-08 08:00 EC 2m温度（℃）</div>
+          <div class="map-img">
+            <img src="img/map-img.png" alt="" srcset="">
+          </div>
+        </div>
+      </div>
+
+      <div class="content-map stamps-box">
+        <div class="stamps">
+          <div class="col-item">
+            <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+            <div class="item-map-img">
+              <img src="img/map-img.png" alt="" srcset="">
+            </div>
+          </div>
+          <div class="col-item">
+            <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+            <div class="item-map-img">
+              <img src="img/map-img.png" alt="" srcset="">
+            </div>
+          </div>
+          <div class="col-item">
+            <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+            <div class="item-map-img">
+              <img src="img/map-img.png" alt="" srcset="">
+            </div>
+          </div>
+          <div class="col-item">
+            <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+            <div class="item-map-img">
+              <img src="img/map-img.png" alt="" srcset="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="play">
+      <div class="play-but">
+        <div class="but-item"><i class="layui-icon layui-icon-left"></i> </div>
+        <div class="but-item"><i class="layui-icon layui-icon-right"></i> </div>
+        <div class="but-item"><i class="layui-icon layui-icon-play"></i> </div>
+        <div class="but-item is-active"><i class="layui-icon layui-icon-pause"></i> </div>
+      </div>
+      <div class="on-off">
+        <form class="layui-form" action="">
+          <span class="slow">慢</span><input type="checkbox" name="switch" lay-skin="switch"><span class="fast">快</span>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 剖面图 main -->
+  <div class="main main-section">
+    <div class="tools">
+      <div class="model">
+        <span>
+          模式剖面图：
+        </span>
+        <ul>
+          <li class="is-active">OCF</li>
+          <li>EC</li>
+          <li>JMA</li>
+          <li>GFS</li>
+          <li>GRAPES</li>
+          <li>ZJWARMS</li>
+          <li>上海WRAMS</li>
+          <li>浙江WRF</li>
+        </ul>
+      </div>
+    </div>
+    <div class="content">
+      <div class="content-map browse-box">
+        <div class="browse">
+          <div class="title">2020-01-08 08:00 EC 2m温度（℃）</div>
+          <div class="map-img">
+            <img src="img/map-img.png" alt="" srcset="">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="play">
+      <div class="play-but">
+        <div class="but-item"><i class="layui-icon layui-icon-left"></i> </div>
+        <div class="but-item"><i class="layui-icon layui-icon-right"></i> </div>
+        <div class="but-item"><i class="layui-icon layui-icon-play"></i> </div>
+        <div class="but-item is-active"><i class="layui-icon layui-icon-pause"></i> </div>
+      </div>
+      <div class="on-off">
+        <form class="layui-form" action="">
+          <span class="slow">慢</span><input type="checkbox" name="switch" lay-skin="switch"><span class="fast">快</span>
+        </form>
+      </div>
+    </div>
+  </div>
+
+    <!-- 时序图 main -->
+    <div class="main main-temporal">
+      <div class="tools">
+        <div class="model">
+          <span>
+            模式3：
+          </span>
+          <ul>
+            <li class="is-active">OCF</li>
+            <li>EC</li>
+            <li>JMA</li>
+            <li>GFS</li>
+            <li>GRAPES</li>
+            <li>ZJWARMS</li>
+            <li>上海WRAMS</li>
+            <li>浙江WRF</li>
+          </ul>
+        </div>
+        <div class="scope">
+          <span>
+            范围：
+          </span>
+          <ul>
+            <li class="is-active">全国</li>
+            <li>华东</li>
+            <li>浙江</li>
+            <li>台州</li>
+          </ul>
+        </div>
+      </div>
+      <div class="content">
+        <div class="page-but">
+          <div class="layui-btn-group">
+            <button type="button" class="layui-btn" id="click_browse">浏览</button>
+            <button type="button" class="layui-btn" id="click_stamps">邮票</button>
+          </div>
+          <div class="but-right">
+            <span class="but-txt">制作动画</span>
+            <span class="but-txt">下载</span>
+          </div>
+        </div>
+  
+        <div class="content-map browse-box">
+          <div class="browse">
+            <div class="title">2020-01-08 08:00 EC 2m温度（℃）</div>
+            <div class="map-img">
+              <img src="img/map-img.png" alt="" srcset="">
+            </div>
+          </div>
+        </div>
+  
+        <div class="content-map stamps-box">
+          <div class="stamps">
+            <div class="col-item">
+              <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+              <div class="item-map-img">
+                <img src="img/map-img.png" alt="" srcset="">
+              </div>
+            </div>
+            <div class="col-item">
+              <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+              <div class="item-map-img">
+                <img src="img/map-img.png" alt="" srcset="">
+              </div>
+            </div>
+            <div class="col-item">
+              <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+              <div class="item-map-img">
+                <img src="img/map-img.png" alt="" srcset="">
+              </div>
+            </div>
+            <div class="col-item">
+              <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+              <div class="item-map-img">
+                <img src="img/map-img.png" alt="" srcset="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="play">
+        <div class="play-but">
+          <div class="but-item"><i class="layui-icon layui-icon-left"></i> </div>
+          <div class="but-item"><i class="layui-icon layui-icon-right"></i> </div>
+          <div class="but-item"><i class="layui-icon layui-icon-play"></i> </div>
+          <div class="but-item is-active"><i class="layui-icon layui-icon-pause"></i> </div>
+        </div>
+        <div class="on-off">
+          <form class="layui-form" action="">
+            <span class="slow">慢</span><input type="checkbox" name="switch" lay-skin="switch"><span class="fast">快</span>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  <!-- 探空图 main -->
+  <div class="main main-sounding">
+    <div class="tools">
+      <div class="model">
+        <span>
+          模式4：
+        </span>
+        <ul>
+          <li class="is-active">OCF</li>
+          <li>EC</li>
+          <li>JMA</li>
+          <li>GFS</li>
+          <li>GRAPES</li>
+          <li>ZJWARMS</li>
+          <li>上海WRAMS</li>
+          <li>浙江WRF</li>
+        </ul>
+      </div>
+      <div class="scope">
+        <span>
+          范围：
+        </span>
+        <ul>
+          <li class="is-active">全国</li>
+          <li>华东</li>
+          <li>浙江</li>
+          <li>台州</li>
+        </ul>
+      </div>
+    </div>
+    <div class="content">
+      <div class="page-but">
+        <div class="layui-btn-group">
+          <button type="button" class="layui-btn" id="click_browse">浏览</button>
+          <button type="button" class="layui-btn" id="click_stamps">邮票</button>
+        </div>
+        <div class="but-right">
+          <span class="but-txt">制作动画</span>
+          <span class="but-txt">下载</span>
+        </div>
+      </div>
+
+      <div class="content-map browse-box">
+        <div class="browse">
+          <div class="title">2020-01-08 08:00 EC 2m温度（℃）</div>
+          <div class="map-img">
+            <img src="img/map-img.png" alt="" srcset="">
+          </div>
+        </div>
+      </div>
+
+      <div class="content-map stamps-box">
+        <div class="stamps">
+          <div class="col-item">
+            <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+            <div class="item-map-img">
+              <img src="img/map-img.png" alt="" srcset="">
+            </div>
+          </div>
+          <div class="col-item">
+            <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+            <div class="item-map-img">
+              <img src="img/map-img.png" alt="" srcset="">
+            </div>
+          </div>
+          <div class="col-item">
+            <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+            <div class="item-map-img">
+              <img src="img/map-img.png" alt="" srcset="">
+            </div>
+          </div>
+          <div class="col-item">
+            <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+            <div class="item-map-img">
+              <img src="img/map-img.png" alt="" srcset="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="play">
+      <div class="play-but">
+        <div class="but-item"><i class="layui-icon layui-icon-left"></i> </div>
+        <div class="but-item"><i class="layui-icon layui-icon-right"></i> </div>
+        <div class="but-item"><i class="layui-icon layui-icon-play"></i> </div>
+        <div class="but-item is-active"><i class="layui-icon layui-icon-pause"></i> </div>
+      </div>
+      <div class="on-off">
+        <form class="layui-form" action="">
+          <span class="slow">慢</span><input type="checkbox" name="switch" lay-skin="switch"><span class="fast">快</span>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="layui-tab layui-tab-card">
+      <ul class="layui-tab-title">
+        <li class="layui-this">实时查询</li>
+        <li>历史查询 </li>
+      </ul>
+      <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+          <div class="layui-collapse">
+
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">预报时间选择</h2>
+              <div class="layui-colla-content layui-show">
+                <ul id="forecastTime" >
+                </ul>
+              </div>
+            </div>
+
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">预报时间间隔</h2>
+              <div class="layui-colla-content layui-show">
+                <div class="layui-row but-row" id="forecastAfter">
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">预报时次选择</h2>
+              <div class="layui-colla-content layui-show">
+                <ul id="forecastFrequency">
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="layui-tab-item">2</div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="js/index.js"></script>
+<script>
+
+</script>
+</html>

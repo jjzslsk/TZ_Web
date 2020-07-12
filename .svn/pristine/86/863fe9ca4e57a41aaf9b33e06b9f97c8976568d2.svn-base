@@ -1,0 +1,165 @@
+<template>
+<div class="page-wrapper" :key="type">
+    <!-- {{formItem}} -->
+    <el-container>
+        <el-main>
+            <el-card class="box-card" shadow="never">
+                <div slot="header" class="clearfix">
+                    <span class="primary">{{header}}</span>
+                </div>
+                <div class="text">
+                    <div class="list">
+                        <page-table ref="table" :remote="remoteOfTable" :formatPayload="formatPayload">
+                            <div class="actions" slot="actions">
+                                <template v-if="isWarning">
+                                    <span class="title">预警类型</span>
+                                    <c-select v-model="query.XXXPROP_TRACE_TYPE" options="warningType" placeholder="请选择"></c-select>
+                                    <span class="title">起止时间</span>
+                                    <el-date-picker v-model="query.XXXPROP_TRACE_TIME" type="datetimerange" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+                                    </el-date-picker>
+                                </template>
+                                <template v-else>
+                                    <span class="title">预警类型</span>
+                                    <c-select v-model="query.XXXPROP_TRACE_ALARM_TYPE" options="warningType" placeholder="请选择"></c-select>
+                                    <span class="title">等级</span>
+                                    <c-select v-model="query.XXXPROP_TRACE_ALARM_LEVEL" options="warningLevel" placeholder="请选择"></c-select>
+                                    <span class="title">发布时间</span>
+                                    <el-date-picker v-model="query.XXXPROP_TRACE_ALARM_TIME" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm">
+                                    </el-date-picker>
+                                </template>
+                                <c-button type="search" @click="search()">搜索</c-button>
+                            </div>
+                            <el-table-column prop="" label="序号" width="60px" type="index"></el-table-column>
+                            <el-table-column prop label="图标" width="170px" v-if="isWarning">
+                                <template slot-scope="scope">
+                                    <div class="icons flex">
+                                        <div class="item" v-for="(icon,index) in scope.row.XXXPROP_TRACE_ICONS" :key="icon">
+                                            <c-iconfont :name="icon" class="icon item"></c-iconfont>
+                                        </div>
+                                    </div>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop label="图标" width="80px" v-else>
+                                <template slot-scope="scope">
+                                    <div class="icon-alarm">
+                                        <img-alarm class="pic" :info="scope.row|alermInfo"></img-alarm>
+                                    </div>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop label="预警类型" width="170px" v-if="isWarning">
+                                <template slot-scope="scope">
+                                    {{scope.row.XXXPROP_TRACE_TYPES}}
+                                </template>
+                            </el-table-column>
+                            <template v-else>
+                                <el-table-column prop label="预警类型" width="100px">
+                                    <template slot-scope="scope">
+                                        {{scope.row.XXXPROP_TRACE_ALARM_TYPE}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop label="级别" width="100px">
+                                    <template slot-scope="scope">
+                                        {{scope.row.XXXPROP_TRACE_ALARM_LEVEL}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop label="发布类型" width="100px">
+                                    <template slot-scope="scope">
+                                        {{scope.row.XXXPROP_TRACE_ALARM_TIME}}
+                                    </template>
+                                </el-table-column>
+                            </template>
+                            <el-table-column prop="XXXPROP_TRACE_CONTENT" label="预警内容" class-name="text-eclipse" />
+                            <el-table-column prop="XXXPROP_TRACE_TIME" label="发布时间" width="180px" />
+                            <el-table-column prop="XXXPROP_TRACE_ORGANIZE" label="发布单位" width="350px" />
+                            <el-table-column prop label="操作" width="120px">
+                                <template slot-scope="scope">
+                                    <el-button type="text" size="small" @click="inputItem(scope.row)">发布结果</el-button>
+                                </template>
+                            </el-table-column>
+                        </page-table>
+                    </div>
+                </div>
+            </el-card>
+        </el-main>
+    </el-container>
+    <c-dialog :title="titleOfDialog" :visible.sync="visibleDialogFormItem" :primary-text="null" :secondary-text="'关闭'" width="80%">
+        <trace-main :type="type"></trace-main>
+    </c-dialog>
+</div>
+</template>
+
+<script>
+import {
+    requestDictListDelItem,
+    requestDictTree
+} from "@/common/remote/";
+import {
+    transformAlarmsInfo
+} from "@/common/tools/"
+import {
+    common,
+    witchCommonList
+} from '../../mixins/index';
+import traceMain from './components/trace-main.vue';
+export default {
+    mixins: [common, witchCommonList],
+    components: {
+        traceMain
+    },
+    computed: {
+        type() {
+            return this.$route.params.type
+        },
+        isWarning() {
+            return this.type == 'warning'
+        },
+        header() {
+            return ({
+                'warning': '天气警报追溯',
+                'alarm': '预警信号追溯',
+            })[this.type]
+        },
+        titleOfDialog() {
+            return ({
+                'warning': '天气警报监控',
+                'alarm': '预警信号监控',
+            })[this.type]
+        },
+        remoteOfTable() {
+            return `requestTrace${this.type}List`
+        }
+    },
+    methods: {
+        getFormItemByInputItem(item) {
+            return item
+        },
+    },
+    filters: {
+        alermInfo(val) {
+            if (val) {
+                return transformAlarmsInfo({
+                    type: val.XXXPROP_TRACE_ALARM_TYPE,
+                    level: val.XXXPROP_TRACE_ALARM_LEVEL
+                })
+            }
+        }
+    }
+};
+</script>
+<style scoped>
+.icons {
+    .icon.iconfont {
+        color: #409EFF;
+        font-size: 2em;
+    }
+}
+
+.icon-alarm {
+    text-align: center;
+
+    img {
+        max-width: 42px;
+        /* height: 2.5em; */
+    }
+}
+</style>

@@ -1,0 +1,36 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "rowCount": 120,
+        "pageSize": 10,
+        "pageIndex": 3,
+        "list": [{
+                "XXXPROP_TRACE_DIALOG_NAME": "韦春花",
+                "XXXPROP_TRACE_DIALOG_MAIL": "zero_nm@126.com",
+                "XXXPROP_TRACE_DIALOG_STATE": "success"
+            },
+            {
+                "XXXPROP_TRACE_DIALOG_NAME": "李华",
+                "XXXPROP_TRACE_DIALOG_MAIL": "lh_nm@126.com",
+                "XXXPROP_TRACE_DIALOG_STATE": "fail"
+            },
+            {
+                "XXXPROP_TRACE_DIALOG_NAME": "韦春花",
+                "XXXPROP_TRACE_DIALOG_MAIL": "zero_nm@126.com",
+                "XXXPROP_TRACE_DIALOG_STATE": "pushing"
+            },
+            {
+                "XXXPROP_TRACE_DIALOG_NAME": "韦春花",
+                "XXXPROP_TRACE_DIALOG_MAIL": "zero_nm@126.com",
+                "XXXPROP_TRACE_DIALOG_STATE": "push-fail"
+            },
+            {
+                "XXXPROP_TRACE_DIALOG_NAME": "韦春花",
+                "XXXPROP_TRACE_DIALOG_MAIL": "zero_nm@126.com",
+                "XXXPROP_TRACE_DIALOG_STATE": "push-success"
+            }
+        ]
+    }
+}

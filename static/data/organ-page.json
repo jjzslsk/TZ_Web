@@ -1,0 +1,46 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "rowCount": 120,
+        "pageSize": 10,
+        "pageIndex": 3,
+        "list": [{
+            "XXXPROP_ORGAN_id": "1",
+            "XXXPROP_ORGAN_1": "TZ",
+            "XXXPROP_ORGAN_2": "台州",
+            "XXXPROP_ORGAN_3": "10",
+            "XXXPROP_ORGAN_4": "1",
+            "XXXPROP_ORGAN_5": "330000"
+        }, {
+            "XXXPROP_ORGAN_id": "2",
+            "XXXPROP_ORGAN_1": "HZ",
+            "XXXPROP_ORGAN_2": "杭州",
+            "XXXPROP_ORGAN_3": "20",
+            "XXXPROP_ORGAN_4": "1",
+            "XXXPROP_ORGAN_5": "330000"
+        }, {
+            "XXXPROP_ORGAN_id": "3",
+            "XXXPROP_ORGAN_1": "ZJ",
+            "XXXPROP_ORGAN_2": "浙江",
+            "XXXPROP_ORGAN_3": "30",
+            "XXXPROP_ORGAN_4": "0",
+            "XXXPROP_ORGAN_5": "330000"
+        }, {
+            "XXXPROP_ORGAN_id": "4",
+            "XXXPROP_ORGAN_1": "TZ",
+            "XXXPROP_ORGAN_2": "台州",
+            "XXXPROP_ORGAN_3": "10",
+            "XXXPROP_ORGAN_4": "1",
+            "XXXPROP_ORGAN_5": "330000"
+        }, {
+            "XXXPROP_ORGAN_id": "5",
+            "XXXPROP_ORGAN_1": "TZ",
+            "XXXPROP_ORGAN_2": "台州",
+            "XXXPROP_ORGAN_3": "10",
+            "XXXPROP_ORGAN_4": "1",
+            "XXXPROP_ORGAN_5": "330000"
+        }]
+    }
+}

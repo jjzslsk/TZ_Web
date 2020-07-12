@@ -1,0 +1,290 @@
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+import axios from 'axios'
+import qs from 'qs'
+import {
+    baseURL
+} from '@/config'
+// import {
+//     catchError
+// } from '@/util'
+// import router from '../router'
+
+import Vue from 'vue'
+const showMessageOnVue = message => Vue.$message({
+    message,
+    type: 'error'
+})
+let proGoLogin;
+const CancelToken = axios.CancelToken;
+let source = CancelToken.source();
+
+export const catchError = function(error) {
+    const {
+        config: {
+            noShowMessage
+        } = {}
+    } = error;
+    const showMessage = noShowMessage ? () => {} : showMessageOnVue
+    if (error.response) {
+        const infos = {
+            '400': () => {
+                // Vue.$message({
+                //     message: error.response.data.message || '请求参数异常',
+                //     type: 'error'
+                // });
+                // Vue.$toast({
+                //     position: 'top',
+                //     message: error.response.data.message || '请求参数异常'
+                //     // iconClass: 'icon icon-success'
+                // })
+                // MessageBox.alert(error.response.data.message || '请求参数异常').then(action => {
+                //     console.log(action);
+                // });
+                showMessage(error.response.data.message || '请求参数异常')
+            },
+            '401': () => {
+                // sessionStorage.removeItem('user')
+                // Vue.$message({
+                //     message: error.response.data.message || '密码错误或账号不存在！',
+                //     type: 'warning',
+                //     onClose: function() {
+                //         location.reload();
+                //     }
+                // });
+                // Vue.$toast({
+                //     position: 'top',
+                //     message: error.response.data.message || '密码错误或账号不存在！'
+                //     // iconClass: 'icon icon-success'
+                // })
+                // MessageBox.alert(error.response.data.message || '密码错误或账号不存在！').then(action => {
+                //     location.reload();
+                // });
+                if (!proGoLogin && mainVue.$route.name != 'login') {
+                    showMessage(error.response.data.message || '请先登录')
+                    proGoLogin = mainVue.$route.fullPath;
+                    source.cancel();
+                    source = CancelToken.source();
+                    window.mainVue.$router.push({
+                        name: 'login',
+                        query: {
+                            'rf': encodeURIComponent(mainVue.$route.fullPath)
+                        }
+                    }, res => {
+                        proGoLogin = null;
+                        return res;
+                    }, err => {
+                        proGoLogin = null;
+                        return Promise.reject(err)
+                    })
+                }
+                // debugger
+            },
+            '403': () => {
+                // sessionStorage.removeItem('user')
+                // Vue.$message({
+                //     message: error.response.data.message || '无访问权限，请联系企业管理员',
+                //     type: 'warning'
+                // });
+                // Vue.$toast({
+                //     position: 'top',
+                //     message: error.response.data.message || '无访问权限，请联系管理员！'
+                //     // iconClass: 'icon icon-success'
+                // })
+                // MessageBox.alert(error.response.data.message || '无访问权限，请联系企业管理员！').then(action => {
+                //     console.log(action);
+                // });
+                showMessage(error.response.data.message || '密码错误或账号不存在！')
+            }
+        }
+        if (infos.hasOwnProperty(`${error.response.status}`)) {
+            infos[`${error.response.status}`]()
+        } else {
+            // Vue.$message({
+            //     message: error.response.data.message || '服务端异常，请联系技术支持',
+            //     type: 'error'
+            // });
+            // Vue.$toast({
+            //     position: 'top',
+            //     message: error.response.data.message || '服务端异常，请联系技术支持。'
+            //     // iconClass: 'icon icon-success'
+            // })
+            // MessageBox.alert(error.response.data.message || '服务端异常，请联系技术支持。').then(action => {
+            //     console.log(action);
+            // });
+            showMessage(error.response.data.message || '服务端异常，请联系技术支持')
+        }
+    } else {
+        if (error.message === 'Network Error') {
+            showMessage(`网络错误，请稍后再试`)
+        } else {
+            showMessage(`请求异常，请联系技术支持(${error.message})`)
+        }
+    }
+    return Promise.reject(error)
+}
+
+
+const instance = axios.create({
+    baseURL,
+    timeout: 30000
+})
+
+const checkStatus = response => {
+    // console.log('check')
+    // loading
+    // 如果http状态码正常，则直接返回数据
+    if (response) {
+        if (response.status === 200 || response.status === 304 || response.status === 400) {
+            if (response.data.success) {
+                return response.data
+                // 如果不需要除了data之外的数据，可以直接 return response.data
+            } else {
+                catchError({
+                    response
+                })
+                return Promise.reject(response.data)
+            }
+        } else if (response.status === 404 || response.status === 500 || response.status === 501) {
+            console.log('response.status', response.status)
+            // router.replace({
+            //     path: '/404page'
+            // });
+            return Promise.reject(response.data)
+        }
+    }
+}
+const generateRequest = config => async (param, {
+    target
+} = {}) => {
+    const loginInfo = JSON.parse(localStorage.getItem('loginInfo',))
+    let data = {
+        loginAreaId:loginInfo.areaId,
+        loginOrgId:loginInfo.orgId,
+        loginUserId:loginInfo.id,
+        ...param
+    }
+    try {
+        const info = {
+            ...config,
+            target,
+            cancelToken: source.token
+        }
+        if (info.paramsSerializer) {
+            info.data = info.paramsSerializer(data)
+        } else {
+            if (typeof(data) !== 'undefined') {
+                if (info.method === 'post') {
+                    info.data = data;
+                } else {
+                    // get 请求时带的参数
+                    info.params = data
+                }
+            }
+        }
+        if(info.setHeaders){
+            info.headers=info.setHeaders()
+        }
+        const res = await instance(info)
+        return checkStatus(res)
+    } catch (err) {
+        console.error(err)
+        if (err.message) {
+            catchError(err)
+        }
+        return Promise.reject(err)
+    }
+}
+const autoMergeOptionsAndConfig = (
+    options, config) => {
+    if (typeof(config) === 'string') {
+        config = {
+            url: config
+        }
+    }
+    return {
+        ...options,
+        ...config
+    }
+}
+export const generatePost = config => generateRequest(autoMergeOptionsAndConfig({
+    method: 'post',
+    paramsSerializer: function(params) {
+        return qs.stringify(params)
+    },
+    timeout: 100000
+}, config))
+export const generatePostJSON = config => generateRequest(autoMergeOptionsAndConfig({
+    method: 'post',
+    timeout: 100000
+}, config))
+export const generateGet = config => generateRequest(autoMergeOptionsAndConfig({
+    method: 'get',
+}, config))
+export const generateDelete = config => generateRequest(autoMergeOptionsAndConfig({
+    method: 'delete',
+}, config))
+
+export const generateDownload = url => data => Promise.resolve({data: window.open(`${url}?${qs.stringify(data)}`)})
+
+let requestCountAll = 0;
+// 设置请求进度条
+instance.interceptors.request.use(
+    config => {
+        // loading
+        let process = 0.4
+        const {
+            target
+        } = config
+        requestCountAll++
+        if (target) {
+            if (typeof(target.requestCount) !== 'undefined') {
+                target.requestCount++
+            } else {
+                target.requestCount = 1
+            }
+        }
+        process = 1 / (requestCountAll + 1.2)
+        NProgress.set(process)
+        mainVue.$emit("loading", requestCountAll)
+        return config
+    },
+    error => catchError(error)
+)
+
+const checkResponseInfo = responseInfo => {
+    let isDone = true
+    let target;
+    if (responseInfo.config) {
+        target = responseInfo.config.target
+    }
+    requestCountAll--
+    if (target) {
+        target.requestCount--
+        if (target.requestCount < 0) {
+            target.requestCount = 0
+        }
+    }
+    if (requestCountAll > 0) {
+        isDone = false
+        NProgress.set(1 / (requestCountAll + 1.2))
+    } else {
+        // default isDone = true
+        requestCountAll = 0;
+    }
+    if (isDone) {
+        mainVue.$emit("all-loaded")
+        NProgress.done()
+    }
+}
+instance.interceptors.response.use(
+    response => {
+        checkResponseInfo(response)
+        return response
+    },
+    error => {
+        checkResponseInfo(error)
+        // return catchError(error)
+        return Promise.reject(error)
+    }
+)

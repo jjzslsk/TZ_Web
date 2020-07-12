@@ -1,0 +1,66 @@
+<template>
+<div class="common-select-wrapper">
+    <el-select class v-model="innerValue" placeholder="请选择">
+        <el-option v-for="(item,index) in innerOptions" :key="index" :label="item.label" :value="item.value"></el-option>
+    </el-select>
+</div>
+</template>
+
+<script>
+import * as remote from '@/common/remote/'
+import {
+    mapFrontOptions
+} from "@/common/options";
+export default {
+    name: 'CSelect',
+    props: ['value', 'remote', 'options', 'allText'],
+    data() {
+        return {
+            innerOptions: null
+        }
+    },
+    computed: {
+        innerValue: {
+            set(val) {
+                this.$emit('input', val);
+                if (this.innerOptions) {
+                    const itemSelectd = this.innerOptions.find(e => e.value == val);
+                    const itemLabel = itemSelectd && itemSelectd.label;
+                    this.$emit('label-selected', itemLabel);
+                }
+            },
+            get() {
+                return this.value;
+            }
+        }
+    },
+    async mounted() {
+        const {
+            allText
+        } = this;
+        let list
+        if (this.remote) {
+            this.innerOptions = null;
+            const res = await remote[this.remote]();
+            list = this.innerOptions = res.data && res.data.list;
+        } else if (this.options) {
+            const optionsRoot = mapFrontOptions([this.options], {
+                afterFix: ''
+            })
+            list = this.innerOptions = optionsRoot[this.options]()
+        }
+        if (list && allText) {
+            list.unshift({
+                "value": undefined,
+                "label": this.allText
+            });
+        }
+    }
+}
+</script>
+
+<style scoped>
+.common-select-wrapper {
+    display: inline;
+}
+</style>

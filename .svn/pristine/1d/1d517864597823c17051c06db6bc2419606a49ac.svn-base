@@ -1,0 +1,492 @@
+<template>
+<div>
+    <!-- <div class="actions actions-main"> -->
+    <div class="actions">
+        <div>
+            <!-- <span>是否启用自定义流程：</span>
+            <c-switch v-model="query.XXXPROP_DUTY_POST_CUSTOM"></c-switch> -->
+        </div>
+        <c-button type="add" @click="inputItem({})">新增</c-button>
+    </div>
+    <!-- {{formItem}} -->
+    <div class="block-main">
+        <div class="left-tree">
+            <el-tree :data="dataTree" :props="defaultProps" @node-click="handleNodeClick" default-expand-all></el-tree>
+            <!-- <c-tree :data='dataTree'></c-tree> -->
+            <!-- <c-tree remote="requestTreeChildrenOfAreaNode" :show-checkbox="true" :default-checked-keys="['leaf3']" @click-item="onTreeClickItemAuth"></c-tree> -->
+            <!-- <common-left-tree title="机构信息1" :isHeader='false' :data='dataTree'  @click-item="onTreeClickItem"></common-left-tree> -->
+        </div>
+        <div class="list">
+            <page-table ref="table" remote="requestDutyPostList" :formatPayload="formatPayload" :hidePagination="true">
+                <el-table-column prop="" label="序号" width="50px"></el-table-column>
+                <el-table-column prop="name" label="任务名称" />
+                <el-table-column prop="startTime" label="任务开始时间" width="120px" />
+                <el-table-column prop="endTime" label="任务结束时间" width="120px" />
+                <el-table-column prop="remark" label="任务说明" />
+                <el-table-column label="是否提醒" width="80px">
+                    <template slot-scope="scope">
+                        <c-switch v-model="scope.row.remind" @change="monitorSwitch(scope.row)"></c-switch>
+                    </template>
+                </el-table-column>
+                <el-table-column label="是否为产品" width="100px">
+                    <template slot-scope="scope">
+                        <c-switch v-model="scope.row.product" @change="monitorSwitch(scope.row)"></c-switch>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="showOrder" label="执行顺序" width="80px" />
+                <el-table-column prop="productInfoName" label="关联产品" />
+                <el-table-column prop label="操作" width="150px">
+                    <template slot-scope="scope">
+                        <el-button type="text" size="small" @click="inputItem(scope.row)">编辑</el-button>
+                        <c-button type="del" @click="onConfirmDelete(scope.row)">
+                            <span class="text-danger">删除</span>
+                        </c-button>
+                    </template>
+                </el-table-column>
+            </page-table>
+        </div>
+    </div>
+    <dialog-form @success="submitSuccess" title="岗位流程配置" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.name" remote="requestDialogFormDutyPostItemInput" v-if="formItem">
+        <!-- <template v-slot:default="{ form }"> -->
+        <template>
+        <!-- {{formItem}} -->
+            <el-form-item label="岗位选择" label-width="120px">
+                <el-select v-model="formItem.jobId" placeholder="请选择">
+                    <el-option v-for="item in postList" :label="item.name" :value="item.id" :key="item.id"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="任务名称" label-width="120px">
+                <el-input v-model="formItem.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="任务说明" label-width="120px">
+                <el-input v-model="formItem.remark" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="施行顺序" label-width="120px">
+                <el-input v-model="formItem.showOrder" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="起止时间" label-width="120px">
+                  <el-time-picker
+                    value-format="HH:mm"
+                    is-range
+                    format="HH:mm"
+                    v-model="formItemTimeRange"
+                    range-separator="至"
+                    start-placeholder="开始时间"
+                    end-placeholder="结束时间"
+                    placeholder="选择时间范围">
+                </el-time-picker>
+            </el-form-item>
+            <el-form-item label="是否提醒" label-width="120px">
+                <c-switch v-model="formItem.remind"></c-switch>
+            </el-form-item>
+            <div class="notition-options" v-if="formItem.remind">
+                <div>
+                    <el-radio-group v-model="formItem.XXXPROP_DUTY_POST_X3">
+                        <el-radio-button label="XXXLABEL_DUTY_POST_month">月</el-radio-button>
+                        <el-radio-button label="XXXLABEL_DUTY_POST_day">日</el-radio-button>
+                        <el-radio-button label="XXXLABEL_DUTY_POST_week">周</el-radio-button>
+                    </el-radio-group>
+
+                    <span v-if="formItem.XXXPROP_DUTY_POST_X3=='XXXLABEL_DUTY_POST_day'">时间类型：</span>
+                    <el-radio-group v-model="formItem.remindType" v-if="formItem.XXXPROP_DUTY_POST_X3=='XXXLABEL_DUTY_POST_day'">
+                        <el-radio label="1">阳历</el-radio>
+                        <el-radio label="0">阴历</el-radio>
+                    </el-radio-group>
+                    
+                </div>
+                <div>
+                    <!-- {{checkedItems}} -->
+                    <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkedItems">
+                        <el-checkbox v-for="(item,index) in checkItemOptions" :label="item.value" :key="index">{{item.name}}</el-checkbox>
+                    </el-checkbox-group>
+                </div>
+            </div>
+            <el-form-item label="是否为产品" label-width="120px">
+                <c-switch v-model="formItem.product"></c-switch>
+            </el-form-item>
+            <el-form-item label="产品选择" label-width="120px" v-if="formItem.product">
+                <!-- <el-cascader v-model="formItem.productInfoId" :options="optionsOfCascaderFormInput"></el-cascader> -->
+            <el-select v-model="formItem.productInfoId" placeholder="请选择">
+              <el-option
+                v-for="item in treeDataList"
+                :label="item.label"
+                :value="item.id"
+                :key="item.id"
+              ></el-option>
+            </el-select>
+            </el-form-item>
+        </template>
+    </dialog-form>
+</div>
+</template>
+
+<script>
+import {
+    requestDutyPostListDelItem,
+    requestPostList,
+    requestTreeChildrenOfDutyPostNode,
+    requestProductClassTreeList,
+    requestDialogFormDutyPostItemInput,
+    requestDutyPostList
+} from "@/remote/";
+import {
+    mapActions,mapGetters
+} from 'vuex'
+import {
+    common,
+    witchCommonList,
+    withCommonLeftTree
+} from '../../mixins/index';
+export default {
+    mixins: [common, witchCommonList, withCommonLeftTree],
+    data() {
+        return {
+            treeDataList:null,
+            periodType:null,
+            postList:null,
+            dataTree: null,
+            defaultProps: {
+                children: 'children',
+                label: 'label'
+                },
+            query: {
+                XXXPROP_DUTY_POST_CUSTOM: true
+            },
+            formItemTimeRange: [],
+            // checkAll: false,
+            checkedItems: [],
+            optionsOfCascaderFormInput: [{
+                value: 'tzsqxt',
+                label: '台州市气象台',
+                children: [{
+                    value: 'sx',
+                    label: '首席',
+                    children: [{
+                        value: 'dqybsh',
+                        label: '短期预报稿审核'
+                    }]
+                }]
+            }],
+            dateArr:{
+                XXXLABEL_DUTY_POST_month:(new Array(12)).fill('').map((e, i) => ({
+                    name: `${i+1}月`,
+                    value: `${i+1}`
+                })),
+                XXXLABEL_DUTY_POST_day:(new Array(31)).fill('').map((e, i) => ({
+                    name: `${i+1}`,
+                    value: `${i+1}`
+                })),
+                XXXLABEL_DUTY_POST_week:(new Array(7)).fill('').map((e, i) => ({
+                    name: `${i+1}`,
+                    value: `${i+1}`
+                })),
+            }
+        };
+    },
+    
+    computed: {
+        ...mapGetters(['accountOrgId']),
+        actionOfListDelItem() {
+            return requestDutyPostListDelItem;
+        },
+        checkItemOptions() {
+            return this.formItem ? ({
+                'XXXLABEL_DUTY_POST_month': (new Array(12)).fill('').map((e, i) => ({
+                    name: `${i+1}月`,
+                    value: `${i+1}`
+                })),
+                'XXXLABEL_DUTY_POST_day': (new Array(31)).fill('').map((e, i) => ({
+                    name: `${i+1}`,
+                    value: `${i+1}`
+                })),
+                'XXXLABEL_DUTY_POST_week': (new Array(7)).fill('').map((e, i) => ({
+                    name: `${i+1}`,
+                    value: `${i+1}`
+                })),
+                // 'XXXLABEL_DUTY_POST_week': [{name:'周一',value:'1'},{name:'周二',value:'2'}]
+            })[this.formItem.XXXPROP_DUTY_POST_X3] : []
+
+            // return this.formItem ? (this.dateArr)[this.formItem.XXXPROP_DUTY_POST_X3] : []
+        },
+        checkedCount() {
+            const checkedItems = this.checkedItems || [];
+            const checkedCount = checkedItems.length;
+            return checkedCount;
+        },
+
+        //indeterminate 是否全选状态效果
+        isIndeterminate() {
+            const {
+                checkedCount,
+                checkItemOptions = []
+            } = this;
+            return checkedCount > 0 && checkedCount < checkItemOptions.length
+        },
+
+        //checkAll 是否全选状态  true 或者 false
+        checkAll() {
+            const {
+                checkedCount,
+                checkItemOptions = []
+            } = this;
+            return checkedCount == checkItemOptions.length
+        }
+    },
+    watch: {
+        'formItem.productInfoId'(val){
+            this.treeDataList.forEach(element => {
+                if(val == element.id){
+                    this.formItem.productInfoName = element.label
+                    }
+            });
+        },
+        'query.XXXPROP_DUTY_POST_CUSTOM': function() {
+            this.query.currentPage = 1;
+            this.search();
+        },
+        formItemTimeRange(val) {
+            const {
+                formItem
+            } = this;
+            if(!val.length > 0) return
+            formItem.startTime = val && val[0];
+            formItem.endTime = val && val[1];
+        },
+        checkItemOptions() {
+            this.checkedItems = [];
+        },
+        'formItem.XXXPROP_DUTY_POST_X3': function(val) {
+            console.log('1formItem.XXXPROP_DUTY_POST_X3::',val)
+            const {
+                    formItem
+                } = this;
+            this.periodType = val
+            if(this.formItem.id){
+                if (val == 'XXXLABEL_DUTY_POST_day') {
+                // formItem.remindType == '1' ? formItem.remindType : '0'
+                this.checkedItems = this.formItem.remindDay? this.formItem.remindDay : null 
+            }
+            if (val == 'XXXLABEL_DUTY_POST_month') {
+                this.checkedItems = this.formItem.remindMonth? this.formItem.remindMonth : null 
+            }
+            if (val == 'XXXLABEL_DUTY_POST_week') {
+                this.checkedItems = this.formItem.remindWeek? this.formItem.remindWeek : null 
+            }
+            }
+            if(!this.formItem.id){ this.checkedItems = []
+                // if (val == 'XXXLABEL_DUTY_POST_day') {
+                //     const {
+                //         formItem
+                //     } = this;
+                //     // formItem.remindType == '1' ? formItem.remindType : '0'
+                //     this.checkedItems = this.formItem.remindDay? this.formItem.remindDay : null
+                // }
+                // if (val == 'XXXLABEL_DUTY_POST_month') {
+                //     const {
+                //         formItem
+                //     } = this;
+                //     this.checkedItems = this.formItem.remindMonth? this.formItem.remindMonth : null
+                // }
+                // if (val == 'XXXLABEL_DUTY_POST_week') {
+                //     const {
+                //         formItem
+                //     } = this;
+                //     this.checkedItems = this.formItem.remindWeek? this.formItem.remindWeek : null
+                // }
+            }
+            
+        },
+        checkedItems(val){
+            console.log('2checkedItems::',val)
+            const {
+                formItem
+            } = this;
+            if(val.length !==  null && this.periodType == 'XXXLABEL_DUTY_POST_day'){
+                // if(val.length ==  null || val.length == 0)return
+                formItem.remindDay = val
+            }
+            if(val.length !==  null && this.periodType == 'XXXLABEL_DUTY_POST_month'){
+                formItem.remindMonth = val
+            }
+            if(val.length !==  null && this.periodType == 'XXXLABEL_DUTY_POST_week'){
+                formItem.remindWeek = val
+            }
+        },
+        visibleDialogFormItem(data){
+            //初始化弹窗
+            console.log('3visibleDialogFormItem::',this.periodType)
+            this.formItem.remindType == '1' ? this.formItem.remindType = '1' : this.formItem.remindType = '0'
+            if(!this.formItem.id) {this.checkedItems=[]} 
+            if(this.formItem.id && this.periodType == 'XXXLABEL_DUTY_POST_day'){
+                // this.checkedItems = ['1','2']
+            }
+            // if(this.formItem.id && this.periodType == 'XXXLABEL_DUTY_POST_month'){
+            //     this.checkedItems = this.formItem.remindMonth? this.formItem.remindMonth : null 
+            // }
+            // if(this.formItem.id && this.periodType == 'XXXLABEL_DUTY_POST_week'){
+            //     this.checkedItems = this.formItem.remindWeek? this.formItem.remindWeek : null 
+            // }
+
+            if(false){
+                this.periodType = ''
+            }
+
+        }
+    },
+    mounted() {
+        this.requestData()
+    },
+    methods: {
+        submitSuccess(res){
+            this.onConfirmUpdate()
+        },
+        monitorSwitch(data){
+            if(data){
+            console.log("data:",data)
+                let param = {
+                    ...data,
+                    "remind":data.remind == true ? '1':'0',
+                    "product":data.product == true ? '1':'0',
+                    // "id":data.id,
+                    // "startTime":data.startTime,
+                    // "endTime":data.endTime,
+                    // "jobId":data.jobId,
+                    // "name":data.name,
+                    // "remark":data.remark,
+                    // "showOrder":data.showOrder,
+                    // "remindDay":data.remindDay,
+                    // "remindWeek":data.remindWeek,
+                    // "remindMonth":data.remindMonth,
+                    // "remindType":data.remindType,
+                    // "productInfoId":data.productInfoId,
+                    // "productInfoName":data.productInfoName,
+            }
+                requestDialogFormDutyPostItemInput(param).then(res=>{
+                        this.onConfirmUpdate()
+                })
+            }
+        },
+        formatPayloadLeft(payload){
+        return {
+            pageSize: 5,
+            // 'jobId':'asd123',
+            pageIndex: 1,
+        }
+        },
+        handleNodeClick(data) {
+        console.log(data);
+        },
+        requestData(){
+            const loginInfo = JSON.parse(localStorage.getItem('loginInfo',))
+            this.loginInfo = loginInfo
+            this.query.orgId = this.loginInfo.orgId
+
+            requestPostList({orgId:loginInfo.orgId,pageIndex:'1',pageSize:'20'}).then(res =>{
+                this.postList = res.data.list
+            })
+            requestTreeChildrenOfDutyPostNode({orgId:this.accountOrgId}).then(res =>{
+                this.dataTree = [
+                    {label: '岗位',children: []},
+                 ]
+                this.dataTree[0].children = res.data.list
+                this.dataTree[0].children.map(element => {
+                    element.children = []
+                    element.label = element.name
+                    element.value = element.id
+                });
+            })
+
+            requestProductClassTreeList().then(res =>{
+                //多层级选择
+                // function remoteData(list) {
+                //     list.map((item) => {
+                //         item.value = item.id
+                //         if(item.children.length == 0){
+                //             delete item.children
+                //         }
+                //         if (item.children) {
+                //             remoteData(item.children)
+                //         }
+                //     })
+                //     return list
+                // }
+                // this.optionsOfCascaderFormInput = remoteData(res.data.list)
+                //普通列表
+                this.treeDataList = [];
+                this.treeOfList(res.data.list);
+            })
+        },
+        treeOfList(tree) {
+            tree.map(item => {
+                this.treeDataList.push(item);
+                if (item.children) {
+                this.treeOfList(item.children);
+                }
+            });
+        },
+        getFormItemByInputItem(item = {}) {
+            const {
+                checkedItems
+            } = this;
+            const lastKeyItemClicked = checkedItems && checkedItems.id;
+            if(item.startTime&&item.endTime){
+                this.formItemTimeRange = [item.startTime, item.endTime];
+            }else{
+                this.formItemTimeRange = ['20:00','22:00']
+            }
+            return {
+                "XXXPROP_DUTY_POST_8": lastKeyItemClicked,
+                "XXXPROP_DUTY_POST_X3": 'XXXLABEL_DUTY_POST_day',
+                // "remindType": '1',
+                // "product":false,
+                // "remind":false,
+                // "remindMonth":['1','2'],
+                'jobId':'asd123',
+                ...item
+            };
+        },
+        handleCheckAllChange(val) {
+            const {
+                checkItemOptions
+            } = this;
+            this.checkedItems = val ? checkItemOptions.map(e => e.value) : [];
+            // this.isIndeterminate = false;
+        },
+        handleCheckedItemChange(value) {
+            let checkedCount = value.length;
+            this.checkAll = checkedCount === this.cities.length;
+            this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+        }
+    }
+}
+</script>
+
+<style lang="css" scoped>
+.actions{
+    margin-bottom: 10px;
+}
+.actions-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.block-main{
+    display: flex;
+
+    >.list{
+        flex: 1;
+    }
+    .left-tree{
+        border: 1px solid #ddd;
+        width: 220px;
+    }
+}
+.notition-options{
+    margin-left: 52px;
+    padding: 20px 25px;
+    background:rgba(246,247,251,1);
+    border-radius:4px;
+}
+</style>

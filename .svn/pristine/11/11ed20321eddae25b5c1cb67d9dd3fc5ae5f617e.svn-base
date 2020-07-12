@@ -1,0 +1,912 @@
+<template>
+  <div class="management-home-page">
+    <div class="wrap-box">
+      <div class="left-box">
+        <div class="left-top-box">
+          <div class="shifting-duty-wrap-box">
+            <div class="title-text-box">
+              <div class="bold-text">交接班</div>
+              <template>
+              <el-select v-model="optionsValue" placeholder="请选择交班类型">
+                <el-option
+                  v-for="item in optionsType"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </template>
+              <router-link to="/integrated-management/duty-management/history">
+                <div class="small-text" >历史交接班记录</div>
+              </router-link>
+            </div>
+            <div class="step-box">
+              <el-steps :active="active" finish-status="success" align-center class="step-big-box">
+                <el-step :title="item.time" :description="item.name" v-for="(item,index) in stepList" :key="index"></el-step>
+              </el-steps>
+              <div class="right-icon" @click="visibleDialogFormItem=true">
+                <i class="iconfont jiaoban"></i>
+                <div class="jiaoban-text" @click="inputItem()">交班</div>
+              </div>
+            </div>
+            <div class="table-box">
+              <div class="table-title">交接班任务</div>
+              <el-table :data="tableData" height="330" border style="width: 100%" :show-header="false">
+                <el-table-column type="index" label="" width="40"></el-table-column>
+                <el-table-column label="">
+                  <template slot-scope="scope">
+                    <div class="cell-box">
+                      <span class="text">{{scope.row.content}}</span>
+                      <div>
+                      <span class="text">{{scope.row.title}}</span>
+                        <!-- <el-button round size="small" class="color-F46D6A">应急title</el-button>
+                        <el-button round size="small" class="color-E6A23D">重大</el-button> -->
+                      </div>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column label="">
+                  <template slot-scope="scope">
+                    <div class="cell-box">
+                      <span class="text">{{scope.row.time}}</span>
+                      <div>
+                      </div>
+                    </div>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </div>
+          <div class="duty-roster-wrap-box">
+            <div class="title-text-box">
+              <div class="bold-text">值班表</div>
+              <router-link to="/integrated-management/duty-management/scheduling">
+                <div class="small-text">值班管理</div>
+              </router-link>
+            </div>
+            <div>
+              <el-calendar>
+                <template
+                  slot="dateCell"
+                  slot-scope="{date, data}">
+                  <p :class="data.isSelected ? 'is-selected' : ''" @mouseover="allcalendar(data.day,$event)" @mouseout="dutyTablePopEvl()">
+                    {{ data.day.split('-').slice(2).join('-') }} {{ data.isSelected ? '' : ''}}
+                  </p>
+                  <!-- <div v-for="(item,index) in calendarData" :key="index" >
+                    <div v-if="(item.month).indexOf(data.day.split('-').slice(1)[0])!=-1">
+                      <div v-if="(item.date).indexOf(data.day.split('-').slice(2).join('-'))!=-1">
+                            <div class="item" effect="dark" :content="item.userName" placement="right">
+                                <div class="name-style">{{item.userName}}</div>
+                            </div>
+                        </div>
+                      <div v-else></div>
+                    </div>
+                    <div v-else></div>
+                  </div> -->
+                  <div v-for="(item,index) in calendarData" :key="index" @mouseover="allcalendar(data.day,$event)" @mouseout="dutyTablePopEvl()">
+                   <div v-if="(item.month).indexOf(data.day.split('-').slice(1)[0])!=-1">
+                     <div v-if="(item.date).indexOf(data.day.split('-').slice(2).join('-'))!=-1">
+                          <!-- <el-tooltip class="item" effect="dark" :content="item.userName" placement="right"> -->
+                               <div class="is-selected calendar-text">{{item.userName}}</div>
+                          <!-- </el-tooltip> -->
+                       </div>
+                    <div v-else></div>
+                   </div>
+               <div v-else></div>
+             </div>
+                </template>
+              </el-calendar>
+            </div>
+          </div>
+        </div>
+        <div class="left-bottom-box">
+          <div class="title-text-box">
+            <div class="bold-text">综合管理</div>
+          </div>
+          <ul class="border-box">
+              <li>
+                <div class="title-text">值班管理</div>
+                <div class="item-list">
+                  <div class="icon-box" v-for="(item,index) in dutyList" :key="index" @click="linkClick(item)">
+                    <router-link :to="item.url">
+                      <i class="iconfont" :class="item.icon" :style="{'color':item.color}"></i>
+                      <div class="icon-text">{{item.text}}</div>
+                    </router-link>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="title-text">值班流程配置</div>
+                <div class="item-list">
+                  <div class="icon-box" v-for="(item,index) in process" :key="index" @click="linkClick(item)">
+                    <router-link :to="item.url">
+                      <i class="iconfont" :class="item.icon" :style="{'color':item.color}"></i>
+                      <div class="icon-text">{{item.text}}</div>
+                    </router-link>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="title-text">临时任务单</div>
+                <div class="item-list">
+                  <div class="icon-box" v-for="(item,index) in task" :key="index" @click="linkClick(item)">
+                    <router-link :to="item.url">
+                      <i class="iconfont" :class="item.icon" :style="{'color':item.color}"></i>
+                      <div class="icon-text">{{item.text}}</div>
+                    </router-link>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="title-text">工作留痕</div>
+                <div class="item-list">
+                  <div class="icon-box" v-for="(item,index) in remains" :key="index" @click="linkClick(item)">
+                    <router-link :to="item.url">
+                      <i class="iconfont" :class="item.icon" :style="{'color':item.color}"></i>
+                      <div class="icon-text">{{item.text}}</div>
+                    </router-link>
+                  </div>
+                </div>
+              </li>
+            </ul>
+        </div>
+      </div>
+      <div class="right-box">
+        <div class="title-text-box monitoring-title-box">
+          <div class="bold-text">值班流程监控提醒</div>
+          <div class="small-text">
+            <router-link to="/integrated-management/duty-process/scheduling">管理</router-link>
+          </div>
+        </div>
+        <div class="block">
+          <el-timeline v-if="activities">
+            <el-timeline-item
+              v-for="(activity, index) in activities"
+              :key="index"
+              :icon="activity.icon"
+              :type="activity.type"
+              :color="activity.color"
+              :size="activity.size"
+              :timestamp="activity.timestamp">
+              {{activity.content}}
+            </el-timeline-item>
+          </el-timeline>
+          <div class="text" v-else>
+            暂无记录
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 交接班弹窗 -->
+        <dialog-form @success="submitSuccess" title="交接班" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.content||!formItem.title||!formItem.time" remote="requestIntegratedHoneHistoryAdd" v-if="formItem">
+        <!-- <template v-slot:default="{ form }"> -->
+        <template>
+            <el-form-item label="交接类型" label-width="120px">
+                <el-select v-model="formItem.title" placeholder="请选择">
+                    <el-option label="交班" value="交班"></el-option>
+                    <el-option label="临时代办事项" value="临时代办事项"></el-option>
+                    <el-option label="应急响应" value="应急响应"></el-option>
+                    <el-option label="重大活动" value="重大活动"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="交接时间" label-width="120px">
+                <el-date-picker
+                  format="yyyy-MM-dd HH:mm:ss"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  v-model="formItem.time"
+                  type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item label="交接内容" label-width="120px">
+                <el-input v-model="formItem.content" autocomplete="off" type="textarea"></el-input>
+            </el-form-item>
+        </template>
+    </dialog-form>
+    <!-- 值班表弹窗 -->
+    <div class="duty-table-pop" v-show="dutyTablePop" ref="textPop">
+       <el-table :data="popDutyList" border style="width: 100%" :show-header="false">
+          <el-table-column prop="jobName" label=""  align="center"></el-table-column>
+          <el-table-column prop="userName" label="" align="center"></el-table-column>
+        </el-table>
+    </div>
+  </div>
+</template>
+
+<script>
+import {
+requestIntegratedHoneDutyList,
+requestIntegratedHoneDutyTaskList,
+requestIntegratedHoneHistoryList,
+requestIntegratedHoneOption,
+requestIntegratedHoneWeeks
+} from "@/remote/";
+import {
+    common,
+    witchCommonList,
+    withCommonLeftTree
+} from '../../mixins/index';
+  export default {
+    mixins: [common, witchCommonList, withCommonLeftTree],
+    data() {
+      return {
+        presentMonth:'',//当前月
+        active: 2,
+        loginInfo:null,
+        paramObj:{
+          dutyMonth:null
+        },
+        popDutyList:null,
+        tableData: [],
+        dutyList:[
+          {
+            icon:"gangweiguanli",
+            text:"岗位管理",
+            color:"#5CAAE6",
+            url:"/integrated-management/duty-management/post"
+          },
+          // {
+          //   icon:"jiaoseguanli",
+          //   text:"人员管理",
+          //   color:"#7085E0",
+          //   url:"/integrated-management/duty-management/personnel"
+          // },
+          {
+            icon:"paibanguanli",
+            text:"排班管理",
+            color:"#4DBFB5",
+            url:"/integrated-management/duty-management/scheduling"
+          },
+          {
+            icon:"lishijiaojieban",
+            text:"历史交接班",
+            color:"#F5B562",
+            url:"/integrated-management/duty-management/history"
+          }
+        ],
+        process:[
+          {
+            icon:"renwupeizhi",
+            text:"任务配置",
+            color:"#50A5E6",
+            url:"/integrated-management/duty-process/post",
+          },
+          {
+            icon:"liuchengtixinghejiankong",
+            text:"流程提醒和监控",
+            color:"#F5B562",
+            url:"/integrated-management/duty-process/scheduling",
+          }
+        ],
+        task:[
+          {
+            icon:"yingjixiangying",
+            text:"应急响应",
+            color:"#F58462",
+            url:"",
+          },
+          {
+            icon:"zhongdahuodong",
+            text:"重大活动",
+            color:"#7085E0",
+            url:"",
+          },
+          {
+            icon:"linshidaibanshixiang",
+            text:"临时待办事项",
+            color:"#4DBFB5",
+            url:"",
+          }
+        ],
+        remains:[
+          {
+            icon:"gongzuoliuhen",
+            text:"工作留痕",
+            color:"#5CAAE6",
+            url:"",
+          }
+        ],
+        activities: [
+          {
+          content: '短时临近预报修改',
+          timestamp: '2018-04-12 20:46',
+          size: 'large',
+          type: 'primary',
+          icon: 'el-icon-check',
+          color:"#409EFF"
+          }, {
+            content: '周边城市预报',
+            timestamp: '2018-04-03 20:46',
+            color: '#67C241',
+            icon:"el-icon-bell"
+          }, {
+            content: '周边城市报文',
+            timestamp: '2018-04-03 20:46',
+            size: 'large'
+          }, {
+            content: '城市预报气象网',
+            timestamp: '2018-04-03 20:46'
+          }, {
+            content: '周边城市报文',
+            timestamp: '2018-04-03 20:46',
+            size: 'large'
+          }, {
+            content: '城市预报气象网',
+            timestamp: '2018-04-03 20:46'
+          }, {
+            content: '周边城市报文',
+            timestamp: '2018-04-03 20:46',
+            size: 'large'
+          }, {
+            content: '查看智能网格预报业务平台',
+            timestamp: '2018-04-03 20:46'
+        }
+        ],
+        recordPop:false,
+        dutyTablePop:false,
+        scrollTop:"",
+
+        dutyList1:[
+          {
+            jobName:"气象台-副班a1",
+            userName:"张蔷"
+          },
+           {
+            jobName:"气象台-主班",
+            userName:"王强"
+          },
+           {
+            jobName:"应急服务岗",
+            userName:"刘勇"
+          },
+           {
+            jobName:"值周领班岗",
+            userName:"张大壮"
+          },
+           {
+            jobName:"专业台",
+            userName:"李晓亮"
+          }
+        ],
+        value: new Date(),
+        calendarData: [
+          {
+          month: ['06'], 
+          date: ['01'],
+          userName: '张蔷12',
+          dutyList:[
+                {jobName:"气象台-主班1",userName:"张蔷"},
+                {jobName:"气象台-副班",userName:"王强"},
+                {jobName:"应急服务岗",userName:"刘勇"},
+                {jobName:"值周领班岗",userName:"张大壮"},
+                {jobName:"专业台",userName:"李晓亮"}
+             ]
+           },
+          { month: ['06'], date: ['02'],userName: '王强',dutyList:[{jobName:"气象台-主班2",userName:"王强"}, {jobName:"气象台-副班",userName:"王强"}, {jobName:"应急服务岗",userName:"刘勇"}, {jobName:"值周领班岗",userName:"张大壮"}, {jobName:"专业台",userName:"李晓亮"}]},
+          { month: ['06'], date: ['14'],userName: '小明',dutyList:[{jobName:"气象台-主班3",userName:"小明"}, {jobName:"气象台-副班",userName:"王强"}, {jobName:"应急服务岗",userName:"刘勇"}, {jobName:"值周领班岗",userName:"张大壮"}, {jobName:"专业台",userName:"李晓亮"}]},
+          { month: ['06'], date: ['15'],userName: '小红1',dutyList:[{jobName:"气象台-主班15",userName:"小红"}, {jobName:"气象台-副班",userName:"王强"}, {jobName:"应急服务岗",userName:"刘勇"}, {jobName:"值周领班岗",userName:"张大壮"}, {jobName:"专业台",userName:"李晓亮"}]},
+          { month: ['05'], date: ['17'],userName: '小红12',dutyList:[{jobName:"气象台-主班7",userName:"小红"}, {jobName:"气象台-副班",userName:"王强"}, {jobName:"应急服务岗",userName:"刘勇"}, {jobName:"值周领班岗",userName:"张大壮"}, {jobName:"专业台",userName:"李晓亮"}]},
+        ],
+        stepList:[
+          {
+            time:"11:00",
+            name:"韦丽群",
+            success:"true"
+          },
+          {
+            time:"12:00",
+            name:"张帆",
+            success:"true"
+          },
+          {
+            time:"13:00",
+            name:"韦丽群",
+            success:"false"
+          },{
+            time:"14:00",
+            name:"韦丽群",
+            success:"false"
+          },
+          {
+            time:"15:00",
+            name:"韦丽群",
+            success:"false"
+          }
+        ],
+        optionsType: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        optionsValue: '',
+      }
+    },
+    watch:{
+      optionsValue(vla){
+        requestIntegratedHoneWeeks({orgId:this.loginInfo.orgId,typeId:vla}).then(res => {
+          // this.stepList = res.data.list
+        })
+      }
+    },
+    methods: {
+        submitSuccess(res){
+            // this.treeDataList = []
+            // this.onConfirmUpdate()
+            // this.requestData()
+            requestIntegratedHoneHistoryList({orgId:this.loginInfo.orgId}).then(res => {
+              this.tableData = res.data.list
+            })
+        },
+        getFormItemByInputItem() {
+            return {
+              orgId:this.loginInfo.orgId,
+              createUser:this.loginInfo.id,
+            }
+        },
+      linkClick(i){
+        if(i.text == '工作留痕'){
+          this.$message.warning("正在开发中")
+        }
+        if(i.text == '应急响应'){
+          this.$message.warning("正在开发中")
+        }
+        if(i.text == '重大活动'){
+          this.$message.warning("正在开发中")
+        }
+        if(i.text == '临时待办事项'){
+          this.$message.warning("正在开发中")
+        }
+        console.log(i)
+      },
+      dutyTablePopEvl(){
+        // setTimeout(() => {
+        //   //  this.dutyTablePop=!this.dutyTablePop 
+        //    this.dutyTablePop=false
+        //    alert('2')
+        // }, 1000);
+           this.dutyTablePop=false
+      },
+      allcalendar(day,e) {
+        // console.log('day:',day)
+        let vm = this;
+        vm.popDutyList = []
+        vm.calendarData.forEach(i=>{
+          if(i.month+'-'+i.date == day.substring(5)){
+            // console.log(i.dutyList)
+            vm.popDutyList = i.dutyList
+          }else{
+            // vm.popDutyList = []
+          }
+        })
+        this.dutyTablePop = true
+        this.$refs.textPop.style.left = e.clientX + 50 + "px";
+        this.$refs.textPop.style.top = e.clientY + "px";
+      },
+      handleScroll(e) {
+        //监听滚动的距离
+        this.scrollTop = e.target.scrollTop;
+      },
+    },
+    mounted(){
+      let vm = this;
+      this.$nextTick(() => {
+          // 点击前一个月
+          let prevBtn = document.querySelector(
+              '.el-calendar__button-group .el-button-group>button:nth-child(1)');
+          prevBtn.addEventListener('click', () => {
+            function addo(n){
+              if(n < 10) {
+              return '0' + n;  
+              }else{
+              return n;
+              }
+            }
+            if(this.presentMonth == 1){
+              this.presentMonth = 12
+            }else{
+              this.presentMonth --
+            }
+            this.presentMonth = addo(this.presentMonth)
+            console.log(this.value.getFullYear())
+            requestIntegratedHoneDutyList({orgId:vm.loginInfo.orgId,dutyMonth:this.value.getFullYear()+'-'+this.presentMonth}).then(res => {
+              this.calendarData = res.data
+            })
+          })
+      })
+
+      this.$nextTick(() => {
+          // 点击今天
+          let prevBtn = document.querySelector(
+              '.el-calendar__button-group .el-button-group>button:nth-child(2)');
+          prevBtn.addEventListener('click', () => {
+            requestIntegratedHoneDutyList({orgId:vm.loginInfo.orgId}).then(res => {
+              this.presentMonth = res.data[0].month
+            })
+              // console.log(res.data[0].month);
+              // console.log(this.value.getMonth());
+          })
+      })
+
+      this.$nextTick(() => {
+          // 点击后一个月
+          let prevBtn = document.querySelector(
+              '.el-calendar__button-group .el-button-group>button:last-child');
+          prevBtn.addEventListener('click', () => {
+            function addo(n){
+              if(n < 10) {
+              return '0' + n;  
+              }else{
+              return n;
+              }
+            }
+            if(this.presentMonth == 12){
+              this.presentMonth = 1
+            }else{
+              this.presentMonth ++
+            }
+            this.presentMonth = addo(this.presentMonth)
+            requestIntegratedHoneDutyList({orgId:vm.loginInfo.orgId,dutyMonth:this.value.getFullYear()+'-'+this.presentMonth}).then(res => {
+              this.calendarData = res.data
+            })
+          })
+      })
+      vm.loginInfo = JSON.parse(localStorage.getItem('loginInfo',))
+      console.log(vm.loginInfo)
+      // 首页 值班表
+      requestIntegratedHoneDutyList({orgId:vm.loginInfo.orgId}).then(res => {
+        this.calendarData = res.data
+        this.presentMonth = res.data[0].month
+      })
+      // 首页 值班流程信息
+      requestIntegratedHoneDutyTaskList({userId:vm.loginInfo.id,dutyMonth:vm.paramObj.dutyMonth}).then(res => {
+        let finishIcon
+        let finishColor
+        let finishType
+        let finishSize
+        if(!res.data || !Array.isArray(res.data) ){return}
+        this.activities = res.data
+        this.activities.forEach(i=>{
+        //状态：0 未完成；1 完成；2 进行中
+        if(i.finish == 1){ 
+          finishIcon = 'el-icon-check'
+          finishColor = '#409EFF'
+          finishType = 'primary'
+          finishSize = 'large'
+        }else if(i.finish == 2){
+          finishIcon = 'el-icon-bell'
+          finishColor = '#67C241'
+          finishType = ''
+          finishSize = ''
+        }else if(i.finish == 0){
+          finishIcon = 'el-icon-bell'
+          finishColor = ''
+          finishType = ''
+          finishSize = 'large'
+        }
+          i.content=i.name,
+          i.timestamp=i.stime+'-'+i.etime,
+          i.size=finishSize,
+          i.type=finishType,
+          i.icon=finishIcon,
+          i.color=finishColor
+        })
+        console.log(res)
+      })
+      // 历史交接班任务列表 历史交接班展示-只查看当天的交接班信息
+      requestIntegratedHoneHistoryList({orgId:vm.loginInfo.orgId}).then(res => {
+        this.tableData = res.data.list
+      })
+      requestIntegratedHoneOption({orgId:this.loginInfo.orgId,isUse:'1'}).then(res => {
+        this.optionsType = res.data.list
+      })
+      window.addEventListener("scroll", this.handleScroll, true);
+    }
+  }
+</script>
+
+<style scoped>
+a{
+  text-decoration: none;
+}
+.management-home-page{
+  height: 100%;
+  .wrap-box{
+    display: flex;
+    justify-content: space-between;
+    background: #F6F6F6;
+    height: 100%;
+    padding:20px 15px;
+    .left-box{
+      flex: 1;
+      .left-top-box{
+        display: flex;
+        margin-bottom:15px;
+        .shifting-duty-wrap-box{
+          flex: 1;
+          margin-right: 15px;
+          background: #fff;
+          height: 520px;
+          padding: 22px 31px;
+          .step-box{
+            margin-top: 48px;
+            display: flex;
+            .step-big-box{
+              flex: 1;
+              margin-top: 10px;
+            }
+            .right-icon{
+              margin-left: 20px;
+              width: 62px;
+              height: 62px;
+              border-radius: 50%;
+              background: #409EFF;
+              color: #fff;
+              text-align: center;
+              cursor: pointer;
+              .jiaoban{
+                font-size: 32px;
+              }
+              .jiaoban-text{
+                font-size: 14px;
+              }
+            }
+          }
+          .table-box{
+            margin-top: 0px;
+            .table-title{
+              font-size:16px;
+              font-family:Microsoft YaHei;
+              font-weight:300;
+              color:rgba(72,72,72,1);
+              text-align: center;
+              margin-bottom:10px;
+            }
+            .cell-box{
+              display: flex;
+              justify-content: space-between;
+              .text{
+                font-size: 14px;
+                flex: 1;
+                margin-right: 10px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                display: inline-block;
+                height: 25px;
+              }
+
+            }
+          }
+        }
+        .duty-roster-wrap-box{
+          flex: 1;
+          background: #fff;
+          height: 520px;
+          padding: 22px 31px;
+          overflow: hidden;
+          .item{
+            font-size:14px;
+            color:#606266;
+            /* margin-top:45px; */
+          }
+         .name-style {
+            position: relative !important;
+            top: -30px !important;
+         }
+         .calendar-text {
+           font-size: 12px;
+           color: #606266;
+           font-weight: 500;
+          white-space: nowrap;
+          cursor: pointer;
+         }
+        }
+      }
+      .left-bottom-box{
+        background: #fff;
+        padding: 22px 31px;
+        .border-box{
+          padding: 0;
+          margin:0;
+          border: 1px solid #ddd;
+          border-radius:4px;
+          margin-top:15px;
+          display: flex;
+          justify-content: space-between;
+          li{
+            list-style: none;
+            width: 25%;
+            border-right: 1px solid #ddd;
+            .title-text{
+              height: 60px;
+              line-height: 60px;
+              border-bottom: 1px solid #ddd;
+              text-align: center;
+            }
+            .item-list{
+              display: flex;
+              flex-wrap: wrap;
+              padding: 22px 15px;
+              .icon-box{
+                width: 33.3%;
+                text-align: center;
+                .iconfont{
+                  font-size: 32px;
+                }
+                .icon-text{
+                  font-size:14px;
+                  font-family:Microsoft YaHei;
+                  font-weight:400;
+                  color:rgba(144,147,153,1);
+                  margin-top:10px;
+                }
+              }
+              .icon-box:nth-child(3n){
+                margin-bottom:40px;
+              }
+            }
+          }
+          li:last-child{
+            border-right: none;
+          }
+        }
+      }
+    }
+    .right-box{
+      width: 303px;
+      height: 885px;
+      /* height: 865px; */
+      background: #fff;
+      margin-left: 15px;
+      .block{
+        .el-timeline {
+          height: calc(885px - 100px);
+          overflow-x: hidden;
+          overflow-y: scroll;
+        }
+        .el-timeline::-webkit-scrollbar { 
+          /* display: none; */
+          }
+        .text {
+          text-align: center;
+          padding: 20px;
+          font-size: 14px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #909399;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .title-text-box{
+    display: flex;
+    justify-content: space-between;
+    .bold-text{
+      font-size:18px;
+      font-family:Microsoft YaHei;
+      font-weight:bold;
+      color:rgba(72,72,72,1);
+    }
+    .small-text{
+      font-size:14px;
+      font-family:Microsoft YaHei;
+      font-weight:400;
+      color:rgba(144,147,153,1);
+      cursor: pointer;
+    }
+  }
+  .monitoring-title-box{
+    padding:20px 13px 20px 31px;
+    border: 1px solid #EBEEF5;
+    margin-bottom:5px;
+  }
+  .color-F46D6A{
+    border-color:#F46D6A!important;
+    color: #F46D6A!important; 
+    padding: 5px 10px;
+  }
+  .color-E6A23D{
+    border-color:#E6A23D!important;
+    color: #E6A23D!important; 
+    padding: 5px 10px;
+  }
+  .duty-table-pop{
+    position: absolute;
+    background: #fff;
+    width: 240px;
+    border:1px solid rgba(64, 158, 255, 1); 
+    padding: 30px 20px;
+  }
+}
+
+</style>
+<style>
+  .management-home-page{
+    .right-box {
+      .el-timeline-item__wrapper {
+        top: 0px !important;
+      }
+    }
+    .el-step__icon{
+      width: 10px;
+      height: 10px;
+      background: #ddd;
+      border-color: #ddd;
+    }
+    .el-step__icon-inner{
+      color: #ddd;
+    }
+    .el-step__description{
+      position: relative;
+      top: -75px;
+    }
+    .el-step__head.is-success{
+      color: #ddd;
+      border-color: #ddd;
+    }
+    .el-step__title.is-success {
+      color: #ddd;
+    }
+    .el-step__title.is-process,.el-step__description.is-process{
+       color: #67C241;
+    }
+    .is-process .el-step__icon{
+      background: #67C241;
+      border-color: #67C241;
+    }
+    .is-process .el-step__icon-inner{
+      color: #67C241;
+    }
+    .el-step__description.is-success{
+      color: #606266;
+    }
+    .el-timeline-item__node--large {
+      left: -5px;
+      width: 20px;
+      height: 20px;
+    }
+    .el-timeline-item__node--normal {
+      left: -4px;
+      width: 20px;
+      height: 20px;
+    }
+    .el-calendar-table .el-calendar-day{
+      text-align: center;
+      height: 60px;
+      padding: 20px;
+    }
+    .el-calendar-table .el-calendar-day p{
+      margin: 0;
+      padding:0;
+      font-size: 18px;
+      display: inline-block;
+      height: 100%;
+      width: 100%;
+      text-align: center;
+    }
+    .el-calendar-table td.is-today {
+      color: #606266;
+      background: #F5F7FA;
+    }
+    .el-timeline-item{
+      margin-left: 100px;
+    }
+    .el-timeline-item__timestamp {
+      position: relative;
+      left: -150px;
+      top: -20px;
+    }
+  }
+</style>

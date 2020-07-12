@@ -1,0 +1,26 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": 
+    {
+            "rainfall":[
+                {"label":"日最低能见度1","amount":"19","value":"30","content":"仙台站"},
+                {"label":"日最低能见度2","amount":"40","value":"30","content":"三门站"},
+                {"label":"日最低能见度3","amount":"19","value":"30","content":"仙台站"},
+                {"label":"日最低能见度4","amount":"19","value":"30","content":"三门站"}
+            ],
+            "wind":[
+                {"label":"日最低能见度q","amount":"19","value":"30","content":"仙台站"},
+                {"label":"日最低能见度w","amount":"19","value":"30","content":"三门站"},
+                {"label":"日最低能见度e","amount":"30","value":"30","content":"仙台站"},
+                {"label":"日最低能见度r","amount":"19","value":"30","content":"三门站"}
+            ],
+            "visibility":[
+                {"label":"日最低能见度a","amount":"77","value":"30","content":"仙台站"},
+                {"label":"日最低能见度s","amount":"19","value":"30","content":"三门站"},
+                {"label":"日最低能见度d","amount":"19","value":"30","content":"仙台站"},
+                {"label":"日最低能见度f","amount":"100","value":"30","content":"三门站"}
+            ]
+        }
+}

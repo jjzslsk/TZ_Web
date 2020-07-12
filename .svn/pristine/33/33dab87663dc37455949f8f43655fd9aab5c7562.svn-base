@@ -1,0 +1,95 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "list": [{
+            "label": "台风",
+            "items": [{
+                "icon": "taifengxiaoxi",
+                "desc": "台风消息",
+                "selected": false
+            }, {
+                "icon": "taifengjingbao",
+                "desc": "台风警报",
+                "selected": false
+            }, {
+                "icon": "taifengjinjijingbao",
+                "desc": "台风紧急警报",
+                "selected": false
+            }]
+        }, {
+            "label": "降水类",
+            "items": [{
+                "icon": "baoyu",
+                "desc": "暴雨警报",
+                "selected": false
+            }, {
+                "icon": "daoxue",
+                "desc": "大雪警报",
+                "selected": false
+            }, {
+                "icon": "baoxue",
+                "desc": "暴雪警报",
+                "selected": false
+            }]
+        }, {
+            "label": "气温类",
+            "items": [{
+                "icon": "lengkongqi",
+                "desc": "冷空气消息",
+                "selected": false
+            }, {
+                "icon": "qianglengkongqi",
+                "desc": "强冷空气消息",
+                "selected": false
+            }, {
+                "icon": "hanchao1",
+                "desc": "寒潮警报",
+                "selected": false
+            }, {
+                "icon": "jiangwenbaogao",
+                "desc": "降温报告",
+                "selected": false
+            }, {
+                "icon": "yanhanjingbao",
+                "desc": "严寒警报",
+                "selected": false
+            }, {
+                "icon": "gaowenbaogao",
+                "desc": "高温报告",
+                "selected": false
+            }, {
+                "icon": "kurejingbao",
+                "desc": "酷热警报",
+                "selected": false
+            }, {
+                "icon": "diwenbaogao01",
+                "desc": "低温报告",
+                "selected": false
+            }]
+        }, {
+            "label": "雾霾类",
+            "items": [{
+                "icon": "nongwujingbao",
+                "desc": "浓雾警报",
+                "selected": false
+            }, {
+                "icon": "mai",
+                "desc": "霾警报",
+                "selected": false
+            }]
+        }, {
+            "label": "其他类",
+            "items": [{
+                "icon": "dafengjingbao",
+                "desc": "大风警报",
+                "selected": false
+            }, {
+                "icon": "leibaojingbao",
+                "desc": "雷暴警报",
+                "selected": false
+            }]
+        }]
+    }
+}

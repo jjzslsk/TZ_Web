@@ -1,0 +1,322 @@
+SCHEDULING<template>
+<div class="page-wrapper scheduling">
+    <el-container>
+        <el-main>
+            <el-card class="box-card" shadow="never">
+                <div slot="header" class="clearfix">
+                    <span class="primary">排班管理</span>
+                </div>
+                    <div class="content-list">
+                        <page-table ref="table" remote="requestSchedulingList" :height="'600'" :formatPayload="formatPayload" :hidePagination="true" :row-class-name="tableRowClassName">
+                        <!-- <page-table ref="table" :formatPayload="formatPayload" :row-class-name="tableRowClassName"> -->
+                            <div class="actions" slot="actions">
+                                <span class="title">选择月份</span>
+                                <el-date-picker v-model="query.monthTime" format="yyyy-MM" value-format="yyyy-MM" type="month" placeholder="选择月"></el-date-picker>
+                                <c-button type="search" @click="search()">查询</c-button>
+                                <c-button type="search" v-if="!editCol" @click="editCol=!editCol">编辑</c-button>
+                                <c-button v-if="editCol" @click="cancelEdit">取消</c-button>
+                                <c-button type="search" v-if="editCol" @click="submitEdit">保存</c-button>
+                                <!-- <c-button type="search">EXCEL导入</c-button> -->
+                                <el-upload
+                                    class="upload-demo"
+                                    action="https://jsonplaceholder.typicode.com/posts/"
+                                    :on-preview="handlePreview"
+                                    :on-remove="handleRemove"
+                                    :before-remove="beforeRemove"
+                                    :before-upload="beforeAvatarUpload"
+                                    :on-success="handleAvatarSuccess"
+                                    :data="param"
+                                    :show-file-list='false'
+                                    multiple
+                                    :limit="1"
+                                    :on-exceed="handleExceed"
+                                    :file-list="fileList">
+                                    <c-button  type="search" v-loading.fullscreen.lock="fullscreenLoading">导入</c-button>
+                                    <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+                                </el-upload>
+                                <c-button type="search" @click="downloadExcel()">导出</c-button>
+                                <c-button type="search">打印</c-button>
+                            </div>
+                            <el-table-column prop="dutyDate" label="日期" width="60px"></el-table-column>
+                            <el-table-column prop="weekDate" label="星期" width="60px"/>
+                            <!-- <template v-for="item in userList" :key="index"> -->
+                            <!-- <el-table-column v-for="(item,index) in userList" :prop="item.dutyDate" :label="item.userName" :key="index"> name == '台州气象台'? 'right':''
+                            </el-table-column> -->
+                            <!-- </template> -->
+                
+                            <el-table-column v-for="({name,id},index) in persons" :prop="name" :label="name" :key="index">
+                            <!-- <el-table-column v-for="({name,id},index) in persons" :prop="name" :label="name" :key="index" :fixed="tableFixed(name,id)"> -->
+                                <template slot-scope="scope">
+                                    <span v-if="scope.row[id] && !editCol && name !== '首席'">
+                                        <span v-for="item in postList" :key="item.id" v-if="scope.row[id] == item.id">{{item.name}}</span>
+                                    </span>
+                                    <span v-if="scope.row[id] && !editCol && name == '首席'">
+                                        <span v-for="item in postUserList" :key="item.id" v-if="scope.row[id] == item.id">{{item.name}}</span>
+                                    </span>
+                                    <!-- <el-select v-model="scope.row[id]" @change="changeTelescopic(index,scope.row[id],scope.row,name,id)" placeholder="请选择" v-if="scope.row[id] && editCol" :class="`scheduling-${scope.row[id]}`"> -->
+                                    <el-select v-model="scope.row[id]" @change="changeTelescopic(index,scope.row[id],scope.row,name,id)" placeholder="请选择" v-if="editCol && name !== '首席'" :class="`scheduling-${scope.row[id]}`">
+                                        <el-option v-for="{name,id} in postList" :label="name" :value="id" :key="id"></el-option>
+                                    </el-select>
+                                    <!-- <span v-if="editCol && id == 'bf5df19b976d4381bb1a2f841ab544a7'">{{id}}</span> -->
+                                    <!-- <span >{{id}}</span>/{{scope.row[id]}} -->
+                                    <el-select v-model="scope.row[id]" @change="changeTelescopic(index,scope.row[id],scope.row,name,id)" placeholder="请选择" v-if="editCol && name == '首席'" :class="`scheduling-${scope.row[id]}`">
+                                        <el-option v-for="{name,id} in postUserList" :label="name" :value="id" :key="id"></el-option>
+                                    </el-select>
+                                </template>
+                            </el-table-column>
+                            <!-- <el-table-column prop="XXXPROP_SCHEDULING_sx" label="首席" width="80px" /> -->
+                        </page-table>
+                    </div>
+            </el-card>
+        </el-main>
+    </el-container>
+</div>
+</template>
+
+<script>
+import {
+requestAllUserList,
+requestDialogFormSchedulingDownload,
+requestSchedulingList,
+requestSchedulingOptionList,
+requestSchedulingSxOptionList,
+requestSchedulingDutyUser,
+requestSchedulingUpdate
+} from "@/remote/";
+import {
+    mapActions,mapGetters
+} from 'vuex'
+import {
+    common,
+    witchCommonList
+} from '../../mixins/index';
+export default {
+    mixins: [common, witchCommonList],
+    data() {
+        return {
+            loginInfo:null,
+            fullscreenLoading: false,
+            param:{
+                id:'123',
+            },
+            imageUrl: '',
+            // fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+            fileList: [],
+            editCol: false,
+            test:
+            [
+            {"dutyDate":"2020-04-04","week":"周一","jobName":"短临","admin":"短临","李四":"1短期","张三":"短临"},
+            {"dutyDate":"2020-04-04","week":"周一","jobName":"短临","admin":"短临","李四":"2短期","张三":"短临"},
+        ],
+            selectData:[],
+            query: {
+                // XXXPROP_SCHEDULING_1: ''
+                orgId: '',
+                monthTime:''
+            },
+            persons: null,
+            userList:null,
+            postList:null,
+            postUserList:null,
+            pageTableList:null
+        };
+    },
+    computed: {
+        ...mapGetters(['accountOrgId']),
+    },
+    mounted() {
+        const loginInfo = JSON.parse(localStorage.getItem('loginInfo',))
+        this.loginInfo = loginInfo
+        this.requestData()
+        // setTimeout(() => {
+        //     this.persons = [{
+        //         "name": "张三",
+        //         "id": "XXXPROP_SCHEDULING_ZS"
+        //     }, {
+        //         "name": "李四",
+        //         "id": "XXXPROP_SCHEDULING_LS"
+        //     }, {
+        //         "name": "李1",
+        //         "id": "XXXPROP_SCHEDULING_L1"
+        //     }, {
+        //         "name": "李2",
+        //         "id": "XXXPROP_SCHEDULING_L2"
+        //     }, {
+        //         "name": "李3",
+        //         "id": "XXXPROP_SCHEDULING_L3"
+        //     }, {
+        //         "name": "李4",
+        //         "id": "XXXPROP_SCHEDULING_L4"
+        //     }, {
+        //         "name": "李5",
+        //         "id": "XXXPROP_SCHEDULING_L5"
+        //     }]
+        // }, 1000);
+    },
+    methods: {
+        tableFixed(name,id){
+            var isRight = null
+            if(name == '管理员'){
+                isRight = 'right'
+            }
+            if(name == '日期'){
+                isRight = 'list'
+            }
+            if(name == '星期'){
+                isRight = 'list'
+            }
+            return isRight
+        },
+        requestData(){
+        requestSchedulingOptionList({orgId:this.loginInfo.orgId,isNormal:'0'}).then(res =>{
+            this.postList = res.data.list
+            this.postList.unshift({label:'',id:''})
+        })
+        requestSchedulingSxOptionList({orgId:this.loginInfo.orgId,jobCode:'shouxi'}).then(res =>{
+            this.postUserList = res.data.list
+            this.postUserList.unshift({label:'',id:''})
+        })
+        requestSchedulingDutyUser({orgId:this.loginInfo.orgId}).then(res =>{
+            this.persons = res.data
+            this.persons.map(item=>{
+                item.label = item.name,
+                item.value = item.id
+            })
+        })
+        requestSchedulingList({orgId:this.loginInfo.orgId}).then(res=>{
+            // this.pageTableList = res.data.list
+            this.query.monthTime = res.data.monthTime
+        })
+        },
+
+        //文件上传成功时的钩子
+        handleAvatarSuccess(res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw);
+        console.log('handleAvatarSuccess:res:',res)
+        console.log('handleAvatarSuccess:file:',file)
+          this.fullscreenLoading = false;
+        this.$message.success(`导出成功`);
+        this.fileList = []
+        },
+
+        //上传文件之前的钩子
+        beforeAvatarUpload(file) {
+        this.fullscreenLoading = true;
+        console.log(file)
+        console.log(this.param)
+        const isXLS = file.type === 'application/vnd.ms-excel';
+        const isXLSX = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isXLS && !isXLSX) {
+          this.$message.error('上传文件只能是 xls,xlsx 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传文件大小不能超过 2MB!');
+        }
+        return (isXLS || isXLSX) && isLt2M;
+      },
+
+        //文件列表移除文件时的钩子
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      //点击文件列表中已上传的文件时的钩子
+      handlePreview(file) {
+        console.log(file);
+      },
+      //文件超出个数限制时的钩子
+      handleExceed(files, fileList) {
+        // this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+        this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
+      //删除文件之前的钩子
+      beforeRemove(file, fileList) {
+        // return this.$confirm(`确定移除 ${ file.name }？`);
+      },
+
+        submitEdit(){
+            this.editCol=!this.editCol
+            if(!this.editCol && this.selectData.length > 0){
+                // let params
+                // this.selectData.forEach(i=>{
+                //    if(i.userId == 'bf5df19b976d4381bb1a2f841ab544a7'){
+                //         i.userIdItem = i.userId
+                //         i.jobIdItem = i.jobId
+                //         i.userId = i.jobIdItem
+                //         i.jobId = 'bf5df19b976d4381bb1a2f841ab544a7'
+                //         delete i.userIdItem
+                //         delete i.jobIdItem
+                //    }
+                // })
+                 requestSchedulingUpdate({orgId:this.loginInfo.orgId,month:this.query.monthTime,list:this.selectData}).then(res =>{
+                     if(res.success){
+                        this.requestData()
+                     }
+                    this.selectData = []
+                })
+                console.log(this.selectData)
+            }else{this.selectData = []}
+        },
+        cancelEdit(){
+            this.editCol=!this.editCol
+            this.onConfirmUpdate()
+        },
+        changeTelescopic(index,jobId,scope,name,id){
+            // console.log(index,jobId,scope.dutyDate,name,id);
+            console.log(name)
+            if(name == '首席'){
+                this.selectData.push({'userId':jobId,'jobId':id,'dutyDate': this.query.monthTime + '-' + scope.dutyDate})
+            }else{
+                this.selectData.push({'userId':id,'jobId':jobId,'dutyDate': this.query.monthTime + '-' + scope.dutyDate})
+            }
+            console.log(this.selectData)
+        },
+        formatPayload(payload){
+            const loginInfo = JSON.parse(localStorage.getItem('loginInfo',))
+            this.loginInfo = loginInfo
+            console.log("payload:1",payload)
+            return payload.monthTime?  {
+                'orgId':this.loginInfo.orgId,
+                monthTime:payload.monthTime
+            }:{
+                'orgId':this.loginInfo.orgId,
+            }
+
+            // return payload
+        },
+        downloadExcel(){
+            // requestDialogFormSchedulingDownload().then(res =>{
+            //     console.log(res)
+                window.location.href='http://www.jjzslsk.top/123.xlsx'
+            // })
+        },
+        tableRowClassName({
+            row,
+            rowIndex
+        }) {
+            return row.isRest && 'rest';
+        }
+    },
+};
+</script>
+<style lang="postcss" scoped>
+.content-list{
+    .upload-demo {
+        display: inline-block;
+    }
+}
+</style>
+<style>
+.scheduling-bx {
+    .el-input__inner {
+        color: red;
+    }
+}
+
+.page-wrapper.scheduling {
+    tr.rest {
+        background: rgba(253, 245, 230, 1);
+    }
+}
+</style>

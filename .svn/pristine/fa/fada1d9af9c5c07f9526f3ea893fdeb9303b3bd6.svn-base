@@ -1,0 +1,7 @@
+import * as mappers from './mappers'
+export const mapFrontMapper = (optionKeys, {
+    afterFix = "Mapper"
+} = {}) => optionKeys.reduce((p, c) => {
+    p[c + afterFix] = () => mappers[c]
+    return p;
+}, {})

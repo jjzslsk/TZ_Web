@@ -1,0 +1,7 @@
+import ol from 'openlayers'
+import Taizhou from './taizhou'
+export default class Warning extends Taizhou {
+    getLayersForInit() {
+        return [ this.getLayersOfBlankBaseForInit(), this.getLayersOfWarningForInit()].flat();
+    }
+}

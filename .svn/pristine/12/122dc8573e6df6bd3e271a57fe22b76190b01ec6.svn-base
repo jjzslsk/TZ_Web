@@ -1,0 +1,193 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "list": [
+            {
+                "menu_url": "/admin",
+                "name": "系统管理",
+                "pid":"01",
+                "id":"2",
+                "checked":"true",
+                "image_url": "iconfont shouye",
+                "children": [{
+                    "menu_url": "/admin/role",
+                    "name": "角色管理",
+                    "pid":"2",
+                    "id":"2-5",
+                    "checked":"true",
+                    "image_url": "iconfont shouye"
+                },{
+                    "menu_url": "/admin/user",
+                    "name": "用户管理",
+                    "pid":"2",
+                    "id":"2-4",
+                    "checked":"true",
+                    "image_url": "iconfont shouye"
+                },{
+                    "menu_url": "/admin/menu",
+                    "name": "菜单管理",
+                    "pid":"2",
+                    "id":"2-1",
+                    "checked":"true",
+                    "image_url": "iconfont shouye"
+                },{
+                    "menu_url": "/admin/organ",
+                    "name": "机构管理",
+                    "pid":"2",
+                    "id":"2-2",
+                    "checked":"true",
+                    "image_url": "iconfont shouye"
+                },{
+                    "menu_url": "/admin/area",
+                    "name": "地区管理",
+                    "pid":"2",
+                    "id":"2-3",
+                    "checked":"true",
+                    "image_url": "iconfont shouye"
+                },{
+                    "menu_url": "/admin/dict",
+                    "name": "字典管理",
+                    "pid":"2",
+                    "id":"2-6",
+                    "checked":"true",
+                    "image_url": "iconfont shouye"
+                }]
+            },
+            {
+                "menu_url": "/integrated-management",
+                "name": "值班管理系统",
+                "pid":"01",
+                "id":"3",
+                "checked":"true",
+                "image_url": "iconfont shouye",
+                "children": [{
+                    "menu_url": "/integrated-management/home",
+                    "name": "首页",
+                    "pid":"3",
+                    "id":"3-1",
+                    "checked":"true",
+                    "image_url": "iconfont shouye"
+                },{
+                    "menu_url": "/integrated-management/duty-management",
+                    "name": "值班管理",
+                    "pid":"3",
+                    "id":"3-2",
+                    "checked":"true",
+                    "image_url": "iconfont shouye",
+                    "children": [{
+                        "menu_url": "/integrated-management/post",
+                        "name": "岗位管理",
+                        "pid":"3",
+                        "id":"3-3",
+                        "checked":"true",
+                        "image_url": "iconfont shouye"
+                    },{
+                        "menu_url": "/integrated-management/personnel",
+                        "name": "人员管理",
+                        "pid":"3",
+                        "id":"3-4",
+                        "checked":"true",
+                        "image_url": "iconfont shouye"
+                    },{
+                        "menu_url": "/integrated-management/personnel",
+                        "name": "排班管理",
+                        "pid":"3",
+                        "id":"3-5",
+                        "checked":"true",
+                        "image_url": "iconfont shouye"
+                    },{
+                        "menu_url": "/integrated-management/personnel",
+                        "name": "历史交接班",
+                        "pid":"3",
+                        "id":"3-6",
+                        "checked":"true",
+                        "image_url": "iconfont shouye"
+                    },{
+                        "menu_url": "/integrated-management/personnel",
+                        "name": "考勤管理",
+                        "pid":"3",
+                        "id":"3-7",
+                        "checked":"true",
+                        "image_url": "iconfont shouye"
+                    },{
+                        "menu_url": "/integrated-management/personnel",
+                        "name": "加班管理",
+                        "pid":"3",
+                        "id":"3-8",
+                        "checked":"true",
+                        "image_url": "iconfont shouye"
+                    }]
+
+                },{
+                    "menu_url": "/integrated-management/duty-process",
+                    "name": "值班流程配置",
+                    "pid":"001",
+                    "id":"4",
+                    "checked":"true",
+                    "image_url": "iconfont shouye",
+                    "children":[{
+                        "menu_url": "/integrated-management/duty-process-post",
+                        "name": "岗位流程配置",
+                        "pid":"001",
+                        "id":"4-1",
+                        "checked":"true",
+                        "image_url": "iconfont shouye"
+                    },{
+                        "menu_url": "/integrated-management/duty-process-scheduling",
+                        "name": "值班流程配置",
+                        "pid":"001",
+                        "id":"4-2",
+                        "checked":"true",
+                        "image_url": "iconfont shouye"
+                    }]
+                },{
+                    "menu_url": "/integrated-management/work-evidence",
+                    "name": "工作留痕",
+                    "pid":"001",
+                    "id":"5",
+                    "checked":"true",
+                    "image_url": "iconfont shouye"
+                }]
+            },
+            {
+                "menu_url": "/product-made",
+                "name": "产品制作",
+                "pid":"01",
+                "id":"9",
+                "checked":"true",
+                "image_url": "iconfont shouye",
+                "children": [{
+                    "menu_url": "/product-made/home",
+                    "name": "产品首页",
+                    "pid":"001",
+                    "id":"9-1",
+                    "checked":"true",
+                    "image_url": "iconfont shouye"
+                },{
+                    "menu_url": "/product-made/service-user",
+                    "name": "服务用户",
+                    "pid":"001",
+                    "id":"9-2",
+                    "checked":"true",
+                    "image_url": "iconfont shouye"
+                },{
+                    "menu_url": "/product-made/product-data-origin",
+                    "name": "产品数据源",
+                    "pid":"001",
+                    "id":"9-3",
+                    "checked":"true",
+                    "image_url": "iconfont shouye"
+                },{
+                    "menu_url": "/product-made/product-label",
+                    "name": "产品标签",
+                    "pid":"001",
+                    "id":"9-4",
+                    "checked":"true",
+                    "image_url": "iconfont shouye"
+                }]
+            }
+        ]
+    }
+}

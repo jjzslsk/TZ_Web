@@ -1,0 +1,75 @@
+{
+    "success": true,
+    "code": 0,
+    "message": "查询角色成功",
+    "data": {
+        "pageIndex": 1,
+        "pageSize": 10,
+        "rowCount": 7,
+        "list": [
+            {
+                "code": "RoleWarning",
+                "areaId": "6c943cd0429042ea9fd55a7997fcc808",
+                "createTime": 1590634833000,
+                "appId": "待定",
+                "name": "预警信号签发",
+                "updateTime": 1590634833000,
+                "id": "c19a429da9cc40abab43a1ce3fb8e862"
+            },
+            {
+                "code": "RoleAlarm",
+                "areaId": "6c943cd0429042ea9fd55a7997fcc808",
+                "createTime": 1590634818000,
+                "appId": "待定",
+                "name": "天气警报签发",
+                "updateTime": 1590634818000,
+                "id": "ee0d88a34f8f4a2984c8b313d5a3f79e"
+            },
+            {
+                "code": "Tourist",
+                "areaId": "6c943cd0429042ea9fd55a7997fcc808",
+                "createTime": 1589007642000,
+                "appId": "待定",
+                "name": "游客",
+                "updateTime": 1589007642000,
+                "id": "d1aa2dab9eda454595313537633365ea"
+            },
+            {
+                "code": "Normal",
+                "areaId": "6c943cd0429042ea9fd55a7997fcc808",
+                "createTime": 1588856840000,
+                "appId": "待定",
+                "name": "普通用户",
+                "updateTime": 1591242332000,
+                "id": "4fec5c5edfa54c37aaac0b964875111f"
+            },
+            {
+                "code": "Product",
+                "areaId": "6c943cd0429042ea9fd55a7997fcc808",
+                "createTime": 1587544086000,
+                "appId": "待定",
+                "name": "产品制作",
+                "updateTime": 1587544086000,
+                "id": "c112a9a9e87d40668bd4a36addc038a7"
+            },
+            {
+                "code": "Admin",
+                "areaId": "6c943cd0429042ea9fd55a7997fcc808",
+                "createTime": 1584696894000,
+                "appId": "待定",
+                "name": "普通管理员",
+                "updateTime": 1591239637000,
+                "id": "53b41f8946ad434da6fa1451690ae191"
+            },
+            {
+                "code": "SuperAdmin",
+                "areaId": "6c943cd0429042ea9fd55a7997fcc808",
+                "createTime": 1584696888000,
+                "appId": "待定",
+                "name": "超级管理员",
+                "updateTime": 1591239631000,
+                "id": "53b41f8946ad434da6fa1451690ae190"
+            }
+        ]
+    }
+}

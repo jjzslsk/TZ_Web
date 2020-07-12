@@ -1,0 +1,90 @@
+<template>
+  <div class="content">
+    <el-row class="phrase">
+      <el-col :span="8">
+        <el-table  @row-click="clickForecast" height="700" :data="forecast" style="width: 100%">
+          <el-table-column prop="name" label="预报用词"></el-table-column>
+        </el-table>
+      </el-col>
+      <el-col :span="8">
+        <el-table @row-click="clickOcean" height="700" :data="ocean" style="width: 100%">
+          <el-table-column prop="name" label="海洋预报"></el-table-column>
+        </el-table>
+      </el-col>
+      <el-col :span="8">
+        <el-table @row-click="clickCity" height="700" :data="city" style="width: 100%">
+          <el-table-column prop="name" label="城市预报"></el-table-column>
+        </el-table>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+<script>
+import {
+  requestProductMakePhrase,
+} from "@/remote/";
+export default {
+  data() {
+    return {
+      tableData:[],
+      forecast:[],
+      ocean:[],
+      city:[],
+    };
+  },
+  mounted(){
+    requestProductMakePhrase().then(res=>{
+      // let listObj = []
+      this.tableData = res.data.list
+      // this.tableData.forEach(item=>{
+        // item.list
+      // })
+      this.tableData[0].list.forEach(element => {
+        this.forecast.push({name:element})
+      });
+      this.tableData[1].list.forEach(element => {
+        this.ocean.push({name:element})
+      });
+      this.tableData[2].list.forEach(element => {
+        this.city.push({name:element})
+      });
+    })
+  },
+  methods:{
+    clickForecast(row){
+       this.$emit('emitPhraes',row.name);
+    },
+    clickOcean(row){
+       this.$emit('emitPhraes',row.name);
+    },
+    clickCity(row){
+       this.$emit('emitPhraes',row.name);
+    }
+  }
+};
+</script>
+<style lang='postcss' scoped>
+.content {
+  .phrase {
+    .el-table {
+      .cell {
+      }
+    }
+  }
+}
+</style>
+<style lang='postcss'>
+.content {
+  .phrase {
+    padding: 20px;
+    .el-table {
+      .cell {
+        text-align: center;
+      }
+      td {
+          border-bottom: 0px solid #ebeef5 ;
+        }
+    }
+  }
+}
+</style>

@@ -1,0 +1,36 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "rowCount": 120,
+        "pageSize": 10,
+        "pageIndex": 3,
+        "list": [{
+            "XXXPROP_POST_id": "1",
+            "XXXPROP_POST_1": "首席",
+            "XXXPROP_POST_2": "短时临近预报修改/周边城市预报",
+            "XXXPROP_POST_3": "短时临近预报修改/周边城市预报"
+        }, {
+            "XXXPROP_POST_id": "2",
+            "XXXPROP_POST_1": "决策",
+            "XXXPROP_POST_2": "周边城市报文",
+            "XXXPROP_POST_3": "周边城市报文"
+        }, {
+            "XXXPROP_POST_id": "3",
+            "XXXPROP_POST_1": "短临",
+            "XXXPROP_POST_2": "短时临近预报修改/周边城市预报",
+            "XXXPROP_POST_3": "短时临近预报修改/周边城市预报"
+        }, {
+            "XXXPROP_POST_id": "4",
+            "XXXPROP_POST_1": "行政",
+            "XXXPROP_POST_2": "短时临近预报修改/周边城市预报",
+            "XXXPROP_POST_3": "短时临近预报修改/周边城市预报"
+        }, {
+            "XXXPROP_POST_id": "5",
+            "XXXPROP_POST_1": "班休",
+            "XXXPROP_POST_2": "短时临近预报修改/周边城市预报",
+            "XXXPROP_POST_3": "短时临近预报修改/周边城市预报"
+        }]
+    }
+}

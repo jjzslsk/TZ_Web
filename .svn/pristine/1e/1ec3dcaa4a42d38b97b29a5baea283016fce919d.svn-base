@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../../layui/css/layui.css">
+  <link rel="stylesheet" href="css/style.css">
+<script src="../../tools/echarts.min.js"></script>
+</head>
+      <!-- <button class="layui-icon layui-icon-export" id="getExport">get</button>
+      <button class="layui-icon layui-icon-export" id="formExport">提交form</button>
+      <button class="layui-icon layui-icon-export" id="jsonExport">提交Json</button>
+      <button class="layui-icon layui-icon-export" id="delExport">del</button>
+      <button class="layui-icon layui-icon-export" id="putExport">put</button> -->
+<body class="forecast">
+  <div class="left">
+    <div class="layui-tab layui-tab-card" lay-filter="demo">
+      <ul class="layui-tab-title">
+        <li class="layui-this">平面图</li>
+        <li>剖面图 </li>
+        <li>时序图</li>
+        <li>探空图</li>
+      </ul>
+      <div class="layui-tab-content">
+        <!-- 平面图 -->
+        <div class="layui-tab-item plane layui-show">
+          <div class="layui-collapse">
+
+            <div class="colla-wrap">
+            <div class="layui-colla-item ground-box" >
+              <h2 class="layui-colla-title">地面要素</h2>
+              <div class="layui-colla-content layui-show" id="groundFactor">
+              </div>
+            </div>
+            <div class="layui-colla-item factor-box">
+              <h2 class="layui-colla-title">高空要素</h2>
+              <div class="layui-colla-content layui-show">
+                <div class="factor-num">
+                  <span class="left-icon icon">
+                    <i class="layui-icon layui-icon-left"></i>
+                  </span>
+                  <ul id="upperAirTitle">
+                  </ul>
+                  <span class="right-icon icon">
+                    <i class="layui-icon layui-icon-right"></i>
+                  </span>
+                </div>
+                <div class="factor-item" id="upperAir">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="analyze-wrap">
+            <div class="layui-colla-item analyze-box">
+              <h2 class="layui-colla-title">综合分析</h2>
+              <div class="layui-colla-content layui-show">
+                <ul id="synthesize">
+                </ul>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+        <!-- 平面图-end -->
+
+        <!-- 剖面图 -->
+        <div class="layui-tab-item section">
+          <div class="layui-collapse">
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">站点选择</h2>
+              <div class="layui-colla-content layui-show" >
+                <ul id="sectionSite">
+                </ul>
+              </div>
+            </div>
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">综合分析</h2>
+              <div class="layui-colla-content layui-show">
+                <ul id="sectionSynthesize">
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 剖面图-end -->
+
+        <!-- 时序图 -->
+        <div class="layui-tab-item temporal layui-form">
+          <div class="layui-collapse">
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">时间选择</h2>
+              <div class="layui-colla-content layui-show controls">
+                <div class="layui-row but-row">
+                  <button type="button" class="layui-btn layui-btn-primary layui-btn-xs topDate" code="temporalDate">
+                    <i class="layui-icon layui-icon-left"></i> 
+                  </button>
+                  <input type="text" class="layui-input" id="temporalDate">
+                  <button type="button" class="layui-btn layui-btn-primary layui-btn-xs bottomDate" code="temporalDate">
+                    <i class="layui-icon layui-icon-right"></i> 
+                  </button>
+                  <button type="button" class="layui-btn layui-btn-primary layui-btn-xs updateDate" code="temporalDate">
+                    最新
+                  </button>
+                </div>
+                <div class="layui-row but-row">
+                    <input type="radio" name="sex" value="8" title="08">
+                    <input type="radio" name="sex" value="20" title="20" checked>
+                </div>
+              </div>
+            </div>
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">站点选择</h2>
+              <div class="layui-colla-content layui-show" >
+                <ul id="temporalSite">
+                </ul>
+              </div>
+            </div>
+            <div class="layui-colla-item floor-factor" >
+              <h2 class="layui-colla-title">地面要素</h2>
+              <div class="layui-colla-content layui-show" id="temporalGround">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 时序图-end-->
+
+        <!-- 探空图 -->
+        <div class="layui-tab-item sounding layui-form">
+          <div class="layui-collapse">
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">时间选择</h2>
+              <div class="layui-colla-content layui-show controls">
+                <div class="layui-row but-row">
+                  <button type="button" class="layui-btn layui-btn-primary layui-btn-xs topDate" code="soundingDate">
+                    <i class="layui-icon layui-icon-left"></i> 
+                  </button>
+                  <input type="text" class="layui-input" id="soundingDate">
+                  <button type="button" class="layui-btn layui-btn-primary layui-btn-xs bottomDate" code="soundingDate">
+                    <i class="layui-icon layui-icon-right"></i> 
+                  </button>
+                  <button type="button" class="layui-btn layui-btn-primary layui-btn-xs updateDate" code="soundingDate">
+                    最新
+                  </button>
+                </div>
+                <div class="layui-row but-row">
+                    <input type="radio" name="sex" value="8" title="08">
+                    <input type="radio" name="sex" value="20" title="20" checked>
+                </div>
+              </div>
+            </div>
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">站点选择</h2>
+              <div class="layui-colla-content layui-show" >
+                <ul id="soundingSite">
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 探空图-end -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 平面图 main -->
+  <div class="main main-plane">
+    <div class="tools">
+      <div class="model model-li-plane">
+        <span>
+          模式：
+        </span>
+        <ul>
+        </ul>
+      </div>
+      <div class="scope">
+        <span>
+          范围：
+        </span>
+        <ul id="cityArr">
+        </ul>
+      </div>
+    </div>
+    <div class="content">
+      <div class="page-but">
+        <div class="layui-btn-group">
+          <button type="button" class="layui-btn layui-btn-normal" id="click_browse">浏览</button>
+          <button type="button" class="layui-btn layui-btn-normal" id="click_stamps">邮票</button>
+        </div>
+        <div class="but-right">
+          <span class="but-txt">制作动画</span>
+          <span class="but-txt">下载</span>
+        </div>
+      </div>
+
+      <div class="content-map browse-box">
+        <div class="browse">
+          <div class="title">2020-01-08 08:00 EC 2m温度（℃）</div>
+          <div class="map-img">
+            <img src="img/map-img.png" alt="" srcset="">
+          </div>
+        </div>
+      </div>
+
+      <div class="content-map stamps-box">
+        <div class="stamps">
+          <div class="col-item">
+            <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+            <div class="item-map-img">
+              <img src="img/map-img.png" alt="" srcset="">
+            </div>
+          </div>
+          <div class="col-item">
+            <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+            <div class="item-map-img">
+              <img src="img/map-img.png" alt="" srcset="">
+            </div>
+          </div>
+          <div class="col-item">
+            <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+            <div class="item-map-img">
+              <img src="img/map-img.png" alt="" srcset="">
+            </div>
+          </div>
+          <div class="col-item">
+            <div class="item-title">2020-01-08 08:00 EC 4m温度（℃）</div>
+            <div class="item-map-img">
+              <img src="img/map-img.png" alt="" srcset="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="play">
+      <div class="play-but">
+        <div class="but-item"><i class="layui-icon layui-icon-left"></i> </div>
+        <div class="but-item"><i class="layui-icon layui-icon-right"></i> </div>
+        <div class="but-item"><i class="layui-icon layui-icon-play"></i> </div>
+        <div class="but-item is-active"><i class="layui-icon layui-icon-pause"></i> </div>
+      </div>
+      <div class="on-off">
+        <form class="layui-form" action="">
+          <span class="slow">慢</span><input type="checkbox" name="switch" lay-skin="switch"><span class="fast">快</span>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 剖面图 main -->
+  <div class="main main-section">
+    <div class="tools">
+      <div class="model model-li-section">
+        <span>
+          模式：
+        </span>
+        <ul>
+        </ul>
+      </div>
+    </div>
+    <div class="content">
+      <div class="content-map browse-box">
+        <div class="browse">
+          <div class="title">2020-01-08 08:00 EC 2m温度（℃）</div>
+          <div class="content">2020-01-08 08:00 EC 2m温度（℃）</div>
+          <div class="map-img">
+            <img src="img/map-img1.png" alt="" srcset="">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="play">
+      <div class="play-but">
+        <div class="but-item"><i class="layui-icon layui-icon-left"></i> </div>
+        <div class="but-item"><i class="layui-icon layui-icon-right"></i> </div>
+        <div class="but-item"><i class="layui-icon layui-icon-play"></i> </div>
+        <div class="but-item is-active"><i class="layui-icon layui-icon-pause"></i> </div>
+      </div>
+      <div class="on-off">
+        <form class="layui-form" action="">
+          <span class="slow">慢</span><input type="checkbox" name="switch" lay-skin="switch"><span class="fast">快</span>
+        </form>
+      </div>
+    </div>
+  </div>
+
+    <!-- 时序图 main -->
+    <div class="main main-temporal">
+      <div class="tools">
+        <div class="model model-li-temporal">
+          <span>
+            模式：
+          </span>
+          <ul>
+          </ul>
+        </div>
+        <div class="scope">
+          <span>
+            时效：
+          </span>
+          <ul id="agingArr">
+          </ul>
+        </div>
+      </div>
+      <div class="content content-box">
+        <div class="charts-wrap">
+        <div class="title-charts">
+          <div class="title">2020-01-08 08:00 EC 2m温度（℃）</div>
+          <div class="content">2020年03月01日   起报:08   时效:240小时   站名:椒江   纬度:121.51°   纬度:28.66°</div>
+        </div>
+        <div class="echarts-temporal" id="temporalChart" style="width: 80vw;height:380px;">
+        </div>
+        <div class="title-charts" style='padding-top:0px'>
+          <div class="title" >2020-01-08 08:00 EC 2m温度（℃）</div>
+          <div class="content">2020年03月01日   起报:08   时效:240小时   站名:椒江   纬度:121.51°   纬度:28.66°</div>
+        </div>
+        <div class="echarts-temporal rain" id="temporalRainChart" style="width: 80vw;height:380px;">
+        </div>
+      </div>
+      </div>
+    </div>
+
+  <!-- 探空图 main -->
+  <div class="main main-sounding">
+    <div class="content">
+      <div class="echarts-sounding" id="soundingChart" style="width: 600px;height:400px;">
+
+      </div>
+    </div>
+  </div>
+
+  <div class="right right-box">
+    <div class="layui-tab layui-tab-card" id="rightTab">
+      <ul class="layui-tab-title">
+        <li class="layui-this">实时查询</li>
+        <li>历史查询 </li>
+      </ul>
+      <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+          <div class="layui-collapse">
+
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">预报时间选择</h2>
+              <div class="layui-colla-content layui-show">
+                <ul id="forecastTime" >
+                </ul>
+              </div>
+            </div>
+
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">预报时间间隔</h2>
+              <div class="layui-colla-content layui-show">
+                <div class="layui-row but-row" id="forecastAfter">
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">预报时次选择</h2>
+              <div class="layui-colla-content layui-show">
+                <ul id="forecastFrequency">
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="layui-tab-item">2</div>
+      </div>
+    </div>
+    <div class="layui-card" id="rightCard">
+      <div class="layui-card-header">洪家站</div>
+      <div class="layui-card-body">
+        <ul id="siteInfo">
+        </ul>
+        <div class="layui-collapse" lay-accordion>
+          <div class="layui-colla-item">
+            <h2 class="layui-colla-title">大气温湿类</h2>
+            <div class="layui-colla-content layui-show">
+              <table class="layui-table">
+                <colgroup>
+                  <col width="">
+                  <col width="">
+                  <col>
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>物理量</th>
+                    <th>值</th>
+                    <th>说明</th>
+                  </tr> 
+                </thead>
+                <tbody>
+                  <tr>
+                    <td></td>
+                    <td>1</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>许闲心</td>
+                    <td>3</td>
+                    <td>
+                      整层比湿积分
+                  </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="layui-colla-item">
+            <h2 class="layui-colla-title">层结构稳定类</h2>
+            <div class="layui-colla-content">
+              2
+            </div>
+          </div>
+          <div class="layui-colla-item">
+            <h2 class="layui-colla-title">动力类</h2>
+            <div class="layui-colla-content">
+              2
+            </div>
+          </div>
+          <div class="layui-colla-item">
+            <h2 class="layui-colla-title">热力动力类</h2>
+            <div class="layui-colla-content">
+              2
+            </div>
+          </div>
+          <div class="layui-colla-item">
+            <h2 class="layui-colla-title">能量指数</h2>
+            <div class="layui-colla-content">
+              2
+            </div>
+          </div>
+          <div class="layui-colla-item">
+            <h2 class="layui-colla-title">特殊高度厚度</h2>
+            <div class="layui-colla-content">
+              2
+            </div>
+          </div>
+          <div class="layui-colla-item">
+            <h2 class="layui-colla-title">层结构稳定类</h2>
+            <div class="layui-colla-content">
+              2
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="js/index.js"></script>
+<script>
+
+</script>
+</html>

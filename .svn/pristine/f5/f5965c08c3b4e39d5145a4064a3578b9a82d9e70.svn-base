@@ -1,0 +1,256 @@
+<template>
+<div class="page-wrapper overtime">
+    <el-container>
+        <el-main>
+            <el-card class="box-card" shadow="never">
+                <div slot="header" class="clearfix">
+                    <span class="primary">加班管理</span>
+                </div>
+                <div class="text">
+                    <div class="list">
+                        <page-table ref="table" remote="requestOvertimeList" :formatPayload="formatPayload" :span-method="spanMethod" :hidePagination="true">
+                            <div class="actions" slot="actions">
+                                <span class="title">选择月份</span>
+                                <el-date-picker v-model="query.monthTime" format="yyyy年 MM 月" value-format="yyyy-MM" type="month" placeholder="选择月"></el-date-picker>
+                                <c-button type="search" @click="search()">查询</c-button>
+                                <c-button type="warning" @click="formNight={'type':'statistics'}">夜班统计</c-button>
+                                <c-button type="danger" @click="formEmergency={'type':'employee'}">应急响应统计</c-button>
+                                <c-button type="search" v-if="!editCol" @click="editCol=!editCol">编辑</c-button>
+                                <c-button type="search" v-if="editCol" @click="editCol=!editCol">保存</c-button>
+                                <c-button type="search">导出</c-button>
+                                <c-button type="search">打印</c-button>
+                            </div>
+                            <el-table-column prop="XXXPROP_OVERTIME_name" label="姓名" width="60px"></el-table-column>
+                            <el-table-column label="日期">
+                                <el-table-column prop="XXXPROP_OVERTIME_range" label="星期" width="80px" />
+                            </el-table-column>
+                            <el-table-column v-for="({date,week,isRest,value},index) in dates" :label="date" :key="index">
+                                <table-col :className="isRest?'rest':''" :label="week">
+                                    <template slot-scope="scope">
+                                        <c-button type="text" @click="editCol&&(scope.row[value]=!scope.row[value])" v-if="editCol">
+                                            <span class="overtime-checked">{{scope.row[value]?'√':'　'}}</span>
+                                        </c-button>
+                                        <span class="overtime-checked" v-else>{{scope.row[value]?'√':'　'}}</span>
+                                    </template>
+                                </table-col>
+                            </el-table-column>
+                        </page-table>
+                    </div>
+                </div>
+            </el-card>
+        </el-main>
+        <dialog-submit title="夜班统计" :visible.sync="visibleDialogFormNight" :getPayload="()=>formNight" remote="requestDialogFormNightDownload" v-if="formNight" primary-text="下载">
+            <template>
+                <div class="dialog-main night-main">
+                    <el-tabs v-model="formNight.type">
+                        <el-tab-pane label="统计表" name="statistics"></el-tab-pane>
+                        <el-tab-pane label="发放表" name="distribution"></el-tab-pane>
+                    </el-tabs>
+                    <night-block :form="formNight"></night-block>
+                </div>
+            </template>
+        </dialog-submit>
+        <dialog-submit title="应急响应统计" :visible.sync="visibleDialogFormEmergency" :getPayload="()=>formEmergency" remote="requestDialogFormNightEmergencyDownload" v-if="formEmergency" primary-text="下载">
+            <template>
+                <div class="dialog-main night-main">
+                    <el-tabs v-model="formEmergency.type">
+                        <el-tab-pane label="领导" name="lead"></el-tab-pane>
+                        <el-tab-pane label="普通员工" name="employee"></el-tab-pane>
+                    </el-tabs>
+                    <night-emergency-block :form="formEmergency"></night-emergency-block>
+                </div>
+            </template>
+        </dialog-submit>
+    </el-container>
+</div>
+</template>
+
+<script>
+import {
+    common,
+    witchCommonList
+} from '../../mixins/index';
+import nightBlock from './components/night-block.vue'
+import nightEmergencyBlock from './components/night-emergency-block.vue'
+export default {
+    mixins: [common, witchCommonList],
+    components: {
+        nightBlock,
+        nightEmergencyBlock
+    },
+    data() {
+        return {
+            query: {
+                monthTime: null,
+                orgId:null
+            },
+            loginInfo:null,
+            queryTime:null,
+            editCol: false,
+            dates: null,
+            form: {},
+            visibleDialogFormNight: false,
+            formNight: null,
+            visibleDialogFormEmergency: false,
+            formEmergency: null
+        };
+    },
+    // computed: {
+    //     visibleDialogFormNight: {
+    //         set(val) {
+    //             if (!val) {
+    //                 this.formNight = null;
+    //             }
+    //         },
+    //         get() {
+    //             return this.formNight != null;
+    //         }
+    //     }
+    // },
+    watch: {
+        queryTime(data){
+            let timeData = data
+            this.query.time = timeData
+        },
+        formNight(val) {
+            if (val) {
+                this.visibleDialogFormNight = true;
+            }
+        },
+        visibleDialogFormNight(val) {
+            if (!val) {
+                this.formNight = null;
+            }
+        },
+        formEmergency(val) {
+            if (val) {
+                this.visibleDialogFormEmergency = true;
+            }
+        },
+        visibleDialogFormEmergency(val) {
+            if (!val) {
+                this.formEmergency = null;
+            }
+        }
+    },
+    mounted() {
+        const loginInfo = JSON.parse(localStorage.getItem('loginInfo',))
+        this.loginInfo = loginInfo
+        this.query.orgId = this.loginInfo.orgId
+
+        setTimeout(() => {
+            this.dates = [{
+                "date": "1",
+                "week": "日",
+                "isRest": true,
+                "value": "XXXPROP_OVERTIME_D_1"
+            }, {
+                "date": "2",
+                "week": "一",
+                "isRest": false,
+                "value": "XXXPROP_OVERTIME_D_2"
+            }, {
+                "date": "2",
+                "week": "一",
+                "isRest": true,
+                "value": "XXXPROP_OVERTIME_D_3"
+            }, {
+                "date": "2",
+                "week": "一",
+                "isRest": false,
+                "value": "XXXPROP_OVERTIME_D_4"
+            }, {
+                "date": "2",
+                "week": "一",
+                "isRest": true,
+                "value": "XXXPROP_OVERTIME_D_5"
+            }, {
+                "date": "2",
+                "week": "一",
+                "isRest": true,
+                "value": "XXXPROP_OVERTIME_D_6"
+            }]
+        }, 1000);
+    },
+    methods: {
+        spanMethod({
+            row,
+            column,
+            rowIndex,
+            columnIndex,
+            rows
+        }) {
+            if (columnIndex == 0 || column.property == 'XXXPROP_OVERTIME_real' || column.property == 'XXXPROP_OVERTIME_need') {
+                const funSpan = e => e.XXXPROP_OVERTIME_id == row.XXXPROP_OVERTIME_id;
+                const spanLength = rows.filter(funSpan).length;
+                if (spanLength > 1) {
+                    if (rows.findIndex(funSpan) == rowIndex) {
+                        return {
+                            rowspan: spanLength,
+                            colspan: 1
+                        }
+                    } else {
+                        return {
+                            rowspan: 0,
+                            colspan: 0
+                        }
+                    }
+                }
+            }
+            this.form.rows = rows;
+        },
+        formatPayloadLeft(payload){
+            return {
+                // pageSize: 5,
+                // pageIndex: 1,
+                'orgId':'27d87bbe1da1425fa9783e9eea6c7b40',
+                ...payload
+            }
+        },
+    }
+};
+</script>
+<style>
+.page-wrapper.overtime {
+    span.red {
+        color: red;
+    }
+
+    .overtime-checked {
+        color: #409EFF;
+    }
+
+    td.rest {
+        background: rgba(253, 245, 230, 1);
+    }
+
+    .dialog-main {
+        padding: 25px 45px;
+    }
+
+    .dialog-table-title {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        color: rgba(96, 98, 102, 1);
+        line-height: 53px;
+    }
+
+    .dialog-table-info {
+        width: 100%;
+
+        td {
+            line-height: 53px;
+            text-align: center;
+
+            &:first-child {
+                text-align: left;
+            }
+
+            &:last-child {
+                text-align: right;
+            }
+        }
+    }
+}
+</style>

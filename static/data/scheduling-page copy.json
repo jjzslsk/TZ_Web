@@ -1,0 +1,51 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "rowCount": 120,
+        "pageSize": 10,
+        "pageIndex": 3,
+        "list": [{
+            "XXXPROP_SCHEDULING_id": "1",
+            "XXXPROP_SCHEDULING_1": "周一",
+            "XXXPROP_SCHEDULING_D":"1",
+            "isRest": true,
+            "XXXPROP_SCHEDULING_ZS": "dl",
+            "XXXPROP_SCHEDULING_LS": "dl",
+            "XXXPROP_SCHEDULING_sx": "赵云"
+        }, {
+            "XXXPROP_SCHEDULING_id": "2",
+            "XXXPROP_SCHEDULING_1": "周二",
+            "XXXPROP_SCHEDULING_D":"1",
+            "isRest": true,
+            "XXXPROP_SCHEDULING_ZS": "",
+            "XXXPROP_SCHEDULING_LS": "dl",
+            "XXXPROP_SCHEDULING_sx": "赵云"
+        }, {
+            "XXXPROP_SCHEDULING_id": "3",
+            "XXXPROP_SCHEDULING_1": "周三",
+            "XXXPROP_SCHEDULING_D":"1",
+            "isRest": false,
+            "XXXPROP_SCHEDULING_ZS": "dl",
+            "XXXPROP_SCHEDULING_LS": "",
+            "XXXPROP_SCHEDULING_sx": "赵云"
+        }, {
+            "XXXPROP_SCHEDULING_id": "4",
+            "XXXPROP_SCHEDULING_1": "周一",
+            "XXXPROP_SCHEDULING_D":"1",
+            "isRest": false,
+            "XXXPROP_SCHEDULING_ZS": "",
+            "XXXPROP_SCHEDULING_LS": "",
+            "XXXPROP_SCHEDULING_sx": "赵云"
+        }, {
+            "XXXPROP_SCHEDULING_id": "5",
+            "XXXPROP_SCHEDULING_1": "周一",
+            "XXXPROP_SCHEDULING_D":"1",
+            "isRest": false,
+            "XXXPROP_SCHEDULING_ZS": "",
+            "XXXPROP_SCHEDULING_LS": "bx",
+            "XXXPROP_SCHEDULING_sx": "赵云"
+        }]
+    }
+}

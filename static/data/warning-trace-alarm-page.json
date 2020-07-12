@@ -1,0 +1,32 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "rowCount": 120,
+        "pageSize": 10,
+        "pageIndex": 3,
+        "list": [{
+            "XXXPROP_TRACE_ALARM_TYPE": "大风",
+            "level": "黄色",
+            "issueLetter": "首发",
+            "alarmContent": "路桥区气象台2019年12月30日16时30分发布大风黄色预警信号：受冷空气影响，我区风力正逐渐增大，预计今...",
+            "publishTime": "2020-4-21",
+            "publishOrg": "台州市气象局"
+        }, {
+            "XXXPROP_TRACE_ALARM_TYPE": "暴雨",
+            "level": "蓝色",
+            "issueLetter": "首发",
+            "alarmContent": "路桥区气象台2019年12月30日16时30分发布大风黄色预警信号：受冷空气影响，我区风力正逐渐增大，预计今...",
+            "publishTime": "2020-4-21",
+            "publishOrg": "台州市气象局"
+        }, {
+            "XXXPROP_TRACE_ALARM_TYPE": "雷电",
+            "level": "红色",
+            "issueLetter": "首发",
+            "alarmContent": "路桥区气象台2019年12月30日16时30分发布大风黄色预警信号：受冷空气影响，我区风力正逐渐增大，预计今...",
+            "publishTime": "2020-4-21",
+            "publishOrg": "台州市气象局"
+        }]
+    }
+}

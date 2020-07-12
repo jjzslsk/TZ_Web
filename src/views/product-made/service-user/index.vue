@@ -1,0 +1,273 @@
+<template>
+<div class="page-wrapper">
+    <el-container>
+        <common-left-tree title="服务用户导航" :isHeader='true' :data="treeData" @click-item="onTreeClickItem" class="left-tree">
+            <common-left-tree-actions slot="append" :lastItemClicked="lastItemClicked" @append="onTreeAppend" @edit="onTreeEdit" @delete="onTreeDelete('requestServiceUserTreeListDelItem')"></common-left-tree-actions>
+        </common-left-tree>
+        <el-main>
+            <el-card class="box-card" shadow="never">
+                <div slot="header" class="clearfix">
+                    <span class="primary">服务用户管理</span>
+                </div>
+                <div class="text">
+                    <div class="list">
+                        <page-table ref="table" remote="requestServiceUserList" :formatPayload="formatPayload">
+                            <div class="actions" slot="actions">
+                                <span class="title">搜索名称：</span>
+                                <el-input v-model="query.name" clearable placeholder="请输入标识"></el-input>
+                                <span class="title">搜索地址：</span>
+                                <el-input v-model="query.address" clearable placeholder="请输入名称"></el-input>
+                                <!-- <span class="title">行政级别：</span>
+                                <el-select v-model="query.XXXPROP_AREA_name" clearable placeholder="请选择">
+                                    <el-option label="地级市" value="city"></el-option>
+                                    <el-option label="区/县" value="county"></el-option>
+                                </el-select> -->
+                                <c-button type="search" @click="search()">搜索</c-button>
+                                <c-button type="add" @click="inputItem()">添加</c-button>
+                            </div>
+                            <el-table-column type="index" label="序列" width="80px"></el-table-column>
+                            <el-table-column prop="name" label="名称" />
+                            <el-table-column prop="address" label="地址" />
+                            <!-- <el-table-column prop="city" label="市" />
+                            <el-table-column prop="country" label="区/县" />
+                            <el-table-column prop="town" label="乡/镇" /> -->
+                            <!-- <el-table-column label="行政级别">
+                                <template slot-scope="{row}">
+                                    {{({'0':'地级市1','1':'地级市2','2':'地级市3','3':'地级市4','4':'地级市5'})[row.queryCode]}}
+                                </template>
+                            </el-table-column> -->
+                            <!-- <el-table-column prop="XXXPROP_AREA_4" label="上级地区" /> -->
+                            <!-- <el-table-column label="区/县">
+                                <template slot-scope="{row}">
+                                    {{({'001':'浙江省'})[row.country]}}
+                                </template>
+                            </el-table-column> -->
+                              <!-- <el-table-column label="乡/镇">
+                                <template slot-scope="{row}">
+                                    {{({'330000':'浙江省'})[row.XXXPROP_AREA_4]}}
+                                </template>
+                            </el-table-column> -->
+                            <el-table-column prop label="操作" width="200px">
+                                <template slot-scope="scope">
+                                    <el-button type="text" size="small" @click="inputItem(scope.row)">编辑</el-button>
+                                    <c-button type="del" @click="onConfirmDelete(scope.row)">
+                                        <span class="text-danger">删除</span>
+                                    </c-button>
+                                </template>
+                            </el-table-column>
+                        </page-table>
+                    </div>
+                </div>
+            </el-card>
+        </el-main>
+    </el-container>
+     <dialog-form title="服务用户分类" @success="submitSuccess" :visible.sync="visibleDialogFormLeftTree" :getPayload="()=>formLeftTree" :confirmDisabled="!formLeftTree.name||formLeftTree.name.legend==0||formLeftTree.pid===undefined" remote="requestDialogFormServiceUserInput"
+      v-if="formLeftTree">
+      <!-- {{formLeftTree}}
+      {{showChannel}} -->
+        <template>
+            <el-form-item label="上级类型" label-width="120px">
+                <el-select v-model="formLeftTree.pid" placeholder="请选择">
+                    <el-option v-for="item in treeDataList" :label="item.label" :value="item.id" :key="item.id"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="渠道" label-width="120px">
+                <el-input v-model="formLeftTree.channel" :disabled="showChannel" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="分类名称" label-width="120px">
+                <el-input v-model="formLeftTree.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="排序" label-width="120px">
+                <el-input v-model="formLeftTree.sort" autocomplete="off"></el-input>
+            </el-form-item>
+        </template>
+    </dialog-form>
+
+    <dialog-form @success="submitSuccess" title="服务用户" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.name" remote="requestDialogFormServiceUserItemInput" v-if="formItem">
+        <!-- <template v-slot:default="{ form }"> -->
+        <template>
+            <el-form-item label="所属分类" label-width="120px">
+                <el-select v-model="formItem.serviceUserTypeId" placeholder="请选择">
+                    <el-option v-for="item in treeDataList" :label="item.label" :value="item.id" :key="item.id"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="名称" label-width="120px">
+                <el-input v-model="formItem.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="地址" label-width="120px">
+                <el-input v-model="formItem.address" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="所在省/直辖市" label-width="120px">
+                <el-input v-model="formItem.province" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="市" label-width="120px">
+                <el-input v-model="formItem.city" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="区/县" label-width="120px">
+                <el-input v-model="formItem.country" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="乡/镇" label-width="120px">
+                <el-input v-model="formItem.town" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="村/街道" label-width="120px">
+                <el-input v-model="formItem.village" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="联系人" label-width="120px">
+                <el-input v-model="formItem.linkMan" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="联系方式" label-width="120px">
+                <el-input v-model="formItem.phone" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="备注" label-width="120px">
+                <el-input v-model="formItem.remarks" autocomplete="off"></el-input>
+            </el-form-item>
+            <!-- <el-form-item label="行政级别" label-width="120px">
+                <el-select v-model="formItem.queryCode" placeholder="请选择">
+                    <el-option label="地级市" value="city"></el-option>
+                    <el-option label="区/县" value="county"></el-option>
+                </el-select>
+            </el-form-item> -->
+            <!-- <el-form-item label="上级地区" label-width="120px" v-if="lastItemClicked">
+                <el-input v-model="lastItemClicked.label" autocomplete="off" readOnly></el-input>
+            </el-form-item> -->
+            <!-- <el-form-item label="上级地区" label-width="120px">
+                <el-input v-model="formItem.XXXPROP_AREA_4" autocomplete="off" readOnly></el-input>
+            </el-form-item> -->
+            <!-- <el-form-item label="区/县" label-width="120px">
+                <el-select v-model="formItem.country" placeholder="请选择">
+                    <el-option label="浙江省" value="001"></el-option>
+                </el-select>
+            </el-form-item> -->
+            <!-- <el-form-item label="描述" label-width="120px">
+                <el-input v-model="formItem.XXXPROP_AREA_6" autocomplete="off" type="textarea" :autosize="{ minRows: 2, maxRows: 6}"></el-input>
+            </el-form-item> -->
+        </template>
+    </dialog-form>
+</div>
+</template>
+
+<script>
+import {
+    requestServiceUserList,
+    requestServiceUserListDelItem,
+    requestServiceUserTreeList
+} from "@/remote/";
+import {
+    common,
+    witchCommonList,
+    withCommonLeftTree,
+} from '../../mixins/index';
+import {
+    mapActions,mapGetters
+} from 'vuex'
+export default {
+    mixins: [common, witchCommonList, withCommonLeftTree],
+    data() {
+        return {
+            treeDataList:[],
+            treeData:[],
+            loginInfo:null,
+            showChannel:true,
+            collection:[],
+            query: {
+                // XXXPROP_AREA_id: "123",
+                // XXXPROP_AREA_name: "",
+            }
+        };
+    },
+    computed: {
+        ...mapGetters(['accountOrgId']),
+        actionOfListDelItem() {
+            return requestServiceUserListDelItem;
+        }
+    },
+    watch:{
+        'formLeftTree.pid':{
+            handler: function(val, oldVal) {
+                this.collection.forEach(i=>{
+                    if(val != 'null' && i.id == val){
+                        this.showChannel = true
+                        this.formLeftTree.channel = i.channel
+                    }
+                })
+                if(val == 'null'){this.showChannel = false}
+         },
+        }
+    },
+    methods: {
+        submitSuccess(){
+            this.treeDataList = []
+            this.onConfirmUpdate()
+            this.requestData()
+        },
+        requestData(){
+            requestServiceUserTreeList().then(res => {
+                this.treeData = res.data.list;
+                this.treeDataList = [];
+                this.treeOfList(res.data.list);
+                this.collection = this.treeDataList
+                this.treeDataList = this.collection.filter((item,index) =>{
+                    item.pid = item.parentId
+                    delete item.parentId
+                    return item.type == 'userType'
+                })
+                this.treeDataList.unshift({id:'null',label:'一级分类'})
+            });
+        },
+        handleNodeClick(item){
+            console.log(item)
+        },
+    // formatPayload(payload) {
+    //     this.loginInfo = JSON.parse(localStorage.getItem('loginInfo',))
+    //   return {
+    //     orgId:this.loginInfo.orgId,
+    //     pageIndex: 1,
+    //     pageSize: 5,
+    //     ...payload
+    //   };
+    // },
+        treeOfList(tree) {
+        tree.map(item => {
+            this.treeDataList.push(item);
+            if (item.children) {
+            this.treeOfList(item.children);
+            }
+        });
+        },
+        submitSuccess(res){
+            this.onConfirmUpdate()
+            this.requestData()
+        },
+        getFormItemByInputItem(item) {
+            console.log(item)
+            const {
+                treeDataList,
+                lastItemClicked
+            } = this;
+            const lastKeyItemClicked = lastItemClicked && lastItemClicked.id;
+            return item ? item : {"orgId":this.accountOrgId};
+        },
+        getFormItemLeftByInputItem(item) {
+            this.formLeftTree = {}
+            const {
+                lastItemClicked,
+            } = this;
+            return item ? {
+                id:item.id,
+                name:item.label,
+                pid:item.pid,
+                channel:item.channel,
+                sort:item.sort,
+                orgId:this.accountOrgId,
+            } : {
+                orgId:this.accountOrgId,
+            };
+        },
+    },
+    mounted () {
+        this.requestData()
+    },
+};
+</script>
+<style scoped>
+</style>

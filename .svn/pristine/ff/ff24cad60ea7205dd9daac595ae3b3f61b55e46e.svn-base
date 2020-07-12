@@ -1,0 +1,44 @@
+export const weather = [
+    "晴",
+    "多云",
+    "阴",
+    "小雨",
+    "中雨",
+    "大雨",
+    "暴雨",
+    "大暴雨",
+    "特大暴雨"
+];
+export const windDirection = [
+    "静风",
+    "北风",
+    "西北风",
+    "东北风",
+    "南风",
+    "西南风",
+    "东南风",
+    "西风",
+    "东风"
+];
+export const audit = [{
+    value: 'all',
+    label: '全部'
+}, {
+    value: 'successful',
+    label: '通过'
+}, {
+    value: 'failure',
+    label: '不通过'
+}];
+
+
+export const region = [
+    {
+        value: "huhehaote",
+        label: "呼和浩特"
+    },
+    {
+        value: "chifeng",
+        label: "赤峰"
+    }
+];

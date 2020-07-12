@@ -1,0 +1,107 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "rowCount": 120,
+        "pageSize": 10,
+        "pageIndex": 3,
+        "list": [{
+            "XXXPROPDICT_id": "1",
+            "XXXPROPDICT_1": "微博",
+            "XXXPROPDICT_2": "WEIBO",
+            "XXXPROPDICT_3": "0",
+            "XXXPROPDICT_4": "发布方式",
+            "XXXPROPDICT_5": "1",
+            "XXXPROPDICT_6": "使用微博发布"
+        },{
+            "XXXPROPDICT_id": "2",
+            "XXXPROPDICT_1": "微信公众号",
+            "XXXPROPDICT_2": "WEIXINGONGZONGHAO",
+            "XXXPROPDICT_3": "0",
+            "XXXPROPDICT_4": "发布方式",
+            "XXXPROPDICT_5": "2",
+            "XXXPROPDICT_6": "使用微信公众号发布"
+        },{
+            "XXXPROPDICT_id": "3",
+            "XXXPROPDICT_1": "微博",
+            "XXXPROPDICT_2": "WEIBO",
+            "XXXPROPDICT_3": "0",
+            "XXXPROPDICT_4": "发布方式",
+            "XXXPROPDICT_5": "1",
+            "XXXPROPDICT_6": "使用微博发布"
+        },{
+            "XXXPROPDICT_id": "4",
+            "XXXPROPDICT_1": "微博",
+            "XXXPROPDICT_2": "WEIBO",
+            "XXXPROPDICT_3": "0",
+            "XXXPROPDICT_4": "发布方式",
+            "XXXPROPDICT_5": "1",
+            "XXXPROPDICT_6": "使用微博发布"
+        },{
+            "XXXPROPDICT_id": "5",
+            "XXXPROPDICT_1": "微博",
+            "XXXPROPDICT_2": "WEIBO",
+            "XXXPROPDICT_3": "0",
+            "XXXPROPDICT_4": "发布方式",
+            "XXXPROPDICT_5": "1",
+            "XXXPROPDICT_6": "使用微博发布"
+        },{
+            "XXXPROPDICT_id": "6",
+            "XXXPROPDICT_1": "微博",
+            "XXXPROPDICT_2": "WEIBO",
+            "XXXPROPDICT_3": "0",
+            "XXXPROPDICT_4": "发布方式",
+            "XXXPROPDICT_5": "1",
+            "XXXPROPDICT_6": "使用微博发布"
+        },{
+            "XXXPROPDICT_id": "7",
+            "XXXPROPDICT_1": "微博",
+            "XXXPROPDICT_2": "WEIBO",
+            "XXXPROPDICT_3": "0",
+            "XXXPROPDICT_4": "发布方式",
+            "XXXPROPDICT_5": "1",
+            "XXXPROPDICT_6": "使用微博发布"
+        },{
+            "XXXPROPDICT_id": "8",
+            "XXXPROPDICT_1": "微博",
+            "XXXPROPDICT_2": "WEIBO",
+            "XXXPROPDICT_3": "0",
+            "XXXPROPDICT_4": "发布方式",
+            "XXXPROPDICT_5": "1",
+            "XXXPROPDICT_6": "使用微博发布"
+        },{
+            "XXXPROPDICT_id": "9",
+            "XXXPROPDICT_1": "微博",
+            "XXXPROPDICT_2": "WEIBO",
+            "XXXPROPDICT_3": "0",
+            "XXXPROPDICT_4": "发布方式",
+            "XXXPROPDICT_5": "1",
+            "XXXPROPDICT_6": "使用微博发布"
+        },{
+            "XXXPROPDICT_id": "10",
+            "XXXPROPDICT_1": "微博",
+            "XXXPROPDICT_2": "WEIBO",
+            "XXXPROPDICT_3": "0",
+            "XXXPROPDICT_4": "发布方式",
+            "XXXPROPDICT_5": "1",
+            "XXXPROPDICT_6": "使用微博发布"
+        },{
+            "XXXPROPDICT_id": "11",
+            "XXXPROPDICT_1": "微博",
+            "XXXPROPDICT_2": "WEIBO",
+            "XXXPROPDICT_3": "0",
+            "XXXPROPDICT_4": "发布方式",
+            "XXXPROPDICT_5": "1",
+            "XXXPROPDICT_6": "使用微博发布"
+        },{
+            "XXXPROPDICT_id": "12",
+            "XXXPROPDICT_1": "微博",
+            "XXXPROPDICT_2": "WEIBO",
+            "XXXPROPDICT_3": "0",
+            "XXXPROPDICT_4": "发布方式",
+            "XXXPROPDICT_5": "1",
+            "XXXPROPDICT_6": "使用微博发布"
+        }]
+    }
+}

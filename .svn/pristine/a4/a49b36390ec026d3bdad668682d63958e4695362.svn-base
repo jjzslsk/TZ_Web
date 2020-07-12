@@ -1,0 +1,626 @@
+<template>
+  <div class="content">
+    <div class="but">
+      <!-- <el-button type="primary" size="small" @click="onAlert('onAlert')">编辑</el-button> -->
+      <el-checkbox v-model="form.checkbox" label="同步" border size="small"></el-checkbox>
+      <el-button-group>
+        <el-button icon="el-icon-refresh" size="small"></el-button>
+        <el-button icon="el-icon-full-screen" @click="dialogTableVisibleFull = true" size="small"></el-button>
+      </el-button-group>
+    </div>
+    <div class="img-box">
+      <el-row :gutter="2">
+        <el-col :span="12">
+          <div class="img-item">
+            <div class="title">2020-02-20 08:00 风力等值线色斑图</div>
+            <div class="img" @click="dialogTableVisible = true">
+              <img :src="isImages.url" alt srcset />
+            </div>
+            <div class="icon-left" @click="switchImg('left')">
+              <i class="el-icon-arrow-left"></i>
+            </div>
+            <div class="icon-right" @click="switchImg('right')">
+              <i class="el-icon-arrow-right"></i>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="img-item">
+            <div class="title">2020-02-20 08:00 风力等值线色斑图</div>
+           <div class="img" @click="dialogTableVisible = true">
+              <img :src="isImages.url" alt srcset />
+            </div>
+            <div class="icon-left" @click="switchImg('left')">
+              <i class="el-icon-arrow-left"></i>
+            </div>
+            <div class="icon-right" @click="switchImg('right')">
+              <i class="el-icon-arrow-right"></i>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="2">
+        <el-col :span="12">
+          <div class="img-item">
+            <div class="title">2020-02-20 08:00 风力等值线色斑图</div>
+           <div class="img" @click="dialogTableVisible = true">
+              <img :src="isImages.url" alt srcset />
+            </div>
+            <div class="icon-left" @click="switchImg('left')">
+              <i class="el-icon-arrow-left"></i>
+            </div>
+            <div class="icon-right" @click="switchImg('right')">
+              <i class="el-icon-arrow-right"></i>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="img-item">
+            <div class="title">2020-02-20 08:00 风力等值线色斑图</div>
+           <div class="img" @click="dialogTableVisible = true">
+              <img :src="isImages.url" alt srcset />
+            </div>
+            <div class="icon-left" @click="switchImg('left')">
+              <i class="el-icon-arrow-left"></i>
+            </div>
+            <div class="icon-right" @click="switchImg('right')">
+              <i class="el-icon-arrow-right"></i>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+    <div class="preview-full" v-if="dialogTableVisibleFull">
+      <div class="but">
+        <el-button
+          type="primary"
+          icon="el-icon-back"
+          @click="dialogTableVisibleFull = false"
+          size="small"
+        >图片资料</el-button>
+        <!-- <el-button icon="el-icon-refresh" size="small">同步</el-button> -->
+        <div class>
+          <el-checkbox v-model="form.checkbox" label="同步" border size="small"></el-checkbox>
+          <el-button
+            icon="el-icon-full-screen"
+            @click="dialogTableVisibleFull = false"
+            size="small"
+          ></el-button>
+        </div>
+      </div>
+      <div class="img-box-full">
+        <el-row :gutter="2">
+          <el-col :span="12">
+            <el-row :gutter="0">
+              <el-col :span="18">
+                <div class="img-item">
+                  <div class="img" @click="dialogTableVisible = true">
+                    <img src="/static/images/img.png" alt srcset />
+                  </div>
+                  <div class="icon-left">
+                    <i class="el-icon-arrow-left"></i>
+                  </div>
+                  <div class="icon-right">
+                    <i class="el-icon-arrow-right"></i>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <el-table class="table-box" border height="300" :data="tableData">
+                  <el-table-column prop="date" label="起报时间"></el-table-column>
+                </el-table>
+                <el-table class="table-box" border height="300" :data="tableData">
+                  <el-table-column prop="date" label="预报时间"></el-table-column>
+                </el-table>
+              </el-col>
+            </el-row>
+          </el-col>
+          <el-col :span="12">
+            <el-row :gutter="0">
+              <el-col :span="18">
+                <div class="img-item">
+                  <div class="img" @click="dialogTableVisible = true">
+                    <img src="/static/images/img.png" alt srcset />
+                  </div>
+                  <div class="icon-left">
+                    <i class="el-icon-arrow-left"></i>
+                  </div>
+                  <div class="icon-right">
+                    <i class="el-icon-arrow-right"></i>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <el-table class="table-box" border height="300" :data="tableData">
+                  <el-table-column prop="date" label="起报时间"></el-table-column>
+                </el-table>
+                <el-table class="table-box" border height="300" :data="tableData">
+                  <el-table-column prop="date" label="预报时间"></el-table-column>
+                </el-table>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+        <el-row :gutter="2">
+          <el-col :span="12">
+            <el-row :gutter="0">
+              <el-col :span="18">
+                <div class="img-item">
+                  <div class="img" @click="dialogTableVisible = true">
+                    <img src="/static/images/img.png" alt srcset />
+                  </div>
+                  <div class="icon-left">
+                    <i class="el-icon-arrow-left"></i>
+                  </div>
+                  <div class="icon-right">
+                    <i class="el-icon-arrow-right"></i>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <el-table class="table-box" border height="300" :data="tableData">
+                  <el-table-column prop="date" label="起报时间"></el-table-column>
+                </el-table>
+                <el-table class="table-box" border height="300" :data="tableData">
+                  <el-table-column prop="date" label="预报时间"></el-table-column>
+                </el-table>
+              </el-col>
+            </el-row>
+          </el-col>
+          <el-col :span="12">
+            <el-row :gutter="0">
+              <el-col :span="18">
+                <div class="img-item">
+                  <div class="img" @click="dialogTableVisible = true">
+                    <img src="/static/images/img.png" alt srcset />
+                  </div>
+                  <div class="icon-left">
+                    <i class="el-icon-arrow-left"></i>
+                  </div>
+                  <div class="icon-right">
+                    <i class="el-icon-arrow-right"></i>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <el-table class="table-box" border height="300" :data="tableData">
+                  <el-table-column prop="date" label="起报时间"></el-table-column>
+                </el-table>
+                <el-table class="table-box" border height="300" :data="tableData">
+                  <el-table-column prop="date" label="预报时间"></el-table-column>
+                </el-table>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
+    <el-dialog class="preview" title :visible.sync="dialogTableVisible">
+      <div class="preview-main">
+        <div class="preview-box">
+          <img :src="isImages.url" alt srcset />
+          <div class="icon-left" @click="switchImg('left')">
+            <i class="el-icon-arrow-left"></i>
+          </div>
+          <div class="icon-right" @click="switchImg('right')">
+            <i class="el-icon-arrow-right"></i>
+          </div>
+        </div>
+        <div class="img-list">
+          <div
+            class="list-item"
+            :class="[present == index ? 'activeClass' : '', '']"
+            @click="clickImg(index)"
+            v-for="(item,index) in imagesList"
+            :key="item.id"
+          >
+            <img :src="item.url" alt srcset />
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+<script>
+import {
+  common,
+  witchCommonList,
+  withCommonLeftTree
+} from "../../../mixins/index";
+export default {
+  mixins: [common, witchCommonList, withCommonLeftTree],
+  data() {
+    return {
+      imagesList: [
+        { url: "/static/images/img.png", id: "1" },
+        { url: "/static/images/message.png", id: "2" },
+        { url: "/static/images/img.png", id: "3" },
+        { url: "/static/images/message.png", id: "4" }
+      ],
+      makeImagesList:[
+        {date:'2020-02-20 08:00',title:'风力等值线色斑图',},
+      ],
+      tableData: [
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄"
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1517 弄"
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1519 弄"
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄"
+        },
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄"
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1517 弄"
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1519 弄"
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄"
+        },
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄"
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1517 弄"
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1519 弄"
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄"
+        },
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄"
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1517 弄"
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1519 弄"
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄"
+        }
+      ],
+      dialogTableVisible: false,
+      dialogTableVisibleFull: false,
+      form: {
+        checkbox:true
+      },
+      isImages: {},
+      present: 0,
+      isActive: null,
+      clickClass: ""
+    };
+  },
+  mounted() {
+    this.isImages = this.imagesList[this.present];
+  },
+  methods: {
+    clickImg(data) {
+      console.log(data);
+      this.present = data;
+      this.isImages = this.imagesList[this.present];
+    },
+    switchImg(data) {
+      if (data == "right" && this.present < this.imagesList.length - 1) {
+        this.present += 1;
+        console.log(this.present);
+        this.isImages = this.imagesList[this.present];
+      } else if (data == "left" && this.present !== 0) {
+        this.present -= 1;
+        this.isImages = this.imagesList[this.present];
+      } else {
+        this.imagesList[0];
+      }
+    },
+    onAlert(data) {
+      //   this.$emit("dialogEmit", data);
+    }
+  }
+};
+</script>
+<style lang='postcss' scoped>
+.content {
+  height: 100%;
+  .but {
+    text-align: right;
+  }
+  .img-box {
+    .img-item {
+      position: relative;
+      padding: 0 10px 0px 10px;
+      .title {
+        padding: 10px 0;
+        text-align: center;
+        font-size: 15px;
+        color: #606266;
+      }
+      img {
+        width: 100%;
+        height: 320px;
+        background: #409eff;
+      }
+      .icon-left {
+        position: absolute;
+        z-index: 3;
+        background: rgba(0, 0, 0, 0.11);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        left: 0;
+        top: 50%;
+        width: 23px;
+        height: 23px;
+        i {
+          height: 100%;
+          width: 100%;
+          position: absolute;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+      .icon-right {
+        position: absolute;
+        z-index: 3;
+        background: rgba(0, 0, 0, 0.11);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        right: 0;
+        top: 50%;
+        width: 23px;
+        height: 23px;
+        i {
+          height: 100%;
+          width: 100%;
+          position: absolute;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+  }
+  .preview {
+    .preview-main {
+      width: 100%;
+      .preview-box {
+        width: 100%;
+        padding: 0 2.5px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+        .icon-left {
+          position: absolute;
+          z-index: 3;
+          background: rgba(0, 0, 0, 0.11);
+          border-radius: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          left: 0;
+          top: 40%;
+          width: 23px;
+          height: 23px;
+          i {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+        .icon-right {
+          position: absolute;
+          z-index: 3;
+          background: rgba(0, 0, 0, 0.11);
+          border-radius: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          right: 0;
+          top: 40%;
+          width: 23px;
+          height: 23px;
+          i {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+      }
+      .img-list {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .list-item {
+          height: 160px;
+          padding: 0 2.5px;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .activeClass {
+          border: #409eff 2px solid;
+        }
+      }
+    }
+  }
+  .preview-full {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 10;
+    .but {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+    }
+    .img-box-full {
+      height: calc(100% - 60px);
+      padding: 0 10px;
+      .table-box {
+        .el-table__header tr,
+        .el-table__header th {
+          padding: 0;
+          height: 40px;
+        }
+        .el-table__body tr,
+        .el-table__body td {
+          padding: 0;
+          height: 40px;
+        }
+        th {
+          padding: 0 !important;
+          height: 10px;
+          ling-height: 10px;
+        }
+        td {
+          padding: 0 !important;
+          height: 10px;
+          ling-height: 10px;
+        }
+      }
+      .el-row {
+        height: 50%;
+        padding-bottom: 2.5px;
+        .el-col {
+          height: 100%;
+        }
+      }
+      .img-item {
+        height: 100%;
+        position: relative;
+        padding: 0 10px 0px 10px;
+        .title {
+          padding: 10px 0;
+          text-align: center;
+          font-size: 15px;
+          color: #606266;
+        }
+        .img {
+          /* height: calc(100% - 35px); */
+          height: 100%;
+          img {
+            width: 100%;
+            height: 200%;
+          }
+        }
+        .icon-left {
+          position: absolute;
+          z-index: 3;
+          background: rgba(0, 0, 0, 0.11);
+          border-radius: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          left: 0;
+          top: 100%;
+          width: 23px;
+          height: 23px;
+          i {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+        .icon-right {
+          position: absolute;
+          z-index: 3;
+          background: rgba(0, 0, 0, 0.11);
+          border-radius: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          right: 0;
+          top: 100%;
+          width: 23px;
+          height: 23px;
+          i {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+      }
+    }
+  }
+}
+</style>
+<style lang='postcss'>
+.table-box {
+  .el-table__header tr,
+  .el-table__header th {
+    padding: 0;
+    height: 30px;
+  }
+  .el-table__body tr,
+  .el-table__body td {
+    padding: 0;
+    height: 30px;
+  }
+}
+</style>

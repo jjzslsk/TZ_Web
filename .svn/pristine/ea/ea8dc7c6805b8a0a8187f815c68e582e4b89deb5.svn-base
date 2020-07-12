@@ -1,0 +1,130 @@
+// mockSettings.js
+
+// xrw
+// const backCommon = 'http://192.168.0.67:9002'
+// 137
+// const backCommon = 'http://192.168.0.137:9002'
+// wzx
+// const backCommon = `http://192.168.0.139:9002`
+// const backCommon = `http://192.168.3.59:9002`
+// pq
+// const backCommon = `http://192.168.0.55:9002`
+// ww
+// const backCommon = `http://222.216.5.171:8890`
+// 11 xrw
+// const backCommon = `http://192.168.0.59:9002`
+// const backCommon = `http://19.168.8.120:9002`
+// 11 pq
+// const backCommon = `http://192.168.3.109:9002`
+// const backCommon = `http://19.168.8.123:9002`
+// const backCommon = `http://192.168.3.54:9002`
+// const pq = `http://192.168.3.109:9002`
+// 11 wzx
+// const backCommon = `http://192.168.3.102:9002`
+
+// zs
+// const backCommon = `https://qxfw.tqonline.top:8900`
+
+//hnd
+// const backCommon = `http://192.168.0.201:62629`
+// const backCommon = `http://192.168.0.201:35102`
+
+// zyd
+// const backCommon1 = `http://192.168.0.201:2121`
+// const backCommon1 = `http://jjzslsk.gicp.net:27507`
+// const backCommon1 = `http://192.168.0.69:4001`
+// const backCommon1 = `http://192.168.0.118:4001`
+const backCommon1 = `http://192.168.0.234:40215`
+
+
+// lxy
+const backCommon4 = 'http://192.168.0.234:9527'
+// const backCommon4 = 'http://192.168.0.98:9527'
+
+// wzl
+// const backCommon5 = 'http://192.168.0.73:8088'
+const backCommon5 = 'http://192.168.0.62:8088'
+
+//234
+// const backCommon = `http://192.168.0.201:40215`
+
+//pageoffice 
+const backCommon3 = `http://192.168.0.201:62689`
+
+const backCommon2 = `http://192.168.0.201:51630`
+
+// 11 zs
+// const backCommon = `http://192.168.18.61:8888`
+
+mockSettings = {
+    "delay": 0, // 全局延时
+    "timeout": 10000, // 请求超时设置
+    "temDir": "tem", // 自动记录requestRemote的结果目录
+    "dist_dir": {
+        "js": "dist-prod/js"
+    },
+    "mockList": [{
+        //     'reg': '/api/controller/action', // 匹配的正则表达式
+        //     'handle': ajaxSync('./path/to/mockdata.json') // 发送对应json文件
+        // }, {
+        //     //     'reg': '/api',
+        //     //     'handle': requestRemote('https://publish.online.url/')
+        //     // }, {
+        //     //     'reg': '/data/',
+        //     //     'handle': ajaxDirSync({dirBasePath: './data/', pathPrefix: '/data/'}) // 返回文件，将url的前缀用pathPrefix替换，并返回相对于dirBasePath地址的文件。
+        // // }, {
+        // //     'reg': '^/dist/',
+        // //     'handle': routerReplace('^/dist/', '/') // 替换router url的指定正则表达式部分为指定内容
+        // }, {
+        //     'reg': '/my-menu.json$',
+        //     'handle': routerReplace('/my-menu.json', '/my-menu-system.json') // 替换router url的指定正则表达式部分为指定内容
+        // }, {
+        //     'reg': '/common-success.json$',
+        //     'handle': routerReplace('/common-success.json', '/common-failed.json') // 替换router url的指定正则表达式部分为指定内容
+        // }, {
+        //     'reg': '/activities/activityAreaInfo/getActivityAreaSubordinateInfoByActivityId',
+        //     'handle': routerReplace('/activities/activityAreaInfo/getActivityAreaSubordinateInfoByActivityId', '/static/data/server/cards.json') // 替换router url的指定正则表达式部分为指定内容
+        // }, {
+        //     'reg': '/activities/activityAreaInfo/getFiveDaysForecast',
+        //     'handle': routerReplace('/activities/activityAreaInfo/getFiveDaysForecast', '/static/data/server/getFiveDaysForecast.json') // 替换router url的指定正则表达式部分为指定内容
+        // }, {
+        'reg': '/static/pages/images/',
+        'handle': ajaxDirSync() // 默认参数{dirBasePath: './',pathPrefix: '/'}
+    }, {
+        'reg': '/data/',
+        'handle': ajaxDirSync() // 默认参数{dirBasePath: './',pathPrefix: '/'}
+        // }, {
+        //     'reg': '^/activities/weatherPredict',
+        //     'handle': requestRemote(pq) // 代理到对应的远端
+    // }, {
+    //     'reg': '^/ssddraw/',
+    //     'handle': requestRemote(backCommon) // 代理到对应的远端
+    // }, {
+    //     'reg': '^/filePath/',
+    //     'handle': requestRemote(backCommon) // 代理到对应的远端
+    // }, {
+    //     'reg': '^/gcisAPP-service/',
+    //     'handle': requestRemote(backCommon) // 代理到对应的远端
+    },
+    {
+        'reg': '^/boot/',
+        'handle': requestRemote(backCommon2) // 代理到对应的远端
+    },
+    {
+        'reg': '^/ssd/product',
+        'handle': requestRemote(backCommon4) // 代理到对应的远端 lxy
+    },
+    {
+        'reg': '^/ssd/mgr-service',
+        'handle': requestRemote(backCommon1) // 代理到对应的远端 zyd
+    },
+    {
+        'reg': '^/ssd/total',
+        'handle': requestRemote(backCommon5) // 代理到对应的远端 zyd
+    },
+    {
+        'reg': '^/product/ssd-page-office/',
+        'handle': requestRemote(backCommon3) // 代理到对应的远端
+    },
+]
+}

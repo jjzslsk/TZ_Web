@@ -1,0 +1,32 @@
+<template>
+  <div class="content">
+      <div class="img">
+          <img :src="contentImg" alt="" srcset="">
+      </div>
+  </div>
+</template>
+<script>
+import {
+    requestProductMakeMessageList,
+} from "@/remote/";
+export default {
+  data() {
+    return {
+      contentImg:null,
+    };
+  },
+  mounted(){
+    requestProductMakeMessageList().then(res=>{
+      this.contentImg = res.data.content
+    })
+  },
+};
+</script>
+<style lang='postcss' scoped>
+.content {
+    text-align: center;
+  .img {
+
+  }
+}
+</style>

@@ -1,0 +1,44 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "list": [{
+            "XXXPROP_SCHEDULING_id": "1",
+            "XXXPROP_SCHEDULING_1": "周一",
+            "XXXPROP_SCHEDULING_D":"1",
+            "isRest": true,
+            "XXXPROP_SCHEDULING_ZS": "asd123",
+            "XXXPROP_SCHEDULING_LS": "qwer123",
+            "XXXPROP_SCHEDULING_L1": ""
+        }, {
+            "XXXPROP_SCHEDULING_id": "2",
+            "XXXPROP_SCHEDULING_1": "周二",
+            "XXXPROP_SCHEDULING_D":"1",
+            "isRest": true,
+            "XXXPROP_SCHEDULING_ZS": "",
+            "XXXPROP_SCHEDULING_LS": "asd123"
+        }, {
+            "XXXPROP_SCHEDULING_id": "3",
+            "XXXPROP_SCHEDULING_1": "周三",
+            "XXXPROP_SCHEDULING_D":"1",
+            "isRest": false,
+            "XXXPROP_SCHEDULING_ZS": "qwer123",
+            "XXXPROP_SCHEDULING_LS": ""
+        }, {
+            "XXXPROP_SCHEDULING_id": "4",
+            "XXXPROP_SCHEDULING_1": "周一",
+            "XXXPROP_SCHEDULING_D":"1",
+            "isRest": false,
+            "XXXPROP_SCHEDULING_ZS": "",
+            "XXXPROP_SCHEDULING_LS": ""
+        }, {
+            "XXXPROP_SCHEDULING_id": "5",
+            "XXXPROP_SCHEDULING_1": "周一",
+            "XXXPROP_SCHEDULING_D":"1",
+            "isRest": false,
+            "XXXPROP_SCHEDULING_ZS": "",
+            "XXXPROP_SCHEDULING_LS": "qwer123"
+        }]
+    }
+}

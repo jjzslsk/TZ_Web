@@ -1,0 +1,69 @@
+<template>
+<div class="menu-main">
+    <!-- <el-checkbox-group class="menu-checkbox-group" v-model="valueChecked" size="small"> -->
+    <table-block ref="table" remote="requestAuthList" :hidePagination="true" :span-method="spanMethod">
+        <el-table-column prop="XXXPROP_AUTH_id" label="序号" width="80px"></el-table-column>
+        <el-table-column label="一级菜单">
+            <template slot-scope="{row}">
+                <el-checkbox :label="row.XXXPROP_AUTH_id" v-model="row.XXXPROP_AUTH_CHECKED" size="small" border>{{row.XXXPROP_AUTH_NAME}}</el-checkbox>
+            </template>
+        </el-table-column>
+        <el-table-column label="二级菜单">
+            <template slot-scope="{row}">
+                <el-checkbox v-if="row.XXXPROP_AUTH_id_LVL_2!==undefined" :label="row.XXXPROP_AUTH_id_LVL_2" v-model="row.XXXPROP_AUTH_CHECKED_LVL_2" size="small" border>{{row.XXXPROP_AUTH_NAME_LVL_2}}</el-checkbox>
+            </template>
+        </el-table-column>
+        <el-table-column label="三级菜单">
+            <template slot-scope="{row}">
+                <el-checkbox v-for="(item) in row.XXXPROP_AUTH_CHILDREN" :label="item.value" v-model="item.checked" :key="item.value" size="small" border>{{item.label}}</el-checkbox>
+            </template>
+        </el-table-column>
+    </table-block>
+    <!-- </el-checkbox-group> -->
+</div>
+</template>
+
+<script>
+export default {
+    props: ['form'],
+    data() {
+        return {
+            valueChecked: []
+        }
+    },
+    methods: {
+        spanMethod({
+            row,
+            column,
+            rowIndex,
+            columnIndex,
+            rows
+        }) {
+            if (columnIndex == 0 || columnIndex == 1) {
+                const funSpan = e => e.XXXPROP_AUTH_id == row.XXXPROP_AUTH_id;
+                const spanLength = rows.filter(funSpan).length;
+                if (spanLength > 1) {
+                    if (rows.findIndex(funSpan) == rowIndex) {
+                        return {
+                            rowspan: spanLength,
+                            colspan: 1
+                        }
+                    } else {
+                        return {
+                            rowspan: 0,
+                            colspan: 0
+                        }
+                    }
+                }
+            }
+            this.form.rows = rows;
+        }
+    }
+}
+</script>
+
+<style lang="css" scoped>
+.menu-checkbox-group{
+    width: 100%;
+}
+</style>

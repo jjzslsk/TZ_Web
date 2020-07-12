@@ -1,0 +1,153 @@
+// mockSettings.js
+
+// xrw
+// const backCommon = 'http://192.168.0.67:9002'
+// 137
+// const backCommon = 'http://192.168.0.137:9002'
+// wzx
+// const backCommon = `http://192.168.0.139:9002`
+// const backCommon = `http://192.168.3.59:9002`
+// pq
+// const backCommon = `http://192.168.0.55:9002`
+// ww
+// const backCommon = `http://222.216.5.171:8890`
+// 11 xrw
+// const backCommon = `http://192.168.0.59:9002`
+// const backCommon = `http://19.168.8.120:9002`
+// 11 pq
+// const backCommon = `http://192.168.3.109:9002`
+// const backCommon = `http://19.168.8.123:9002`
+// const backCommon = `http://192.168.3.54:9002`
+// const pq = `http://192.168.3.109:9002`
+// 11 wzx
+// const backCommon = `http://192.168.3.102:9002`
+
+// zs
+// const backCommon = `https://qxfw.tqonline.top:8900`
+
+// 系统设置 zyd
+// const system = `http://192.168.0.201:2121`
+// const system = `http://jjzslsk.gicp.net:27507`
+// const system = `http://192.168.0.69:4001`
+// const system = `http://192.168.0.118:4001`
+// const system = `http://192.168.0.234:40215`
+const system = `http://192.168.0.116:4001`
+// const system = `http://192.168.1.105:4001`
+
+// 产品制作 lxy
+// const product = 'http://192.168.0.234:9527'
+// const backLxy = 'http://192.168.0.109:9525'
+const backProduct = 'http://192.168.0.234:9527'
+const backWarning = 'http://192.168.0.109:9525'
+
+// 综合管理 wzl
+// const business = 'http://192.168.0.73:8088'
+// const business = 'http://192.168.0.109:8088'
+const business = 'http://192.168.0.116:4005'
+// const business = 'http://192.168.1.105:4005'
+
+// pageoffice
+const pageoffice = `http://192.168.0.201:62689`
+
+// 11 zs
+// const backCommon = `http://192.168.18.61:8888`
+// 234
+// const backCommon = `http://192.168.0.201:40215`
+
+const mockServerJson = [];
+// ([{
+//     key: `trace-dialog-statistic`,
+//     reg: `warning/ssd-early-warning-publish-detail/getStatistics`
+//     // pathPrefix: ''
+// // }, {
+// //     key: `common-success-list`,
+// //     reg: `system/ssd-sys-menu/selectMenuTreeByNowUser`
+//     // pathPrefix: ''
+// }]).forEach(({key, reg, pathPrefix = '/ssd/'}) => {
+//     const regInner = `${pathPrefix}${reg}`;
+//     mockServerJson.push({
+//         'reg': regInner,
+//         'handle': routerReplace(regInner, `/static/data/${key}.json`) // 替换router url的指定正则表达式部分为指定内容
+//     })
+// })
+
+mockSettings = {
+    "delay": 0, // 全局延时
+    "timeout": 100000, // 请求超时设置
+    "temDir": "tem", // 自动记录requestRemote的结果目录
+    "dist_dir": {
+        "js": "dist-prod/js"
+    },
+    "mockList": [{
+        //     'reg': '/api/controller/action', // 匹配的正则表达式
+        //     'handle': ajaxSync('./path/to/mockdata.json') // 发送对应json文件
+        // }, {
+        //     //     'reg': '/api',
+        //     //     'handle': requestRemote('https://publish.online.url/')
+        //     // }, {
+        //     //     'reg': '/data/',
+        //     //     'handle': ajaxDirSync({dirBasePath: './data/', pathPrefix: '/data/'}) // 返回文件，将url的前缀用pathPrefix替换，并返回相对于dirBasePath地址的文件。
+        // // }, {
+        // //     'reg': '^/dist/',
+        // //     'handle': routerReplace('^/dist/', '/') // 替换router url的指定正则表达式部分为指定内容
+        // }, {
+        //     'reg': '/my-menu.json$',
+        //     'handle': routerReplace('/my-menu.json', '/my-menu-system.json') // 替换router url的指定正则表达式部分为指定内容
+        // }, {
+        //     'reg': '/common-success.json$',
+        //     'handle': routerReplace('/common-success.json', '/common-failed.json') // 替换router url的指定正则表达式部分为指定内容
+        // }, {
+        //     'reg': '/activities/activityAreaInfo/getActivityAreaSubordinateInfoByActivityId',
+        //     'handle': routerReplace('/activities/activityAreaInfo/getActivityAreaSubordinateInfoByActivityId', '/static/data/server/cards.json') // 替换router url的指定正则表达式部分为指定内容
+        // }, {
+        //     'reg': '/activities/activityAreaInfo/getFiveDaysForecast',
+        //     'handle': routerReplace('/activities/activityAreaInfo/getFiveDaysForecast', '/static/data/server/getFiveDaysForecast.json') // 替换router url的指定正则表达式部分为指定内容
+        // }, {
+    //     'reg': '/ssd/system/ssd-sys-menu/selectMenuTreeByNowUser',
+    //     'handle': routerReplace('/ssd/system/ssd-sys-menu/selectMenuTreeByNowUser', '/static/data/common-success-list.json') // 替换router url的指定正则表达式部分为指定内容
+    // }, {
+    //     'reg': '/ssd/system/ssd-sys-menu/selectMenuList',
+    //     'handle': routerReplace('/ssd/system/ssd-sys-menu/selectMenuList', '/static/data/common-success-list.json') // 替换router url的指定正则表达式部分为指定内容
+    // }, {
+        'reg': '/static/pages/images/',
+        'handle': ajaxDirSync() // 默认参数{dirBasePath: './',pathPrefix: '/'}
+    },
+    ...mockServerJson,
+    {
+        'reg': '/data/',
+        'handle': ajaxDirSync() // 默认参数{dirBasePath: './',pathPrefix: '/'}
+        // }, {
+        //     'reg': '^/activities/weatherPredict',
+        //     'handle': requestRemote(pq) // 代理到对应的远端
+    // }, {
+    //     'reg': '^/ssddraw/',
+    //     'handle': requestRemote(backCommon) // 代理到对应的远端
+    // }, {
+    //     'reg': '^/filePath/',
+    //     'handle': requestRemote(backCommon) // 代理到对应的远端
+    // }, {
+    //     'reg': '^/gcisAPP-service/',
+    //     'handle': requestRemote(backCommon) // 代理到对应的远端
+    },
+    {
+        'reg': '^/ssd/warning',
+        'handle': requestRemote(backWarning) // 代理到对应的远端-warning lxy
+    },
+    {
+        'reg': '^/ssd/product',
+        'handle': requestRemote(backProduct) // 代理到对应的远端-产品制作 lxy
+    },
+    {
+        'reg': '^/ssd/system',
+        'handle': requestRemote(system) // 代理到对应的远端-系统设置 zyd
+    },
+    {
+        'reg': '^/ssd/business',
+        'handle': requestRemote(business) // 代理到对应的远端-综合管理 wzl
+    },
+    {
+        'reg': '^/product/ssd-page-office/',
+        'handle': requestRemote(pageoffice) // 代理到对应的远端-pageoffice
+    }
+    ]
+}

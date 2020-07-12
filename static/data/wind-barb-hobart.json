@@ -1,0 +1,132 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "data": [
+            {
+                "time": "2017-06-28",
+                "temperature": 11,
+                "level":"4",
+                "R": "NNW",
+                "rainHeight": 2
+            },
+            {
+                "time": "2017-06-29",
+                "temperature": 18,
+                "level":"4",
+                "R": "NNW",
+                "rainHeight": 2.57
+            },
+            {
+                "time": "2017-06-30",
+                "temperature": 18,
+                "level":"4",
+                "R": "NNW",
+                "rainHeight": 2.49
+            },
+            {
+                "time": "2017-07-01",
+                "temperature": 12,
+                "level":"4",
+                "R": "NNW",
+                "rainHeight": 2.44
+            },
+            {
+                "time": "2017-07-02",
+                "temperature": 11,
+                "level":"4",
+                "R": "NNW",
+                "rainHeight": 2.38
+            },
+            {
+                "time": "2017-07-03",
+                "temperature": 10,
+                "level":"4",
+                "R": "NNW",
+                "rainHeight": 2.34
+            },
+            {
+                "time": "2017-07-04",
+                "temperature": 19,
+                "level":"4",
+                "R": "N",
+                "rainHeight": 3
+            }
+        ],
+        "title": "HOBART",
+        "forecast": [
+            {
+                "localDate": "2017-06-28",
+                "day":1,
+                "rn": 2,
+                "minTemp": 4,
+                "maxTemp": 13,
+                "skyIcon": "Cloudy",
+                "weatherIcon": "MostlySunnyPartlyCloudy",
+                "rangePrecipText": "0 to 1 mm"
+            },
+            {
+                "localDate": "2017-06-29",
+                "day":1,
+                "rn": 2,
+                "minTemp": 5,
+                "maxTemp": 11,
+                "skyIcon": "Showers",
+                "weatherIcon": "Shower",
+                "rangePrecipText": "0 to 1 mm"
+            },
+            {
+                "localDate": "2017-06-30",
+                "day":1,
+                "rn": 2,
+                "minTemp": 3,
+                "maxTemp": 11,
+                "skyIcon": "Showers",
+                "weatherIcon": "Shower",
+                "rangePrecipText": "0 to 1 mm"
+            },
+            {
+                "localDate": "2017-07-01",
+                "day":1,
+                "rn": 2,
+                "minTemp": 1,
+                "maxTemp": 11,
+                "skyIcon": "Sunny",
+                "weatherIcon": "MostlySunnyPartlyCloudy",
+                "rangePrecipText": "0 to 1 mm"
+            },
+            {
+                "localDate": "2017-07-02",
+                "day":1,
+                "rn": 2,
+                "minTemp": 2,
+                "maxTemp": 13,
+                "skyIcon": "Sunny",
+                "weatherIcon": "MostlySunnyPartlyCloudy",
+                "rangePrecipText": ""
+            },
+            {
+                "localDate": "2017-07-03",
+                "day":1,
+                "rn": 2,
+                "minTemp": 3,
+                "maxTemp": 12,
+                "skyIcon": "Sunny",
+                "weatherIcon": "MostlySunnyPartlyCloudy",
+                "rangePrecipText": "0 to 1 mm"
+            },
+            {
+                "localDate": "2017-07-04",
+                "day":1,
+                "rn": "12",
+                "minTemp": 5,
+                "maxTemp": 12,
+                "skyIcon": "Showers",
+                "weatherIcon": "Shower",
+                "rangePrecipText": "0 to 2 mm"
+            }
+        ]
+    }
+}
+

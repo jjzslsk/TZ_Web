@@ -1,0 +1,968 @@
+{
+    "success": true,
+    "code": 0,
+    "message": "查询成功",
+    "data": [
+        {
+            "date": "01",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": "王五"
+                },
+                {
+                    "jobName": "短临",
+                    "userName": "李四"
+                },
+                {
+                    "jobName": "短期",
+                    "userName": "张三"
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": "管理员"
+                },
+                {
+                    "jobName": "班休",
+                    "userName": "台州气象台"
+                }
+            ],
+            "userName": "张三"
+        },
+        {
+            "date": "02",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": "台州气象台"
+                },
+                {
+                    "jobName": "短期",
+                    "userName": "李四"
+                },
+                {
+                    "jobName": "行政",
+                    "userName": "张三"
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": "王五"
+                },
+                {
+                    "jobName": "班休",
+                    "userName": "管理员"
+                }
+            ],
+            "userName": "李四"
+        },
+        {
+            "date": "03",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": "管理员"
+                },
+                {
+                    "jobName": "短期",
+                    "userName": "台州气象台"
+                },
+                {
+                    "jobName": "行政",
+                    "userName": "李四"
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": "张三"
+                },
+                {
+                    "jobName": "班休",
+                    "userName": "王五"
+                }
+            ],
+            "userName": "台州气象台"
+        },
+        {
+            "date": "04",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": "王五"
+                },
+                {
+                    "jobName": "短期",
+                    "userName": "管理员"
+                },
+                {
+                    "jobName": "行政",
+                    "userName": "台州气象台"
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": "李四"
+                },
+                {
+                    "jobName": "班休",
+                    "userName": "张三"
+                }
+            ],
+            "userName": "管理员"
+        },
+        {
+            "date": "06",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": "王五"
+                },
+                {
+                    "jobName": "行政",
+                    "userName": "张三"
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": "台州气象台"
+                },
+                {
+                    "jobName": "班休",
+                    "userName": "李四"
+                }
+            ],
+            "userName": "王五"
+        },
+        {
+            "date": "06",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": "张三"
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "07",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "08",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "09",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "10",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "11",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "12",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "13",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "14",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "15",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "16",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "17",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "18",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "19",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "20",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": "张三"
+                },
+                {
+                    "jobName": "短期",
+                    "userName": "管理员"
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": "管理员"
+        },
+        {
+            "date": "21",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": "管理员"
+                },
+                {
+                    "jobName": "短期",
+                    "userName": "张三"
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": "张三"
+        },
+        {
+            "date": "22",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": "管理员"
+                },
+                {
+                    "jobName": "短期",
+                    "userName": "张三"
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": "张三"
+        },
+        {
+            "date": "23",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": "管理员"
+                },
+                {
+                    "jobName": "短期",
+                    "userName": "张三"
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": "张三"
+        },
+        {
+            "date": "24",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": "管理员"
+                },
+                {
+                    "jobName": "短期",
+                    "userName": "张三"
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": "张三"
+        },
+        {
+            "date": "25",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": "管理员"
+                },
+                {
+                    "jobName": "短期",
+                    "userName": "张三"
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": "张三"
+        },
+        {
+            "date": "26",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": "张三"
+                },
+                {
+                    "jobName": "短期",
+                    "userName": "管理员"
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": "管理员"
+        },
+        {
+            "date": "27",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "28",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "29",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": "张三"
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": "张三"
+        },
+        {
+            "date": "30",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": "张三"
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        },
+        {
+            "date": "31",
+            "month": "06",
+            "dutyList": [
+                {
+                    "jobName": "首席",
+                    "userName": null
+                },
+                {
+                    "jobName": "短临",
+                    "userName": null
+                },
+                {
+                    "jobName": "短期",
+                    "userName": null
+                },
+                {
+                    "jobName": "行政",
+                    "userName": null
+                },
+                {
+                    "jobName": "轮休",
+                    "userName": null
+                },
+                {
+                    "jobName": "班休",
+                    "userName": null
+                }
+            ],
+            "userName": null
+        }
+    ]
+}

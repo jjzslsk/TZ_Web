@@ -1,0 +1,254 @@
+<template>
+<div>
+    <div class="actions actions-main">
+        <div>
+            <span>是否启用自定义流程：</span>
+            <c-switch v-model="query.XXXPROP_DUTY_POST_CUSTOM"></c-switch>
+        </div>
+        <c-button type="add" @click="inputItem({})">新增</c-button>
+    </div>
+    <div class="block-main">
+        <div class="left-tree">
+            <c-tree remote="requestTreeChildrenOfDutyPostNode"></c-tree>
+        </div>
+        <div class="list">
+            <page-table ref="table" remote="requestDutyPostList" :formatPayload="formatPayload" :hidePagination="true">
+                <el-table-column prop="XXXPROP_DUTY_POST_id" label="序号" width="50px"></el-table-column>
+                <el-table-column prop="XXXPROP_DUTY_POST_1" label="任务名称" />
+                <el-table-column prop="XXXPROP_DUTY_POST_2" label="任务开始时间" width="120px" />
+                <el-table-column prop="XXXPROP_DUTY_POST_3" label="任务结束时间" width="120px" />
+                <el-table-column prop="XXXPROP_DUTY_POST_4" label="任务说明" />
+                <el-table-column label="是否提醒" width="80px">
+                    <template slot-scope="scope">
+                        <c-switch v-model="scope.row.XXXPROP_DUTY_POST_5"></c-switch>
+                    </template>
+                </el-table-column>
+                <el-table-column label="是否为产品" width="100px">
+                    <template slot-scope="scope">
+                        <c-switch v-model="scope.row.XXXPROP_DUTY_POST_6"></c-switch>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="XXXPROP_DUTY_POST_7" label="执行顺序" width="80px" />
+                <el-table-column prop="XXXPROP_DUTY_POST_8" label="关联产品" />
+                <el-table-column prop label="操作" width="150px">
+                    <template slot-scope="scope">
+                        <el-button type="text" size="small" @click="inputItem(scope.row)">编辑</el-button>
+                        <c-button type="del" @click="onConfirmDelete(scope.row)">
+                            <span class="text-danger">删除</span>
+                        </c-button>
+                    </template>
+                </el-table-column>
+            </page-table>
+        </div>
+    </div>
+    <dialog-form title="岗位流程配置" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.XXXPROP_DUTY_POST_1" remote="requestDialogFormDutyPostItemInput" v-if="formItem">
+        <!-- <template v-slot:default="{ form }"> -->
+        <template>
+            <el-form-item label="岗位选择" label-width="120px">
+                <el-select v-model="formItem.XXXPROP_DUTY_POST_X" placeholder="请选择">
+                    <el-option label="首席" value="sx"></el-option>
+                    <el-option label="短临" value="dl"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="任务名称" label-width="120px">
+                <el-input v-model="formItem.XXXPROP_DUTY_POST_1" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="任务说明" label-width="120px">
+                <el-input v-model="formItem.XXXPROP_DUTY_POST_4" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="施行顺序" label-width="120px">
+                <el-input v-model="formItem.XXXPROP_DUTY_POST_7" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="起止时间" label-width="120px">
+                <el-date-picker v-model="formItemTimeRange" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item label="是否提醒" label-width="120px">
+                <c-switch v-model="formItem.XXXPROP_DUTY_POST_5"></c-switch>
+            </el-form-item>
+            <div class="notition-options" v-if="formItem.XXXPROP_DUTY_POST_5">
+                <div>
+                    <el-radio-group v-model="formItem.XXXPROP_DUTY_POST_X3">
+                        <el-radio-button label="XXXLABEL_DUTY_POST_month">月</el-radio-button>
+                        <el-radio-button label="XXXLABEL_DUTY_POST_day">日</el-radio-button>
+                        <el-radio-button label="XXXLABEL_DUTY_POST_week">周</el-radio-button>
+                    </el-radio-group>
+                    <span v-if="formItem.XXXPROP_DUTY_POST_X3=='XXXLABEL_DUTY_POST_day'">时间类型：</span>
+                    <el-radio-group v-model="formItem.XXXPROP_DUTY_POST_X4" v-if="formItem.XXXPROP_DUTY_POST_X3=='XXXLABEL_DUTY_POST_day'">
+                        <el-radio label="XXXLABEL_DUTY_POST_roman">阳历</el-radio>
+                        <el-radio label="XXXLABEL_DUTY_POST_china">阴历</el-radio>
+                    </el-radio-group>
+                </div>
+                <div>
+                    <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkedItems">
+                        <el-checkbox v-for="(item,index) in checkItemOptions" :label="item.value" :key="index">{{item.name}}</el-checkbox>
+                    </el-checkbox-group>
+                </div>
+            </div>
+            <el-form-item label="是否为产品" label-width="120px">
+                <c-switch v-model="formItem.XXXPROP_DUTY_POST_6"></c-switch>
+            </el-form-item>
+            <el-form-item label="产品选择" label-width="120px" v-if="formItem.XXXPROP_DUTY_POST_6">
+                <el-cascader v-model="formItem.XXXPROP_DUTY_POST_X2" :options="optionsOfCascaderFormInput"></el-cascader>
+            </el-form-item>
+        </template>
+    </dialog-form>
+</div>
+</template>
+
+<script>
+import {
+    requestDutyPostListDelItem
+} from "@/common/remote/";
+import {
+    common,
+    witchCommonList,
+    withCommonLeftTree
+} from '../../mixins/index';
+export default {
+    mixins: [common, witchCommonList, withCommonLeftTree],
+    data() {
+        return {
+            query: {
+                XXXPROP_DUTY_POST_CUSTOM: true
+            },
+            formItemTimeRange: [],
+            // checkAll: false,
+            checkedItems: [],
+            optionsOfCascaderFormInput: [{
+                value: 'tzsqxt',
+                label: '台州市气象台',
+                children: [{
+                    value: 'sx',
+                    label: '首席',
+                    children: [{
+                        value: 'dqybsh',
+                        label: '短期预报稿审核'
+                    }]
+                }]
+            }]
+        };
+    },
+    computed: {
+        actionOfListDelItem() {
+            return requestDutyPostListDelItem;
+        },
+        checkItemOptions() {
+            return this.formItem ? ({
+                'XXXLABEL_DUTY_POST_month': (new Array(12)).fill('').map((e, i) => ({
+                    name: `${i+1}月`,
+                    value: `${i+1}`
+                })),
+                'XXXLABEL_DUTY_POST_day': (new Array(31)).fill('').map((e, i) => ({
+                    name: `${i+1}`,
+                    value: `${i+1}`
+                })),
+                'XXXLABEL_DUTY_POST_week': (new Array(4)).fill('').map((e, i) => ({
+                    name: `${i+1}`,
+                    value: `${i+1}`
+                }))
+            })[this.formItem.XXXPROP_DUTY_POST_X3] : []
+        },
+        checkedCount() {
+            const checkedItems = this.checkedItems || [];
+            const checkedCount = checkedItems.length;
+            return checkedCount;
+        },
+        isIndeterminate() {
+            const {
+                checkedCount,
+                checkItemOptions = []
+            } = this;
+            return checkedCount > 0 && checkedCount < checkItemOptions.length
+        },
+        checkAll() {
+            const {
+                checkedCount,
+                checkItemOptions = []
+            } = this;
+            return checkedCount == checkItemOptions.length
+        }
+    },
+    watch: {
+        'query.XXXPROP_DUTY_POST_CUSTOM': function() {
+            this.query.currentPage = 1;
+            this.search();
+        },
+        formItemTimeRange(val) {
+            const {
+                formItem
+            } = this;
+            formItem.XXXPROP_DUTY_POST_2 = val && val[0];
+            formItem.XXXPROP_DUTY_POST_3 = val && val[1];
+        },
+        checkItemOptions() {
+            this.checkedItems = [];
+        },
+        'formItem.XXXPROP_DUTY_POST_X3': function(val) {
+            if (val == 'XXXLABEL_DUTY_POST_day') {
+                const {
+                    formItem
+                } = this;
+                formItem.XXXPROP_DUTY_POST_X4 = 'XXXLABEL_DUTY_POST_roman'
+            }
+        }
+    },
+    methods: {
+        getFormItemByInputItem(item = {}) {
+            const {
+                checkedItems
+            } = this;
+            const lastKeyItemClicked = checkedItems && checkedItems.id;
+            this.formItemTimeRange = [item.XXXPROP_DUTY_POST_2, item.XXXPROP_DUTY_POST_3];
+            return {
+                "XXXPROP_DUTY_POST_8": lastKeyItemClicked,
+                "XXXPROP_DUTY_POST_X3": 'XXXLABEL_DUTY_POST_month',
+                "XXXPROP_DUTY_POST_X4": null,
+                ...item
+            };
+        },
+        handleCheckAllChange(val) {
+            const {
+                checkItemOptions
+            } = this;
+            this.checkedItems = val ? checkItemOptions.map(e => e.value) : [];
+            // this.isIndeterminate = false;
+        },
+        handleCheckedItemChange(value) {
+            let checkedCount = value.length;
+            this.checkAll = checkedCount === this.cities.length;
+            this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+        }
+    }
+}
+</script>
+
+<style lang="css" scoped>
+.actions{
+    margin-bottom: 10px;
+}
+.actions-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.block-main{
+    display: flex;
+
+    >.list{
+        flex: 1;
+    }
+    .left-tree{
+        border: 1px solid #ddd;
+        width: 220px;
+    }
+}
+.notition-options{
+    margin-left: 52px;
+    padding: 20px 25px;
+    background:rgba(246,247,251,1);
+    border-radius:4px;
+}
+</style>

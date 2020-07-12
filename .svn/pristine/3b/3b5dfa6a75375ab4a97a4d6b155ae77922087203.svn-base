@@ -1,0 +1,268 @@
+<template>
+  <!-- <el-header class="main-header" height="90px" :style="{'background': 'rgba(0, 87, 156, 1)'}"> -->
+    <!-- <div class="logo">1系统管理3</div> -->
+    <!-- <img :src="menuInfo.logo" class="logo" alt=""> -->
+    <!-- <img :src="menuInfo.after" alt=""> -->
+    <!-- <el-menu class="menu top" mode="horizontal" :default-active="activeIndex" router>
+      <template v-for="(item,index) in menuInfo.menu">
+        <el-menu-item class="item" :key="index" :index="item.index" style="padding-left: 0px;">
+          <template class="item" slot="title">
+            <i :class="item.icon" v-if="item.icon"></i>
+            {{item.title}}
+          </template>
+        </el-menu-item>
+      </template>
+    </el-menu>
+    <c-clock class="clock"></c-clock>
+    <account-actions></account-actions> -->
+  <!-- </el-header> -->
+
+ <el-menu background-color="#0050a2" router
+  text-color="#CCE1FE"
+  active-text-color="#fff" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+    <div class="logo">台州市县综合气象业务一体化平台</div>
+    <template v-for="item in menuInfo">
+      <el-menu-item :key="item.id" v-if='!item.children' :index="item.id">{{item.name}}</el-menu-item>
+      <el-submenu v-if='item.children' :index="item.id" :key="item.id">
+        <template slot="title">{{item.name}}</template>
+          <el-menu-item :key="itemChildren.id" :index="itemChildren.path" v-for="itemChildren in item.children">{{itemChildren.name}}</el-menu-item>
+      </el-submenu>
+    </template>
+
+      <!-- <el-menu-item index="1">处理中心</el-menu-item>
+
+      <el-submenu index="2">
+        <template slot="title">我的工作台</template>
+        <el-menu-item index="2-1">选项1</el-menu-item>
+        <el-menu-item index="2-2">选项2</el-menu-item>
+        <el-menu-item index="2-3">选项3</el-menu-item>
+        <el-submenu index="2-4">
+          <template slot="title">选项4</template>
+          <el-menu-item index="2-4-1">选项1</el-menu-item>
+          <el-menu-item index="2-4-2">选项2</el-menu-item>
+          <el-menu-item index="2-4-3">选项3</el-menu-item>
+        </el-submenu>
+      </el-submenu> -->
+
+      <!-- <account-actions></account-actions> -->
+      <div>
+        <c-clock class="clock"></c-clock>
+        <div class="but-icon">
+          <i class="el-icon-user-solid"></i>
+          <i class="el-icon-right" @click="logout"></i>
+        </div>
+      </div>
+    </el-menu>
+
+</template>
+<script>
+import { mapActions, mapGetters } from "vuex";
+import eventHub from "@/common/event-hub/";
+const widthAsideNomal = "230px";
+import {
+    requestLogout,
+    localStorageToken
+} from '@/common/remote/'
+export default {
+    name: 'pageHeader',
+    props:['menuInfo'],
+    // props:[''],
+    created() {
+    this.ensureAccountInfo();
+    let path = this.$route.path
+    let pathStrArr = path.split('/')
+    this.activeIndex = `/${pathStrArr[1]}/${pathStrArr[2]}`
+  },
+  data() {
+    return {
+      data: [],
+      defaultProps: {
+        children: "children",
+        label: "label"
+      },
+      widthAside: widthAsideNomal,
+      activeIndex:"",
+    };
+  },
+  watch: {
+    activityId: {
+      handler: function(id) {
+        this.getMenuInfo({
+            id
+        });
+      },
+      immediate: true
+    },
+    $route () {
+      let path = this.$route.path
+      let pathStrArr = path.split('/')
+      this.activeIndex = `/${pathStrArr[1]}/${pathStrArr[2]}`
+    }
+  },
+  methods: {
+    handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+    },
+
+    ...mapActions(["ensureAccountInfo", "getMenuInfo"]),
+    setWidthAsider(width) {
+      this.widthAside = width;
+      eventHub.$emit("resize");
+    },
+    closeAside() {
+      this.setWidthAsider("0");
+    },
+    openAside() {
+      this.setWidthAsider(widthAsideNomal);
+    },
+    logout() {
+        const vm = this;
+        vm.$confirm('是否确定退出?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+        const loginData = JSON.parse(localStorage.getItem('loginData'))
+        if(loginData !== null){
+                    if(loginData.jwt !== null){
+                        if(loginData.jwt.access_token !== null){
+                            var tokenInfo = loginData.jwt.access_token
+                            // console.log(loginData.jwt.access_token) loginInfo
+                            requestLogout({token:loginData.jwt.access_token}).then(res => {
+                            if(res.success){
+                              localStorage.removeItem('loginInfo')
+                              localStorage.removeItem('loginData')
+                              localStorage.clear();
+                              vm.$router.push({
+                                'name': 'login'
+                              });
+                            }
+                        })
+                        }
+                    }
+                }else {
+                    console.log(loginData)
+
+                }
+
+        }).catch(() => {
+          // vm.$message({
+          //   type: 'info',
+          //   message: '取消'
+          // });
+        });
+      },
+      ...mapActions(['ensureAccountInfo'])
+  },
+  computed: {
+    // menuList() {
+      // console.log('headerMenu::',JSON.parse(localStorage.getItem('headerMenu')))
+      // return  JSON.parse(localStorage.getItem('headerMenu'))
+    // },
+    activityId() {
+      return this.$route.params.activityId;
+    },
+    ...mapGetters(["menus"])
+  },
+  mounted() {
+      this.ensureAccountInfo();
+  }
+};
+</script>
+
+<style scoped>
+.main-header {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    clear: both;
+  }
+
+  .logo {
+    padding-left: 1em;
+    line-height: 90px;
+    font-size: 24px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 1);
+  }
+
+  > img {
+    float: left;
+  }
+
+  .clock {
+    position: absolute;
+    top: 15px;
+    right: 150px;
+    display: inline-block;
+  }
+}
+
+.aside {
+  font-size: 15px;
+  font-weight: 400;
+  position: relative;
+  overflow: visible;
+  padding-top: 10px;
+
+  .nav-title {
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    cursor: default;
+    position: relative;
+    height: 70px;
+    line-height: 68px;
+    padding-left: 30px;
+
+    .icon-nav-right {
+      font-size: 12px;
+      line-height: 12px;
+      position: absolute;
+      right: 15px;
+      top: 28px;
+      cursor: pointer;
+    }
+  }
+}
+.clock {
+    position: absolute;
+    top: 0;
+    right: 120px;
+    display: inline-block;
+  }
+  .but-icon {
+    height: 60px;
+    line-height: 60px;
+    position: absolute;
+    top: 0;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: #fff;
+    width: 70px;
+    font-size: 24px;
+  }
+  .el-menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 230px;
+  }
+.logo {
+    padding-left: 1em;
+    line-height: 90px;
+    font-size: 24px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 1);
+    position: absolute;
+    left: 0px;
+  }
+</style>

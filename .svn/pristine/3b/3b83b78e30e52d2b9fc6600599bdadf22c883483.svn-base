@@ -1,0 +1,1663 @@
+<template>
+  <div class="product-made-home product-made-attribute">
+    <!-- {{modelList}} -->
+    <!-- {{formItem}} -->
+    <div class="wrap-box">
+      <div class="left-box">
+      <common-left-tree @success="submitSuccess" class="left-tree" title="产品导航" :searchText='searchText' :isHeader='true' :data="treeData" @click-item="onTreeClickItem" :defaultExpandAll="false">
+        <div slot="head-search" class="head-search">
+            <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="searchText"></el-input>
+        </div>
+      <div slot="append" class="buts">
+        <div>
+        <span class="title">分类操作：</span><common-left-tree-actions @success="submitSuccess" :lastItemClicked="lastItemClicked" @append="onTreeAppend" @edit="onTreeEdit" @delete="delProductClassify()"></common-left-tree-actions>
+        </div>
+        <div>
+        <span class="title">产品操作：</span><common-left-tree-actions @success="submitSuccess" :lastItemClicked="lastItemClicked" @append="onTreeAppendMinor" @edit="onTreeEditMinor" @delete="templateProductClassify()"></common-left-tree-actions>
+        </div>
+      </div>
+      </common-left-tree> 
+      </div>
+
+      <!-- 产品分类 -->
+      <dialog-form
+        @success="submitSuccess"
+        :title="dialogTitle + '产品分类'"
+        :visible.sync="visibleDialogFormLeftTree"
+        :getPayload="()=>formLeftTree"
+        :confirmDisabled="!formLeftTree.name||formLeftTree.name===undefined"
+        remote="requestDialogFormProductInfoTpyeInput"
+        v-if="formLeftTree"
+      >
+        <!-- <template v-slot:default="{ form }"> -->
+        <template>
+          <el-form-item label="上级分类" label-width="120px">
+            <el-select v-model="formLeftTree.pid" placeholder="请选择">
+              <el-option
+                v-for="item in treeDataList"
+                :label="item.label"
+                :value="item.id"
+                :key="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="分类名称" label-width="120px">
+            <el-input v-model="formLeftTree.name" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="排序" label-width="120px">
+            <el-input v-model="formLeftTree.sort" autocomplete="off"></el-input>
+          </el-form-item>
+        </template>
+      </dialog-form>
+
+      <!-- 产品 -->
+      <dialog-form
+        @success="submitSuccess"
+        :title="dialogTitle + '产品'"
+        :visible.sync="visibleDialogformLeftTreeMinor"
+        :getPayload="()=>formLeftTreeMinor"
+        :confirmDisabled="!formLeftTreeMinor.name"
+        remote="requestProductInfoSave"
+        v-if="formLeftTreeMinor"
+      >
+        <!-- <template v-slot:default="{ form }"> -->
+        <template>
+          <el-form-item label="产品分类" label-width="120px">
+            <el-select v-model="formLeftTreeMinor.productTypeId" placeholder="请选择">
+              <el-option
+                v-for="item in treeDataList"
+                :label="item.label"
+                :value="item.id"
+                :key="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="产品标识" label-width="120px">
+            <el-input v-model="formLeftTreeMinor.code" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="产品名称" label-width="120px">
+            <el-input v-model="formLeftTreeMinor.name" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="产品类型" label-width="120px">
+            <el-radio-group v-model="formLeftTreeMinor.type">
+              <el-radio label="word"></el-radio>
+              <el-radio label="txt"></el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="排序" label-width="120px">
+            <el-input v-model="formLeftTreeMinor.sort" autocomplete="off"></el-input>
+          </el-form-item>
+        </template>
+      </dialog-form>
+
+      <!-- 服务用户绑定 -->
+      <dialog-form
+        @success="submitSuccess"
+        title="服务用户绑定"
+        :visible.sync="visibleDialogTree"
+        :getPayload="()=>getPayloadData()"
+        :confirmDisabled="false"
+        remote="requestProductUserBound"
+        v-if="formTabTree"
+      >
+        <template>
+          <el-tabs v-model="tabsShowUserValue" type="card" @tab-click="handleClick">
+            <el-tab-pane
+              :key="item.name"
+              v-for="(item, index) in tabsList"
+              :label="item.name"
+              :name="item.channel"
+            >
+              <el-tree
+                class="dialog-user-tree"
+                :data="item.children"
+                show-checkbox
+                default-expand-all
+                node-key="id"
+                ref="treeUser"
+                @check-change="handleCheckChange"
+                highlight-current
+                :props="defaultProps1"
+              ></el-tree>
+            </el-tab-pane>
+          </el-tabs>
+        </template>
+      </dialog-form>
+
+      <!-- 参考资料绑定 -->
+      <dialog-form
+        @success="submitSuccess"
+        title="参考资料绑定"
+        :visible.sync="visibleDialogConsult"
+        :getPayload="()=>formItem"
+        :confirmDisabled="true"
+        remote="requestDialogFormAreaItemInput"
+        v-if="formConsult"
+      >
+        <template>
+          <el-tabs v-model="tabsShowInfoValue" type="card" @tab-click="handleClick">
+            <el-tab-pane
+              :key="item.name"
+              v-for="(item, index) in tabsList1"
+              :label="item.title"
+              :name="item.name"
+            >
+              <div class="consult">
+                <el-row :gutter="10">
+                  <el-col :span="6">
+                    <div class="consult-left">
+                      <div class="top">
+                        <div class="select-all">
+                          <el-checkbox v-model="form">参考资料</el-checkbox>
+                        </div>
+                      </div>
+                      <div class="tree">
+                        <el-tree
+                          :data="tabTree"
+                          show-checkbox
+                          default-expand-all
+                          node-key="id"
+                          ref="tree"
+                          highlight-current
+                          :props="defaultProps"
+                        ></el-tree>
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span="18">
+                    <div class="consult-right">
+                      <div class="consult-list">
+                        <template>
+                          <el-table :data="tableData" style="width: 100%">
+                            <el-table-column prop="name" label="素材名称" width="180"></el-table-column>
+                            <el-table-column prop="material" label="素材编号" width="180"></el-table-column>
+                            <el-table-column prop="type" label="素材类型"></el-table-column>
+                            <el-table-column prop="num" label="显示顺序" width="100"></el-table-column>
+                            <el-table-column fixed="right" label="操作" width="100">
+                              <template slot-scope="scope">
+                                <i class="el-icon-bottom"></i>
+                                <i class="el-icon-top"></i>
+                                <i class="el-icon-delete"></i>
+                                <!-- <el-button type="text" size="small">编辑</el-button> -->
+                              </template>
+                            </el-table-column>
+                          </el-table>
+                        </template>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
+        </template>
+      </dialog-form>
+
+      <!-- 产品属性 -->
+      <div class="center-box">
+        <div class="top-title">
+          <div class="text">产品属性</div>
+        </div>
+        <!-- {{InfoForm}}: -->
+        <div class="content-box" v-if="editState">
+          <el-form label-width="80px">
+            <div class="form-item">
+              <div class="item-title">产品信息</div>
+              <!-- {{lastItemClicked}} -->
+
+              <!-- templateIds{{templateIds}} -->
+              <div class="item-content">
+                <el-form-item label="产品标识">
+                  <el-input v-model="InfoForm.code" disabled=""></el-input>
+                </el-form-item>
+                <el-form-item label=" 产品名称">
+                  <el-input v-model="InfoForm.name" disabled></el-input>
+                </el-form-item>
+                <el-form-item label=" 产品类型">
+                  <el-input v-model="InfoForm.type" disabled></el-input>
+                </el-form-item>
+                <el-divider></el-divider>
+              </div>
+              <div class="item-title">设置</div>
+              <div class="item-content">
+                <!-- <el-form-item label=" 文件名称">
+                  <el-input v-model="InfoForm.fileName"></el-input>
+                </el-form-item> -->
+                <el-form-item label=" 数据来源">
+                  <el-input v-model="InfoForm.dataSource"></el-input>
+                </el-form-item>
+                <el-form-item label=" 制作页面">
+                  <el-input v-model="InfoForm.targetPath"></el-input>
+                </el-form-item>
+                <el-form-item label="发布方式">
+                  <div class="checkbox-box">
+                    <el-checkbox-group v-model="InfoForm.publishChannel" size="small">
+                      <el-checkbox v-for="item in wayTpye" :label="item.code" :key="item.id" border>{{item.name}}</el-checkbox>
+                    </el-checkbox-group>
+                  </div>
+                </el-form-item>
+                <el-form-item label="岗位">
+                  <el-radio-group v-model="InfoForm.jobId">
+                    <el-radio v-for="item in jobs" :label="item.code" :key="item.id">{{item.name}}</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+                <el-form-item label="预约发布">
+                  <el-col :span="4">
+                    <el-switch v-model="InfoForm.subscribePublish" active-text="开" inactive-text="关"></el-switch>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-time-picker placeholder="预约时间" format="HH:mm" value-format="HH:mm" v-model="InfoForm.subscribeTime" style="width: 100%;"></el-time-picker>
+                  </el-col>
+                  <el-col :span="12"></el-col>
+                </el-form-item>
+                <!-- <el-form-item label="制作提醒">
+                  <el-col :span="4">
+                    <el-switch v-model="InfoForm.remindMake"></el-switch>
+                  </el-col>
+                  <el-col :span="18"></el-col>
+                </el-form-item> -->
+                <!-- <el-form-item label="制作时间">
+                  <template>
+                    <el-tabs v-model="timeTab" type="border-card" @tab-click="handleClick">
+                      <el-tab-pane label="月" name="first">
+                        <template>
+                          <el-checkbox
+                            :indeterminate="isIndeterminateRuleMonth"
+                            v-model="checkAllMonth"
+                            @change="handleCheckAllChangeMonth"
+                          >全选</el-checkbox>
+                          <div style="margin: 0px 0 0 0;"></div>
+                          <el-checkbox-group
+                            v-model="InfoForm.ruleMonth"
+                            @change="handleCheckedProductChangeMonth"
+                          >
+                            <el-checkbox v-for="item in attTimeMonth" :label="item" :key="item">{{item}}</el-checkbox>
+                          </el-checkbox-group>
+                        </template>
+                      </el-tab-pane>
+                      <el-tab-pane label="周" name="third">
+                        <template>
+                          <el-checkbox
+                            :indeterminate="isIndeterminateWeek"
+                            v-model="checkAllWeek"
+                            @change="handleCheckAllChangeWeek"
+                            :disabled="ruleDisabledWeek"
+                          >全选</el-checkbox>
+                          <div style="margin: 0px 0 0 0;"></div>
+                          <el-checkbox-group
+                            v-model="InfoForm.ruleWeek"
+                            @change="handleCheckedProductChangeWeek"
+                          >
+                            <el-checkbox v-for="item in attTimeWeek" :disabled="ruleDisabledWeek" :label="item" :key="item">{{item}}</el-checkbox>
+                          </el-checkbox-group>
+                        </template>
+                      </el-tab-pane>
+                      <el-tab-pane label="日" name="second">
+                        <template>
+                          <el-checkbox
+                            :indeterminate="isIndeterminateRuleDay"
+                            v-model="checkAllDay"
+                            @change="handleCheckAllChangeDay"
+                            :disabled="ruleDisabledDay"
+                          >全选</el-checkbox>
+                          <div style="margin: 0px 0 0 0;"></div>
+                          <el-checkbox-group
+                            v-model="InfoForm.ruleDay"
+                            @change="handleCheckedProductChangeDay"
+                          >
+                            <el-checkbox v-for="item in attTimeDay" :disabled="ruleDisabledDay" :label="item" :key="item">{{item}}</el-checkbox>
+                          </el-checkbox-group>
+                        </template>
+                      </el-tab-pane>
+                      <el-tab-pane label="时" name="fourth">
+                        <template>
+                          <el-checkbox
+                            :indeterminate="isIndeterminateRuleTime"
+                            v-model="checkAllTime"
+                            @change="handleCheckAllChangeTime"
+                          >全选</el-checkbox>
+                          <div style="margin: 0px 0 0 0;"></div>
+                          <el-checkbox-group
+                            v-model="InfoForm.ruleTime"
+                            @change="handleCheckedProductChangeTime"
+                          >
+                            <el-checkbox v-for="item in attTimeTime" :label="item" :key="item">{{item}}</el-checkbox>
+                          </el-checkbox-group>
+                        </template>
+                      </el-tab-pane>
+                      <el-tab-pane label="分" name="fourth1">
+                        <template>
+                          <el-checkbox
+                            :indeterminate="isIndeterminateRuleMinute"
+                            v-model="checkAllMinute"
+                            @change="handleCheckAllChangeMinute"
+                          >全选</el-checkbox>
+                          <div style="margin: 0px 0 0 0;"></div>
+                          <el-checkbox-group
+                            v-model="InfoForm.ruleMinute"
+                            @change="handleCheckedProductChangeMinute"
+                          >
+                            <el-checkbox v-for="item in attTimeMinute" :label="item" :key="item">{{item}}</el-checkbox>
+                          </el-checkbox-group>
+                        </template>
+                      </el-tab-pane>
+                    </el-tabs>
+                  </template>
+                </el-form-item> -->
+                  <el-divider></el-divider>
+                  <div class="footer">
+                    <el-button type="primary" size="small" @click="save()">保存</el-button>
+                    <el-button type="primary" size="small" @click="onTab()">服务用户绑定</el-button>
+                    <el-button type="primary" size="small" @click="onConsult()">参考资料绑定</el-button>
+                  </div>
+                </div>
+              </div>
+          </el-form>
+        </div>
+        <div class="content-box" v-else>
+          <div class="hint"></div>
+          请选择产品分类下的产品进行编辑操作
+        </div>
+      </div>
+
+      <!-- 模板绑定 -->
+      <div class="right-box">
+        <div class="top-title">
+          <div class="text">制作时次</div>
+        </div>
+        <div class="content-box" v-if="editState">
+            <el-popover
+              placement="top-start"
+              width="400"
+              v-model="visible"
+              trigger="click">
+                <el-tree :data="templateData" :props="defaultProps" @node-click="handleNodeClickPop"></el-tree>
+            </el-popover>
+          <el-form ref="form" class="right-top-form" :model="formModel" label-width="40px">
+            <div class="select-time">
+              <div class="item">
+                <el-select v-model="formModel.makeYear" placeholder="年">
+                  <el-option label="任意年" value="9999"></el-option>
+                  <el-option label="2018" value="2018"></el-option>
+                  <el-option label="2019" value="2019"></el-option>
+                  <el-option label="2020" value="2020"></el-option>
+                  <el-option label="2021" value="2021"></el-option>
+                  <el-option label="2022" value="2022"></el-option>
+                </el-select>
+              </div>
+              <div class="item">
+                <el-select v-model="formModel.makeMonth" placeholder="月">
+                  <el-option label="任意月" value="99"></el-option>
+                  <el-option label="1月" value="01"></el-option>
+                  <el-option label="2月" value="02"></el-option>
+                  <el-option label="3月" value="03"></el-option>
+                  <el-option label="4月" value="04"></el-option>
+                  <el-option label="5月" value="05"></el-option>
+                  <el-option label="6月" value="06"></el-option>
+                  <el-option label="7月" value="07"></el-option>
+                  <el-option label="8月" value="08"></el-option>
+                  <el-option label="9月" value="09"></el-option>
+                  <el-option label="10月" value="10"></el-option>
+                  <el-option label="11月" value="11"></el-option>
+                  <el-option label="12月" value="12"></el-option>
+                </el-select>
+              </div>
+              <div class="item">
+                <el-select v-model="formModel.makeDay" placeholder="日">
+                  <el-option label="任意日" value="99"></el-option>
+                  <el-option label="1日" value="01"></el-option>
+                  <el-option label="2日" value="02"></el-option>
+                  <el-option label="3日" value="03"></el-option>
+                  <el-option label="4日" value="04"></el-option>
+                  <el-option label="5日" value="05"></el-option>
+                  <el-option label="6日" value="06"></el-option>
+                  <el-option label="7日" value="07"></el-option>
+                  <el-option label="8日" value="08"></el-option>
+                  <el-option label="9日" value="09"></el-option>
+                  <el-option label="10日" value="10"></el-option>
+                  <el-option label="11日" value="11"></el-option>
+                  <el-option label="12日" value="12"></el-option>
+                  <el-option label="13日" value="13"></el-option>
+                  <el-option label="14日" value="14"></el-option>
+                  <el-option label="15日" value="15"></el-option>
+                  <el-option label="16日" value="16"></el-option>
+                  <el-option label="17日" value="17"></el-option>
+                  <el-option label="18日" value="18"></el-option>
+                  <el-option label="19日" value="19"></el-option>
+                  <el-option label="20日" value="20"></el-option>
+                  <el-option label="21日" value="21"></el-option>
+                  <el-option label="22日" value="22"></el-option>
+                  <el-option label="23日" value="23"></el-option>
+                  <el-option label="24日" value="24"></el-option>
+                  <el-option label="25日" value="25"></el-option>
+                  <el-option label="26日" value="26"></el-option>
+                  <el-option label="27日" value="27"></el-option>
+                  <el-option label="28日" value="28"></el-option>
+                  <el-option label="29日" value="29"></el-option>
+                  <el-option label="30日" value="30"></el-option>
+                </el-select>
+              </div>
+              <div class="item">
+                <el-select v-model="formModel.makeHour" placeholder="时">
+                  <el-option label="任意时" value="99"></el-option>
+                  <el-option label="00" value="00"></el-option>
+                  <el-option label="01" value="01"></el-option>
+                  <el-option label="02" value="02"></el-option>
+                  <el-option label="03" value="03"></el-option>
+                  <el-option label="04" value="04"></el-option>
+                  <el-option label="05" value="05"></el-option>
+                  <el-option label="06" value="06"></el-option>
+                  <el-option label="07" value="07"></el-option>
+                  <el-option label="08" value="08"></el-option>
+                  <el-option label="09" value="09"></el-option>
+                  <el-option label="10" value="10"></el-option>
+                  <el-option label="11" value="11"></el-option>
+                  <el-option label="12" value="12"></el-option>
+                  <el-option label="13" value="13"></el-option>
+                  <el-option label="14" value="14"></el-option>
+                  <el-option label="15" value="15"></el-option>
+                  <el-option label="16" value="16"></el-option>
+                  <el-option label="17" value="17"></el-option>
+                  <el-option label="18" value="18"></el-option>
+                  <el-option label="19" value="19"></el-option>
+                  <el-option label="20" value="20"></el-option>
+                  <el-option label="21" value="21"></el-option>
+                  <el-option label="22" value="22"></el-option>
+                  <el-option label="23" value="23"></el-option>
+                </el-select>
+              </div>
+              <div class="item">
+                <el-select v-model="formModel.makeMinute" placeholder="分">
+                  <el-option label="00" value="00"></el-option>
+                  <el-option label="05" value="05"></el-option>
+                  <el-option label="10" value="10"></el-option>
+                  <el-option label="15" value="15"></el-option>
+                  <el-option label="20" value="20"></el-option>
+                  <el-option label="25" value="25"></el-option>
+                  <el-option label="30" value="30"></el-option>
+                  <el-option label="35" value="35"></el-option>
+                  <el-option label="40" value="40"></el-option>
+                  <el-option label="45" value="45"></el-option>
+                  <el-option label="50" value="50"></el-option>
+                  <el-option label="55" value="55"></el-option>
+                </el-select>
+              </div>
+            </div>
+            <el-form-item label="星期">
+            <el-col :span="18">
+                <el-checkbox-group v-model="formModel.makeWeek">
+                  <el-checkbox label="1" name="1">一</el-checkbox>
+                  <el-checkbox label="2" name="2">二</el-checkbox>
+                  <el-checkbox label="3" name="3">三</el-checkbox>
+                  <el-checkbox label="4" name="4">四</el-checkbox>
+                  <el-checkbox label="5" name="5">五</el-checkbox>
+                  <el-checkbox label="6" name="6">六</el-checkbox>
+                  <el-checkbox label="7" name="7">日</el-checkbox>
+                </el-checkbox-group>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-button type="primary" size="small" @click="itemAdd()" >添加规则</el-button>
+                  </el-col>
+                </el-form-item>
+          </el-form>
+          <el-form ref="form" class="right-bottom-form" :model="formModel" label-width="74px">
+               <el-card v-if='modelList' class="box-card" v-for="(item,index) in modelList" :key="index">
+              <div class="title">
+                <div class="text">
+                  <!-- {{item.time}} -->
+                  {{modelList[index].makeYear == '9999'? '任意年':modelList[index].makeYear+'年'}}
+                  {{modelList[index].makeMonth == '99'? '任意月':modelList[index].makeMonth+'月'}}
+                  {{modelList[index].makeDay == '99'? '任意日':modelList[index].makeDay+'日'}}
+                  {{modelList[index].makeHour == '99'? '任意时':modelList[index].makeHour+'时'}}
+                  {{modelList[index].makeMinute}}分
+                </div>
+                <div class="del" @click="itemDel(item,index)">
+                  删除
+                </div>
+              </div>
+              <el-row>
+              <el-col :span="16">
+                <el-form-item label="文件名称">
+                  <el-input v-model="modelList[index].fileName"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="延迟时间">
+                  <el-input type="number" v-model="modelList[index].delayMinute" placeholder="分钟"></el-input>
+                </el-form-item>
+              </el-col>
+              </el-row>
+              <el-form-item label="选择模板">
+               <el-input :disabled="visible" v-model="modelList[index].templateName" @click.native="inputEvent(item,index)" autocomplete="off"></el-input>
+                <!-- <el-select v-model="modelList[index].templateId" placeholder="选择模板">
+                  <el-option v-for="i in templateData" :label="i.name" :value="i.id" :key="i.id"></el-option>
+                </el-select> -->
+              </el-form-item>
+            </el-card>
+          </el-form>
+            <div class="footer-box">
+              <el-divider></el-divider>
+              <div class="footer">
+                <el-button type="primary" size="small" @click="employTemplate()">保存</el-button>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import {
+  requestProductInfoTpyeTreeDel,
+  requestProductInfoTpyeDel,
+  requestProductInfoTpyeTreeList,
+  requestProductTabTreeList,
+  requestProductTemplateList,
+  requestProductClassTreeList,
+  requestProductMakeTimesInfo,
+  requestProductInfoTreeItem,
+  requestProductInfoSave,
+  requestChannelList,
+  requestProductInfoJobs,
+  requestProductUserList,
+  requestProductMakeTimesSave
+} from "@/remote/";
+import PageOffice from "@/components/page-office/";
+import {
+  common,
+  witchCommonList,
+  withCommonLeftTree
+} from "../../mixins/index";
+import { mapActions, mapGetters } from "vuex";
+const itemOptionsMonth = ["1", "2", "3", "4", "5", "6", "7","8","9","10","11","12"];
+const itemOptionsWeek = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+const itemOptionsDay = ["1", "2", "3", "4", "5", "6", "7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"];
+const itemOptionsTime = ["0","1", "2", "3", "4", "5", "6", "7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
+const itemOptionsMinute = ["0","5","10","15","20","25","30","35","40","45","50","55",];
+export default {
+  mixins: [common, witchCommonList, withCommonLeftTree],
+  components: {
+    PageOffice
+  },
+  data() {
+    return {
+      presentSelectedIndex:null,
+      presentSelectedName:'',
+      visible: false,
+      radio1:'',
+      formModel:{
+        makeYear:'-',
+        makeMonth:'-',
+        makeDay:'-',
+        makeHour:'-',
+        makeMinute:'00',
+        makeWeek: [],
+      },
+      modelList:[],
+      ruleDisabledWeek:false,
+      ruleDisabledDay:false,
+      jobs:[],
+      userTreeData:[],
+      timeTab:'first',
+      templateIds:null,
+      editState:false,
+      tableData: [
+        {
+          material: "MaxTemp",
+          name: "最高气温",
+          num:'2',
+          type: "图片"
+        },
+        {
+          material: "MaxTemp",
+          name: "最低气温",
+          num:'2',
+          type: "图片"
+        },
+        {
+          material: "MaxTemp",
+          name: "最大风",
+          num:'2',
+          type: "图片"
+        },
+        {
+          material: "MaxTemp",
+          name: "1小时降雨",
+          num:'2',
+          type: "图片"
+        }
+      ], 
+
+      checkAllDay: false,
+      checkAllWeek: false,
+      checkAllMonth: false,
+      checkAllTime: false,
+      checkAllMinute: false,
+      // checkedProductDay: ["2", "3"],
+      // InfoForm.ruleWeek: ["2", "4"],
+      // InfoForm.ruleMonth: ["2", "5"],
+      // checkedProductTime: ["2", "6"],
+      // checkedProductMinute: ["2", "7"],
+      attTimeDay: itemOptionsDay,
+      attTimeMonth: itemOptionsMonth,
+      attTimeWeek: itemOptionsWeek,
+      attTimeTime: itemOptionsTime,
+      attTimeMinute: itemOptionsMinute,
+      isIndeterminateRuleMonth: true,
+      isIndeterminateWeek: true,
+      isIndeterminateRuleDay: true,
+      isIndeterminateRuleTime: true,
+      isIndeterminateRuleMinute: true,
+
+      form: null,
+      defaultProps: {
+        children: "children",
+        label: "label"
+      },
+      defaultProps1: {
+        children: "children",
+        label: "name"
+      },
+      tabTree: [],
+      menuData: [],
+      visibleDialogFormItemClassify: false,
+      visibleDialogFormItemProduct: false,
+      formItem: null,
+      radioType: "word",
+      checkList: ["值班记录", "每日预报产品"],
+      topTitle: "",
+      searchText: "",
+      tabsShowUserValue: "",
+      tabsShowInfoValue:'',
+      tabsList: [],
+      tabsList1: [
+        {name:'图片资料',id:'01',title:'图片资料'},
+        {name:'文字资料',id:'02',title:'文字资料'},
+      ],
+      wayTpye: [
+
+      ],
+      treeData: [],
+      treeDataList: [],
+      templateData:[], //产品模板数据
+      InfoForm:{
+        publishChannel:[],
+        ruleMonth:[],
+        ruleWeek:[],
+        ruleDay:[],
+        ruleTime:[],
+        ruleMinute:[],
+      },
+    };
+  },
+  watch: {
+    searchText(val) {
+      this.$refs.tree.filter(val);
+    },
+    'lastItemClicked.treeType':{
+      handler(val, oldVal){
+        if(val == 'product'){
+          this.editState = true
+        }else{
+          this.editState = false
+        }
+        },
+    },
+    'InfoForm.ruleWeek':{
+      handler(val, oldVal){
+        if(val.length > 0){
+          this.ruleDisabledDay = true
+          this.ruleDisabledWeek = false
+        }else{
+          this.ruleDisabledDay = false
+          this.ruleDisabledWeek = true
+        }
+        },
+    },
+    'InfoForm.ruleDay':{
+      handler(val, oldVal){
+        if(val.length > 0){
+          this.ruleDisabledWeek = true
+          this.ruleDisabledDay = false
+
+        }else{
+          this.ruleDisabledWeek = false
+          this.ruleDisabledDay = true
+        }
+        },
+    }
+  },
+  mounted() {
+    this.requestData();
+  },
+  computed:{
+    // tabsShowUserValue(){
+      
+
+    // },
+      ...mapGetters(['accountOrgId']),
+    },
+  methods: {
+    inputEvent(item,index){
+        console.log(item,index)
+        this.presentSelectedIndex = index
+        this.visible = true
+    },
+    handleNodeClickPop(data) {
+        console.log(data)
+        if(data.moduleType == 'template'){
+            this.modelList[this.presentSelectedIndex].templateName = data.label
+            this.modelList[this.presentSelectedIndex].templateId = data.id
+            this.visible = !this.visible
+            this.presentSelectedIndex = null
+        }
+        // else{this.$message.warning('请选择正确的产品');}
+    },
+    itemDel(item,index){
+      this.modelList.splice(index,1);
+    },
+    itemAdd(){
+      if(!this.formModel.makeMinute){
+          this.$message.warning("未配置分钟数");
+          return
+      }
+      let paramModel = {
+        'makeYear':this.formModel.makeYear,
+        'makeMonth':this.formModel.makeMonth,
+        'makeDay':this.formModel.makeDay, 
+        'makeHour':this.formModel.makeHour ,
+        'makeMinute':this.formModel.makeMinute,
+        time:`${this.formModel.makeYear}${this.formModel.makeMonth}${this.formModel.makeDay}${this.formModel.makeHour}${this.formModel.makeMinute}`,
+        makeWeek:this.formModel.makeWeek,
+        fileName:'',
+        templateId:'',
+        delayMinute:'0'
+      }
+      this.modelList.push(paramModel)
+    },
+    getPayloadData(){
+      let labelCodes = []
+        this.$refs.treeUser.forEach((i,index)=>{
+          if(this.$refs.treeUser[index].getCheckedNodes().length > 0){
+            this.$refs.treeUser[index].getCheckedNodes().forEach(element=>{
+              labelCodes.push(element)
+            })
+          }
+        })
+        labelCodes.forEach(item=>{
+          item.productInfoId = this.formTabTree.productInfoId,
+          item.channelCode = item.channel,
+          item.serviceUserId = item.id
+          delete item.address,
+          delete item.channel,
+          delete item.checked,
+          delete item.id,
+          delete item.name,
+          delete item.pId,
+          delete item.type
+        })
+      return {list:labelCodes}
+    },
+    employTemplate(){
+      // if (this.editState == false || this.templateIds == null) {
+      //     this.$message.warning("请选择产品和对应绑定的模块！");
+      //     return;
+      // }else {
+        // requestProductInfoSave({id:this.lastItemClicked.id,templateId:this.templateIds}).then(res=>{
+        //   this.$message.success(res.message);
+        //     this.InfoForm = {}
+        //     this.lastItemClicked = {}
+        //     this.templateIds = null
+        // })
+      // }
+      // this.InfoForm.templateId = this.templateIds
+
+        if(!this.modelList.length > 0) {
+          this.$message.warning("请添加规则");
+          return
+        }
+
+        let isDelayMinute = this.modelList.every(function(item){
+          return (item.delayMinute.toString()).length > 0
+        })
+        let isTemplateId = this.modelList.every(function(item){
+          return (item.templateId.toString()).length > 0
+        })
+        if(!isDelayMinute) {
+          this.$message.warning("请添加延迟时间");
+          return
+        }if(!isTemplateId){
+          this.$message.warning("请选择模板");
+          return
+        } else{
+          requestProductMakeTimesSave({productInfoId:this.lastItemClicked.id,list:this.modelList}).then(res=>{
+            this.$message.success(res.message);
+              // this.InfoForm = {}
+              // this.lastItemClicked = {}
+              // this.templateIds = null
+          })
+        }
+      
+      // let promiseFn = new Promise(function(resolve,reject){
+      //           this.modelList.forEach(item=>{
+      //             if(!item.delayMinute.length > 0){
+      //               this.$message.warning("请添加延迟时间");
+      //               resolve();
+      //             }
+      //           })
+      //     })
+      //     promiseFn.then(i=>{
+            
+      //     },error=>{
+      //         console.log(error);
+      //     }).
+      
+        
+    },
+    butClick(item){
+      console.log(item)
+      if (this.editState == false) {
+          this.$message.warning("请选择产品！");
+          return;
+      }
+      this.InfoForm.templateId = item.id
+      this.templateIds = item.id
+    },
+    save(){
+      if (this.lastItemClicked == null) {
+          this.$message.warning("请选择产品！");
+          return;
+      }else{
+        let param = {
+          id:this.InfoForm.id,
+          productTypeId:this.InfoForm.productTypeId,
+          code:this.InfoForm.code,
+          name:this.InfoForm.name,
+          type:this.InfoForm.type,
+          treeType:this.InfoForm.treeType,
+          templateId:this.InfoForm.templateId,
+          jobId:this.InfoForm.jobId,
+          publishChannel:this.InfoForm.publishChannel,
+          sort:this.InfoForm.sort,
+          subscribePublish:this.InfoForm.subscribePublish == true ? 1:0,
+          subscribeTime:this.InfoForm.subscribeTime,
+          remindMake:this.InfoForm.remindMake == true ? 1:0,
+          ruleMonth:this.InfoForm.ruleMonth,
+          ruleWeek:this.InfoForm.ruleWeek,
+          ruleDay:this.InfoForm.ruleDay,
+          ruleTime:this.InfoForm.ruleTime,
+          ruleMinute:this.InfoForm.ruleMinute,
+          fileName:this.InfoForm.fileName,
+          dataSource:this.InfoForm.dataSource,
+          targetPath:this.InfoForm.targetPath,
+          // templateId:
+        }
+        requestProductInfoSave(param).then(res=>{
+          this.$message({ type: 'success', message: res.message })
+          this.submitSuccess()
+        })
+      }
+    },
+
+    
+
+    //服务用户绑定 弹窗
+    onTab() {
+        this.formTabTree = true;
+        this.visibleDialogTree = true;
+        this.formTabTree = this.getFormItemUserBoundInputItem();
+        this.visibleDialogTree = true;
+        console.log('绑定', this.formTabTree)
+
+        // requestProductInfoTreeItem({id:this.lastItemClicked.id}).then(res=>{
+        //   this.InfoForm = {
+        //   publishChannel:res.data.list[0].publishChannel == null ? []:res.data.list[0].publishChannel,
+        //   }
+
+          // this.InfoForm.publishChannel.forEach(i=>{
+          //   this.wayTpye.forEach(item =>{
+          //     if(i == item.id){
+          //       this.tabsList.push(item)
+          //     }
+          //   })
+          // })
+
+        // })
+
+        let publishChannels = []
+        this.InfoForm.publishChannel.forEach(i=>{ //过滤拥有的渠道
+          this.wayTpye.forEach(item=>{
+            if(i == item.code){
+              publishChannels.push(item.code)
+            }
+          })
+        })
+
+        //获取 服务用户绑定tabList
+        requestProductUserList({orgId:this.loginInfo.orgId,productInfoId:this.lastItemClicked.id,channelCodes:publishChannels.toString()}).then(res=>{
+            this.tabsList = res.data
+            let checkeds = [] //已选中
+
+            function treeOfLists(tree){
+            tree.map(item => {
+                if(item.checked == true){
+                  checkeds.push(item.id);
+                }
+                if (item.children) {
+                  treeOfLists(item.children);
+                }
+              });
+            }
+
+            res.data.forEach(i=>{
+              if(i.children){
+                  treeOfLists(i.children)
+              }
+            })
+
+            this.$nextTick(() => { //默认勾选
+                  if(this.$refs.treeUser){
+                    this.$refs.treeUser.forEach((i,index)=>{
+                      this.$refs.treeUser[index].setCheckedKeys(checkeds);
+                    })
+                  }
+              });
+
+            if(res.data){
+              this.tabsShowUserValue = res.data[0].channel
+            }
+        })
+    },
+      handleCheckChange(data, checked, indeterminate) {
+        console.log(data, checked, indeterminate);
+        if(checked){
+
+        }else if(!checked){}
+
+      },
+    onConsult() {
+        this.$message.warning("功能开发中！");
+        // this.formConsult = true;
+        // this.visibleDialogConsult = true;
+        // console.log('新增1')
+    },
+    handleCheckAllChangeMonth(val) {
+      this.InfoForm.ruleMonth = val ? itemOptionsMonth : [];
+      this.isIndeterminateRuleMonth = false;
+    },
+    handleCheckedProductChangeMonth(value) {
+      let checkedCount = value.length;
+      this.checkAllMonth = checkedCount === this.attTimeMonth.length;
+      this.isIndeterminateRuleMonth =
+        checkedCount > 0 && checkedCount < this.attTimeMonth.length;
+    },
+    handleCheckAllChangeWeek(val) {
+      this.InfoForm.ruleWeek = val ? itemOptionsWeek : [];
+      this.isIndeterminateWeek = false;
+    },
+    handleCheckedProductChangeWeek(value) {
+      let checkedCount = value.length;
+      this.checkAllWeek = checkedCount === this.attTimeWeek.length;
+      this.isIndeterminateWeek =
+        checkedCount > 0 && checkedCount < this.attTimeWeek.length;
+    },
+    handleCheckAllChangeDay(val) {
+      this.InfoForm.ruleDay = val ? itemOptionsDay : [];
+      this.isIndeterminateRuleDay = false;
+    },
+    handleCheckedProductChangeDay(value) {
+      let checkedCount = value.length;
+      this.checkAllDay = checkedCount === this.attTimeDay.length;
+      this.isIndeterminateRuleDay =
+        checkedCount > 0 && checkedCount < this.attTimeDay.length;
+    },
+    handleCheckAllChangeTime(val) {
+      this.InfoForm.ruleTime = val ? itemOptionsTime : [];
+      this.isIndeterminateRuleTime = false;
+    },
+    handleCheckedProductChangeTime(value) {
+      let checkedCount = value.length;
+      this.checkAllTime = checkedCount === this.attTimeTime.length;
+      this.isIndeterminateRuleTime =
+        checkedCount > 0 && checkedCount < this.attTimeTime.length;
+    },
+    handleCheckAllChangeMinute(val) {
+      this.InfoForm.ruleMinute = val ? itemOptionsMinute : [];
+      this.isIndeterminateRuleMinute = false;
+    },
+    handleCheckedProductChangeMinute(value) {
+      let checkedCount = value.length;
+      this.checkAllMinute = checkedCount === this.attTimeMinute.length;
+      this.isIndeterminateRuleMinute =
+        checkedCount > 0 && checkedCount < this.attTimeMinute.length;
+    },
+
+    handleClick(tab, event) {
+      console.log(tab, event);
+    },
+    //初始化页面数据
+    requestData() {
+        const loginInfo = JSON.parse(localStorage.getItem('loginInfo',))
+        this.loginInfo = loginInfo
+      requestProductInfoTpyeTreeList().then(res => {
+        this.treeData = res.data.list;
+        this.treeDataList = [];
+        this.treeOfList(res.data.list);
+      });
+      requestProductTabTreeList().then(res => {
+        this.tabTree = res.data.list;
+      });
+      //获取发布渠道
+      requestChannelList().then(res=>{
+        this.wayTpye = res.data.list
+          // this.channelsOptions2 = []
+          // this.infoStatistics.forEach(element => {
+          //     res.data.list.forEach(i=>{
+          //         if(element.publishChannel == i.code){
+          //             let param = {}
+          //             param.label = i.name
+          //             param.value = i.code
+          //             param.selected = false
+          //             this.channelsOptions2.push(param)
+          //         }
+          //     })
+          // });
+      })
+      //获取岗位
+      requestProductInfoJobs({orgId:this.loginInfo.orgId}).then(res=>{
+        this.jobs = res.data.list
+      })
+      
+
+    },
+       templateOfList(tree){
+          tree.map(item => {
+            if(true){
+              console.log(item)
+            }
+            this.templateData.push(item)
+            if(item.children){
+              this.templateOfList(item.children)
+            }
+          })
+      },
+    submitSuccess(res) {
+      this.lastItemClicked = undefined
+      this.templateIds = null
+      this.requestData();
+    },
+    ...mapActions(["gotAccountInfo", "getAccountInfo", "getMenuInfo"]),
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
+    treeOfList(tree) {
+      tree.map(item => {
+        if(item.treeType == 'productType'){
+          this.treeDataList.push(item);
+        }
+        if (item.children) {
+          this.treeOfList(item.children);
+        }
+      });
+    },
+    delItemProductClassify() {
+      let vm = this;
+      if (vm.topTitle) {
+        requestProductInfoTpyeTreeDel({
+          id: vm.topTitle
+        }).then(res => {
+          vm.$message.success("删除成功!");
+          // this.$refs.table.fetchData();
+        });
+      }
+    },
+    saveModule() {},
+    handleNodeClick(data) {
+       this.formModel={
+        makeYear:'9999',
+        makeMonth:'99',
+        makeDay:'99',
+        makeHour:'99',
+        makeMinute:'00',
+        makeWeek: [],
+      },
+      this.modelList=[]
+
+      let vm = this;
+      console.log('ddd:',data);
+      vm.topTitle = "";
+      vm.topTitle = data.label;
+
+      if(data.treeType == 'product'){
+        //获取产品详情
+        requestProductInfoTreeItem({id:data.id}).then(res=>{
+          console.log(res)
+          this.InfoForm = {
+          ...res.data.list[0],
+          subscribePublish: res.data.list[0].subscribePublish == 1 ? true:false,
+          remindMake: res.data.list[0].remindMake == 1 ? true:false,
+          }
+          if(res.data.list[0].publishChannel == null || res.data.list[0].publishChannel == '' || res.data.list[0].publishChannel == []){
+            this.InfoForm.publishChannel = []
+          }else{
+            this.InfoForm.publishChannel = res.data.list[0].publishChannel
+          }
+
+        //传入类型 获取产品模板数据
+        // requestProductTemplateList({orgId:this.loginInfo.orgId,type:this.InfoForm.type}).then(res => {
+          // this.templateData = res.data.list
+          // this.templateOfList(res.data.list)
+        // });
+        requestProductClassTreeList({orgId:this.loginInfo.orgId,type:this.InfoForm.type}).then(res => {
+          this.templateData = res.data.list
+          // this.treeData = res.data.list
+        });
+
+        //获取制作时次
+        requestProductMakeTimesInfo({productInfoId:this.lastItemClicked.id}).then(res => {
+           this.modelList=res.data
+        });
+
+        })
+      }
+    },
+
+    inputItemClassifyEdit(item) {
+      if (!this.formItem) {
+        alert("请选择父节点");
+        return;
+      }
+      this.formItem = this.getFormItemByInputItemClassify(item);
+      this.visibleDialogFormItemClassify = true;
+    },
+
+        // 增补节点（新增子节点）
+        onTreeAppendMinor() {
+            const {
+                lastItemClicked
+            } = this;
+            if (lastItemClicked == undefined) {
+                this.$message.warning("请先选择要添加的父节点!");
+                return;
+            }else
+            if (lastItemClicked.treeType !== 'productType') {
+                this.$message.warning("请选择正确的节点!");
+                return;
+            }else{
+
+            }
+            this.formLeftTreeMinor = this.getFormItemLeftByInputItemMinor();
+            this.visibleDialogformLeftTreeMinor = true;
+            this.dialogTitle = '新增'
+            console.log('新增112', this.formLeftTreeMinor)
+        },
+
+         // 编辑分类节点
+        onTreeEdit() {
+          const {
+            lastItemClicked
+        } = this;
+        if (lastItemClicked.treeType !== "productType") {
+                this.$message.warning("请选择正确的产品分类");
+                return;
+            }
+            this.formLeftTree = this.getFormItemLeftByInputItem(lastItemClicked);
+            this.visibleDialogFormLeftTree = true;
+            this.dialogTitle = '编辑'
+            console.log('编辑2', this.formLeftTree)
+        },
+        
+      onTreeEditMinor() {
+          const {
+            lastItemClicked
+        } = this;
+        if (lastItemClicked.treeType !== 'product') {
+                this.$message.warning("请选择正确的产品");
+                return;
+            }
+        this.formLeftTreeMinor = this.getFormItemLeftByInputItemMinor(lastItemClicked);
+        this.visibleDialogformLeftTreeMinor = true;
+        this.dialogTitle = '编辑'
+        console.log('编辑11', this.formLeftTreeMinor)
+      },
+
+      delProductClassify() {
+            const {
+                lastItemClicked,
+            } = this;
+            if (lastItemClicked.treeType !== 'productType') {
+                this.$message.warning("请选择正确的产品分类");
+                return;
+            }
+
+            requestProductInfoTpyeTreeDel({id: lastItemClicked.id}).then(res => {
+                this.visibleDialog = false;
+                res.message && this.$message.success(res.message);
+                this.requestData()
+            })
+        },
+
+      templateProductClassify() {
+            const {
+                lastItemClicked,
+            } = this;
+            if (lastItemClicked.treeType !== 'product') {
+                this.$message.warning("请选择正确的产品");
+                return;
+            }
+
+            requestProductInfoTpyeDel({id: lastItemClicked.id}).then(res => {
+                this.visibleDialog = false;
+                res.message && this.$message.success(res.message);
+                this.requestData()
+            })
+        },
+
+    inputItemClassify(item) {
+      this.formItem = this.getFormItemByInputItemClassify(item);
+      this.visibleDialogFormItemClassify = true;
+    },
+    inputItemProduct(item) {
+      this.formItem = this.getFormItemByInputItemProduct(item);
+      this.visibleDialogFormItemProduct = true;
+    },
+    getFormItemByInputItemClassify(item = {}) {
+      this.getAccountInfo().then(res => {
+        //获取当前用户机构id
+        // if (res.success && res.data) {
+        //   this.formItem.orgId = res.data.orgId;
+        // }
+      });
+      const { lastItemClicked } = this;
+      const lastKeyItemClicked = lastItemClicked && lastItemClicked.id;
+      console.log(lastItemClicked);
+      return {
+        // "XXXPROP_ORGAN_id": "",
+        remark: "123",
+        pid: "",
+        name: "",
+        sort: "",
+        orgId: ""
+        // "XXXPROP_ORGAN_4": lastItemClicked && (lastItemClicked.XXXPROP_ORGAN_4 || 0) + 1 + "",
+        // "XXXPROP_ORGAN_5": lastKeyItemClicked,
+        // lastItemClicked,
+        // ...item
+      };
+    },
+
+    //服务用户绑定 弹窗表单
+    getFormItemUserBoundInputItem() {
+      const { lastItemClicked,InfoForm } = this;
+      console.log("lastItemClicked:", lastItemClicked);
+      console.log("InfoForm:", InfoForm);
+      return {productInfoId:InfoForm.id,channelCode:[],serviceUserId:[]}
+    },
+
+    getFormItemLeftByInputItem(item) {
+      const { lastItemClicked } = this;
+      console.log("lastItemClicked:", lastItemClicked);
+      console.log("item:", item);
+      return item
+        ? {
+            id: item.id,
+            name: item.label,
+            sort: item.sort,
+            pid: item.pid,
+            orgId: this.accountOrgId
+          }
+        : {
+            name: "",
+            sort: "",
+            pid: lastItemClicked.pid,
+            orgId: this.accountOrgId
+            // remark:"",
+          };
+    },
+    getFormItemLeftByInputItemMinor(item) {
+      const { lastItemClicked } = this;
+      console.log("lastItemClicked:", lastItemClicked);
+      console.log("item:", item);
+      return item ?  {
+          id:item.id,
+          productTypeId:item.pid,
+          name:item.label,
+          type:item.type,
+          productType:item.productType,
+          code:item.code,
+          sort:item.sort,
+          // pid:item.pid == null 
+          // ...item,
+          orgId:this.accountOrgId,
+          } 
+          : {
+          productTypeId:lastItemClicked.id,
+          name: '',
+          sort: '',
+          // pid: item.pid,
+          orgId:this.accountOrgId
+      };
+    },
+    getFormItemByInputItemProduct(item = {}) {
+      const { lastItemClicked } = this;
+      const lastKeyItemClicked = lastItemClicked && lastItemClicked.id;
+      return {
+        // "XXXPROP_ORGAN_id": "",
+        XXXPROP_ORGAN_1: "",
+        XXXPROP_ORGAN_2: "",
+        XXXPROP_ORGAN_3: "",
+        XXXPROP_ORGAN_4:
+          lastItemClicked && (lastItemClicked.XXXPROP_ORGAN_4 || 0) + 1 + "",
+        XXXPROP_ORGAN_5: lastKeyItemClicked,
+        XXXPROP_ORGAN_6: "",
+        lastItemClicked,
+        ...item
+      };
+    }
+  }
+};
+</script>
+
+<style lang="postcss" scoped>
+.product-made-home {
+  background: #f6f6f6;
+  padding: 15px 20px 0 0;
+  height: 100%;
+  box-sizing: border-box;
+  .wrap-box {
+    display: flex;
+    justify-content: space-between;
+    .left-box {
+      width: 280px;
+      position: relative;
+      background: #fff;
+      .content-box {
+        padding: 10px 20px 0;
+        .tree-box {
+          margin-top: 23px;
+        }
+      }
+      .tool-box {
+        padding: 30px 20px;
+        position: relative;
+        bottom: 0px;
+        .line-interval {
+          width: 100%;
+          height: 1px;
+          background: #e4e7ed;
+          margin-bottom: 30px;
+        }
+        .classify-tool {
+          display: flex;
+          justify-content: space-between;
+          height: 35px;
+          line-height: 35px;
+          .title {
+            font-size: 14px;
+            font-family: Microsoft YaHei;
+            color: rgba(96, 98, 102, 1);
+          }
+          .icon-boxborder: 1px solid rgba(235, 238, 245, 1);
+          border-radius: 6px;
+          width: 165px;
+          .iconfont {
+            display: inline-block;
+            width: 30%;
+            text-align: center;
+            font-size: 15px;
+            border-right: 1px solid #ebeef5;
+          }
+          .iconfont:last-child {
+            border-right: none;
+          }
+          .tianjia {
+            color: #67c241;
+          }
+          .bianji {
+            color: #409eff;
+          }
+          .shanchu {
+            color: #f46d6a;
+          }
+        }
+      }
+      .product-tool {
+        margin-top: 14px;
+      }
+    }
+    .dialog-user-tree {
+      height: 400px;
+      overflow: auto;
+      }
+  }
+  .center-box {
+    flex: 1;
+    background: #fff;
+    margin-left: 18px;
+    .content-box {
+      padding: 0 30px 33px;
+      .item-title {
+        padding: 20px 0;
+        font-size: 16px;
+      }
+      .item-content {
+        padding: 0 20px;
+        font-size: 14px;
+        .checkbox-box {
+          /* display: flex;
+              flex-wrap:wrap;
+              align-content:flex-start; */
+          .el-checkbox {
+            margin: 5px 5px !important;
+          }
+        }
+        .footer {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+      .hint {
+        margin: 40px;
+      }
+    }
+  }
+  .right-box {
+    flex: 0.5;
+    background: #fff;
+    margin-left: 22px;
+    .content-box {
+      padding: 10px 20px 0 20px;
+      position: relative;
+      .select-time {
+        margin-bottom: 10px;
+        display: flex;
+        .item {
+          width: 20%;
+          margin-right: 2px;
+        }
+        .el-checkbox-group {
+          .el-checkbox {
+            margin-right: 2px !important;
+          }
+        }
+      }
+      .el-button {
+        margin: 5px 5px !important;
+      }
+      .el-radio {
+        margin: 5px 5px !important;
+      }
+      .box-card {
+        margin: 10px 0;
+        .title {
+          margin-bottom: 14px;
+          display: flex;
+          justify-content: space-between;
+          .del {
+            color: red;
+          }
+        }
+      }
+      .footer-box{
+          width: 92%;
+          display: block;
+          position: absolute;
+          height: 100px;
+        .footer {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+  }
+}
+.top-title {
+  height: 20px;
+  padding: 20px;
+  border-bottom: 1px solid #e4e7ed;
+  display: flex;
+  justify-content: space-between;
+  .text {
+    font-size: 18px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: rgba(48, 49, 51, 1);
+  }
+}
+.no-border {
+  border-bottom: none;
+}
+
+.title {
+  font-size: 14px;
+  font-family: Microsoft YaHei;
+  color: rgba(96, 98, 102, 1);
+}
+.common-left {
+  height: 100% !important;
+  width: 100% !important;
+  margin-right: 0;
+}
+.common-left .el-card {
+  border: 0px solid #ebeef5;
+  height: 100% !important;
+}
+.common-left-tree-actions {
+  display: inline-block;
+  text-align: center;
+  padding: 1em 0;
+}
+.left-box .text {
+  margin-top: 15px;
+}
+.consult {
+  .consult-left {
+    .top {
+      background: rgba(246, 247, 251, 1);
+      border: 1px solid rgba(228, 231, 237, 1);
+      border-radius: 5px 5px 0 0;
+      .select-all {
+        font-size: 13px;
+        padding: 14px;
+      }
+    }
+    .tree {
+      border: 1px solid rgba(228, 231, 237, 1);
+      border-radius: 0 0 5px 5px;
+      padding: 14px;
+    }
+  }
+  .consult-right {
+    .consult-list {
+      .el-table {
+        .el-icon-bottom,.el-icon-top{
+          color: #409eff;
+          padding-right: 6px;
+        }
+        .el-icon-delete{
+          color: #F56C6C;
+          padding-right: 6px;
+        }
+      }
+    }
+  }
+}
+</style>
+<style lang="postcss">
+.product-made-home {
+  .left-box {
+    .el-input__inner {
+      border-radius: 16px;
+    }
+  }
+  .right-box{
+    .content-box {
+      .el-form {
+      }
+      .el-checkbox-group {
+        .el-checkbox {
+          margin-right: 16px !important;
+          .el-checkbox__label {
+            padding-left: 2px;
+          }
+        }
+      }
+    }
+  }
+  .el-popover{
+      height: 600px !important;
+      overflow: auto;
+  }
+}
+.product-made-attribute {
+  .el-card__header {
+    padding: 20px;
+    .clearfix {
+      height: 20px;
+      font-size: 18px;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: #303133;
+    }
+  }
+  .el-card__body {
+    height: calc(100%-100px);
+    .text{
+      height: calc(100%-50px);
+      .tree {
+        height: calc(100%-150px);
+      }
+    }
+  }
+  .common-left .el-card {
+    border: 0px solid #ebeef5;
+    height: 100% !important;
+  }
+  .wrap-box {
+    height: 100%;
+    .buts {
+      height: 150px;
+    }
+  }
+  .head-search {
+    height: 50px;
+  }
+  .right-box {
+    .content-box {
+      height: calc(100%-71px);
+    }
+      .right-top-form {
+        height: 100px;
+    }
+    .right-bottom-form {
+      height: calc(100%-210px);
+      overflow-x: hidden;
+      overflow-y: scroll;
+    }
+    .right-bottom-form::-webkit-scrollbar { display: none;}
+  }
+}
+</style>

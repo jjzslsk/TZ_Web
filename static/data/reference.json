@@ -1,0 +1,43 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "list": [{
+            "title": "历史查看",
+            "id": "1",
+            "content": "content1",
+            "name":"product-make-history"
+          }, {
+            "title": "文字资料",
+            "id": "3",
+            "content": "content3",
+            "name":"product-make-text"
+          }, {
+            "title": "提示栏",
+            "id": "4",
+            "content": "content4",
+            "name":"product-make-alert"
+          }, {
+            "title": "常用语",
+            "id": "5",
+            "content": "content5",
+            "name":"product-make-phrase"
+          }, {
+            "title": "业务规范",
+            "id": "6",
+            "content": "content6",
+            "name":"product-make-rules"
+          }, {
+            "title": "会商通知",
+            "id": "7",
+            "content": "content7",
+            "name":"product-make-message"
+          },{
+            "title": "图片资料",
+            "id": "2",
+            "content": "content2",
+            "name":"product-make-images"
+          }]
+    }
+}

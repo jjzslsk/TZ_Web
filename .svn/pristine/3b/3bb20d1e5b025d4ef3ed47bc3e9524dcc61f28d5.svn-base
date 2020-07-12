@@ -1,0 +1,23 @@
+<template>
+  <div class="content">
+      <div class="img">
+          <img src="/static/images/message.png" alt="" srcset="">
+      </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+    };
+  }
+};
+</script>
+<style lang='postcss' scoped>
+.content {
+    text-align: center;
+  .img {
+
+  }
+}
+</style>

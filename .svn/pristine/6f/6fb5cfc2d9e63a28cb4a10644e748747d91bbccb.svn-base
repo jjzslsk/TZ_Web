@@ -1,0 +1,170 @@
+<template>
+  <div>
+    <el-container>
+      <el-main>
+        <el-card class="box-card" shadow="never">
+          <div class="text">
+            <div class="list">
+              <page-table ref="table" remote="requestrulesList" :formatPayload="formatPayload" :hidePagination="true">
+                <div class="actions" slot="actions">
+                  <span class="title">类型</span>
+                  <!-- <el-select v-model="query.type" clearable placeholder="请选择">
+                    <el-option
+                      v-for="item in organList"
+                      :label="item.name"
+                      :value="item.id"
+                      :key="item.id"
+                    ></el-option>
+                  </el-select> -->
+                  <el-select v-model="query.type" placeholder="请选择">
+                    <el-option label="个别地区" value="1"></el-option>
+                    <el-option label="局部地区" value="2"></el-option>
+                    <el-option label="部分地区" value="3"></el-option>
+                  </el-select>
+                  <span class="title">名称：</span>
+                  <el-input v-model="query.name" clearable placeholder></el-input>
+                  <span class="title">内容</span>
+                  <el-input v-model="query.content" clearable placeholder></el-input>
+                  <c-button type="search" @click="search()">搜索</c-button>
+                  <c-button type="add" @click="inputItem({})">添加</c-button>
+                </div>
+                <el-table-column prop="id" label="序号" width="60px"></el-table-column>
+                <el-table-column prop="type" label="类型" width="80px" />
+                <el-table-column prop="name" label="名称" width="80px" />
+                <el-table-column prop="content" label="内容"/>
+                <el-table-column prop label="操作" width="160px">
+                  <template slot-scope="scope">
+                    <el-button type="text" size="small" @click="inputItem(scope.row)">编辑</el-button>
+                    <c-button type="del">
+                      <span class="text-danger">删除</span>
+                    </c-button>
+                  </template>
+                </el-table-column>
+              </page-table>
+            </div>
+          </div>
+        </el-card>
+      </el-main>
+    </el-container>
+    <dialog-form
+      title="业务规范"
+      :visible.sync="visibleDialogFormItem"
+      :getPayload="()=>formItem"
+      :confirmDisabled="!formItem.uid"
+      remote="requestDialogFormUserItemInput"
+      v-if="formItem"
+      @success="submitSuccess"
+    >
+      <!-- <template v-slot:default="{ form }"> -->
+      <template>
+        <el-form-item label="名称" label-width="120px">
+          <el-input v-model="formItem.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="类型" label-width="120px">
+          <el-select v-model="formItem.sex" placeholder="请选择">
+            <el-option label="个别地区" value="1"></el-option>
+            <el-option label="局部地区" value="2"></el-option>
+            <el-option label="部分地区" value="3"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="内容" label-width="120px">
+          <el-input
+            v-model="formItem.content"
+            autocomplete="off"
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 6}"
+          ></el-input>
+        </el-form-item>
+      </template>
+    </dialog-form>
+  </div>
+</template>
+
+<script>
+import {
+  requestUserListDelItem,
+  requestOrganList,
+  requestRoleListItem,
+  requestTreeChildrenOfAreaNode
+} from "@/common/remote/";
+import { common, witchCommonList } from "../../../mixins/index";
+export default {
+  mixins: [common, witchCommonList],
+  data() {
+    return {
+      query: {
+        // XXXPROP_USER_id: "",
+        // XXXPROP_USER_name: ""
+      },
+      organList: "",
+      areaData: "",
+      roleList: []
+    };
+  },
+  mounted() {
+    requestOrganList({}).then(res => {
+      if (res.success) {
+        this.organList = res.data.list;
+      }
+    });
+    requestTreeChildrenOfAreaNode().then(res => {
+      this.areaData = [];
+      this.treeOfList(res.data);
+      console.log(this.areaData);
+    });
+    requestRoleListItem({}).then(res => {
+      if (res.success) {
+        this.roleList = res.data.list;
+        console.log(this.roleList);
+      }
+    });
+  },
+  computed: {
+    actionOfListDelItem() {
+      return requestUserListDelItem;
+    }
+  },
+  methods: {
+    treeOfList(tree) {
+      tree.map(item => {
+        this.areaData.push(item);
+        if (item.children) {
+          this.treeOfList(item.children);
+        }
+      });
+    },
+    submitSuccess(res) {
+      requestOrganList({}).then(res => {
+        if (res.success) {
+          this.organList = res.data.list;
+        }
+      });
+      requestTreeChildrenOfAreaNode().then(res => {
+        this.areaData = [];
+        this.treeOfList(res.data);
+        console.log(this.areaData);
+      });
+      // this.$refs.table.fetchData();
+    },
+    getFormItemByInputItem(item = {}) {
+      const { lastItemClicked } = this;
+      const lastKeyItemClicked = lastItemClicked && lastItemClicked.id;
+      console.log("item:", item);
+      console.log("lastItemClicked:", lastItemClicked);
+      return {
+        // "XXXPROP_USER_id": "",
+        // id: item.id,
+        // uid: item.uid,
+        // name: item.name,
+        // content: item.content,
+        // areaId: item.areaId,
+        // orgId: item.orgId,
+        // "XXXPROP_USER_4": lastKeyItemClicked,
+        ...item
+      };
+    }
+  }
+};
+</script>
+<style scoped>
+</style>

@@ -1,0 +1,245 @@
+layui.use(['element','form','layer','laydate'], function(){
+    var element = layui.element;
+        layer = layui.layer;
+        laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#soundingDate' //指定元素
+        });
+        laydate.render({
+            elem: '#temporalDate' //指定元素
+        });
+
+        element.on('tab(demo)', function(data){
+            // console.log(data.index); //得到当前Tab的所在下标
+            if (data.index == 0) {
+                $(".main-plane").show()
+                $(".main-section").hide()
+                $(".main-temporal").hide()
+                $(".main-sounding").hide()
+            }else if(data.index == 1){
+                $(".main-plane").hide()
+                $(".main-section").show()
+                $(".main-temporal").hide()
+                $(".main-sounding").hide()
+                sectionAnalyze()
+            }else if(data.index == 2){
+                $(".main-plane").hide()
+                $(".main-section").hide()
+                $(".main-temporal").show()
+                $(".main-sounding").hide()
+            }else if(data.index == 3){
+                $(".main-plane").hide()
+                $(".main-section").hide()
+                $(".main-temporal").hide()
+                $(".main-sounding").show()
+            }
+        });
+
+  });
+
+const http = new EasyHttp;
+
+function getData(param){
+    http.get(system_url +'/ssd/system/ssd-sys-role/selectRoleTreeList?', param,
+        function (res) {
+            console.log(res)
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
+ }
+
+ function postJson(param){
+    http.postJson(system_url + '/ssd/system/ssd-sys-role-user/addRoleUser', param,
+        function (res) {
+            console.log(res)
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
+ }
+
+ function postForm(param){
+    http.postForm(system_url + '/ssd/system/ssd-sys-role/addRole', param,
+        function (res) {
+            console.log(res)
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
+ }
+
+ function delData(param){
+    http.delete(system_url + '/ssd/system/ssd-sys-role/deleteRoleById', param,
+        function (res) {
+            console.log(res)
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
+ }
+
+ function putData(param){
+    http.put(system_url + '/ssd/product/ssd-product-publish/doPublish', param,
+        function (res) {
+            console.log(res)
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
+ }
+
+
+$("#getExport").click(function(){
+var param = `&pageIndex=1&pageSize=10`
+    getData(param)
+});
+$("#formExport").click(function(){
+    postForm({name:'111',code:'222'})
+});
+$("#jsonExport").click(function(){
+    postJson({user:'222',code:'333'})
+});
+$("#delExport").click(function(){
+    delData({id:"1f6c4caa9b8648f28be4fce9e888eccb"})
+});
+$("#putExport").click(function(){
+    putData({user:'小明',id:'123'})
+});
+
+
+$("#click_browse").click(function(){
+    $(".browse-box").show()
+    $(".stamps-box").hide()
+});
+
+$("#click_stamps").click(function(){
+    $(".browse-box").hide()
+    $(".stamps-box").show()
+});
+
+// function getListData(param={}){
+//     http.get(system_url +'/ssd/system/ssd-sys-area/selectAreaTreeListByUser?', '',
+//         function (res) {
+//             console.log(res)
+//         },
+//         function (err) {
+//             console.log(err)
+//         }
+//     )
+//  }
+//  getData()
+
+//平面图-实时查询-预报时间 （单选）
+    const forecastData = [
+        {name: '2020-01-02 02：02',type: 'long'},
+        {name: '2020-01-02 02：03',type: 'cute'},
+        {name: '2020-01-02 02：04',type: 'cold'},
+        {name: '2020-01-02 02：05',type: 'smile'},
+    ]
+    const forecastTime = [];
+    $.each(forecastData, function(index, obj) {
+        index == 0? forecastTime.push(`<li class='forecastTime forecast-time-active' style="cursor:pointer">${obj.name}</li>`):
+        forecastTime.push(`<li class='forecastTime' style="cursor:pointer;">${obj.name}</li>`)
+    });
+    $("#forecastTime").html(forecastTime);
+    $('#forecastTime').on('click','.forecastTime',function(){
+        $(this).parents('#forecastTime').find('.forecastTime').removeClass('forecast-time-active');
+        $(this).addClass('forecast-time-active');
+        console.log(this)
+    });
+
+    //平面图-实时查询-预报时隔 （单选）
+    const afterData = [
+        {name: '3h',type: 'long'},
+        {name: '6h',type: 'cute'},
+        {name: '12h',type: 'cold'},
+        {name: '24h',type: 'smile'},
+    ]
+    const forecastAfter = [];
+    $.each(afterData, function(index, obj) {
+        index == 0? forecastAfter.push(`<div class='forecastAfter button-item after-time-active' style="cursor:pointer">${obj.name}</div>`):
+        forecastAfter.push(`<div class='forecastAfter button-item' style="cursor:pointer;">${obj.name}</div>`)
+    });
+    $("#forecastAfter").html(forecastAfter);
+    $('#forecastAfter').on('click','.forecastAfter',function(){
+        $(this).parents('#forecastAfter').find('.forecastAfter').removeClass('after-time-active');
+        $(this).addClass('after-time-active');
+    });
+
+    //平面图-实时查询-预报时次 （单选）
+    const frequencyData = [
+        {name: '2020-01-08',type: 'long'},
+        {name: '2020-01-07',type: 'cute'},
+        {name: '2020-01-06',type: 'cold'},
+        {name: '2020-01-05',type: 'smile'},
+    ]
+    const forecastFrequency = [];
+    $.each(frequencyData, function(index, obj) {
+        index == 0? forecastFrequency.push(`<li class='forecastFrequency frequency-time-active' style="cursor:pointer">${obj.name}</li>`):
+        forecastFrequency.push(`<li class='forecastFrequency' style="cursor:pointer;">${obj.name}</li>`)
+    });
+    $("#forecastFrequency").html(forecastFrequency);
+    $('#forecastFrequency').on('click','.forecastFrequency',function(){
+        $(this).parents('#forecastFrequency').find('.forecastFrequency').removeClass('frequency-time-active');
+        $(this).addClass('frequency-time-active');
+        console.log(this)
+    });
+
+//剖面图-综合分析li
+function sectionAnalyze (){
+    const sectionAnalyze = [
+        {name: '风+温度+相对湿度+散度2',type: 'long'},
+        {name: '风+温度+相对湿度+散度3',type: 'cute'},
+        {name: '风+温度+相对湿度+散度4',type: 'cold'},
+        {name: '风+温度+相对湿度+散度5',type: 'smile'},
+    ]
+    const listData = [];
+    $.each(sectionAnalyze, function(index, obj) {
+        listData.push(`<li>${obj.name}</li>`)
+    });
+    $("#sectionAnalyze").html(listData);
+}
+
+
+//动态添加页面元素
+var myarr = ["EC", "JMA", "GFS", "GRAPES", "ZJWARMS", "上海WRAMS", "浙江WRF"];
+var str = "";
+var addstr = "";
+for (var i = 0; i < myarr.length; i++) {
+    if(i== 1){
+        str = str + "<li class='is-active liClick'>" + myarr[i] + "</li>";
+    }else {
+        str = str + "<li class='liClick'>" + myarr[i] + "</li>";
+    }
+}
+$(".model-li-plane ul").html(str);
+
+//单选
+$(".liClick").click(function(){
+    // console.log(this)
+});
+
+
+//点击模式 (多选)
+$(".model-li-plane").on("click", "li", function addfood() {
+    $(this).toggleClass("is-active");
+    var max = $(this).parent().children(".is-active").length;
+    var checkstr = "";
+    checkstr = $(this).parent().children(".is-active").text();
+    // console.log(checkstr)
+    console.log(this)
+    if ($(this).hasClass("is-active")) {
+        $(".myselt").val(checkstr);
+    } else {
+        $(".myselt").val(checkstr);
+    }
+});
+

@@ -1,0 +1,37 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "list": [
+            {
+             "dutyDate":"2020-04-04",
+             "week":"周一",
+             "isRest": true,
+             "userList":[
+                { "id":"FGHRTHFH45341","userName":"admin","jobName":"短临"},
+                { "id":"FGHRTHFH45342","userName":"李四","jobName":"短期"},
+                { "id":"FGHRTHFH45343","userName":"张三","jobName":"短期"}
+            ]},
+
+
+
+
+
+
+            {
+                "dutyDate":"2020-04-04",
+                "week":"周一",
+                "userList":[
+                   {"userName":"admin","jobName":"短临"},
+                   {"userName":"李四","jobName":"短期"},
+                   {"userName":"张三","jobName":"短期"}
+               ]},
+            
+
+            {"dutyDate":"2020-04-05","week":"周二","jobName":"短临","admin":"短期","李四":"短临","张三":"短临","首席":""},
+            {"dutyDate":"2020-04-06","week":"周三","jobName":"短临","admin":"短临","李四":"","张三":"短临","首席":"短临"},
+            {"dutyDate":"2020-04-07","week":"周四","jobName":"短临","admin":"短临","李四":"短期","张三":"短临","首席":"短临"}
+        ]
+    }
+}

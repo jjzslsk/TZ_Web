@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title></title>
+        <!-- <link rel="stylesheet" href="//at.alicdn.com/t/font_1393164_2hlypdd16ab.css"> -->
+        <link rel="stylesheet" href="//at.alicdn.com/t/font_1577886_34wog8y7hws.css">
+    </head>
+
+    <body>
+        <div id="app"></div>
+        <script>
+            const tiandituLayersInfo = [
+                {
+                    layerId: 'tainditu_traffic',
+                    type: 'xyz',
+                    url: 'http://t2.tianditu.gov.cn/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=76620c5b63143f80f875dffb556b57ef'
+                }, {
+                    layerId: 'tainditu_traffic_info',
+                    type: 'xyz',
+                    url: 'http://t0.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=76620c5b63143f80f875dffb556b57ef' // 天地图_地名
+                }
+            ];
+            window.gloable = {
+                baseLayersInfoSources: [
+                    tiandituLayersInfo
+                ],
+                baseLayersInfoIndex: 0,
+            }
+        </script>
+        <!-- built files will be auto injected -->
+    </body>
+</html>

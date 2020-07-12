@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../../layui/css/layui.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="main-3d" id="main-3d">
+      <button class="layui-icon layui-icon-export" id="getExport">get</button>
+      <button class="layui-icon layui-icon-export" id="formExport">提交form</button>
+      <button class="layui-icon layui-icon-export" id="jsonExport">提交Json</button>
+      <button class="layui-icon layui-icon-export" id="delExport">del</button>
+      <button class="layui-icon layui-icon-export" id="putExport">put</button>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度</h1>
+      <h1>自适应高度1</h1>
+  </div>
+</body>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="js/index.js"></script>
+<script>
+$("#getExport").click(function(){
+var param = `&pageIndex=1&pageSize=10`
+  getData(param)
+});
+$("#formExport").click(function(){
+  postForm({name:'111',code:'222'})
+});
+$("#jsonExport").click(function(){
+  postJson({user:'222',code:'333'})
+});
+$("#delExport").click(function(){
+  delData({id:"1f6c4caa9b8648f28be4fce9e888eccb"})
+});
+$("#putExport").click(function(){
+  putData({user:'小明',id:'123'})
+});
+</script>
+</html>

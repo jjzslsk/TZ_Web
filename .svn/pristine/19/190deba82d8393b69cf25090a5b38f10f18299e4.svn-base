@@ -1,0 +1,215 @@
+<template>
+<div class="page-wrapper">
+    <el-container>
+        <common-left-tree title="产品标签导航" :isHeader='true' :data="treeData" @click-item="onTreeClickItem" class="left-tree">
+            <common-left-tree-actions @success="submitSuccess" slot="append" :lastItemClicked="lastItemClicked" @append="onTreeAppend" @edit="onTreeEdit" @delete="onTreeDelete('requestProductLabelTreeListDelItem')"></common-left-tree-actions>
+        </common-left-tree>
+        <el-main>
+            <el-card class="box-card" shadow="never">
+                <div slot="header" class="clearfix">
+                    <span class="primary">产品标签管理</span>
+                </div>
+                <div class="text">
+                    <div class="list">
+                        <page-table @success="submitSuccess" ref="table" remote="requestProductLabelList" :formatPayload="formatPayload">
+                            <div class="actions" slot="actions">
+                                <span class="title">搜索名称：</span>
+                                <el-input v-model="query.name" clearable placeholder="搜索名称"></el-input>
+                                <span class="title">搜索编码：</span>
+                                <el-input v-model="query.code" clearable placeholder="搜索编码"></el-input>
+                                <!-- <span class="title">行政级别：</span>
+                                <el-select v-model="query.XXXPROP_AREA_name" clearable placeholder="请选择">
+                                    <el-option label="地级市" value="city"></el-option>
+                                    <el-option label="区/县" value="county"></el-option>
+                                </el-select> -->
+                                <c-button type="search" @click="search()">搜索</c-button>
+                                <c-button type="add" @click="inputItem()">添加</c-button>
+                            </div>
+                            <el-table-column prop="" label="序列" width="80px" type="index"></el-table-column>
+                            <el-table-column prop="code" label="编码" />
+                            <el-table-column prop="name" label="名称" />
+                            <el-table-column prop="sort" label="显示顺序" />
+                            <el-table-column prop="description" label="描述" />
+                            <el-table-column prop label="操作" width="200px">
+                                <template slot-scope="scope">
+                                    <el-button type="text" size="small" @click="inputItem(scope.row)">编辑</el-button>
+                                    <c-button type="del" @click="onConfirmDelete(scope.row)">
+                                        <span class="text-danger">删除</span>
+                                    </c-button>
+                                </template>
+                            </el-table-column>
+                        </page-table>
+                    </div>
+                </div>
+            </el-card>
+        </el-main>
+    </el-container>
+     <dialog-form @success="submitSuccess" title="产品标签导航" :visible.sync="visibleDialogFormLeftTree" :getPayload="()=>formLeftTree" :confirmDisabled="!formLeftTree.name||formLeftTree.name.legend==0||formLeftTree.code===undefined" remote="requestDialogFormProductLabelTreeItemInput"
+      v-if="formLeftTree">
+        <!-- <template v-slot:default="{ form }"> -->
+        <template>
+            <el-form-item label="分类名称" label-width="120px">
+                <el-input v-model="formLeftTree.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="分类编码" label-width="120px">
+                <el-input v-model="formLeftTree.code" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="上级类型" label-width="120px">
+                <el-select v-model="formLeftTree.pid" placeholder="请选择">
+                    <el-option v-for="item in treeDataList" :label="item.label" :value="item.id" :key='item.id'></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="级别" label-width="120px">
+                <el-select v-model="formLeftTree.level" placeholder="请选择">
+                    <el-option label="一级" value="1"></el-option>
+                    <el-option label="二级" value="2"></el-option>
+                    <el-option label="三级" value="3"></el-option>
+                    <el-option label="四级" value="4"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="排序" label-width="120px">
+                <el-input v-model="formLeftTree.sort" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="描述" label-width="120px">
+                <el-input v-model="formLeftTree.description" autocomplete="off" type="textarea" :autosize="{ minRows: 2, maxRows: 6}"></el-input>
+            </el-form-item>
+        </template>
+    </dialog-form>
+    <dialog-form title="产品标签" @success="submitSuccess" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.name" remote="requestDialogFormProductLabelItemInput" v-if="formItem">
+        <!-- <template v-slot:default="{ form }"> -->
+        <template>
+            <el-form-item label="名称" label-width="120px">
+                <el-input v-model="formItem.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="编码" label-width="120px">
+                <el-input v-model="formItem.code" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="编码" label-width="120px">
+                <el-input v-model="formItem.sort" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="描述" label-width="120px">
+                <el-input v-model="formItem.description" autocomplete="off"></el-input>
+            </el-form-item>
+            <!-- <el-form-item label="行政级别" label-width="120px">
+                <el-select v-model="formItem.XXXPROP_AREA_3" placeholder="请选择">
+                    <el-option label="地级市" value="city"></el-option>
+                    <el-option label="区/县" value="county"></el-option>
+                </el-select>
+            </el-form-item> -->
+            <!-- <el-form-item label="上级地区" label-width="120px" v-if="lastItemClicked">
+                <el-input v-model="lastItemClicked.label" autocomplete="off" readOnly></el-input>
+            </el-form-item> -->
+            <!-- <el-form-item label="上级地区" label-width="120px">
+                <el-input v-model="formItem.XXXPROP_AREA_4" autocomplete="off" readOnly></el-input>
+            </el-form-item> -->
+            <!-- <el-form-item label="上级地区" label-width="120px">
+                <el-select v-model="formItem.XXXPROP_AREA_4" placeholder="请选择">
+                    <el-option label="浙江省" value="330000"></el-option>
+                </el-select>
+            </el-form-item> -->
+        </template>
+    </dialog-form>
+</div>
+</template>
+
+<script>
+import {
+    requestProductLabelListDelItem,
+    requestProductLabelTreeList
+} from "@/common/remote/";
+import {
+    common,
+    witchCommonList,
+    withCommonLeftTree
+} from '../../mixins/index';
+import {
+    mapGetters
+} from 'vuex'
+export default {
+    mixins: [common, witchCommonList, withCommonLeftTree],
+    data() {
+        return {
+            treeData:[],
+            treeDataList:[],
+            loginInfo:null,
+            query: {
+                // XXXPROP_AREA_id: "",
+                // XXXPROP_AREA_name: ""
+            }
+        };
+    },
+    computed: {
+        actionOfListDelItem() {
+            return requestProductLabelListDelItem;
+        }
+    },
+    mounted(){
+        this.requestData()
+    },
+    methods: {
+        handleNodeClick(item){
+            console.log(item)
+        },
+        submitSuccess(){
+            this.treeDataList = []
+            this.onConfirmUpdate()
+            this.requestData()
+        },
+        requestData(){
+            const loginInfo = JSON.parse(localStorage.getItem('loginInfo',))
+            this.loginInfo = loginInfo
+
+            requestProductLabelTreeList().then(res =>{
+                this.treeData = res.data.list
+                this.treeOfList(res.data.list)
+                 let collection = this.treeDataList
+                this.treeDataList = collection.filter((item,index) =>{
+                       return item.type == 'labelType'
+                })
+            })
+        },
+        treeOfList(tree){
+        tree.map(item => {
+          if(!item) return
+          this.treeDataList.push(item)
+          if(item.children){
+            this.treeOfList(item.children)
+          }
+        })
+      },
+        getFormItemByInputItem(item) {
+            const {
+                lastItemClicked
+            } = this;
+            const lastKeyItemClicked = lastItemClicked && lastItemClicked.id;
+            // return {
+            //     "XXXPROP_AREA_id": "",
+            //     "XXXPROP_AREA_1": "",
+            //     "XXXPROP_AREA_2": "",
+            //     "XXXPROP_AREA_3": "",
+            //     "XXXPROP_AREA_4": lastKeyItemClicked,
+            //     "XXXPROP_AREA_5": "",
+            //     "XXXPROP_AREA_6": "",
+            //     lastItemClicked,
+            //     ...item 
+            // };
+            return item ? item : {
+                "labelTypeId":'222'
+                };
+        },
+        getFormItemLeftByInputItem(item) {
+            const {
+                lastItemClicked
+            } = this;
+            return item ? item : {
+                label: "",
+                // pid: lastItemClicked.id,
+                level:'1'
+                // parent: lastItemClicked
+            };
+        },
+    }
+};
+</script>
+<style scoped>
+</style>

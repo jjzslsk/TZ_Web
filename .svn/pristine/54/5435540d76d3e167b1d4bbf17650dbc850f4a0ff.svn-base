@@ -1,0 +1,36 @@
+<template>
+<c-chart class="chartDialogResult" @mounted="onChartMounted"></c-chart>
+</template>
+
+<script>
+export default {
+    props: ['data'],
+    methods: {
+        getChartOption() {
+            let optionObj = {
+                xAxis: {
+                    type: 'category',
+                    data: ['8日', '9日', '10日', '11日', '12日', '13日', '14日']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: [15, 19, 25, 30, 10, 40, 50],
+                    type: 'line',
+                    smooth: true
+                }]
+            }
+            return optionObj
+        },
+        onChartMounted(chart) {
+            chart.initOption({
+                option: this.getChartOption()
+            });
+        },
+    }
+}
+</script>
+
+<style lang="css" scoped>
+</style>

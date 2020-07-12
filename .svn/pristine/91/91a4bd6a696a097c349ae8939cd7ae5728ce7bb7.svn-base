@@ -1,0 +1,36 @@
+import moment from 'moment'
+export const transformDate = function(value, to, from = "YYYYMMDD000000") {
+    return value ? moment(value, from).format(to) : value;
+};
+export const transformType = function(value) {
+    return ({
+        precipitation: "降水",
+        temperature: "温度",
+        relativeHumidity: "相对湿度",
+        wind: "风速",
+        visibility: "能见度"
+    })[value]
+};
+export const weatherVal = function(value, unit = "") {
+    return value == null || value === '' ? '缺值' : `${value}${unit}`
+};
+export const legendTitle = function(value) {
+    const prop = ['title', 'minEq', 'min'].find(prop => value[prop] != null);
+    return value[prop]
+};
+export const codeToWeatherIcon = value => '../../static/images/weather_icons/' + value + '.png';
+export const leftPad = (value, length, fill = "0") => {
+    if (value == null) {
+        return value
+    } else {
+        const val = "" + value;
+        return fill.repeat(length).substr(val.length) + val;
+    }
+}
+
+// export const mapFilters = (filterKeys, {
+//     afterFix = "Filter"
+// } = {}) => filterKeys.reduce((p, c) => {
+//     p[c + afterFix] = () => this[c]
+//     return p;
+// }, {})

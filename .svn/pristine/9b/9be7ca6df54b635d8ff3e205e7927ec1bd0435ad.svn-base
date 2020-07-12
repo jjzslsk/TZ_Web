@@ -1,0 +1,208 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "list": [{
+                "label": "台风",
+                "items": [{
+                        "imageType": "0001",
+                        "imageColor": 1
+                    },
+                    {
+                        "imageType": "0001",
+                        "imageColor": 2
+                    },
+                    {
+                        "imageType": "0001",
+                        "imageColor": 3
+                    },
+                    {
+                        "imageType": "0001",
+                        "imageColor": 4
+                    }
+                ]
+            },
+            {
+                "label": "暴雨",
+                "items": [{
+                        "imageType": "0002",
+                        "imageColor": 1
+                    },
+                    {
+                        "imageType": "0002",
+                        "imageColor": 2
+                    },
+                    {
+                        "imageType": "0002",
+                        "imageColor": 3
+                    },
+                    {
+                        "imageType": "0002",
+                        "imageColor": 4
+                    }
+                ]
+            },
+            {
+                "label": "寒潮",
+                "items": [{
+                        "imageType": "0004",
+                        "imageColor": 1
+                    },
+                    {
+                        "imageType": "0004",
+                        "imageColor": 2
+                    },
+                    {
+                        "imageType": "0004",
+                        "imageColor": 3
+                    },
+                    {
+                        "imageType": "0004",
+                        "imageColor": 4
+                    }
+                ]
+            },
+            {
+                "label": "大风",
+                "items": [{
+                        "imageType": "0005",
+                        "imageColor": 1
+                    },
+                    {
+                        "imageType": "0005",
+                        "imageColor": 2
+                    },
+                    {
+                        "imageType": "0005",
+                        "imageColor": 3
+                    },
+                    {
+                        "imageType": "0005",
+                        "imageColor": 4
+                    }
+                ]
+            },
+            {
+                "label": "高温",
+                "items": [{
+                        "imageType": "0007",
+                        "imageColor": 1
+                    },
+                    {
+                        "imageType": "0007",
+                        "imageColor": 2
+                    },
+                    {
+                        "imageType": "0007",
+                        "imageColor": 3
+                    },
+                    {
+                        "imageType": "0007",
+                        "imageColor": 4
+                    }
+                ]
+            },
+            {
+                "label": "雷电",
+                "items": [{
+                        "imageType": "0009",
+                        "imageColor": 1
+                    },
+                    {
+                        "imageType": "0009",
+                        "imageColor": 2
+                    },
+                    {
+                        "imageType": "0009",
+                        "imageColor": 3
+                    },
+                    {
+                        "imageType": "0009",
+                        "imageColor": 4
+                    }
+                ]
+            },
+            {
+                "label": "冰雹",
+                "items": [{
+                        "imageType": "0010",
+                        "imageColor": 1
+                    },
+                    {
+                        "imageType": "0010",
+                        "imageColor": 2
+                    },
+                    {
+                        "imageType": "0010",
+                        "imageColor": 3
+                    },
+                    {
+                        "imageType": "0010",
+                        "imageColor": 4
+                    }
+                ]
+            },
+            {
+                "label": "大雾",
+                "items": [{
+                        "imageType": "0012",
+                        "imageColor": 1
+                    },
+                    {
+                        "imageType": "0012",
+                        "imageColor": 2
+                    },
+                    {
+                        "imageType": "0012",
+                        "imageColor": 3
+                    },
+                    {
+                        "imageType": "0012",
+                        "imageColor": 4
+                    }
+                ]
+            },
+            {
+                "label": "霾",
+                "items": [{
+                        "imageType": "0013",
+                        "imageColor": 1
+                    },
+                    {
+                        "imageType": "0013",
+                        "imageColor": 2
+                    },
+                    {
+                        "imageType": "0013",
+                        "imageColor": 3
+                    },
+                    {
+                        "imageType": "0013",
+                        "imageColor": 4
+                    }
+                ]
+            },
+            {
+                "label": "道路结冰",
+                "items": [{
+                        "imageType": "0014",
+                        "imageColor": 1
+                    },
+                    {
+                        "imageType": "0014",
+                        "imageColor": 2
+                    },
+                    {
+                        "imageType": "0014",
+                        "imageColor": 3
+                    },
+                    {
+                        "imageType": "0014",
+                        "imageColor": 4
+                    }
+                ]
+            }
+        ]
+    }
+}

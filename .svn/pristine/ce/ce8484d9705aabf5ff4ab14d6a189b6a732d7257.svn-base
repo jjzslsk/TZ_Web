@@ -1,0 +1,41 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "rowCount": 120,
+        "pageSize": 10,
+        "pageIndex": 3,
+        "list": [{
+            "XXXPROP_NIGHT_DISTRIBUTION_id": "1",
+            "XXXPROP_NIGHT_DISTRIBUTION_1": "黄飞",
+            "XXXPROP_NIGHT_DISTRIBUTION_2": "8",
+            "XXXPROP_NIGHT_DISTRIBUTION_3": "9月6日，11日，26日",
+            "XXXPROP_NIGHT_DISTRIBUTION_4": "721"
+        }, {
+            "XXXPROP_NIGHT_DISTRIBUTION_id": "2",
+            "XXXPROP_NIGHT_DISTRIBUTION_1": "韦龙龙",
+            "XXXPROP_NIGHT_DISTRIBUTION_2": "4",
+            "XXXPROP_NIGHT_DISTRIBUTION_3": "9月3日，8日（双休日），13日（国家法定节假日），18日，23日",
+            "XXXPROP_NIGHT_DISTRIBUTION_4": "622"
+        }, {
+            "XXXPROP_NIGHT_DISTRIBUTION_id": "3",
+            "XXXPROP_NIGHT_DISTRIBUTION_1": "黄飞",
+            "XXXPROP_NIGHT_DISTRIBUTION_2": "8",
+            "XXXPROP_NIGHT_DISTRIBUTION_3": "9月6日，11日，26日",
+            "XXXPROP_NIGHT_DISTRIBUTION_4": "721"
+        }, {
+            "XXXPROP_NIGHT_DISTRIBUTION_id": "4",
+            "XXXPROP_NIGHT_DISTRIBUTION_1": "黄飞",
+            "XXXPROP_NIGHT_DISTRIBUTION_2": "8",
+            "XXXPROP_NIGHT_DISTRIBUTION_3": "9月6日，11日，26日",
+            "XXXPROP_NIGHT_DISTRIBUTION_4": "721"
+        }, {
+            "XXXPROP_NIGHT_DISTRIBUTION_id": "5",
+            "XXXPROP_NIGHT_DISTRIBUTION_1": "黄飞",
+            "XXXPROP_NIGHT_DISTRIBUTION_2": "8",
+            "XXXPROP_NIGHT_DISTRIBUTION_3": "9月6日，11日，26日",
+            "XXXPROP_NIGHT_DISTRIBUTION_4": "721"
+        }]
+    }
+}

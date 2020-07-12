@@ -1,0 +1,159 @@
+<template>
+  <el-container>
+    <el-header class="main-header" height="90px" :style="{'background': 'rgba(0, 87, 156, 1)'}">
+      <div class="logo">产品制作</div>
+      <!-- <img :src="menuInfo.logo" class="logo" alt=""> -->
+      <!-- <img :src="menuInfo.after" alt=""> -->
+      <el-menu class="menu top" mode="horizontal" :default-active="activeIndex" router>
+        <template v-for="(item,index) in menuInfo.menu">
+          <el-menu-item class="item" :key="index" :index="item.index" style="padding-left: 0px;">
+            <template class="item" slot="title">
+              <i :class="item.icon" v-if="item.icon"></i>
+              {{item.title}}
+            </template>
+          </el-menu-item>
+        </template>
+      </el-menu>
+      <c-clock class="clock"></c-clock>
+      <account-actions></account-actions>
+    </el-header>
+    <el-main>
+      <router-view></router-view>
+    </el-main>
+  </el-container>
+</template>
+
+<script>
+import { mapActions, mapGetters } from "vuex";
+import eventHub from "@/common/event-hub/";
+const widthAsideNomal = "230px";
+import fullPath from "@/router/full-path.js";
+export default {
+  name: "Admin",
+  created() {
+    this.ensureAccountInfo();
+    let path = this.$route.path
+    let pathStrArr = path.split('/')
+    this.activeIndex = `/${pathStrArr[1]}/${pathStrArr[2]}`
+  },
+  data() {
+    return {
+      data: [],
+      defaultProps: {
+        children: "children",
+        label: "label"
+      },
+      widthAside: widthAsideNomal,
+      activeIndex:""
+    };
+  },
+  watch: {
+    activityId: {
+      handler: function(id) {
+        // this.getMenuInfo({
+        //     id
+        // });
+      },
+      immediate: true
+    },
+    $route () {
+      let path = this.$route.path
+      let pathStrArr = path.split('/')
+      this.activeIndex = `/${pathStrArr[1]}/${pathStrArr[2]}`
+    }
+  },
+  methods: {
+    ...mapActions(["ensureAccountInfo", "getMenuInfo"]),
+    setWidthAsider(width) {
+      this.widthAside = width;
+      eventHub.$emit("resize");
+    },
+    closeAside() {
+      this.setWidthAsider("0");
+    },
+    openAside() {
+      this.setWidthAsider(widthAsideNomal);
+    }
+  },
+  computed: {
+    activityId() {
+      return this.$route.params.activityId;
+    },
+    menuInfo() {
+      // return this.menus[this.activityId] || {};
+      const admin = fullPath.filter(item => item.name == "weather-situation")[0];
+      const menu = admin.children.map(e => ({
+        // icon: `${e.meta&&e.meta.icon}`,
+        // title: `${e.meta&&e.meta.title}`
+        index: `/weather-situation/${e.path}`,
+        ...(e.meta || {})
+      }));
+      return {
+        menu
+      };
+    },
+    ...mapGetters(["menus"])
+  }
+};
+</script>
+
+<style scoped>
+.main-header {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    clear: both;
+  }
+
+  .logo {
+    padding-left: 1em;
+    line-height: 90px;
+    font-size: 24px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 1);
+  }
+
+  > img {
+    float: left;
+  }
+
+  .clock {
+    position: absolute;
+    top: 15px;
+    right: 150px;
+  }
+}
+
+.aside {
+  font-size: 15px;
+  font-weight: 400;
+  position: relative;
+  overflow: visible;
+  padding-top: 10px;
+
+  .nav-title {
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    cursor: default;
+    position: relative;
+    height: 70px;
+    line-height: 68px;
+    padding-left: 30px;
+
+    .icon-nav-right {
+      font-size: 12px;
+      line-height: 12px;
+      position: absolute;
+      right: 15px;
+      top: 28px;
+      cursor: pointer;
+    }
+  }
+}
+</style>

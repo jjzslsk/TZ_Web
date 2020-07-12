@@ -1,0 +1,26 @@
+{
+    "success": true,
+    "code": 0,
+    "message": "登录成功",
+    "data": {
+        "app": [
+            {
+                "id": "1",
+                "code": "01",
+                "name": "tf-service",
+                "createTime": "2020-03-12 09:32:53.0",
+                "updateTime": "2020-03-12 09:32:57.0"
+            }
+        ],
+        "jwt": {
+            "access_token": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODU4MDU3NDQsInVzZXJfbmFtZSI6IjphNGM3ODFmNzc3ODc0NDVmYTY4MzM1NTExOGE0NzUwNiIsImF1dGhvcml0aWVzIjpbInNlbGVjdE1lbnVUcmVlQnlOb3dVc2VyIiwic2VsZWN0QXJlYVRyZWVCeVVzZXJJZCIsInNlbGVjdE9yZ1RyZWVMaXN0Iiwic2VsZWN0QXJlYVRyZWVMaXN0ICIsInNlbGVjdFVzZXJUcmVlTGlzdCIsInNlbGVjdE9yZ1RyZWVCeVVzZXJJZCJdLCJqdGkiOiI0NmY0NWNhZS01YzJlLTQwNTYtODQ5NS05MTFlYzI4Njg0M2YiLCJjbGllbnRfaWQiOiJ1YWEtc2VydmljZSIsInNjb3BlIjpbInNlcnZpY2UiXX0.ate6uaZBHxHqmj5auCCjqBQhrVjOoIvqGuVC73oKz5HwaD9BTGj6QrxbR4mBYumnEXjsZnfTSbsLzZTgFZ2QWJNx6kkaEPmEOnRg7qPz2OuoMUsRq3rN37h32AKMZD3wjYp9YaJWcmxn1tZxifd5X8SS70fFc20soylHEZnweAX_TbjFglD_MPvk613006y4kuVZ7Vw4lC7uW7TgWVg3gyYTlCzkx5XTzNhO9blNtPyzECNkuRjAMdgpME9rSofDWqoHdpQfeyAqzCY8g40Uao8WJUpydQXewigvy4IED9tBTkTDFplBMgB1qsSwUzdwEJ9k7vTJYe2bzy-24pDdwQ",
+            "token_type": "bearer",
+            "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiI6YTRjNzgxZjc3Nzg3NDQ1ZmE2ODMzNTUxMThhNDc1MDYiLCJzY29wZSI6WyJzZXJ2aWNlIl0sImF0aSI6IjQ2ZjQ1Y2FlLTVjMmUtNDA1Ni04NDk1LTkxMWVjMjg2ODQzZiIsImV4cCI6MTU4Nzc5Mjk0NCwiYXV0aG9yaXRpZXMiOlsic2VsZWN0TWVudVRyZWVCeU5vd1VzZXIiLCJzZWxlY3RBcmVhVHJlZUJ5VXNlcklkIiwic2VsZWN0T3JnVHJlZUxpc3QiLCJzZWxlY3RBcmVhVHJlZUxpc3QgIiwic2VsZWN0VXNlclRyZWVMaXN0Iiwic2VsZWN0T3JnVHJlZUJ5VXNlcklkIl0sImp0aSI6ImY1MDFiOGQyLWYyODMtNDIxNy1hZWYwLWQwYWU4NjBjZGE4ZCIsImNsaWVudF9pZCI6InVhYS1zZXJ2aWNlIn0.CR2cPw9excbHJIDwYY9aZaUh1d1VVwM1_GYvCU3T_4k9QUEsrFyWtb3pvk4RDsYql6pokzrNMIhUAH2TYQkKmdboCjyLD34Nta_shxzVV5UQU9-C4ADvxCAIINd0gPk4n7-9zXfzXlWuQ5x0N2GjbLgCSQ6cEeyRQG9Me4PjUrDVltQjamznLatQXe9lG48aPSmwAFuDubbZVxS0908ac3Jzld8ObLyZjGZrRDR7SafXTCVZPAbGAy45u8jEu_mVPNhv4Y-HJGkktr4NM-AJryry_m8LzN523lPGdLYF8X8I7Dv1bpAYkgm7QYj2FFZOOqVDPj8S7ct4fLUbkZy7Sg",
+            "expires_in": 604799,
+            "scope": "service",
+            "jti": "46f45cae-5c2e-4056-8495-911ec286843f"
+        },
+        "message": "获取token成功",
+        "userId": "a4c781f77787445fa683355118a47506"
+    }
+}

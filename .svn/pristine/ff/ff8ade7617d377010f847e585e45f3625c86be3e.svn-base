@@ -1,0 +1,4 @@
+#main-3d {
+    overflow-x : hidden;  
+    overflow-y : hidden; 
+}

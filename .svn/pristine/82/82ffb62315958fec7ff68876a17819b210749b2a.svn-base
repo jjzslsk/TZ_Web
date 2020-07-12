@@ -1,0 +1,58 @@
+const http = new EasyHttp;
+
+function getData(param){
+    http.get(system_url +'/ssd/system/ssd-sys-role/selectRoleTreeList?', param,
+        function (res) {
+            console.log(res)
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
+ }
+
+ function postJson(param){
+    http.postJson(system_url + '/ssd/system/ssd-sys-role-user/addRoleUser', param,
+        function (res) {
+            console.log(res)
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
+ }
+
+ function postForm(param){
+    http.postForm(system_url + '/ssd/system/ssd-sys-role/addRole', param,
+        function (res) {
+            console.log(res)
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
+ }
+
+ function delData(param){
+    http.delete(system_url + '/ssd/system/ssd-sys-role/deleteRoleById', param,
+        function (res) {
+            console.log(res)
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
+ }
+
+ function putData(param){
+    http.put(system_url + '/ssd/product/ssd-product-publish/doPublish', param,
+        function (res) {
+            console.log(res)
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
+ }
+
+

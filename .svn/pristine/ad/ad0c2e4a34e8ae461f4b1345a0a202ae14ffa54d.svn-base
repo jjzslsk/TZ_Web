@@ -1,0 +1,310 @@
+export default [{
+    path: '/',
+    redirect: '/welcome'
+}, {
+    name: "welcome",
+    path: '/welcome',
+    // redirect: '/admin'
+    redirect: '/integrated-management'
+
+}, {
+    path: '/admin',
+    redirect: '/admin/menu',
+    name: 'admin',
+    component: () => import('../views/admin/index.vue'),
+    children: [{
+        path: 'dict',
+        name: 'dict',
+        redirect: 'dict/list',
+        meta: {
+            icon: "iconfont caidan",
+            title: "字典管理"
+        },
+        component: () => import('../views/admin/dict/index.vue'),
+        children: [
+            {
+                path: 'list',
+                name: 'dict-list',
+                component: () => import('../views/admin/dict/list.vue')
+            }
+        ]
+    }, {
+        path: 'area',
+        name: 'area',
+        redirect: 'area/list',
+        meta: {
+            icon: "iconfont caidan",
+            title: "地区管理"
+        },
+        component: () => import('../views/admin/area/index.vue'),
+        children: [
+            {
+                path: 'list',
+                name: 'area-list',
+                component: () => import('../views/admin/area/list.vue')
+            }
+        ]
+    }, {
+        path: 'organ',
+        name: 'organ',
+        redirect: 'organ/list',
+        meta: {
+            icon: "iconfont caidan",
+            title: "机构管理"
+        },
+        component: () => import('../views/admin/organ/index.vue'),
+        children: [
+            {
+                path: 'list',
+                name: 'organ-list',
+                component: () => import('../views/admin/organ/list.vue')
+            }
+        ]
+    }, {
+        path: 'menu',
+        name: 'menu',
+        redirect: 'menu/list',
+        meta: {
+            icon: "iconfont caidan",
+            title: "菜单管理"
+        },
+        component: () => import('../views/admin/menu/index.vue'),
+        children: [
+            {
+                path: 'list',
+                name: 'menu-list',
+                component: () => import('../views/admin/menu/list.vue')
+            }
+        ]
+    }, {
+        path: 'user',
+        name: 'user',
+        redirect: 'user/list',
+        meta: {
+            icon: "iconfont caidan",
+            title: "用户管理"
+        },
+        component: () => import('../views/admin/user/index.vue'),
+        children: [
+            {
+                path: 'list',
+                name: 'user-list',
+                component: () => import('../views/admin/user/list.vue')
+            }
+        ]
+    }, {
+        path: 'role',
+        name: 'role',
+        redirect: 'role/list',
+        meta: {
+            icon: "iconfont caidan",
+            title: "角色管理"
+        },
+        component: () => import('../views/admin/role/index.vue'),
+        children: [
+            {
+                path: 'list',
+                name: 'role-list',
+                component: () => import('../views/admin/role/list.vue')
+            }
+        ]
+    }]
+}, {
+    path: '/integrated-management',
+    redirect: '/integrated-management/home',
+    name: 'integrated-management',
+    component: () => import('../views/integrated-management/index.vue'),
+    children: [{
+        path: 'home',
+        name: 'home',
+        meta: {
+            icon: "iconfont shouye",
+            title: "首页"
+        },
+        component: () => import('../views/integrated-management/home/index.vue')
+    }, {
+        path: 'duty-management',
+        redirect: '/integrated-management/duty-management/post',
+        name: 'duty-management',
+        meta: {
+            icon: "iconfont zhibanguanli",
+            title: "值班管理"
+        },
+        component: () => import('../views/integrated-management/duty-management/index.vue'),
+        children: [
+            {
+                path: 'post',
+                name: 'post',
+                meta: {
+                    icon: "iconfont pageManage",
+                    title: "岗位管理"
+                },
+                component: () => import('../views/integrated-management/duty-management/post.vue')
+            },
+            {
+                path: 'personnel',
+                name: 'personnel',
+                meta: {
+                    icon: "iconfont pageManage",
+                    title: "人员管理"
+                },
+                component: () => import('../views/integrated-management/duty-management/personnel.vue')
+            },
+            {
+                path: 'scheduling',
+                name: 'scheduling',
+                meta: {
+                    icon: "iconfont pageManage",
+                    title: "排班管理"
+                },
+                component: () => import('../views/integrated-management/duty-management/scheduling.vue')
+            },
+            {
+                path: 'history',
+                name: 'history',
+                meta: {
+                    icon: "iconfont pageManage",
+                    title: "历史交接班"
+                },
+                component: () => import('../views/integrated-management/duty-management/history.vue')
+            },
+            {
+                path: 'attendance',
+                name: 'attendance',
+                meta: {
+                    icon: "iconfont pageManage",
+                    title: "考勤管理"
+                },
+                component: () => import('../views/integrated-management/duty-management/attendance.vue')
+            },
+            {
+                path: 'overtime',
+                name: 'overtime',
+                meta: {
+                    icon: "iconfont pageManage",
+                    title: "加班管理"
+                },
+                component: () => import('../views/integrated-management/duty-management/overtime.vue')
+            }
+        ]
+    }, {
+        path: 'duty-process',
+        redirect: 'duty-process/post',
+        name: 'duty-process',
+        meta: {
+            icon: "iconfont zhibanliuchengpeizhi",
+            title: "值班流程配置"
+        },
+        component: () => import('../views/integrated-management/duty-process/index.vue'),
+        children: [
+            {
+                path: 'post',
+                name: 'duty-process-post',
+                meta: {
+                    icon: "iconfont pageManage",
+                    title: "岗位流程配置"
+                },
+                component: () => import('../views/integrated-management/duty-process/post.vue')
+            },
+            {
+                path: 'scheduling',
+                name: 'duty-process-scheduling',
+                meta: {
+                    icon: "iconfont pageManage",
+                    title: "值班流程配置"
+                },
+                component: () => import('../views/integrated-management/duty-process/scheduling.vue')
+            }
+        ]
+    }, {
+        path: 'work-evidence',
+        name: 'work-evidence',
+        meta: {
+            icon: "iconfont gongzuoliuhen",
+            title: "工作留痕"
+        },
+        component: () => import('../views/integrated-management/work-evidence/index.vue')
+    }
+    ]
+},{
+    path: '/product-made',
+    redirect: '/product-made/home',
+    name: 'product-made',
+    component: () => import('../views/product-made/index.vue'),
+    children: [{
+        path: 'home',
+        name: 'home',
+        meta: {
+            icon: "iconfont shouye",
+            title: "首页"
+        },
+        component: () => import('../views/product-made/home/index.vue')
+    },{
+        path: 'service-user',
+        name: 'service-user',
+        meta: {
+            icon: "iconfont shouye",
+            title: "服务用户"
+        },
+        component: () => import('../views/product-made/service-user/index.vue')
+    },{
+        path: 'product-data-origin',
+        name: 'product-data-origin',
+        meta: {
+            icon: "iconfont shouye",
+            title: "产品数据源"
+        },
+        component: () => import('../views/product-made/product-data-origin/index.vue')
+    },{
+        path: 'product-label',
+        name: 'product-label',
+        meta: {
+            icon: "iconfont shouye",
+            title: "产品标签"
+        },
+        component: () => import('../views/product-made/product-label/index.vue')
+    },{
+        path: 'product-attribute',
+        name: 'product-attribute',
+        meta: {
+            icon: "iconfont shouye",
+            title: "产品配置"
+        },
+        component: () => import('../views/product-made/product-attribute/index.vue')
+    }
+]
+},{
+    path: '/weather-situation',
+    redirect: '/weather-situation/home',
+    name: 'weather-situation',
+    component: () => import('../views/weather-situation/index.vue'),
+    children: [{
+        path: 'home',
+        name: 'home',
+        meta: {
+            icon: "iconfont shouye",
+            title: "首页"
+        },
+        component: () => import('../views/weather-situation/home/index.vue')
+    }]
+},{
+    path: '/root/',
+    redirect: '/',
+    name: 'root',
+    component: () => import('../views/root/index.vue'),
+    children: [
+        {
+            path: '/login',
+            name: 'login',
+            component: () => import('../views/root/login.vue')
+        },
+        {
+            path: '/sudoku',
+            name: 'sudoku',
+            component: () => import('../views/root/sudoku.vue')
+        },
+    ]
+}, {
+    name: "outlink",
+    path: '/outlink/:out*'
+}]

@@ -1,0 +1,32 @@
+{
+    "success": true,
+    "code": 0,
+    "message": "获取产品模板分类数据成功！",
+    "data": {
+        "list": [{
+            "id": "f9946243d5be421ebdb6654963a51a5e",
+            "parentId": null,
+            "label": "邮件组",
+            "type": "templateType",
+            "sort": 3,
+            "children": [{
+                "id": "2e346ce80e8c4b5b9cd803b0f3b42857",
+                "parentId": "f9946243d5be421ebdb6654963a51a5e",
+                "label": "早次预报组",
+                "type": "productType",
+                "sort": 456,
+                "children": [{
+                    "id": "ef05804a7e3a41e4b9a9bfe34da016c5",
+                    "parentId": "2e346ce80e8c4b5b9cd803b0f3b42857",
+                    "label": "测试预报员",
+                    "type": "productType",
+                    "sort": 789,
+                    "children": [],
+                    "ifLeaf": true
+                }],
+                "ifLeaf": false
+            }],
+            "ifLeaf": false
+        }]
+    }
+}

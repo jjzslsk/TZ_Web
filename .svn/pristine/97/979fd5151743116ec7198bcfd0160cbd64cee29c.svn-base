@@ -1,0 +1,35 @@
+<template>
+  <div class="content">
+    <div class="but">
+      <el-radio-group v-model="radio1">
+        <el-radio-button label="浙江短期预报"></el-radio-button>
+        <el-radio-button label="上海短期预报"></el-radio-button>
+        <el-radio-button label="江苏短期预报"></el-radio-button>
+        <el-radio-button label="浙江省局海洋预报"></el-radio-button>
+        <el-radio-button label="舟山海洋预报"></el-radio-button>
+      </el-radio-group>
+    </div>
+    <div class="txt">
+      <el-input type="textarea" :rows="28" placeholder="请输入内容" v-model="textarea"></el-input>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      radio1: "浙江短期预报",
+      textarea:'浙江短期预报1',
+    };
+  }
+};
+</script>
+<style lang='postcss' scoped>
+.content {
+  text-align: center;
+  .but {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
+</style>

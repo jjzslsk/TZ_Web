@@ -1,0 +1,184 @@
+<template>
+<div class="page-wrapper attendance">
+    <el-container>
+        <el-main>
+            <el-card class="box-card" shadow="never">
+                <div slot="header" class="clearfix">
+                    <span class="primary">考勤管理</span>
+                </div>
+                <div class="text">
+                    <div class="list">
+                        <page-table ref="table" remote="requestAttendanceList" :formatPayload="formatPayload" :span-method="spanMethod" :hidePagination="true">
+                            <div class="actions" slot="actions">
+                                <span class="title">选择月份</span>
+                                <el-date-picker v-model="queryTime" format="yyyy年 MM 月" value-format="yyyy-MM" type="month" placeholder="选择月"></el-date-picker>
+                                <c-button type="search" @click="search()">查询</c-button>
+                                <span>出勤“/”值班“Z”补休“一1”班休“一2”调休“<span class="red">一3</span>”公差“Δ”事假“ ＄”迟到“L”早退“ E”年休假“<span class="red">*</span>”事假“ ＄”病假“⊕”旷工“〇”</span>
+                                <c-button type="search" v-if="!editCol" @click="editCol=!editCol">编辑</c-button>
+                                <c-button type="search" v-if="editCol" @click="editCol=!editCol">保存</c-button>
+                                <c-button type="search">导出</c-button>
+                                <c-button type="search">打印</c-button>
+                            </div>
+                            <el-table-column prop="XXXPROP_ATTENDANCE_name" label="姓名" width="60px"></el-table-column>
+                            <el-table-column label="日期" width="60px">
+                                <el-table-column prop="XXXPROP_ATTENDANCE_range" label="星期" width="60px" />
+                            </el-table-column>
+                            <el-table-column v-for="({date,week,value},index) in dates" :label="date" :key="index">
+                                <table-col :prop="value" :label="week" :edit="editCol"></table-col>
+                            </el-table-column>
+                            <el-table-column prop="XXXPROP_ATTENDANCE_real" label="实出勤（天）" width="80px" />
+                            <el-table-column prop="XXXPROP_ATTENDANCE_need" label="应出勤（天）" width="80px" />
+                        </page-table>
+                    </div>
+                </div>
+            </el-card>
+        </el-main>
+    </el-container>
+</div>
+</template>
+
+<script>
+import {
+    common,
+    witchCommonList
+} from '../../mixins/index';
+export default {
+    mixins: [common, witchCommonList],
+    data() {
+        return {
+            query: {
+                XXXPROP_ATTENDANCE_1: ''
+            },
+            queryTime:null,
+            editCol: false,
+            dates: null,
+            form: {}
+        };
+    },
+    watch:{
+        queryTime(data){
+            let timeData = data
+            this.query.time = timeData
+        }
+    },
+    mounted() {
+        setTimeout(() => {
+            this.dates = [{
+                "date": "1",
+                "week": "日",
+                "isRest": true,
+                "value": "XXXPROP_ATTENDANCE_D_1"
+            }, {
+                "date": "2",
+                "week": "一",
+                "isRest": false,
+                "value": "XXXPROP_ATTENDANCE_D_2"
+            }, {
+                "date": "3",
+                "week": "二",
+                "isRest": true,
+                "value": "XXXPROP_ATTENDANCE_D_3"
+            }, {
+                "date": "4",
+                "week": "三",
+                "isRest": true,
+                "value": "XXXPROP_ATTENDANCE_D_4"
+            }, {
+                "date": "5",
+                "week": "四",
+                "isRest": true,
+                "value": "XXXPROP_ATTENDANCE_D_5"
+            }, {
+                "date": "6",
+                "week": "五",
+                "isRest": true,
+                "value": "XXXPROP_ATTENDANCE_D_6"
+            }, {
+                "date": "7",
+                "week": "六",
+                "isRest": true,
+                "value": "XXXPROP_ATTENDANCE_D_7"
+            }, {
+                "date": "7",
+                "week": "六",
+                "isRest": true,
+                "value": "XXXPROP_ATTENDANCE_D_8"
+            }, {
+                "date": "7",
+                "week": "六",
+                "isRest": true,
+                "value": "XXXPROP_ATTENDANCE_D_9"
+            }, {
+                "date": "7",
+                "week": "六",
+                "isRest": true,
+                "value": "XXXPROP_ATTENDANCE_D_10"
+            }, {
+                "date": "7",
+                "week": "六",
+                "isRest": true,
+                "value": "XXXPROP_ATTENDANCE_D_11"
+            }, {
+                "date": "7",
+                "week": "六",
+                "isRest": true,
+                "value": "XXXPROP_ATTENDANCE_D_12"
+            }, {
+                "date": "7",
+                "week": "六",
+                "isRest": true,
+                "value": "XXXPROP_ATTENDANCE_D_13"
+            }, {
+                "date": "7",
+                "week": "六",
+                "isRest": true,
+                "value": "XXXPROP_ATTENDANCE_D_14"
+            }, {
+                "date": "7",
+                "week": "六",
+                "isRest": true,
+                "value": "XXXPROP_ATTENDANCE_D_15"
+            }]
+        }, 1000);
+    },
+    methods: {
+        spanMethod({
+            row,
+            column,
+            rowIndex,
+            columnIndex,
+            rows
+        }) {
+            if (columnIndex == 0 || column.property == 'XXXPROP_ATTENDANCE_real' || column.property == 'XXXPROP_ATTENDANCE_need') {
+                const funSpan = e => e.XXXPROP_ATTENDANCE_id == row.XXXPROP_ATTENDANCE_id;
+                const spanLength = rows.filter(funSpan).length;
+                if (spanLength > 1) {
+                    if (rows.findIndex(funSpan) == rowIndex) {
+                        return {
+                            rowspan: spanLength,
+                            colspan: 1
+                        }
+                    } else {
+                        return {
+                            rowspan: 0,
+                            colspan: 0
+                        }
+                    }
+                }
+            }
+            this.form.rows = rows;
+        }
+    }
+};
+</script>
+<style>
+.page-wrapper.attendance {
+    span.red {
+        color: red;
+    }
+
+    td.rest {
+        background: rgba(253, 245, 230, 1);
+    }
+}
+</style>

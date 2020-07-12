@@ -1,0 +1,53 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "rowCount": 3,
+        "pageSize": 5,
+        "pageIndex": 1,
+        "list": [{
+            "id": "1",
+            "name": "台州",
+            "code": "331000",
+            "queryCode": "2",
+            "parentName": "上级地区1"
+        }, {
+            "id": "2",
+            "name": "杭州",
+            "code": "330100",
+            "queryCode": "2",
+            "parentName": "上级地区1"
+        }, {
+            "id": "3",
+            "name": "台州",
+            "code": "331000",
+            "queryCode": "2",
+            "parentName": "上级地区1"
+        }, {
+            "id": "4",
+            "name": "台州",
+            "code": "331000",
+            "queryCode": "2",
+            "parentName": "上级地区1"
+        }, {
+            "id": "5",
+            "name": "台州",
+            "code": "331000",
+            "queryCode": "2",
+            "parentName": "上级地区1"
+        }, {
+            "id": "6",
+            "name": "台州",
+            "code": "331000",
+            "queryCode": "2",
+            "parentName": "上级地区1"
+        }, {
+            "id": "7",
+            "name": "台州",
+            "code": "331000",
+            "queryCode": "2",
+            "parentName": "上级地区1"
+        }]
+    }
+}

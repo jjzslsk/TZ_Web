@@ -1,0 +1,48 @@
+<template>
+<el-dialog class="dialog common primary point-selector" :visible.sync="visibleDialog" :showClose="false">
+    <div slot="title" class="header">
+        <span class="title">{{title}}</span>
+        <span class="sub"></span>
+        <div class="iconfont iconshanchu closer" @click="$emit('update:visible', false)"></div>
+    </div>
+    <slot></slot>
+    <div slot="footer" class="dialog-footer">
+        <slot name="footer-prepend"></slot>
+        <el-button @click="$emit('update:visible', false)">取 消</el-button>
+        <el-button type="primary" :disabled="$attrs.confirmDisabled" @click="$emit('confirm')">{{primaryText}}</el-button>
+    </div>
+</el-dialog>
+</template>
+
+<script>
+export default {
+    name: 'CDialog',
+    props: {
+        visible: Boolean,
+        title: {
+            type: String,
+            default: ''
+        },
+        primaryText: {
+            type: String,
+            default: '确 定'
+        }
+    },
+    watch: {
+        visible(val) {
+            this.visibleDialog = val;
+        },
+        visibleDialog(val) {
+            this.$emit('update:visible', val);
+        }
+    },
+    data() {
+        return {
+            visibleDialog: this.visible
+        };
+    }
+}
+</script>
+
+<style scoped>
+</style>

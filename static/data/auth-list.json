@@ -1,0 +1,42 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "list": [{
+            "XXXPROP_AUTH_id": 1,
+            "XXXPROP_AUTH_NAME": "首页1",
+            "XXXPROP_AUTH_CHECKED": true
+        }, {
+            "XXXPROP_AUTH_id": 2,
+            "XXXPROP_AUTH_NAME": "产品制作2",
+            "XXXPROP_AUTH_CHECKED": true,
+            "XXXPROP_AUTH_id_LVL_2": "cpzz-lcjk2",
+            "XXXPROP_AUTH_NAME_LVL_2": "流程监控2",
+            "XXXPROP_AUTH_CHECKED_LVL_2": false
+        }, {
+            "XXXPROP_AUTH_id": 2,
+            "XXXPROP_AUTH_NAME": "产品制作3",
+            "XXXPROP_AUTH_CHECKED": true,
+            "XXXPROP_AUTH_id_LVL_2": "cpzz-cpzz3",
+            "XXXPROP_AUTH_NAME_LVL_2": "产品制作3",
+            "XXXPROP_AUTH_CHECKED_LVL_2": true
+        }, {
+            "XXXPROP_AUTH_id": 4,
+            "XXXPROP_AUTH_NAME": "产品制作4",
+            "XXXPROP_AUTH_CHECKED": true,
+            "XXXPROP_AUTH_id_LVL_2": "cpzz-cppz4",
+            "XXXPROP_AUTH_NAME_LVL_2": "产品配置4",
+            "XXXPROP_AUTH_CHECKED_LVL_2": true,
+            "XXXPROP_AUTH_CHILDREN": [{
+                "label": "产品属性管理4-1",
+                "value": "cpsxgl4-1",
+                "checked": true
+            }, {
+                "label": "产品模板管理4-2",
+                "value": "cpmbgl4-2",
+                "checked": false
+            }]
+        }]
+    }
+}

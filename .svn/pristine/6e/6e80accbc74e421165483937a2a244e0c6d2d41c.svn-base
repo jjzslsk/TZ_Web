@@ -1,0 +1,51 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "rowCount": 120,
+        "pageSize": 10,
+        "pageIndex": 3,
+        "list": [{
+            "XXXPROP_USER_id": "1",
+            "XXXPROP_USER_1": "黄飞",
+            "XXXPROP_USER_2": "HF",
+            "XXXPROP_USER_3": "女",
+            "XXXPROP_USER_4": "TZ",
+            "XXXPROP_USER_5": "预警制作，基础权限，服务素材，预报检验，系统管理员（管理员）",
+            "XXXPROP_USER_6": "11"
+        },{
+            "XXXPROP_USER_id": "2",
+            "XXXPROP_USER_1": "韦龙龙",
+            "XXXPROP_USER_2": "WLL",
+            "XXXPROP_USER_3": "男",
+            "XXXPROP_USER_4": "HY",
+            "XXXPROP_USER_5": "预警制作，测试人员",
+            "XXXPROP_USER_6": "21"
+        },{
+            "XXXPROP_USER_id": "3",
+            "XXXPROP_USER_1": "黄飞",
+            "XXXPROP_USER_2": "HF",
+            "XXXPROP_USER_3": "女",
+            "XXXPROP_USER_4": "TZ",
+            "XXXPROP_USER_5": "预警制作，基础权限，服务素材，预报检验，系统管理员（管理员）",
+            "XXXPROP_USER_6": "11"
+        },{
+            "XXXPROP_USER_id": "4",
+            "XXXPROP_USER_1": "黄飞",
+            "XXXPROP_USER_2": "HF",
+            "XXXPROP_USER_3": "女",
+            "XXXPROP_USER_4": "TZ",
+            "XXXPROP_USER_5": "预警制作，基础权限，服务素材，预报检验，系统管理员（管理员）",
+            "XXXPROP_USER_6": "11"
+        },{
+            "XXXPROP_USER_id": "5",
+            "XXXPROP_USER_1": "黄飞",
+            "XXXPROP_USER_2": "HF",
+            "XXXPROP_USER_3": "女",
+            "XXXPROP_USER_4": "TZ",
+            "XXXPROP_USER_5": "预警制作，基础权限，服务素材，预报检验，系统管理员（管理员）",
+            "XXXPROP_USER_6": "11"
+        }]
+    }
+}

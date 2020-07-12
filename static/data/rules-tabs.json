@@ -1,0 +1,51 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "rowCount": 120,
+        "pageSize": 10,
+        "pageIndex": 3,
+        "list": [{
+            "id": "1",
+            "name": "个别地区",
+            "type": "预报区域范围",
+            "XXXPROP_USER_3": "女",
+            "XXXPROP_USER_4": "TZ",
+            "content": "指定业务责任区（面积）范围内小于5%的区域。",
+            "XXXPROP_USER_6": "11"
+        },{
+            "id": "2",
+            "name": "个别地区",
+            "type": "预报区域范围",
+            "XXXPROP_USER_3": "男",
+            "XXXPROP_USER_4": "HY",
+            "content": "预警制作，测试人员",
+            "XXXPROP_USER_6": "21"
+        },{
+            "id": "3",
+            "name": "个别地区",
+            "type": "预报区域范围",
+            "XXXPROP_USER_3": "女",
+            "XXXPROP_USER_4": "TZ",
+            "content": "指定业务责任区（面积）范围内小于5%的区域。",
+            "XXXPROP_USER_6": "11"
+        },{
+            "id": "4",
+            "name": "个别地区",
+            "type": "预报区域范围",
+            "XXXPROP_USER_3": "女",
+            "XXXPROP_USER_4": "TZ",
+            "content": "指定业务责任区（面积）范围内小于5%的区域。",
+            "XXXPROP_USER_6": "11"
+        },{
+            "id": "5",
+            "name": "个别地区",
+            "type": "预报区域范围",
+            "XXXPROP_USER_3": "女",
+            "XXXPROP_USER_4": "TZ",
+            "content": "指定业务责任区（面积）范围内小于5%的区域。",
+            "XXXPROP_USER_6": "11"
+        }]
+    }
+}

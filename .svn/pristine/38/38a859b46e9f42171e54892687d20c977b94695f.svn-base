@@ -1,0 +1,19 @@
+// in src\components\ol-map\bundles\index.js
+import Common from './common'
+import MapOne from './map-one';
+import ForecastMaker from './forecast-maker'
+import ForecastMakerExhibition from './forecast-maker-exhibition'
+import ForecastQueryExhibition from './forecast-query-exhibition'
+import RealExhibition from './real-exhibition'
+import PointSelector from './point-selector'
+import StationsExhibition from './stations-exhibition'
+export default {
+    Common,
+    MapOne,
+    ForecastMaker,
+    ForecastMakerExhibition,
+    ForecastQueryExhibition,
+    RealExhibition,
+    StationsExhibition,
+    PointSelector
+}

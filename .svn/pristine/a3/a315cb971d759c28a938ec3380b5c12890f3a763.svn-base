@@ -1,0 +1,71 @@
+<template>
+  <div class="content">
+    <div class="input">
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item label="修改记录">
+          <el-select v-model="form.option" clearable placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+    </div>
+    <el-input type="textarea" :rows="30" placeholder="请输入内容" v-model="form.textarea"></el-input>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      form: {
+        textarea: `2020年3月5日14时发布的未来1-5天各海区风浪预报:
+
+济州岛海面
+今天，偏北风 6级阵风7-8级夜里减弱到5-6级阵风7级
+明天，偏北风下午转偏南风 5-6级阵风7级
+3月7日，东到东南风 5-6级阵风7级夜里转偏北风并逐渐增强到6-7级阵风8级
+3月8日，东北风 6-7级阵风8级
+3月9日，东北到东风 6级阵风7-8级夜里转偏北风6-7级阵风8级
+
+奄美岛海面
+今天，偏北风 6-7级阵风8级夜里转东北风5-6级阵风7级
+明天，东北到东风夜里转东南风 5-6级阵风7级
+3月7日，偏南风 5-6级阵风7级下午6级阵风7-8级夜里6-7级阵风8级
+3月8日，西到西南风 6-7级阵风8级下午到傍晚转偏北风5-6级阵风7级
+3月9日，东南风 5-6级阵风7级逐渐增强到6-7级阵风8级夜里转西南风6-7级阵风8级
+
+天气预报：
+今夜多云；明天多云到阴，下午起转阴有小雨；后天多云到阴局部小雨，夜里转阴有小雨。
+8-9日：阴有雨。`
+},
+      options: [
+        {
+          label: "2020-01-01 12:10:45 曾海迪",
+          value: "1"
+        },
+        {
+          label: "2020-01-01 12:10:30 海迪",
+          value: "2"
+        }
+      ]
+    };
+  }
+};
+</script>
+<style lang='postcss' scoped>
+.content {
+  .input {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .el-form {
+      width: 50%;
+    }
+  }
+}
+</style>
