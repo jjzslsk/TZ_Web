@@ -42,7 +42,7 @@ npm test
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
 ## ol-map
-地图组件 `src\components\ol-map\index.vue` 的地图相关操作逻辑放在`src\components\ol-map\bundles\`文件夹下
+地图组件 `src\components\ol-map\index.vue` 的地图相关操作逻辑放在`src\components\ol-map\bundles\`文件夹下。
 
     地图创建和数据渲染分离。
     地图创建时，决定数据渲染逻辑。程序运行过程中，地图渲染逻辑不变，数据变动，同时数据变动自动反映在地图上。
