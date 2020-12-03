@@ -6,7 +6,6 @@
 
 ``` bash
 1.svn下载前端代码
-公共服务/浙江/台州/台州市县综合气象业务一体化平台/代码/业务应用系统/web/TZ_Web
 
 2.下载安装node，默认安置即可
 http://nodejs.cn/download/
