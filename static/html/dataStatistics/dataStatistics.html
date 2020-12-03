@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lan>
+<head>
+    <meta charset="utf-8">
+    <title>历史同期统计</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/reset.css">
+</head>
+<body>
+<div class="layui-fluid ssd-container">
+            <div class="r-demo ssd-search-box"  style="overflow-y:hidden">
+                    <div class="search-set">
+                        <div class="search-wrap">
+                            <div class="layui-row">
+                                <label class="layui-form-label layui-statistics">地区选择</label>
+                                <div class="layui-input-inline" style="width: auto;">
+                                    <div class="selectCon" >
+                                        <input type="hidden" id="stationNum" name="stationNum">
+                                        <div class="select" title="">
+                                            <span></span>
+                                        </div>
+                                        <div class="optionBox">
+                                            <div class="optionItemBox Township">
+                                                <span>地区:</span>
+                                                <ul id="place">
+                                                </ul>
+                                            </div>
+                                            <div class="optionItemBox stationName">
+                                                <span>站点:</span>
+                                                <ul id="station">
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="layui-form-label layui-statistics">统计日期</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="datatime" name="datatime" class="layui-input" placeholder="yyyy-MM-dd">
+                                </div>
+                                <button type="button" class="layui-btn" id="eleBtn">要素选择</button>
+                            </div>
+                        </div>
+                         <table class="layui-hide" id="statistics"></table>
+                    </div>
+            </div>
+</div>
+<div class="essentialFactor" style="display: none;" id="eleInfo">
+    <div class="essentialFactorItem">
+        <span class="essentialFactorTitle">温度</span>
+        <ul>
+            <li>
+                <input type="checkbox" name="a" id="a1" value="temp_average" checked/>
+                <label for="a1">平均温度</label>
+            </li>
+            <li>
+                <input type="checkbox" name="a" id="a5" value="temp_min" checked/>
+                <label for="a5">极端最低气温</label>
+            </li>
+            <li>
+                <input type="checkbox" name="a" id="a6" value="temp_max" checked/>
+                <label for="a6">极端最高气温</label>
+            </li>
+            <li>
+                <input type="checkbox" name="a" id="a7" value="height_temp35_day" checked/>
+                <label for="a7">35度以上高温日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="a" id="a8" value="height_temp36_day" checked/>
+                <label for="a8">36度以上高温日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="a" id="a9" value="height_temp37_day" checked/>
+                <label for="a9">37度以上高温日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="a" id="a10" value="height_temp38_day" checked/>
+                <label for="a10">38度以上高温日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="a" id="a11" value="height_temp39_day" checked/>
+                <label for="a11">39度以上高温日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="a" id="a12" value="height_temp40_day" checked/>
+                <label for="a12">40度以上高温日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="a" id="a13" value="low_temp0_day" checked/>
+                <label for="a13">0度以下低温日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="a" id="a14" value="low_temp5_day" checked/>
+                <label for="a14">5度以下低温日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="a" id="a15" value="low_temp_2_day" checked/>
+                <label for="a14">零下2度以下低温日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="a" id="a16" value="low_temp_5_day" checked/>
+                <label for="a14">零下5度以下低温日数</label>
+            </li>
+        </ul>
+    </div>
+    <div class="essentialFactorItem">
+        <span class="essentialFactorTitle">降水</span>
+        <ul>
+            <li>
+                <input type="checkbox" name="b" id="b1" value="rain_amount" checked/>
+                <label for="b1">降水总量</label>
+            </li>
+            <li>
+                <input type="checkbox" name="b" id="b2" value="rain_max" checked/>
+                <label for="b2">日最大降雨量</label>
+            </li>
+            <li>
+                <input type="checkbox" name="b" id="b3" value="rain_day" checked/>
+                <label for="b3">降水总日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="b" id="b4" value="sunny_day" checked/>
+                <label for="b4">无降水总日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="b" id="b5" value="torrential_rain_day" checked/>
+                <label for="b5">暴雨日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="b" id="b6" value="heavy_rain_day" checked/>
+                <label for="b6">大雨日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="b" id="b7" value="moderate_rain_day" checked/>
+                <label for="b7">中雨日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="b" id="b8" value="light_rain_day" checked/>
+                <label for="b8">小雨日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="b" id="b9" value="rain_day_continuity" checked/>
+                <label for="b9">最大连续降水日数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="b" id="b10" value="sunny_day_continuity" checked/>
+                <label for="b10">最大连续无降水日数</label>
+            </li>
+        </ul>
+    </div>
+    <div class="essentialFactorItem">
+        <span class="essentialFactorTitle">风</span>
+        <ul>
+            <li>
+                <input type="checkbox" name="c" id="c2" value="wind_max" checked/>
+                <label for="c2">极端极大风速</label>
+            </li>
+        </ul>
+    </div>
+    <div class="essentialFactorItem">
+        <span class="essentialFactorTitle">日照</span>
+        <ul>
+            <li>
+                <input type="checkbox" name="d" id="d1" value="sunlight_shortage_day" checked/>
+                <label for="d1">寡照天数</label>
+            </li>
+            <li>
+                <input type="checkbox" name="d" id="d2" value="sunshine_amount" checked/>
+                <label for="d2">总日照时数</label>
+            </li>
+        </ul>
+    </div>
+    <div class="essentialFactorItem">
+        <span class="essentialFactorTitle">雪</span>
+        <ul>
+            <li>
+                <input type="checkbox" name="f" id="f2" value="accumulated_snow_day" checked/>
+                <label for="f2">积雪天数</label>
+            </li>
+        </ul>
+    </div>
+    <div class="essentialFactorBtn">
+        <div class="selectAll">
+            <input type="checkbox" name="all" id="all" value="" checked/>
+            <label for="all">全选</label>
+        </div>
+        <span id="determine">确定</span>
+        <span id="cancel">取消</span>
+    </div>
+</div>
+</body>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="js/statistics.js"></script>
+</html>

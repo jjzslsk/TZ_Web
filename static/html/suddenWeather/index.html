@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<script src="js/reset.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="page">
+			<div class="header">
+				<div class="pageTitle">
+					<span>智能服务提醒</span>
+				</div>
+			</div>
+			<ul class="menuBox">
+				<li>异常事件</li>
+				<li>重大过程</li>
+				<li class="liChecked">突发天气</li>
+			</ul>
+			<div class="leftBox">    <!-- h654 -->
+				<div class="todayWarning">
+					<div class="itemBoxTitle">
+						<img src="image/itemTitleIcon1.png" >
+						<span>今日预报提醒</span>
+						<img src="image/itemTitleIcon2.png" >
+					</div>
+					<div class="todayWarningCon">
+						<span>【暴雨警报 <i>1</i> 】</span>
+						<span>【大风警报 <i>1</i> 】</span>
+						<span class="start" id="startEvent">启动</span>
+					</div>
+				</div>
+				
+				<div class="warningMonitor">
+					<div class="itemBoxTitle">
+						<img src="image/itemTitleIcon1.png" >
+						<span>区域预警监测</span>
+						<img src="image/itemTitleIcon2.png" >
+					</div>
+					<div class="warningMonitorCon">
+						<div class="warningMonitorConTable">
+							<div class="timeLine">
+								<ul class="timeLineCon">
+									<!--<li>01:00</li>-->
+									<!--<li>02:00</li>-->
+									<!--<li>03:00</li>-->
+									<!--<li>04:00</li>-->
+									<!--<li>05:00</li>-->
+									<!--<li>06:00</li>-->
+									<!--<li>07:00</li>-->
+									<!--<li>08:00</li>-->
+									<!--<li>09:00</li>-->
+									<!--<li>10:00</li>-->
+									<!--<li>11:00</li>-->
+									<!--<li>12:00</li>-->
+									<!--<li>13:00</li>-->
+									<!--<li>14:00</li>-->
+									<!--<li>15:00</li>-->
+									<!--<li>16:00</li>-->
+									<!--<li>17:00</li>-->
+									<!--<li>18:00</li>-->
+									<!--<li>19:00</li>-->
+									<!--<li>20:00</li>-->
+									<!--<li>21:00</li>-->
+									<!--<li>22:00</li>-->
+									<!--<li>23:00</li>-->
+									<!--<li>24:00</li>-->
+								</ul>
+								<i></i>
+							</div>
+							<div class="warningMonitorType">
+								<ul class="warningMonitorTypeCon">
+									<li id="qy58665">
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+										<span class="Level0"></span>
+									</li>
+									<li id="qy58661">
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+									</li>
+									<li id="qy758201">
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+									</li>
+									<li id="qy758301">
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+									</li>
+									<li id="qy58660">
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+									</li>
+									<li id="qy58664">
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+									</li>
+									<li id="qy58667">
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+									</li>
+									<li id="qy58559">
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+									</li>
+                                    <li id="qy58652">
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+									</li>
+									<li id="qy58568">
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+                                        <span class="Level0"></span>
+									</li>
+								</ul>
+							</div>
+							
+						</div>
+						<div class="warningMonitorConLeft">
+							<div class="warningMonitorConPrev">
+								<img src="image/prev.png" >
+							</div>
+							<ul class="PlaceName">
+								<li>市本级</li>
+								<li>椒江</li>
+								<li>黄岩</li>
+								<li>路桥</li>
+								<li>临海</li>
+								<li>温岭</li>
+								<li>玉环</li>
+								<li>天台</li>
+								<li>仙居</li>
+								<li>三门</li>
+							</ul>
+						</div>
+						<div class="warningMonitorConRight">
+							<div class="warningMonitorConNext">
+								<img src="image/next.png" >
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="legengBox">
+				<img src="image/legend.png" >
+			</div>
+			
+			<div class="mapBox">
+				<div id="map"></div>
+			</div>
+			
+			<div class="placeEchartBox">
+				<div class="itemBoxTitle">
+					<img src="image/itemTitleIcon1.png" >
+					<span>市区-洪家</span>
+					<img src="image/itemTitleIcon2.png" >
+				</div>
+				<br>
+				<div class="showTime"></div>
+				<div id="placeEchart"></div>
+				<div class="placeEchartPrev">
+					<img src="image/prev.png" >
+				</div>
+				<div class="placeEchartNext">
+					<img src="image/next.png" >
+				</div>
+			</div>
+		</div>
+		<script src="js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../tools/http.js"></script>
+		<script src="js/echarts.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

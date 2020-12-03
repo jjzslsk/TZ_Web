@@ -1,0 +1,16 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "list": [{
+            "id": "1",
+            "label": "可展开",
+            "isLeaf": false
+        }, {
+            "id": "2",
+            "label": "叶子",
+            "isLeaf": true
+        }]
+    }
+}

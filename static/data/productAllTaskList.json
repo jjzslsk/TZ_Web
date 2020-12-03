@@ -1,0 +1,12 @@
+{
+    "success": true,
+    "code": 0,
+    "message": "查询成功",
+    "data": [
+      {
+        "startTime": "10:50",
+        "endTime": "12:05",
+        "title": "周边城市报文"
+      }
+    ]
+  }

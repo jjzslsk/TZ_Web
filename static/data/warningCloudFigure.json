@@ -1,0 +1,9 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "url": "/static/images/CloudFigure.png"
+    }
+}
+

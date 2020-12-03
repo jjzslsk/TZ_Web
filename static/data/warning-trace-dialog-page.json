@@ -1,0 +1,36 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "rowCount": 120,
+        "pageSize": 10,
+        "pageIndex": 3,
+        "list": [{
+                "serviceUserName": "韦春花",
+                "serviceUserAddress": "zero_nm@126.com",
+                "result": "success"
+            },
+            {
+                "serviceUserName": "李华",
+                "serviceUserAddress": "lh_nm@126.com",
+                "result": "fail"
+            },
+            {
+                "serviceUserName": "韦春花",
+                "serviceUserAddress": "zero_nm@126.com",
+                "result": "pushing"
+            },
+            {
+                "serviceUserName": "韦春花",
+                "serviceUserAddress": "zero_nm@126.com",
+                "result": "push-fail"
+            },
+            {
+                "serviceUserName": "韦春花",
+                "serviceUserAddress": "zero_nm@126.com",
+                "result": "push-success"
+            }
+        ]
+    }
+}

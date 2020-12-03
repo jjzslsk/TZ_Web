@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../../../layui/css/layui.css">
+  <link rel="stylesheet" href="../../../openlayers/ol.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="../../../tools/echarts.min.js"></script>
+  <style>
+  .map {height: 100%;width: 100%;}
+  .layerDom{min-height: 300px;width: 350px;position: fixed;right: 0;bottom: 0;}
+  .layerDom .title{height: 30px;background-color: #409eff;line-height: 30px;padding: 0 10px;color: #fff}
+  .layerDom .content{position: absolute;top: 30px;bottom: 0;overflow-x: hidden;overflow-y: scroll;background-color: #fff;height: 100%;width: 100%;}
+  .layerDom .content::-webkit-scrollbar{ display: none;}
+  .layerDom .content li{min-height: 40px;border-bottom:1px solid rgb(224, 224, 224);padding: 8px;word-wrap: break-word;}
+  .layerDom .but-show {position: absolute;left: -20px;top: 4px;}
+  .layerDom .layui-table-view{margin: 0px !important;}
+  .button-icon {display: none;position: fixed;right: 0;width: 60px;height: 28px;line-height: 28px;bottom: 268px;background-color: #409eff;color: #fff;margin: 0 auto;text-align: center;padding: 3px 6px;border-radius: 25px 0 0 25px;}
+  
+  .layerDom-major{min-height: 300px;width: 350px;position: fixed;right: 0;bottom: 350px;}
+  .layerDom-major .title{height: 30px;background-color: #409eff;line-height: 30px;padding: 0 10px;color: #fff}
+  .layerDom-major .content{position: absolute;top: 30px;bottom: 0;overflow-x: hidden;overflow-y: scroll;background-color: #fff;height: 100%;width: 100%;}
+  .layerDom-major .content::-webkit-scrollbar{ display: none;}
+  .layerDom-major .content li{min-height: 40px;border-bottom:1px solid rgb(224, 224, 224);padding: 8px;word-wrap: break-word;}
+  .layerDom-major .but-show-major {position: absolute;left: -20px;top: 4px;}
+  .layerDom-major .layui-table-view{margin: 0px !important;}
+  .button-icon-major {display: none;position: fixed;right: 0;width: 60px;height: 28px;line-height: 28px;bottom: 615px;background-color: #409eff;color: #fff;margin: 0 auto;text-align: center;padding: 3px 6px;border-radius: 25px 0 0 25px;}
+  
+  .site-box{border-top: #e6e6e6 1px solid;border-left: #e6e6e6 1px solid;border-right: #e6e6e6 1px solid;}
+  .site-box .site-item{border-bottom: #e6e6e6 solid 1px;color: #666;}
+  .site-box .site-item .name{min-height: 30px;line-height: 30px;padding: 0 0px;}
+  .site-box .site-item .val{min-height: 30px;line-height: 30px;padding: 0 0px;}
+  </style>
+</head>
+<body onload="init()">
+  <div id="map" class="map">
+    <!-- 冒泡 -->
+    <!-- <div id="popup" class="ol-popup">
+      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+      <div id="popup-content" style="width:300px; height:120px;"></div>
+    </div> -->
+  </div>
+  <div class="layerDom">
+    <div class="title">
+      站点统计
+    </div>
+      <table class="layui-hide siteTable" id="siteTable"></table>
+      <div class="but-show">
+        <i class="layui-icon layui-icon-next" style="font-size: 20px; color: #1E9FFF;"></i>  
+      </div>
+  </div>
+  <div class="button-icon">
+    站点统计
+  </div>
+  <div class="layerDom-major">
+    <div class="title">
+      类型统计
+    </div>
+    <table class="layui-hide typeTable" id="typeTable"></table>
+      <!-- <ul class="content" id="contentList">
+      </ul> -->
+      <div class="but-show-major">
+        <i class="layui-icon layui-icon-next" style="font-size: 20px; color: #1E9FFF;"></i>  
+      </div>
+  </div>
+  <div class="button-icon-major">
+    类型统计
+  </div>
+</body>
+<script src="../../../tools/jquery-3.5.1.js"></script>
+<script src="../../../layui/layui.js"></script>
+<script src="../../../layui/layui.all.js"></script>
+<script src="../../../openlayers/ol.js"></script>
+<script src="../../../tools/http.js"></script>
+<script src="js/index.js"></script>
+<script>
+  layui.use(['layer','table'], function () {
+    var layer = layui.layer
+       ,table = layui.table;
+
+       table.render({
+          elem: '#siteTable'
+          ,url: main_url + '/ssd-reminder-warn/getWarnData?nearHour=0'
+          ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+          ,height: 268
+          ,parseData: function(res){ //res 即为原始返回的数据
+            fnMap(res.data)
+          }
+          ,cols: [[
+            {field:'station_num', width:80, title: '站点', sort: true}
+            ,{field:'warn_title', width:80, title: '标题'}
+            ,{field:'warn_val', width:80, title: '编号', sort: true}
+            ,{field:'station_name', title: '名称'}
+            // ,{field:'sign', title: '签名', width: '30%', minWidth: 100} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+          ]]
+        });
+        
+        table.render({
+          elem: '#typeTable'
+          ,url: main_url + '/ssd-reminder-warn/getWarnCount?nearHour=0'
+          ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+          ,parseData: function(res){
+            console.log(res.data[0])
+            let resData = [
+              {warn_name:res.data[0].warn_name,warn_num:res.data[0].warn_num},
+              {warn_name:res.data[1].warn_name,warn_num:res.data[1].warn_num},
+            ]
+            return {
+              "count":1000,
+              "code": res.code,
+              "data": resData
+            };
+          }
+          ,cols: [[
+            {field:'warn_name',title: '要素类型',}
+            ,{field:'warn_num',title: '告警个数'}
+          ]]
+        });
+
+  });
+
+  
+
+  function init(){}
+  window.onload = function (){
+    requestData()
+  }
+  function requestData(){
+    resInformation()
+  }
+
+  //获取快讯
+  let resContenData
+  function resInformation(){
+      var param = `&nearHour=0`
+    getData(main_url + '/ssd-reminder-warn/getWarnCount?',param)
+    .then(res=>{
+    resContenData = res.data;
+    const contentList = [];
+    $.each(resContenData, function(index, obj) {
+        contentList.push(`<li>${obj.warn_name}:${obj.warn_num}</li>`)
+    });
+    $("#contentList").html(contentList);
+    })
+    .catch(err =>console.log('err:',err))
+  }
+
+
+
+  var vectorSource = new ol.source.Vector({
+    features: []
+  });
+
+  //矢量标注样式设置函数，设置image为图标ol.style.Icon
+  function createLabelStyle(feature) {
+    return new ol.style.Style({
+      image: new ol.style.Icon({
+        // anchor: [0.5, 60],              //锚点
+        anchorOrigin: 'top-right',       //锚点源
+        anchorXUnits: 'fraction',       //锚点X值单位
+        anchorYUnits: 'pixels',         //锚点Y值单位
+        offsetOrigin: 'top-right',      //偏移原点
+        opacity: 1,
+        src: 'img/test1.png',  //图标的URL
+      }),
+      text: new ol.style.Text({
+        textAlign: 'center',            //位置
+        textBaseline: 'middle',         //基准线
+        font: 'normal 14px 微软雅黑',    //文字样式
+        text: feature.get('name'),      //文本内容
+        fill: new ol.style.Fill({       //文本填充样式（即文字颜色)
+          color: '#000'
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#F00',
+          width: 2
+        })
+      })
+    });
+  }
+
+  var styleVector = new ol.style.Style({
+    fill: new ol.style.Fill({ //矢量图层填充颜色，以及透明度
+      color: 'rgba(255, 255, 255, 0)'
+    }),
+    stroke: new ol.style.Stroke({ //边界样式
+      color: '#000',
+      width: 2
+    }),
+    text: new ol.style.Text({ //文本样式
+      font: '12px Calibri,sans-serif',
+      fill: new ol.style.Fill({
+        color: '#000'
+      }),
+
+      stroke: new ol.style.Stroke({
+        color: '#fff',
+        width: 3
+      })
+    })
+  });
+
+  var map = new ol.Map({
+    target: 'map',
+    layers: [
+      // new ol.layer.Tile({                       // 瓦片图层 分为Image、Tile、Vector 类
+      //   source: new ol.source.OSM()             // OpenStreetMap数据源 分为Image、Tile、Vector三大类型的数据源类
+      // }),
+
+      new ol.layer.Tile({
+        source: new ol.source.XYZ({
+          // url: 'http://t2.tianditu.gov.cn/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=76620c5b63143f80f875dffb556b57ef'
+          url: 'http://192.168.7.146:6007/offlineMap/tdtRoad_%e7%93%a6%e7%89%87%ef%bc%9a%e8%b0%b7%e6%ad%8c/tiles/{z}/{x}/{y}.png'
+        })
+      }),
+
+      new ol.layer.Vector({                    //边界图层
+        title: "区域线图层",
+        source: new ol.source.Vector({
+          url: 'json/taizhou.json',
+          format: new ol.format.GeoJSON()
+        }),
+        style: styleVector
+      }),
+
+      //矢量标注图层
+      new ol.layer.Vector({
+        source: vectorSource,
+      }),
+
+    ],
+
+    view: new ol.View({                         // 地图视图
+      center: ol.proj.fromLonLat([121.427506, 28.662316]),//地图视图中心点（center）
+      zoom: 9.5,                                   //地图视图缩放级别（zoom）
+    }),
+
+    //加载控件到地图容器中
+    controls: ol.control.defaults({
+      zoom: false,
+      attribution: false
+    })
+
+  });
+
+
+  function fnMap(arrPoint) {
+    arrPoint.forEach(element => {
+      var arrProj = ol.proj.fromLonLat([element.lon, element.lat]);
+      //新建一个要素ol.Feature
+      var newFeature = new ol.Feature({
+        geometry: new ol.geom.Point(arrProj),  //几何信息
+        // name: element.data.name,
+        data: element,
+      });
+      newFeature.setStyle(createLabelStyle(newFeature));      //设置要素样式
+      vectorSource.addFeature(newFeature);
+    });
+  }
+
+  // map.on('pointermove', function (e) {
+  //   var pixel = map.getEventPixel(e.originalEvent);
+  //   var feature = map.forEachFeatureAtPixel(pixel,
+  //     function (feature) {
+  //       return feature;
+  //     },
+  //     { hitTolerance: 10 }
+  //   )
+  //   if (feature === undefined) {
+  //     console.log('1', feature)
+  //     map.getTargetElement().style.cursor = "auto"
+  //   } else {
+  //     if (feature.values_.name === '') {
+
+  //     }
+  //     console.log('2', feature.values_.name)
+  //     map.getTargetElement().style.cursor = "pointer"
+  //   }
+  // });
+
+  // 单击地图事件
+  map.on("singleclick", function (e) {
+    var pixel = map.getEventPixel(e.originalEvent);
+    var feature = map.forEachFeatureAtPixel(pixel,
+      function (feature) {
+        return feature;
+      },
+      { hitTolerance: 10 }
+    )
+    if (feature === undefined) {
+      map.getTargetElement().style.cursor = "auto"
+    } else {
+      if (!feature.values_.data) return
+      map.getTargetElement().style.cursor = "pointer"
+      popupMsg(feature.values_.data)
+    }
+  });
+
+  function popupMsg(data) {
+    layer.open({
+      type: 1,
+      offset: 'lt'
+      , content: `
+      <div class='site-box'>
+        <div class='site-item' style="padding: 2.5px; text-align: center;">
+          <span class='name'>站点：</span>
+          <span class='val'>${data.station_num}</span>
+        </div>
+        <div class='site-item' style="padding: 2.5px; text-align: center;">
+          <span class='name'>纬度：</span>
+          <span class='val'>${data.lon}</span>
+        </div>
+        <div class='site-item' style="padding: 2.5px; text-align: center;">
+          <span class='name'>经度：</span>
+          <span class='val'>${data.lat}</span>
+        </div>
+        <div class='site-item' style="padding: 2.5px; text-align: center;">
+          <span class='name'>告警时间：</span>
+          <span class='val'>${data.warn_time}</span>
+        </div>
+        <div class='site-item' style="padding: 2.5px; text-align: center;">
+          <span class='name'>实况实况：</span>
+          <span class='val'>${data.data_time}</span>
+        </div>
+        <div class='site-item' style="padding: 2.5px; text-align: center;">
+          <span class='name'>告警标题：</span>
+          <span class='val'>${data.warn_title}</span>
+        </div>
+        <div class='site-item' style="padding: 2.5px; text-align: center;">
+          <span class='name'>告警值：</span>
+          <span class='val'>${data.warn_val}</span>
+        </div>
+        <div class='site-item' style="padding: 2.5px; text-align: center;">
+          <span class='name'>告警内容：</span>
+          <span class='val'>${data.warn_content}</span>
+        </div>
+      </div>
+      `
+      , btn: '关闭'
+      , area: ['280px', '260px']
+      , closeBtn: false
+      , title: false //不显示标题栏
+      , btnAlign: 'c' //按钮居中
+      , shade: 0 //不显示遮罩
+      , yes: function () { //关闭全部
+        layer.closeAll();
+      }
+    });
+  }
+
+  $(".but-show").click(function(){
+    $(".layerDom").hide()
+    $(".button-icon").show()
+  });
+
+  $(".button-icon").click(function(){
+    $(".layerDom").show()
+    $(".button-icon").hide()
+  });
+
+  $(".but-show-major").click(function(){
+    $(".layerDom-major").hide()
+    $(".button-icon-major").show()
+  });
+
+  $(".button-icon-major").click(function(){
+    $(".layerDom-major").show()
+    $(".button-icon-major").hide()
+  });
+
+
+</script>
+<script src="js/popup.js" type="text/javascript"></script>
+</html>

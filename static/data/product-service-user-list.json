@@ -1,0 +1,28 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "list": [{
+            "code": "04",
+            "name": "椒江区1",
+            "queryCode": "1",
+            "country":"001"
+          }, {
+            "code": "03",
+            "name": "椒江区2",
+            "queryCode": "2",
+            "country":"001"
+          }, {
+            "code": "02",
+            "name": "椒江区3",
+            "queryCode": "3",
+            "country":"001"
+          }, {
+            "code": "01",
+            "name": "椒江区4",
+            "queryCode": "4",
+            "country":"001"
+          }]
+    }
+}

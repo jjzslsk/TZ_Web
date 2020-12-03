@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+		<title>多站统计</title>
+
+		<style type="text/css">
+			.layui-table-body{overflow-x: auto;}
+		    .layui-layer-page .layui-layer-content{overflow: auto !important;}
+			.layui-form-checkbox{margin-right: 0;}
+			.layui-table tbody tr:hover{background-color: white;}
+			.r-demo {
+				height: 100%;
+				border-top: 3px solid #63cff5;
+				border-bottom: 1px solid #c9c9c9;
+				border-left: 1px solid #c9c9c9;
+				border-right: 1px solid #c9c9c9;
+				padding: 5px;
+				overflow: auto;
+			}
+			#updateBtn,#uploadExcel,#modelUpload{
+				background: #63cff5;
+			}
+			.layui-table-view .layui-table[lay-size=sm] th .layui-table-cell{
+				height: 40px;
+            }
+            .layui-table-fixed .layui-table-header .layui-table[lay-size=sm] th .layui-table-cell{
+                line-height: 20px;
+                display: table-cell;
+                vertical-align: middle;
+				overflow: initial;
+            }
+            .layui-table-header .layui-table[lay-size=sm] th .layui-table-cell{
+                line-height: 20px;
+				overflow: initial;
+            }
+            .layui-table-sort{position: absolute;bottom: 0;right: 15px;}
+
+            th[data-field='DataTime'] .layui-table-sort{top:auto;}
+
+		</style>
+
+	</head>
+	<body>
+		<div class="layui-fluid ssd-container">
+			<div class="layui-row layui-col-space10 ssd-row">
+				<div class="layui-col-sm3  layui-col-md2 ssd-col-xlg1 ssd-col">
+					<div class="r-demo" style="position:relative;">
+						<!--<p style="text-align:center; ">
+							<span style="font-size: 20px; color: #1E9FFF;">站点选择</span>
+							<button id="selectLocalBtn" class="layui-btn layui-btn-sm" style="float:right;">本站</button>
+						</p>-->
+						<hr>
+                        <div style="right: 0;top: 120px;bottom: 50px;overflow: auto;">
+                            <div id="stationTree" class="demo-tree"></div>
+                        </div>
+					</div>
+				</div>
+				<div class="layui-col-sm9 layui-col-md10 ssd-col-xlg9 ssd-col">
+					<div class="r-demo ssd-search-box" style="overflow-y:hidden">
+						<div class="layui-tab">
+							<ul class="layui-tab-title">
+							    <li class="layui-this">小时数据</li>
+							    <li>日数据</li>
+						  	</ul>
+							<div class="layui-tab-content">
+								<div class="layui-tab-item layui-show">
+									<div class="search-set">
+										<div class="layui-row">
+											<label class="layui-form-label"> 要素选择：</label>
+											<div class="layui-input-inline layui-form">
+												<div class="layui-input-block" style="margin-left:0;">
+											    	<input type="radio" checked name="hourEle" data-precision="1" data-range="-10|40" value="Temp" title="平均气温" >
+											      	<input type="radio" name="hourEle" data-precision="1" data-range="-10|40" value="MaxTemp" title="最高气温" >
+											      	<input type="radio" name="hourEle" data-precision="1" data-range="-10|40" value="MinTemp" title="最低气温" >
+											      	<input type="radio" name="hourEle" data-precision="1" data-range="-10|40" value="DPT" title="露点温度" >
+											      	<input type="radio" name="hourEle" data-precision="1" data-range="-20|80" value="GroundTemp" title="地温" >
+													<input type="radio" name="hourEle" data-precision="1" data-range="-20|80" value="MaxGroundTemp" title="最高地温" >
+													<input type="radio" name="hourEle" data-precision="1" data-range="-20|80" value="MinGroundTemp" title="最低地温" >
+													<input type="radio" name="hourEle" data-precision="1" data-range="-20|80" value="GST_5cm" title="地温(5cm)" >
+													<input type="radio" name="hourEle" data-precision="1" data-range="-20|80" value="GST_10cm" title="地温(10cm)" >
+													<input type="radio" name="hourEle" data-precision="1" data-range="-20|80" value="GST_15cm" title="地温(15cm)" >
+													<input type="radio" name="hourEle" data-precision="1" data-range="-20|80" value="GST_20cm" title="地温(20cm)" >
+										  		</div>
+										      	<div class="layui-input-block" style="margin-left:0;">
+											      	<input type="radio" name="hourEle" data-precision="1" data-range="0|100" value="RianAmount" title="降水" >
+											      	<input type="radio" name="hourEle" data-precision="1" data-range="0|100" value="PRE_3h" title="降水(3H)(本站)" >
+													<input type="radio" name="hourEle" data-precision="1" data-range="0|100" value="PRE_6h" title="降水(6H)(本站)" >
+													<input type="radio" name="hourEle" data-precision="1" data-range="0|100" value="PRE_12h" title="降水(12H)(本站)" >
+													<input type="radio" name="hourEle" data-precision="1" data-range="0|100" value="PRE_24h" title="降水(24H)(本站)" >
+												</div>
+												<div class="layui-input-block" style="margin-left:0;">
+											      	<input type="radio" name="hourEle" data-precision="1" data-range="0|60" value="WindV" title="平均风速(2分钟)" >
+											      	<input type="radio" name="hourEle" data-precision="1" data-range="0|60" value="WindV10" title="平均风速(10分钟)" >
+											      	<input type="radio" name="hourEle" data-precision="1" data-range="0|60" value="InstantWindV" title="瞬时风速" >
+													<input type="radio" name="hourEle" data-precision="1" data-range="0|60" value="MaxWindV" title="最大风速" >
+													<input type="radio" name="hourEle" data-precision="1" data-range="0|60" value="ExMaxWindV" title="极大风速" >
+											    </div>
+											    <div class="layui-input-block" style="margin-left:0;">
+											      	<input type="radio" name="hourEle" data-precision="0" data-range="900|1020" value="Press" title="平均气压" >
+											      	<input type="radio" name="hourEle" data-precision="0" data-range="900|1020" value="MaxPress" title="最高气压" >
+													<input type="radio" name="hourEle" data-precision="0" data-range="900|1020" value="MinPress" title="最低气压" >
+											      	<input type="radio" name="hourEle" data-precision="0" data-range="0|40" value="WaterPress" title="水汽压" >
+
+											      	<input type="radio" name="hourEle" data-precision="0" data-range="0|100" value="RelHum" title="湿度" >
+													<input type="radio" name="hourEle" data-precision="0" data-range="0|100" value="MinRelHum" title="最小湿度" >
+
+											      	<input type="radio" name="hourEle" data-precision="0" data-range="0|50000" value="Visib" title="能见度" >
+											      	<input type="radio" name="hourEle" data-precision="0" data-range="0|50000" value="VIS_HOR_1MI" title="能见度(1分钟)" >
+													<input type="radio" name="hourEle" data-precision="0" data-range="0|50000" value="VIS_HOR_10MI" title="能见度(10分钟)" >
+													<input type="radio" name="hourEle" data-precision="0" data-range="0|50000" value="VIS_Min" title="最小能见度" >
+											    </div>
+										    </div>
+										</div>
+										<div class="layui-row layui-form layui-form-item">
+											<label class="layui-form-label"> 时间选择：</label>
+									   		<div class="layui-input-inline" style="width: 95px;">
+									       		<input type="text" class="layui-input" id="hour_s_date" placeholder="yyyy-MM-dd">
+									        </div>
+									        <div class="layui-input-inline" style="width: 65px;">
+								    			<select id="hour_s"></select>
+								       		</div>
+								       		<div class="layui-form-mid">&nbsp;到&nbsp;</div>
+								       		<div class="layui-input-inline" style="width: 95px;">
+									       		<input type="text" class="layui-input" id="hour_e_date" placeholder="yyyy-MM-dd">
+									        </div>
+									        <div class="layui-input-inline" style="width: 65px;">
+								    			<select id="hour_e"></select>
+								       		</div>
+								       		<label class="layui-form-label"> 快捷时段：</label>
+								       		<div class="layui-input-inline" style="width: 100px;">
+								    			<select id="hourRange" lay-filter="hourRangeSelect">
+								    				<option value="">--请选择--</option>
+								    				<option data-time="24" value="05">05-05</option>
+								    				<option data-time="24" value="06">06-06</option>
+								    				<option data-time="24" value="08">08-08</option>
+								    				<option data-time="24" value="20">20-20</option>
+								    			</select>
+								       		</div>
+											<div class="layui-input-inline" style="width: auto;margin-left: 10px;">
+										 		<button class="layui-btn shortBtnSaveClass" id="hourCount" type="button" style="background-color: #5689FE;" >统计</button>
+										 		<!--<button class="layui-btn shortBtnSaveClass" id="hourExport" type="button" style="background-color: #5689FE;" >导出</button>
+											 -->	<button class="layui-btn shortBtnSaveClass" id="hourChart" type="button"style="background-color:#5689FE;">绘图</button>
+											</div>
+										</div>
+									</div>
+									<div id="hourdescribe" style="margin-bottom: 10px"></div>
+									<div class="search-table">
+									 	<table class="layui-table" id="hourTable" lay-filter="hourTable"></table>
+									</div>
+								</div>
+							    <div class="layui-tab-item">
+							    	<div class="search-set">
+								    	<div class="layui-row">
+											<label class="layui-form-label"> 要素选择：</label>
+											<div class="layui-input-inline layui-form">
+										    	<div class="layui-input-block" style="margin-left:0;">
+													<input type="radio" checked name="dayEle" data-precision="1" data-range="-10|40" value="temp" title="平均气温" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="-10|40" value="MaxTemp" title="最高气温" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="-10|40" value="MinTemp" title="最低气温" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="-20|80" value="GroundTemp" title="地温" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="-20|80" value="MaxGroundTemp" title="最高地温" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="-20|80" value="MinGroundTemp" title="最低地温" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="-20|80" value="GST_5cm" title="地温(5cm)" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="-20|80" value="GST_10cm" title="地温(10cm)" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="-20|80" value="GST_15cm" title="地温(15cm)" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="-20|80" value="GST_20cm" title="地温(20cm)" >
+												</div>
+												<div class="layui-input-block" style="margin-left:0;">
+													<input type="radio" name="dayEle" data-precision="1" data-range="0|900" value="Rain1" title="降水(2008)" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="0|900" value="Rain2" title="降水(0820)" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="0|900" value="Rain3" title="降水(2020)" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="0|900" value="Rain4" title="降水(0808)" >
+												</div>
+												<div class="layui-input-block" style="margin-left:0;">
+													<input type="radio" name="dayEle" data-precision="1" data-range="0|60"  value="WindV" title="平均风速(2分钟)" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="0|60"  value="WIN_S_10mi_Avg" title="平均风速(10分钟)" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="0|60"  value="MaxWindV" title="最大风速" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="0|60"  value="ExMaxWindV" title="极大风速" >
+												</div>
+												<div class="layui-input-block" style="margin-left:0;">
+													<input type="radio" name="dayEle" data-precision="0" data-range="900|1020" value="Press" title="平均气压" >
+													<input type="radio" name="dayEle" data-precision="0" data-range="900|1200" value="MaxPress" title="最高气压" >
+													<input type="radio" name="dayEle" data-precision="0" data-range="900|1020" value="MinPress" title="最低气压" >
+													<input type="radio" name="dayEle" data-precision="0" data-range="0|40" value="WaterPress" title="水汽压" >
+
+													<input type="radio" name="dayEle" data-precision="0" data-range="0|100" value="RelHum"  title="相对湿度" >
+													<input type="radio" name="dayEle" data-precision="0" data-range="0|100" value="MinRelHum" title="最小湿度" >
+
+													<input type="radio" name="dayEle" data-precision="0" data-range="0|50000" value="MinVisib" title="最小能见度" >
+													<input type="radio" name="dayEle" data-precision="1" data-range="0|24" value="SunTime"  title="日照" >
+												</div>
+											</div>
+										</div>
+										<div class="layui-row layui-form-item">
+											<label class="layui-form-label"> 时间选择：</label>
+									   		<div class="layui-input-inline" style="width: 95px;">
+									       		<input type="text" class="layui-input" id="day_s_date" placeholder="yyyy-MM-dd">
+									        </div>
+								       		<div class="layui-form-mid">&nbsp;到&nbsp;</div>
+								       		<div class="layui-input-inline" style="width: 95px;">
+									       		<input type="text" class="layui-input" id="day_e_date" placeholder="yyyy-MM-dd">
+									        </div>
+											<div class="layui-input-inline" style="width: auto;margin-left: 10px;">
+											 	<button class="layui-btn shortBtnSaveClass" id="dayCount" type="button" style="background-color:#5689FE;">统计</button>
+											 	<!--<button class="layui-btn shortBtnSaveClass" id="dayExport" type="button"style="background-color:#5689FE;">导出</button>
+											 -->	<button class="layui-btn shortBtnSaveClass" id="dayChart" type="button"style="background-color:#5689FE;">绘图</button>
+											 </div>
+										</div>
+							    	</div>
+							    	<div id ="daydescribe" style="margin-bottom: 10px"></div>
+							    	<div class="search-table">
+										<table class="layui-table" id="dayTable" lay-filter="dayTable"></table>
+							    	</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="../../tools/echarts.min.js"></script>
+	<script>
+        layui.use(['laydate', 'layer', 'form', 'table', 'element','tree'], function ()
+        {
+            var laydate = layui.laydate //日期
+                , layer = layui.layer //弹层
+                , table = layui.table //表格
+                , form = layui.form //表单
+                , tree = layui.tree
+                , element = layui.element; //元素操作
+            var stationNums=[];
+            $.ajax({
+                url: main_url +'/ssd-reminder-data-statistics/getTzStationTree',
+                type:'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                // timeout: ajaxTimeout,
+                // data: {},
+                success: function (res) {
+                    if(res.code == 0){
+                        var data = res.data;
+                        tree.render({
+                            elem: '#stationTree'
+                            ,id:'stationTreeId'
+                            ,data: data
+                            ,showCheckbox: true
+                            ,oncheck: function(obj){
+                                var checkedData = tree.getChecked('stationTreeId'); //获取选中节点的数据
+                                stationNums = [];
+                                for(var i = 0;i<checkedData.length;i++){
+                                    var childrenData=checkedData[i].children;
+                                    for(var j = 0;j<childrenData.length;j++){
+                                        stationNums.push({"code":childrenData[j].id,"name":childrenData[j].title});
+                                    }
+                                }
+                            }
+                        });
+                    }
+                },
+                error: function (result) {
+                    layer.msg("获取台州站点信息异常");
+                }
+            });
+            let hourOrder =
+                {
+                    order : ' Order By ObserDate ASC, ObserTime ASC '
+                    , field : 'DataTime'
+                    , type : 'asc'
+                };
+            let dayOrder =
+                {
+                    order : ' Order By ObserDate ASC '
+                    , field : 'DataTime'
+                    , type : 'asc'
+                };
+
+            form.render();
+
+
+            function getFormatDate(thisDate, format)
+            {
+                // 年
+                if(format.indexOf("yyyy") != -1)
+                {
+                    format = format.replace("yyyy", thisDate.getFullYear());
+                }
+                // 月
+                if(format.indexOf("MM") != -1)
+                {
+                    var month = thisDate.getMonth() + 1;
+                    month = month < 10 ? "0" + month : month;
+                    format = format.replace("MM", month);
+                }
+                // 日
+                if(format.indexOf("dd") != -1)
+                {
+                    var day = thisDate.getDate();
+                    day = day < 10 ? "0" + day : day;
+                    format = format.replace("dd", day);
+                }
+                // 时
+                if(format.indexOf("hh") != -1)
+                {
+                    var hour = thisDate.getHours();
+                    hour = hour < 10 ? "0" + hour : hour;
+                    format = format.replace("hh", hour);
+                }
+                // 时
+                if(format.indexOf("HH") != -1)
+                {
+                    var hour = thisDate.getHours();
+                    hour = hour < 10 ? "0" + hour : hour;
+                    format = format.replace("HH", hour);
+                }
+                // 分
+                if(format.indexOf("mm") != -1)
+                {
+                    var minute = thisDate.getMinutes();
+                    minute = minute < 10 ? "0" + minute : minute;
+                    format = format.replace("mm", minute);
+                }
+                return format;
+            }
+            function DateAdd(date, interval, number)
+            {
+                var that = new Date(date.getTime());
+                switch(interval)
+                {
+                    case  "y"  :
+                    {
+                        that.setFullYear(that.getFullYear() + number);
+                        return  that;
+                        break;
+                    }
+                    case  "q"  :
+                    {
+                        that.setMonth(that.getMonth() + number * 3);
+                        return  that;
+                        break;
+                    }
+                    case  "m"  :
+                    {
+                        that.setMonth(that.getMonth() + number);
+                        return  that;
+                        break;
+                    }
+                    case  "w"  :
+                    {
+                        that.setDate(that.getDate() + number * 7);
+                        return  that;
+                        break;
+                    }
+                    case  "d"  :
+                    {
+                        that.setDate(that.getDate() + number);
+                        return  that;
+                        break;
+                    }
+                    case  "h"  :
+                    {
+                        that.setHours(that.getHours() + number);
+                        return  that;
+                        break;
+                    }
+                    case  "mi"  :
+                    {
+                        that.setMinutes(that.getMinutes() + number);
+                        return  that;
+                        break;
+                    }
+                    case  "s"  :
+                    {
+                        that.setSeconds(that.getSeconds() + number);
+                        return  that;
+                        break;
+                    }
+                    default  :
+                    {
+                        return  that;
+                        break;
+                    }
+                }
+            }
+
+            var currDate = getFormatDate(new Date(), "yyyy-MM-dd");
+            var currHour = getFormatDate(new Date(), "hh");
+            var prevDate = getFormatDate(DateAdd(new Date(), "d", -1), "yyyy-MM-dd");
+
+            // 小时查询渲染
+            var hourRanges = ["21", "22", "23", "00", "01", "02", "03", "04", "05", "06", "07", "08",
+                "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20" ];
+            laydate.render({
+                elem : '#hour_s_date'
+                ,type : 'date'
+                ,format: 'yyyy-MM-dd'
+                ,value: prevDate
+            });
+            laydate.render({
+                elem : '#hour_e_date'
+                ,type : 'date'
+                ,format: 'yyyy-MM-dd'
+                ,value: currDate
+            });
+            $.each(hourRanges, function(index, hour)
+            {
+                $('#hour_s').append('<option value="' + hour + '">' + hour + '</option>');
+                $('#hour_e').append('<option value="' + hour + '">' + hour + '</option>');
+            });
+            $('#hour_s').val(20);
+            $('#hour_e').val(currHour);
+            form.render('select');
+
+            form.on('select(hourRangeSelect)', function(data)
+            {
+                var hour = data.value;
+                if(hour == "")
+                {
+                    return;
+                }
+                var time = data.elem[data.elem.selectedIndex].dataset.time;
+                $('#hour_s').val(hour);
+                $('#hour_e').val(hour);
+                $('#hour_s_date').val(getFormatDate(DateAdd(new Date(), 'h', -(time - 1)), 'yyyy-MM-dd'));
+                $('#hour_e_date').val(getFormatDate(new Date(), 'yyyy-MM-dd'));
+                form.render('select');
+            });
+            ////////////////////////////////////////////////////////////////
+
+            // 日查询渲染
+            laydate.render({
+                elem : '#day_s_date'
+                ,type : 'date'
+                ,format: 'yyyy-MM-dd'
+                ,value: getFormatDate(new Date(), "yyyy-MM-01")
+            });
+            laydate.render({
+                elem : '#day_e_date'
+                ,type : 'date'
+                ,format: 'yyyy-MM-dd'
+                ,value: getFormatDate(new Date(), "yyyy-MM-dd")
+            });
+            ////////////////////////////////////////////////////////////////
+
+
+            function getHourElements()
+            {
+                var elements = new Array();
+                $("input[name='hourEle']:checked").each(function (i)
+                {
+                    // 要素
+                    var code = $(this).val();
+                    var name = $(this).attr("title");
+                    var precision = $(this).attr("data-precision");
+                    elements.push( { 'code' : code, 'name' : name, 'precision' : precision } );
+                });
+                return elements;
+            }
+
+
+            function getHourDataParam()
+            {
+                var s_datetime = $('#hour_s_date').val().replace(/-/g, '') + $('#hour_s').val() + '00';
+                var e_datetime = $('#hour_e_date').val().replace(/-/g, '') + $('#hour_e').val() + '00';
+                var stations = stationNums;
+                var elements = getHourElements();
+                if (stations.length == "")
+                {
+                    layer.msg("请选择站点！");
+                    return null;
+                }
+                if (elements.length == 0)
+                {
+                    layer.msg("请选择要素！");
+                    return null;
+                }
+                var param =
+                    {
+                        "query_type" : "multiple"
+                        , "s_datetime" : s_datetime
+                        , "e_datetime" : e_datetime
+                        , "stations"   : JSON.stringify(stations)
+                        , "elements"   : JSON.stringify(elements)
+                        , "order"	   : hourOrder.order + "|" + hourOrder.field + "|" + hourOrder.type
+                    };
+                return param;
+            }
+
+            function getDayDataParam()
+            {
+                var stations = getCheckedZtree();
+                var s_datetime = $('#day_s_date').val().replace(/-/g, '');
+                var e_datetime = $('#day_e_date').val().replace(/-/g, '');
+
+                var elements = new Array();
+                $("input[name='dayEle']:checked").each(function (i)
+                {
+                    // 要素
+                    var code = $(this).val();
+                    var name = $(this).attr("title");
+                    var precision = $(this).attr("data-precision");
+                    elements.push( { 'code' : code, 'name' : name, 'precision' : precision } );
+                });
+                if (stations.length == 0)
+                {
+                    layer.msg("请选择站点！");
+                    return null;
+                }
+                if (elements.length == 0)
+                {
+                    layer.msg("请选择要素！");
+                    return null;
+                }
+                var param =
+                    {
+                        "query_type" : "multiple"
+                        , "s_datetime" : s_datetime
+                        , "e_datetime" : e_datetime
+                        , "stations"   : JSON.stringify(stations)
+                        , "elements"   : JSON.stringify(elements)
+                        , "order"	   : dayOrder.order + "|" + dayOrder.field + "|" + dayOrder.type
+                    };
+                return param;
+            }
+            function floatAdd(num1, num2) {
+                const num1Digits = (num1.toString().split('.')[1] || '').length;
+                const num2Digits = (num2.toString().split('.')[1] || '').length;
+                const baseNum = Math.pow(10, Math.max(num1Digits, num2Digits));
+                return (num1 * baseNum + num2 * baseNum) / baseNum;
+            }
+            // 多站统计-小时数据查询
+            $("#hourCount").on('click', function ()
+            {
+                var param = getHourDataParam();
+                if(param == null)
+                {
+                    return;
+                }
+                let loadingLayer = layer.open({ type: 3 });
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: main_url +"/realTime/getHourAwsData",
+                    data: param,
+                    error: function ()
+                    {
+                        layer.close(loadingLayer);
+                        layer.msg("Connection error");
+                    },
+                    success: function (data)
+                    {
+                        layer.close(loadingLayer);
+
+                        var range = $("input[name='hourEle']:checked").data("range");
+                        var columns = new Array();
+                        columns.push({ 'field' : 'DataTime', 'title': '时间', 'align': 'center', 'fixed': 'left', 'minWidth': '120', sort: true });
+                        $.each(stationNums, function(index, station)
+                        {
+                            // 站点
+                            var code = station.code;
+                            var name = station.name + "<br>" + code;
+                            columns.push( { 'field' : code, 'title': name, 'align': 'center', range: range, 'minWidth': '120', sort: true } );
+                        });
+
+                        var dataList = data.list;
+                        var extrData = data.extr;
+                        renderTable("hourTable", extrData.EleCode, columns, hourOrder, dataList, extrData);
+
+                        $("div #hourdescribeli").remove();
+                        if (extrData != undefined && extrData != null)
+                        {
+                            let html = '';
+                            if (extrData.EleCode == "RianAmount")
+                            {
+                                html = "<li id=\"hourdescribeli\">" + "（降水）  " + " 该时间段内最大累计降水量：" + extrData.StationName + "（" + extrData.StationName + "）" + "<span style=\"color:red\">" + extrData.ExtrData + "</span></li>";
+                            }
+                            else
+                            {
+                                html = "<li id=\"hourdescribeli\">"
+                                    + "极大值：" + extrData.MaxName + "（" + extrData.MaxNum + "）" + "<span style=\"color:red\">" + extrData.MaxData + "</span>"
+                                    + " / "
+                                    + "极小值：" + extrData.MinName + "（" + extrData.MinNum + "）" + "<span style=\"color:green\">" + extrData.MinData + "</span>"
+                                    + "</li>";
+                            }
+                            $("#hourdescribe").append(html);
+                        }
+                    }
+                });
+            });
+
+            // 多站统计-日数据查询
+            $("#dayCount").on('click', function ()
+            {
+                var param = getDayDataParam();
+                if(param == null)
+                {
+                    return;
+                }
+                let loadingLayer = layer.open({ type: 3 });
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: main_url +"/realTime/getDayHistoryData",
+                    data: param,
+                    error: function ()
+                    {
+                        layer.close(loadingLayer);
+                        layer.msg("Connection error");
+                    },
+                    success: function (data)
+                    {
+                        layer.close(loadingLayer);
+
+                        var range = $("input[name='dayEle']:checked").data("range");
+                        var columns = new Array();
+                        columns.push({ 'field' : 'DataTime', 'title': '时间', 'align': 'center', 'fixed': 'left', 'minWidth': '120', sort: true });
+                        $.each(stationNums, function(index, station)
+                        {
+                            // 站点
+                            var code = station.code;
+                            var name = station.name + "<br>" + code;
+                            columns.push( { 'field' : code, 'title': name, 'align': 'center', 'minWidth': '120', range: range, sort: true } );
+                        });
+
+                        var dataList = data.list;
+                        var extrData = data.extr;
+                        renderTable("dayTable", extrData.EleCode, columns, dayOrder, dataList, extrData);
+
+                        $("div #daydescribeli").remove();
+                        if (extrData != undefined && extrData != null)
+                        {
+                            let html = '';
+                            if (extrData.EleCode == "Rain3")
+                            {
+                                html = "<li id=\"daydescribeli\">" + "（降水）  " + " 该时间段内最大累计降水量：" + extrData.StationName + "（" + extrData.StationName + "）" + "<span style=\"color:red\">" + extrData.ExtrData + "</span></li>";
+                            }
+                            else
+                            {
+                                html = "<li id=\"daydescribeli\">"
+                                    + "极大值：" + extrData.MaxName + "（" + extrData.MaxNum + "）" + "<span style=\"color:red\">" + extrData.MaxData + "</span>"
+                                    + " / "
+                                    + "极小值：" + extrData.MinName + "（" + extrData.MinNum + "）" + "<span style=\"color:green\">" + extrData.MinData + "</span>"
+                                    + "</li>";
+                            }
+                            $("#daydescribe").append(html);
+                        }
+                    }
+                });
+            });
+
+            // 多站统计-小时数据导出
+            $("#hourExport").on('click', function ()
+            {
+                var param = getHourDataParam();
+                if(param == null)
+                {
+                    return;
+                }
+                let loadingLayer = layer.open({ type: 3 });
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: main_url +"/realTime/exportHourCount",
+                    data: param,
+                    error: function ()
+                    {
+                        layer.close(loadingLayer);
+                        layer.msg("Connection error");
+                    },
+                    success: function (data)
+                    {
+                        layer.close(loadingLayer);
+                    }
+                });
+            });
+
+            // 多站统计-日数据导出
+            $("#dayExport").on('click', function ()
+            {
+                var param = getDayDataParam();
+                if(param == null)
+                {
+                    return;
+                }
+                let loadingLayer = layer.open({ type: 3 });
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: main_url +"/realTime/exportDayCount",
+                    data: param,
+                    error: function ()
+                    {
+                        layer.close(loadingLayer);
+                        layer.msg("Connection error");
+                    },
+                    success: function (data)
+                    {
+                        layer.close(loadingLayer);
+                    }
+                });
+            });
+
+            // 多站统计-小时数据绘图
+            $("#hourChart").on('click', function ()
+            {
+                var param = getHourDataParam();
+                if(param == null)
+                {
+                    return;
+                }
+                if (JSON.parse(param.stations).length > 7)
+                {
+                    layer.msg("请选择站点不要超过7个！");
+                    return false;
+                }
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: main_url +"/realTime/getHourChartData",
+                    data: param,
+                    error: function ()
+                    {
+                        layer.msg("Connection error");
+                    },
+                    success: function (data)
+                    {
+                        let eleName = $('input[name="hourEle"]:checked').attr('title');
+                        drawEChart("多站小时数据   -  " + eleName, data);
+                    }
+                });
+            });
+
+            // 多站统计-日数据绘图
+            $("#dayChart").on('click', function ()
+            {
+                var param = getDayDataParam();
+                if(param == null)
+                {
+                    return;
+                }
+                if (JSON.parse(param.stations).length > 7)
+                {
+                    layer.msg("请选择站点不要超过7个！");
+                    return false;
+                }
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: main_url +"/realTime/getDayChartData",
+                    data: param,
+                    error: function () {
+                        layer.msg("Connection error");
+                    },
+                    success: function (data) {
+                        let eleName = $('input[name="dayEle"]:checked').attr('title');
+                        drawEChart("多站日数据   -  " + eleName, data);
+                    }
+                });
+            });
+
+            table.on('sort(hourTable)', function (obj)
+            {
+                debugger
+                if (obj.field == 'DataTime')
+                {
+                    hourOrder =
+                        {
+                            order : ' Order By ObserDate ' + obj.type + ', ObserTime ' + obj.type
+                            , field : obj.field
+                            , type : obj.type
+                        };
+                }
+                else
+                {
+                    obj.field = obj.field.substr(1);
+                    hourOrder =
+                        {
+                            order : ' '
+                            , field : obj.field
+                            , type : obj.type
+                        };
+                }
+                $('#hourCount').click();
+            });
+            table.on('sort(dayTable)', function (obj)
+            {
+                if (obj.field == 'DataTime')
+                {
+                    dayOrder =
+                        {
+                            order : ' Order By ObserDate ' + obj.type
+                            , field : obj.field
+                            , type : obj.type
+                        };
+                }
+                else
+                {
+                    obj.field = obj.field.substr(1);
+                    dayOrder =
+                        {
+                            order : ' '
+                            , field : obj.field
+                            , type : obj.type
+                        };
+                }
+                $('#dayCount').click();
+            });
+
+            function drawEChart(title, data) {
+                layer.open({
+                    type: 1
+                    , title: title
+                    , area: ['1200px', '600px']
+                    , shade: 0.8
+                    , id: 'dataChart' //设定一个id，防止重复弹出
+                    , btn: ['关闭']
+                    , btnAlign: 'c'
+                    , success: function () {
+                        var colNames = data.colNames;
+                        var colCodes = data.colCodes;
+                        var dateInfo = data.dateInfo;
+                        var dataList = data.dataList;
+
+                        var list = new Array();//创建list集合
+                        for (var i = 0; i < colNames.length; i++) {
+                            var map = {};//创建map集合
+                            var dataslist = new Array();//创建list集合
+                            map['name'] = colNames[i];
+                            map['type'] = 'line';
+                            map['barGap'] = '0';
+                            for (var j = 0; j < dataList.length; j++) {
+                                for (var item in dataList[j]) {
+                                    if (item == colCodes[i]) {
+                                        var jValue = dataList[j][item]; //key所对应的value
+                                        dataslist[j] = jValue;
+                                    }
+                                }
+                            }
+                            map['data'] = dataslist;
+                            list[i] = map;
+                        }
+
+                        var myChart = echarts.init(document.getElementById("dataChart"));
+                        let option = {
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                }
+                            },
+                            toolbox: {
+                                show: true,
+                                feature: {
+                                    magicType: { show: true, type: ['line', 'bar'] },
+                                    restore: { show: true }
+                                }
+                            },
+                            legend: {
+                                data: colNames
+                            },
+                            calculable: true,
+                            dataZoom:[
+                                {
+                                    show: true,
+                                    realtime: true,
+                                    start: 0,
+                                    end: 100,
+                                },
+                            ],
+                            xAxis: [
+                                {
+                                    type: 'category',
+                                    axisTick: { show: false },
+                                    axisLabel: {
+                                        interval: 0,
+                                        rotate: 40
+                                    },
+                                    data: dateInfo
+                                }
+                            ],
+                            yAxis: [{
+                                type: 'value',
+                                axisLabel:{
+                                    formatter: function (value, index) {
+                                        return value.toFixed(1);
+                                    }
+                                }
+                            }],
+                            series: list
+                        };
+                        myChart.clear();
+                        myChart.setOption(option);
+                    }
+                    ,yes : function(index, layero) {
+                        layer.close(index);
+                    }
+                });
+            }
+
+
+            function renderTable(tableId, element, columns, orderInfo, dataList, extrData)
+            {
+
+                let totalRow = {};
+                let totalRowNum = {};
+                dataList.forEach(item => {
+                    Object.keys(item).forEach(key => {
+                        if (key == 'DataTime') {
+                            totalRow[key] = '统计';
+                        } else {
+                            // 统计无效数据的个数
+                            if(totalRowNum[key] == null) totalRowNum[key] = 0;
+                            if(item[key] == null)        totalRowNum[key] += 1;
+
+                            if (totalRow[key] == null) totalRow[key] = 0;
+                            totalRow[key] = floatAdd(totalRow[key], item[key] == null ? 0 : item[key]);
+                        }
+                    });
+                });
+                Object.keys(totalRow).forEach(item => {
+                    if (!['DataTime'].includes(item)) {
+                        if (['RianAmount', 'PRE_3h','PRE_6h','PRE_12h','PRE_24h','Rain1','Rain2','Rain3','Rain4'].includes(element)) {
+                            totalRow[item] = '累计：' + totalRow[item].toFixed(1);
+                        }else{
+                            totalRow[item] = totalRow[item] / (dataList.length - totalRowNum[item]);
+                            totalRow[item] = '平均：' + totalRow[item].toFixed(1);
+                        }
+                    }
+                });
+                dataList.push(totalRow);
+
+                $.each(columns, function(i , col)
+                {
+                    if(col.field != 'DataTime')
+                    {
+                        col.field = 'S' + col.field;
+                    }
+                });
+                $.each(dataList, function(i , data)
+                {
+                    for(var key in data)
+                    {
+                        if(key != 'DataTime')
+                        {
+                            data['S' + key] = data[key];
+                        }
+                    }
+                });
+
+                table.render({
+                    elem: '#' + tableId
+                    , height: "full-215"
+                    , cols: [ columns ]
+                    , data: dataList
+                    ,toolbar: '#toolbarDemo'
+                    ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                        title: '提示'
+                        ,layEvent: 'LAYTABLE_TIPS'
+                        ,icon: 'layui-icon-tips'
+                    }]
+                    , size: 'sm'
+                    , even: true
+                    , page: false //是否显示分页
+                    , limit: Infinity //每页默认显示的数量
+                });
+                renderTableHeight();
+
+
+                $('#' + tableId).parent().find(".slide_main").each(function (){
+                    let range = $(this).data('range').split('|');
+                    $(this).slider({
+                        range: true,
+                        min: parseInt(range[0]),
+                        max: parseInt(range[1]),
+                        values: [parseInt(range[0]), parseInt(range[1])],		// slide 初始值
+                        slide: function (event, ui){
+                            // 当前滑块对应的值（回调）
+                            $(event.target).parents(".slide").children("span").eq(ui.handleIndex).text(ui.value);
+                            let thIndex = $(event.target).parents("th").index();
+                            $(event.target).parents(".layui-table-box").find(".layui-table-body").find("tr").each(function (){
+                                let thisVal = $(this).children().eq(thIndex).text();
+                                thisVal = parseFloat(thisVal.replace('平均：', '').replace('累计：', ''));
+                                if (thisVal >= ui.values[0] && thisVal <= ui.values[1]){
+                                    $(this).children().eq(thIndex).find(".layui-table-cell").css("visibility", 'visible');
+                                }else{
+                                    $(this).children().eq(thIndex).find(".layui-table-cell").css('visibility', 'hidden');
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+
+            function renderTableHeight(){
+                var tabheight = $(window).height() - 225;
+                $(".layui-table-view").css("height", tabheight - 155);
+                $(".layui-table-view").css("max-height", tabheight - 155);
+                $(".layui-table-body").css("max-height", tabheight - 235);
+            }
+        });
+    </script>
+</html>

@@ -1,0 +1,46 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "rowCount": 120,
+        "pageSize": 10,
+        "pageIndex": 3,
+        "list": [{
+            "XXXPROP_NIGHT_STATICSS_id": "1",
+            "name": "黄飞",
+            "XXXPROP_NIGHT_STATICSS_2": "8",
+            "XXXPROP_NIGHT_STATICSS_3": "6、11、26",
+            "XXXPROP_NIGHT_STATICSS_4": "7",
+            "XXXPROP_NIGHT_STATICSS_5": "3、8、13"
+        }, {
+            "XXXPROP_NIGHT_STATICSS_id": "2",
+            "name": "韦龙龙",
+            "XXXPROP_NIGHT_STATICSS_2": "4",
+            "XXXPROP_NIGHT_STATICSS_3": "4、5、11",
+            "XXXPROP_NIGHT_STATICSS_4": "6",
+            "XXXPROP_NIGHT_STATICSS_5": "7、12、17、22"
+        }, {
+            "XXXPROP_NIGHT_STATICSS_id": "3",
+            "name": "黄飞",
+            "XXXPROP_NIGHT_STATICSS_2": "8",
+            "XXXPROP_NIGHT_STATICSS_3": "6、11、26",
+            "XXXPROP_NIGHT_STATICSS_4": "7",
+            "XXXPROP_NIGHT_STATICSS_5": "3、8、13"
+        }, {
+            "XXXPROP_NIGHT_STATICSS_id": "4",
+            "name": "黄飞",
+            "XXXPROP_NIGHT_STATICSS_2": "8",
+            "XXXPROP_NIGHT_STATICSS_3": "6、11、26",
+            "XXXPROP_NIGHT_STATICSS_4": "7",
+            "XXXPROP_NIGHT_STATICSS_5": "3、8、13"
+        }, {
+            "XXXPROP_NIGHT_STATICSS_id": "5",
+            "name": "黄飞",
+            "XXXPROP_NIGHT_STATICSS_2": "8",
+            "XXXPROP_NIGHT_STATICSS_3": "6、11、26",
+            "XXXPROP_NIGHT_STATICSS_4": "7",
+            "XXXPROP_NIGHT_STATICSS_5": "3、8、13"
+        }]
+    }
+}

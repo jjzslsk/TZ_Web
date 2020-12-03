@@ -1,0 +1,312 @@
+{
+    "success": true,
+    "code": 0,
+    "message": "查询成功",
+    "data": {
+        "monthTime": "2020-10",
+        "serviceDay":"2020-10-20",
+        "list": [
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "bf5df19b976d4381bb1a2f848ea544a7",
+                "dataType": "2",
+                "36d186708b644861845fc487410a944f": "c3fbe3c32edd434cb32d819011e9cd63",
+                "weekDate": "周四",
+                "currentDate":"2020-10-01",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "bf5df19b976d4381bb1a2f848ea544a7",
+                "dutyDate": "01",
+                "7b282f54c7b14da9ab1c0c159d89bf09": "c3fbe3c32edd434cb32d819011e9cd63"
+            },
+            {
+                "dataType": "2",
+                "36d186708b644861845fc487410a944f": "bf5df19b976d4381bb1a2f848ea544a7",
+                "064505dfecf74640ac8cd88bc433fceb": "c3fbe3c32edd434cb32d819011e9cd63",
+                "currentDate":"2020-10-02",
+                "weekDate": "周五",
+                "dutyDate": "02"
+            },
+            {
+                "dataType": "2",
+                "064505dfecf74640ac8cd88bc433fceb": "bf5df19b976d4381bb1a2f848ea544a7",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "c3fbe3c32edd434cb32d819011e9cd63",
+                "currentDate":"2020-10-03",
+                "weekDate": "周六",
+                "dutyDate": "03"
+            },
+            {
+                "dataType": "1",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "bf5df19b976d4381bb1a2f848ea544a7",
+                "weekDate": "周日",
+                "currentDate":"2020-10-04",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "c3fbe3c32edd434cb32d819011e9cd63",
+                "dutyDate": "04"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "c3fbe3c32edd434cb32d819011e9cd63",
+                "dataType": "1",
+                "weekDate": "周一",
+                "currentDate":"2020-10-05",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "bf5df19b976d4381bb1a2f848ea544a7",
+                "dutyDate": "05"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "bf5df19b976d4381bb1a2f848ea544a7",
+                "dataType": "1",
+                "36d186708b644861845fc487410a944f": "c3fbe3c32edd434cb32d819011e9cd63",
+                "currentDate":"2020-10-06",
+                "weekDate": "周二",
+                "dutyDate": "06"
+            },
+            {
+                "dataType": "1",
+                "36d186708b644861845fc487410a944f": "bf5df19b976d4381bb1a2f848ea544a7",
+                "064505dfecf74640ac8cd88bc433fceb": "c3fbe3c32edd434cb32d819011e9cd63",
+                "currentDate":"2020-10-07",
+                "weekDate": "周三",
+                "dutyDate": "07"
+            },
+            {
+                "dataType": "1",
+                "064505dfecf74640ac8cd88bc433fceb": "bf5df19b976d4381bb1a2f848ea544a7",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "c3fbe3c32edd434cb32d819011e9cd63",
+                "currentDate":"2020-10-08",
+                "weekDate": "周四",
+                "dutyDate": "08"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "d7aa5ec91ed545338481b96410f7c224",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "d7aa5ec91ed545338481b96410f7c224",
+                "064505dfecf74640ac8cd88bc433fceb": "d7aa5ec91ed545338481b96410f7c224",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "bf5df19b976d4381bb1a2f848ea544a7",
+                "weekDate": "周五",
+                "currentDate":"2020-10-09",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "c3fbe3c32edd434cb32d819011e9cd63",
+                "dutyDate": "09"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "c3fbe3c32edd434cb32d819011e9cd63",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "d7aa5ec91ed545338481b96410f7c224",
+                "064505dfecf74640ac8cd88bc433fceb": "d7aa5ec91ed545338481b96410f7c224",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "d7aa5ec91ed545338481b96410f7c224",
+                "weekDate": "周六",
+                "currentDate":"2020-10-10",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "bf5df19b976d4381bb1a2f848ea544a7",
+                "dutyDate": "10"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "bf5df19b976d4381bb1a2f848ea544a7",
+                "dataType": "1",
+                "36d186708b644861845fc487410a944f": "c3fbe3c32edd434cb32d819011e9cd63",
+                "currentDate":"2020-10-11",
+                "weekDate": "周日",
+                "dutyDate": "11"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "d7aa5ec91ed545338481b96410f7c224",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "bf5df19b976d4381bb1a2f848ea544a7",
+                "064505dfecf74640ac8cd88bc433fceb": "c3fbe3c32edd434cb32d819011e9cd63",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "d7aa5ec91ed545338481b96410f7c224",
+                "weekDate": "周一",
+                "currentDate":"2020-10-12",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "d7aa5ec91ed545338481b96410f7c224",
+                "dutyDate": "12"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "d7aa5ec91ed545338481b96410f7c224",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "d7aa5ec91ed545338481b96410f7c224",
+                "064505dfecf74640ac8cd88bc433fceb": "bf5df19b976d4381bb1a2f848ea544a7",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "c3fbe3c32edd434cb32d819011e9cd63",
+                "weekDate": "周二",
+                "currentDate":"2020-10-13",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "d7aa5ec91ed545338481b96410f7c224",
+                "dutyDate": "13"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "d7aa5ec91ed545338481b96410f7c224",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "d7aa5ec91ed545338481b96410f7c224",
+                "064505dfecf74640ac8cd88bc433fceb": "d7aa5ec91ed545338481b96410f7c224",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "bf5df19b976d4381bb1a2f848ea544a7",
+                "weekDate": "周三",
+                "currentDate":"2020-10-14",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "c3fbe3c32edd434cb32d819011e9cd63",
+                "dutyDate": "14"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "c3fbe3c32edd434cb32d819011e9cd63",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "d7aa5ec91ed545338481b96410f7c224",
+                "064505dfecf74640ac8cd88bc433fceb": "d7aa5ec91ed545338481b96410f7c224",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "d7aa5ec91ed545338481b96410f7c224",
+                "weekDate": "周四",
+                "currentDate":"2020-10-15",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "bf5df19b976d4381bb1a2f848ea544a7",
+                "dutyDate": "15"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "bf5df19b976d4381bb1a2f848ea544a7",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "c3fbe3c32edd434cb32d819011e9cd63",
+                "064505dfecf74640ac8cd88bc433fceb": "d7aa5ec91ed545338481b96410f7c237",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "d7aa5ec91ed545338481b96410f7c237",
+                "weekDate": "周五",
+                "currentDate":"2020-10-16",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "d7aa5ec91ed545338481b96410f7c237",
+                "dutyDate": "16"
+            },
+            {
+                "dataType": "1",
+                "36d186708b644861845fc487410a944f": "bf5df19b976d4381bb1a2f848ea544a7",
+                "064505dfecf74640ac8cd88bc433fceb": "c3fbe3c32edd434cb32d819011e9cd63",
+                "currentDate":"2020-10-17",
+                "weekDate": "周六",
+                "dutyDate": "17"
+            },
+            {
+                "dataType": "1",
+                "064505dfecf74640ac8cd88bc433fceb": "bf5df19b976d4381bb1a2f848ea544a7",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "c3fbe3c32edd434cb32d819011e9cd63",
+                "currentDate":"2020-10-18",
+                "weekDate": "周日",
+                "dutyDate": "18"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "d7aa5ec91ed545338481b96410f7c237",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "d7aa5ec91ed545338481b96410f7c224",
+                "064505dfecf74640ac8cd88bc433fceb": "d7aa5ec91ed545338481b96410f7c224",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "bf5df19b976d4381bb1a2f848ea544a7",
+                "weekDate": "周一",
+                "currentDate":"2020-10-19",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "c3fbe3c32edd434cb32d819011e9cd63",
+                "dutyDate": "19"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "c3fbe3c32edd434cb32d819011e9cd63",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "d7aa5ec91ed545338481b96410f7c237",
+                "064505dfecf74640ac8cd88bc433fceb": "d7aa5ec91ed545338481b96410f7c224",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "d7aa5ec91ed545338481b96410f7c224",
+                "weekDate": "周二",
+                "currentDate":"2020-10-20",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "bf5df19b976d4381bb1a2f848ea544a7",
+                "dutyDate": "20"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "bf5df19b976d4381bb1a2f848ea544a7",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "c3fbe3c32edd434cb32d819011e9cd63",
+                "064505dfecf74640ac8cd88bc433fceb": "d7aa5ec91ed545338481b96410f7c237",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "d7aa5ec91ed545338481b96410f7c237",
+                "weekDate": "周三",
+                "currentDate":"2020-10-21",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "d7aa5ec91ed545338481b96410f7c237",
+                "dutyDate": "21"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "d7aa5ec91ed545338481b96410f7c237",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "bf5df19b976d4381bb1a2f848ea544a7",
+                "064505dfecf74640ac8cd88bc433fceb": "c3fbe3c32edd434cb32d819011e9cd63",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "d7aa5ec91ed545338481b96410f7c237",
+                "weekDate": "周四",
+                "currentDate":"2020-10-22",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "d7aa5ec91ed545338481b96410f7c237",
+                "dutyDate": "22"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "d7aa5ec91ed545338481b96410f7c237",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "d7aa5ec91ed545338481b96410f7c237",
+                "064505dfecf74640ac8cd88bc433fceb": "bf5df19b976d4381bb1a2f848ea544a7",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "c3fbe3c32edd434cb32d819011e9cd63",
+                "weekDate": "周五",
+                "currentDate":"2020-10-23",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "d7aa5ec91ed545338481b96410f7c237",
+                "dutyDate": "23"
+            },
+            {
+                "dataType": "1",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "bf5df19b976d4381bb1a2f848ea544a7",
+                "weekDate": "周六",
+                "currentDate":"2020-10-24",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "c3fbe3c32edd434cb32d819011e9cd63",
+                "dutyDate": "24"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "c3fbe3c32edd434cb32d819011e9cd63",
+                "dataType": "1",
+                "weekDate": "周日",
+                "currentDate":"2020-10-25",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "bf5df19b976d4381bb1a2f848ea544a7",
+                "dutyDate": "25"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "bf5df19b976d4381bb1a2f848ea544a7",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "c3fbe3c32edd434cb32d819011e9cd63",
+                "064505dfecf74640ac8cd88bc433fceb": "d7aa5ec91ed545338481b96410f7c237",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "d7aa5ec91ed545338481b96410f7c224",
+                "weekDate": "周一",
+                "currentDate":"2020-10-26",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "d7aa5ec91ed545338481b96410f7c224",
+                "dutyDate": "26"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "d7aa5ec91ed545338481b96410f7c224",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "bf5df19b976d4381bb1a2f848ea544a7",
+                "064505dfecf74640ac8cd88bc433fceb": "c3fbe3c32edd434cb32d819011e9cd63",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "d7aa5ec91ed545338481b96410f7c237",
+                "weekDate": "周二",
+                "currentDate":"2020-10-27",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "d7aa5ec91ed545338481b96410f7c224",
+                "dutyDate": "27"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "d7aa5ec91ed545338481b96410f7c237",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "d7aa5ec91ed545338481b96410f7c237",
+                "064505dfecf74640ac8cd88bc433fceb": "bf5df19b976d4381bb1a2f848ea544a7",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "c3fbe3c32edd434cb32d819011e9cd63",
+                "weekDate": "周三",
+                "currentDate":"2020-10-28",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "d7aa5ec91ed545338481b96410f7c237",
+                "dutyDate": "28"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "d7aa5ec91ed545338481b96410f7c237",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "d7aa5ec91ed545338481b96410f7c237",
+                "064505dfecf74640ac8cd88bc433fceb": "d7aa5ec91ed545338481b96410f7c237",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "bf5df19b976d4381bb1a2f848ea544a7",
+                "weekDate": "周四",
+                "currentDate":"2020-10-29",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "c3fbe3c32edd434cb32d819011e9cd63",
+                "dutyDate": "29"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "c3fbe3c32edd434cb32d819011e9cd63",
+                "dataType": "0",
+                "36d186708b644861845fc487410a944f": "d7aa5ec91ed545338481b96410f7c237",
+                "064505dfecf74640ac8cd88bc433fceb": "d7aa5ec91ed545338481b96410f7c237",
+                "b68093d3b39d49cba3cb7ac53a738cb3": "d7aa5ec91ed545338481b96410f7c237",
+                "weekDate": "周五",
+                "currentDate":"2020-10-30",
+                "c3a4bb8d6f2a47dfb1e5a504c19c2e0f": "bf5df19b976d4381bb1a2f848ea544a7",
+                "dutyDate": "30"
+            },
+            {
+                "f13531e4800b430f8a1939d2cac00a9c": "bf5df19b976d4381bb1a2f848ea544a7",
+                "dataType": "1",
+                "36d186708b644861845fc487410a944f": "c3fbe3c32edd434cb32d819011e9cd63",
+                "currentDate":"2020-10-31",
+                "weekDate": "周六",
+                "dutyDate": "31"
+            }
+        ]
+    }
+}

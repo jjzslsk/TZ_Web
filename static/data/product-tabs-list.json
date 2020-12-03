@@ -1,0 +1,24 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "list": [{
+            "title": "动态产品制造(今日)",
+            "name": "1",
+            "content": "动态产品制作1"
+          }, {
+            "title": "动态产品制作(最新)",
+            "name": "2",
+            "content": "动态产品制作(最新)1"
+          }, {
+            "title": "时间标签",
+            "name": "3",
+            "content": "时间标签1"
+          }, {
+            "title": "值班记录",
+            "name": "4",
+            "content": "值班记录1"
+          }]
+    }
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>渠道配置</title>
+    <style>
+        .deployBox{display: flex;flex-direction: column;height: 100%;}
+        .deployBox > .layui-tab{flex: 1 1 0;display: flex;flex-direction: column;}
+        .deployBox > .layui-tab > .layui-tab-title{flex:0 0 40px;}
+        .deployBox > .layui-tab > .layui-tab-content{flex:1 1 0;overflow: auto;border:1px solid #e6e6e6;border-top:none;}
+
+    </style>
+</head>
+<body>
+<div class="deployBox">
+    <div class="layui-tab" lay-filter="source">
+        <ul class="layui-tab-title" id="channelName"></ul>
+        <div class="layui-tab-content" id="channelUser"></div>
+    </div>
+    <div class="footer" >
+        <span id="checkedCount" style="color:#c0392b;">已选用户，</span>
+        <p class="label label-info label-badge">提示：此处用户选择只作用于当前发布任务，如需永久修改绑定用户，请点击左下角发布预案。</p>
+    </div>
+</div>
+</body>
+</html>

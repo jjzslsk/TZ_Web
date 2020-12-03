@@ -1,0 +1,131 @@
+{
+    "success": true,
+    "code": 0,
+    "message": "查询用户所属菜单成功",
+    "data": {
+        "list": [
+            {
+                "appId": "待定",
+                "id": "df2ed731fccd430fa78efbca1d9603f8",
+                "code": "001",
+                "name": "系统管理",
+                "menuUrl": "/ssd-sys-menu/addMenu",
+                "imageUrl": "https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0=baike80,5,5,80,26/sign=091999a0ba0e7bec37d70bb34e47d25d/0e2442a7d933c895e15b15d4d31373f082020073.jpg",
+                "menuLevel": 1,
+                "showOrder": 1,
+                "enabled": 1,
+                "parentId": "0",
+                "parentName": "无",
+                "createTime": "2020-02-19 14:39:56.0",
+                "updateTime": "2020-02-19 14:39:56.0",
+                "ifLeaf": false,
+                "children": [
+                    {
+                        "appId": "待定",
+                        "id": "051c91cb1d2c4c04bd4b26d905e42e71",
+                        "code": "0011",
+                        "name": "地区管理",
+                        "menuUrl": "/ssd-sys-menu/addMenu",
+                        "imageUrl": "https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0=baike80,5,5,80,26/sign=091999a0ba0e7bec37d70bb34e47d25d/0e2442a7d933c895e15b15d4d31373f082020073.jpg",
+                        "menuLevel": 2,
+                        "showOrder": 2,
+                        "enabled": 1,
+                        "parentId": "df2ed731fccd430fa78efbca1d9603f8",
+                        "parentName": "系统管理",
+                        "createTime": "2020-02-19 14:42:33.0",
+                        "updateTime": "2020-02-19 14:42:33.0",
+                        "ifLeaf": false,
+                        "children": [
+                            {
+                                "appId": null,
+                                "id": "3999f98bdddd402eaf401639e08aed61",
+                                "code": "00111",
+                                "name": "青秀区管理",
+                                "menuUrl": "menu/addMenu",
+                                "imageUrl": "https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0=baike80,5,5,80,26/sign=091999a0ba0e7bec37d70bb34e47d25d/0e2442a7d933c895e15b15d4d31373f082020073.jpg",
+                                "menuLevel": 3,
+                                "showOrder": 1,
+                                "enabled": 1,
+                                "parentId": "051c91cb1d2c4c04bd4b26d905e42e71",
+                                "parentName": "地区管理",
+                                "createTime": "2020-03-19 16:50:01.0",
+                                "updateTime": "2020-03-19 16:50:01.0",
+                                "ifLeaf": false,
+                                "children": [
+                                    {
+                                        "appId": null,
+                                        "id": "3999f98bdddd402eaf401639e08aed62",
+                                        "code": "03",
+                                        "name": "麻村管理",
+                                        "menuUrl": "menu/addMenu",
+                                        "imageUrl": "https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0=baike80,5,5,80,26/sign=091999a0ba0e7bec37d70bb34e47d25d/0e2442a7d933c895e15b15d4d31373f082020073.jpg",
+                                        "menuLevel": 4,
+                                        "showOrder": 1,
+                                        "enabled": 1,
+                                        "parentId": "3999f98bdddd402eaf401639e08aed61",
+                                        "parentName": "青秀区管理",
+                                        "createTime": "2020-03-19 17:58:29.0",
+                                        "updateTime": "2020-03-21 15:08:04.0",
+                                        "ifLeaf": true,
+                                        "children": null
+                                    },
+                                    {
+                                        "appId": "待定",
+                                        "id": "4d7ce010ad464d0597c494678ae3dddb",
+                                        "code": "454",
+                                        "name": "88812",
+                                        "menuUrl": "454",
+                                        "imageUrl": "454",
+                                        "menuLevel": 2,
+                                        "showOrder": 6,
+                                        "enabled": 1,
+                                        "parentId": "3999f98bdddd402eaf401639e08aed61",
+                                        "parentName": "麻村管理",
+                                        "createTime": "2020-03-20 16:08:14.0",
+                                        "updateTime": "2020-03-23 09:44:52.0",
+                                        "ifLeaf": true,
+                                        "children": null
+                                    }
+                                ]
+                            },
+                            {
+                                "appId": "待定",
+                                "id": "e4ccbb90da344d0892cefebb2debd474",
+                                "code": "123",
+                                "name": "456",
+                                "menuUrl": "123",
+                                "imageUrl": "123",
+                                "menuLevel": 2,
+                                "showOrder": 1,
+                                "enabled": 1,
+                                "parentId": "051c91cb1d2c4c04bd4b26d905e42e71",
+                                "parentName": "机构管理",
+                                "createTime": "2020-03-20 15:57:00.0",
+                                "updateTime": "2020-03-20 15:57:00.0",
+                                "ifLeaf": true,
+                                "children": null
+                            }
+                        ]
+                    },
+                    {
+                        "appId": "待定",
+                        "id": "6261d940509b4bf590d1e9bbb0cfbe7b",
+                        "code": "678",
+                        "name": "6781",
+                        "menuUrl": "678",
+                        "imageUrl": "678",
+                        "menuLevel": 2,
+                        "showOrder": 678,
+                        "enabled": 1,
+                        "parentId": "df2ed731fccd430fa78efbca1d9603f8",
+                        "parentName": "机构管理",
+                        "createTime": "2020-03-20 16:06:27.0",
+                        "updateTime": "2020-03-21 16:20:55.0",
+                        "ifLeaf": true,
+                        "children": null
+                    }
+                ]
+            }
+        ]
+    }
+}

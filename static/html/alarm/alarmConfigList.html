@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>告警规则列表</title>
+    <style>
+        body{margin: 10px;}
+        .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
+        .span-red{
+            margin: 5px;
+            color:red;
+        }
+    </style>
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="../../layui/select/formSelects-v4.css">
+
+</head>
+<body>
+<div class="demoTable">
+    <div class="layui-form-item layui-form" style="margin-top: 20px;">
+        <div class="layui-inline">
+            <label class="layui-form-label">要素类型:</label>
+            <div class="layui-input-inline">
+                <select id ="elementType" name="elementType" class="layui-select">
+                    <option value="">全部</option>
+                    <option value="T">气温</option>
+                    <option value="Tx">最高气温</option>
+                    <option value="Tn">最低气温</option>
+                    <option value="RR">雨量</option>
+                    <option value="fFy">风力</option>
+                    <option value="U">湿度</option>
+                    <option value="P">气压</option>
+                    <option value="VV">能见度</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-input-block">
+                <button class="layui-btn" data-type="reload" id="findBy">搜索</button>
+            </div>
+        </div>
+    </div>
+</div>
+<table class="layui-hide" id="biinfolist" lay-filter="test">
+</table>
+<script type="text/html" id="info_toolbar">
+    <div class="layui-btn-container">
+        <div class="layui-inline" title="新增" lay-event="add"><i class="layui-icon layui-icon-add-1"></i></div>
+    </div>
+</script>
+<script type="text/html" id="barList">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<!--告警规则编辑层开始-->
+<div class="layui-container" id="alarmEditDiv" style="display: none">
+    <form id="form1" class="layui-form" lay-filter="formTest" style="margin-top: 4%">
+        <input id="ID" name="ID" type="hidden" value="" />
+        <div class="layui-row">
+            <div class="layui-col-xs2">　</div>
+            <div class="layui-col-xs8">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="span-red">*</span>名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="TITLE" name="TITLE" value="" lay-verify="required|dasLength|repeatCheck"  autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs2">　</div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs2">　</div>
+            <div class="layui-col-xs8">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="span-red">*</span>要素</label>
+                    <div class="layui-input-block">
+                        <select id ="ELEMENT" name="ELEMENT" class="layui-select">
+                            <option value="">全部</option>
+                            <option value="T">气温</option>
+                            <option value="Tx">最高气温</option>
+                            <option value="Tn">最低气温</option>
+                            <option value="RR">雨量</option>
+                            <option value="fFy">风力</option>
+                            <option value="U">湿度</option>
+                            <option value="P">气压</option>
+                            <option value="VV">能见度</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs2">　</div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs2">　</div>
+            <div class="layui-col-xs8">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="span-red">*</span>站点类型</label>
+                    <div class="layui-input-block">
+                        <select id ="STATIONTYPE" xm-select="STATIONTYPE" class="layui-select">
+                            <!--<option value="">全部</option>-->
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs2">　</div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs2">　</div>
+            <div class="layui-col-xs8">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="span-red">*</span>统计方式</label>
+                    <div class="layui-input-block" id="FARMULADIV">
+                        <input type="radio" name="FARMULA" value="max" title="最大值" checked lay-filter="FARMULA" >
+                        <input type="radio" name="FARMULA" value="min" title="最小值" lay-filter="FARMULA" >
+                        <input type="radio" name="FARMULA" value="sum" title="总和" lay-filter="FARMULA" >
+                        <input type="radio" name="FARMULA" value="avg" title="平均值" lay-filter="FARMULA" >
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs2">　</div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs2">　</div>
+            <div class="layui-col-xs8">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="span-red">*</span>最小告警值</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="MINVAL" name="MINVAL" value="" lay-verify="required|dasLength|repeatCheck"  autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs2">　</div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs2">　</div>
+            <div class="layui-col-xs8">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="span-red">*</span>最大告警值</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="MAXVAL" name="MAXVAL" value="" lay-verify="required|dasLength|repeatCheck"  autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs2">　</div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs2">　</div>
+            <div class="layui-col-xs8">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="span-red">*</span>告警内容</label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入告警内容" id="WARN_CONTENT" name="WARN_CONTENT" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs2">　</div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs2">　</div>
+            <div class="layui-col-xs8">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="span-red">*</span>统计时间(小时)</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="BEFORE_HOUR" name="BEFORE_HOUR" value="" lay-verify="required|dasLength|repeatCheck"  autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs2">　</div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs2">　</div>
+            <div class="layui-col-xs8">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="span-red">*</span>提醒时长(分钟)</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="VALIDITY_TIME" name="VALIDITY_TIME" value="" lay-verify="required|dasLength|repeatCheck"  autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs2">　</div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs2">　</div>
+            <div class="layui-col-xs8">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="span-red">*</span>出现站点数</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="STATION_NUM" name="STATION_NUM" value="" lay-verify="required|dasLength|repeatCheck"  autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs2">　</div>
+        </div>
+
+    </form>
+</div>
+<!--告警规则编辑层结束-->
+</body>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="js/alarmConfigList.js"></script>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	</head>
+	<body>
+		<div class="page">
+			<div class="pageContent clearFloat">  <!-- w1505  h740 -->
+				<div class="beenSent">
+					<div class="boxTitle">已发送预警地区</div>
+					<div id="map1" class="mapBox"></div>
+				</div>
+				<div class="notSent">  <!-- w947 -->
+					<div class="boxTitle">已告警未发送预警地区</div>
+					<div id="map2" class="mapBox">   <!-- h692 -->
+						<div class="mapWarningBox">
+							<div class="tableBox">  <!-- h226 -->
+								<table>
+									<thead>
+										<tr>
+											<td><span>多选</span></td>
+											<td><span>地区</span></td>
+											<td><span>告警类型</span></td>
+											<td><span>告警等级</span></td>
+										</tr>
+									</thead>
+									<tbody id="tableEle">
+									</tbody>
+								</table>
+							</div>
+
+							<div class="textareaBox">
+								<span>通知内容：</span>
+								<p id="notSendMessage"></p>
+							</div>
+
+							<div class="sendWarning">
+								<span>一键式发送提醒</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../tools/http.js"></script>
+        <script src="js/v6.1.1-dist/ol.js"></script>
+        <script src="js/common/common.js"></script>
+        <script src="js/common/gisCommon.js"></script>
+        <script src="js/TDT.js"></script>
+        <script src="js/ssd.min.js"></script>
+        <script src="js/config.js"></script>
+        <script src="js/index.js"></script>
+		<script type="text/javascript">
+			function getScrollbarWidth() {
+				var odiv = document.createElement('div'),//创建一个div
+					styles = {
+						width: '100px',
+						height: '100px',
+						overflowY: 'scroll'//让他有滚动条
+					}, i, scrollbarWidth;
+				for (i in styles) odiv.style[i] = styles[i];
+				document.body.appendChild(odiv);//把div添加到body中
+				scrollbarWidth = odiv.offsetWidth - odiv.clientWidth;//相减
+				odiv.remove();//移除创建的div
+				return scrollbarWidth;//返回滚动条宽度
+			}
+			(function tableScroll(){
+				var scrollW = getScrollbarWidth()
+				var boxH = 0
+				for(var i = 0 ; i < $('.tableBox tbody').find('tr').length; i++){
+					boxH += $('.tableBox tbody').find('tr').eq(i).outerHeight(true)
+				}
+				if(boxH > 160){
+					$('.tableBox tbody').css('width','calc(100% + '+scrollW+'px)')
+				}
+			})()
+
+		</script>
+	</body>
+</html>

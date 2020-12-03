@@ -1,0 +1,88 @@
+{
+    "code": 0,
+    "data": {
+        "hisMaxTemp": "35.5",
+        "data": [
+            {
+                "windd": "16",
+                "rainHeight": "0",
+                "dayDate": "11",
+                "skyIcon": "0",
+                "maxToday": "25.93",
+                "minToday": "17.78",
+                "windl": "4",
+                "time": "2020-10-11",
+                "wind": "北风 1级"
+            },
+            {
+                "windd": "16",
+                "rainHeight": "10",
+                "dayDate": "12",
+                "skyIcon": "0",
+                "maxToday": "26.40",
+                "minToday": "17.76",
+                "windl": "3",
+                "time": "2020-10-12",
+                "wind": "北风 1级"
+            },
+            {
+                "windd": "16",
+                "rainHeight": "0",
+                "dayDate": "13",
+                "skyIcon": "1",
+                "maxToday": "26.29",
+                "minToday": "17.85",
+                "windl": "4",
+                "time": "2020-10-13",
+                "wind": "北风 1级"
+            },
+            {
+                "windd": "16",
+                "rainHeight": "0",
+                "dayDate": "14",
+                "skyIcon": "0",
+                "maxToday": "26.17",
+                "minToday": "17.29",
+                "windl": "5",
+                "time": "2020-10-14",
+                "wind": "北风 1级"
+            },
+            {
+                "windd": "16",
+                "rainHeight": "0",
+                "dayDate": "15",
+                "skyIcon": "0",
+                "maxToday": "27.18",
+                "minToday": "17.36",
+                "windl": "5",
+                "time": "2020-10-15",
+                "wind": "北风 1级"
+            },
+            {
+                "windd": "16",
+                "rainHeight": "0",
+                "dayDate": "16",
+                "skyIcon": "0",
+                "maxToday": "26.92",
+                "minToday": "19.26",
+                "windl": "1",
+                "time": "2020-10-16",
+                "wind": "北风 1级"
+            },
+            {
+                "windd": "16",
+                "rainHeight": "0",
+                "dayDate": "17",
+                "skyIcon": "2",
+                "maxToday": "24.65",
+                "minToday": "18.48",
+                "windl": "0",
+                "time": "2020-10-17",
+                "wind": ""
+            }
+        ],
+        "hisMinTemp": "5.4"
+    },
+    "success": true,
+    "message": "请求成功"
+}

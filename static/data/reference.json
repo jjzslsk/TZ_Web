@@ -1,0 +1,13 @@
+{"code":0,"success":true,"message":"请求成功","data":{
+  "list":[
+    {"title":"模式预报","id":"0","content":"prediction","name":"product-make-prediction"},
+    {"title":"图片资料","id":"1","content":"images","name":"product-make-images"},
+    {"title":"历史查看","id":"2","content":"history","name":"product-make-history"},
+    {"title":"文字资料","id":"3","content":"text","name":"product-make-text"},
+    {"title":"业务规范","id":"4","content":"rules","name":"product-make-rules"},
+    {"title":"会商通知","id":"5","content":"message","name":"product-make-message"},
+    {"title":"提示栏","id":"6","content":"alert","name":"product-make-alert"},
+    {"title":"常用语","id":"7","content":"phrase","name":"product-make-phrase"},
+    {"title":"浙江warms","id":"8","content":"warms","name":"product-make-warms"}
+  ]
+}}

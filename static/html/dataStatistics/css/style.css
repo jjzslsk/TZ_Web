@@ -1,0 +1,65 @@
+html,body{height: 100%;}
+.ssd-container,.ssd-row {height: 100%;}
+.ssd-container .ssd-row .ssd-col-xlg1{height: 100%;}
+.ssd-container .ssd-row .ssd-col-xlg1 .r-demo{padding: 0px;}
+.ssd-container .ssd-row .ssd-col-xlg9{height: 100%;padding: 0;}
+.ssd-container .ssd-row .ssd-col-xlg9 .r-demo{padding: 0px;}
+.ssd-container .ssd-row .ssd-col-xlg9 .layui-tab-content{height: 100%;}
+.ssd-container .ssd-row .ssd-col-xlg9 .layui-tab-content .search-set{height: 100%;}
+.ssd-container .ssd-row .ssd-col-xlg9 .table-box{height: calc(100% - 230px);}
+.ssd-container .ssd-row .ssd-col-xlg9 .table-box .layui-table-view{height: calc(100% - 5px)!important;}
+.ssd-container .ssd-row .ssd-col-xlg9 .table-box .layui-table-view .layui-table-box{height: calc(100% - 68px);}
+.ssd-container .ssd-row .ssd-col-xlg9 .table-box .layui-table-view .layui-table-box .layui-table-header{height: 40px;}
+.ssd-container .ssd-row .ssd-col-xlg9 .table-box .layui-table-view .layui-table-box .layui-table-body{height: 100% !important;}
+
+.layui-table-body{overflow-x: auto;}
+.layui-layer-page .layui-layer-content{overflow: auto !important;}
+.layui-form-checkbox{margin-right: 0;}
+.layui-table tbody tr:hover{background-color: white;}
+.r-demo {
+    height: 100%;
+    /* border-top: 3px solid #63cff5; */
+    /* border-bottom: 1px solid #c9c9c9; */
+    /* border-left: 1px solid #c9c9c9; */
+    /* border-right: 1px solid #c9c9c9; */
+    /* padding: 5px; */
+    overflow: auto;
+}
+#updateBtn,#uploadExcel,#modelUpload{
+    background: #63cff5;
+}
+.layui-table-view .layui-table[lay-size=sm] th .layui-table-cell{
+    height: 40px;
+}
+.layui-table-fixed .layui-table-header .layui-table[lay-size=sm] th .layui-table-cell{
+    line-height: 20px;
+    display: table-cell;
+    vertical-align: middle;
+    overflow: initial;
+}
+.layui-table-header .layui-table[lay-size=sm] th .layui-table-cell{
+    line-height: 20px;
+    overflow: initial;
+}
+
+.layui-table-sort{position: absolute;bottom: 0;right: 15px;}
+.layui-statistics{width: 60px;padding-left: 9px;}
+.layui-btn{position: absolute;right: 45px;}
+.layui-table td, .layui-table th{text-align: center;}
+.layui-table-cell{padding: 0px;display: flex;justify-content: center;align-items: center;}
+
+.search-set ::-webkit-scrollbar-track-piece {
+    background-color: #fff !important;
+}
+.search-set {height: 100%;}
+.search-wrap {height: 50px;display: flex;align-items: center;}
+.search-set .layui-form {height: 100%;}
+.search-set .layui-form .layui-table-box {height: 100%;}
+.search-set .layui-form .layui-table-box .layui-table-header{position: relative;;height: 118px;}
+.search-set .layui-form .layui-table-box .layui-table-body{position: absolute;top: 118px;left: 0;bottom: 70px;width: 100%;}
+.search-set .layui-form .layui-table-box .layui-table-body table{height: 100%;width: 100%;}
+.search-set .layui-form .layui-table-box .layui-table-body table tbody{height: 100%;width: 100%;}
+.layui-table-view .layui-table td, .layui-table-view .layui-table th{padding-left: 1px;}
+
+
+

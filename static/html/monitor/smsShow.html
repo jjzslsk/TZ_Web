@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>短信展示</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="../../layui/css/layui.css">
+		<link rel="stylesheet" href="css/style.css">
+		<script src="../../tools/echarts.min.js"></script>
+	</head>
+	<body>
+		<p style="text-indent: 21px; font-size: 24px;">
+			短信统计
+		</p>
+		<div class="layui-tab" lay-filter="demo">
+			<ul class="layui-tab-title">
+				<li class="layui-this site-demo-active" lay-id="daySms">日挂机短信发布统计</li>
+				<li class="site-demo-active" lay-id="monthSms">月挂机短信发布统计</li>
+				<li class="site-demo-active" lay-id="operators">运营商计费量</li>
+			</ul>
+			<div class="layui-tab-content layui-form">
+				<div class="layui-tab-item layui-show">
+					<div class="layui-row">
+						<div class="layui-col-xs3">
+							<div class="layui-form-item">
+								<label class="layui-form-label">地区:</label>
+								<div class="layui-input-block">
+									<select name="city" lay-verify="required">
+										<option value="">全部</option>
+										<option value="0">台州</option>
+										<option value="1">椒江</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="layui-col-xs3">
+							<div class="layui-form-item">
+								<label class="layui-form-label">类型:</label>
+								<div class="layui-input-block">
+									<select name="city" lay-verify="required">
+										<option value="">全部</option>
+										<option value="0">台州</option>
+										<option value="1">椒江</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="layui-col-xs3">
+							<label class="layui-form-label">时间:</label>
+							<div class="layui-input-inline">
+								<input type="text" class="layui-input" id="dataTime" placeholder=" 至 ">
+							</div>
+						</div>
+						<div class="layui-col-xs3">
+							<div class="grid-demo">
+								<button type="button" class="layui-btn layui-btn-normal">搜索</button>
+								<button type="button" class="layui-btn layui-btn-primary">最新数据</button>
+							</div>
+						</div>
+					</div>
+					<div class="layui-row">
+						<div class="layui-col-xs4">
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius" id="zhuzhuang">柱状</button>
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius" id="bingzhuang">饼状</button>
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius" id="zhexian">折线</button>
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius" id="biaoge">表格</button>
+						</div>
+						<div class="layui-col-xs2 layui-col-xs-offset4" style="text-align: right;">
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius">刷新</button>
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius">功能设置</button>
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius">界面设置</button>
+						</div>
+					</div>
+					<div class="layui-row" >
+						<div id="tuxing" style="width: 1550px;height: 560px;"></div>
+					</div>
+				</div>
+				<div class="layui-tab-item">
+					<div class="layui-row">
+						<div class="layui-col-xs3">
+							<div class="layui-form-item">
+								<label class="layui-form-label">地区:</label>
+								<div class="layui-input-block">
+									<select name="city" lay-verify="required">
+										<option value="">全部</option>
+										<option value="0">台州</option>
+										<option value="1">椒江</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="layui-col-xs3">
+							<div class="layui-form-item">
+								<label class="layui-form-label">类型:</label>
+								<div class="layui-input-block">
+									<select name="city" lay-verify="required">
+										<option value="">全部</option>
+										<option value="0">台州</option>
+										<option value="1">椒江</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="layui-col-xs3">
+							<label class="layui-form-label">时间:</label>
+							<div class="layui-input-inline">
+								<input type="text" class="layui-input" id="monthTime" placeholder=" 至 ">
+							</div>
+						</div>
+						<div class="layui-col-xs3">
+							<div class="grid-demo">
+								<button type="button" class="layui-btn layui-btn-normal">搜索</button>
+								<button type="button" class="layui-btn layui-btn-primary">最新数据</button>
+							</div>
+						</div>
+					</div>
+					<div class="layui-row">
+						<div class="layui-col-xs4">
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius" id="zhuzhuang">柱状</button>
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius" id="bingzhuang">饼状</button>
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius" id="zhexian">折线</button>
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius" id="biaoge">表格</button>
+						</div>
+						<div class="layui-col-xs2 layui-col-xs-offset4" style="text-align: right;">
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius">刷新</button>
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius">功能设置</button>
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius">界面设置</button>
+						</div>
+					</div>
+					<div class="layui-row" >
+						<div id="tuxing" style="width: 1550px;height: 560px;"></div>
+					</div>
+				</div>
+				<div class="layui-tab-item">
+					<div class="layui-row">
+						<div class="layui-col-xs3">
+							<div class="layui-form-item">
+								<label class="layui-form-label">地区:</label>
+								<div class="layui-input-block">
+									<select name="city" lay-verify="required">
+										<option value="">全部</option>
+										<option value="0">台州</option>
+										<option value="1">椒江</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="layui-col-xs3">
+							<div class="layui-form-item">
+								<label class="layui-form-label">类型:</label>
+								<div class="layui-input-block">
+									<select name="city" lay-verify="required">
+										<option value="">全部</option>
+										<option value="0">台州</option>
+										<option value="1">椒江</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="layui-col-xs3">
+							<label class="layui-form-label">时间:</label>
+							<div class="layui-input-inline">
+								<input type="text" class="layui-input" id="operatorsTime" placeholder=" 至 ">
+							</div>
+						</div>
+						<div class="layui-col-xs3">
+							<div class="grid-demo">
+								<button type="button" class="layui-btn layui-btn-normal">搜索</button>
+								<button type="button" class="layui-btn layui-btn-primary">最新数据</button>
+							</div>
+						</div>
+					</div>
+					<div class="layui-row">
+						<div class="layui-col-xs4">
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius" id="zhuzhuang">柱状</button>
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius" id="bingzhuang">饼状</button>
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius" id="zhexian">折线</button>
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius" id="biaoge">表格</button>
+						</div>
+						<div class="layui-col-xs2 layui-col-xs-offset4" style="text-align: right;">
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius">刷新</button>
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius">功能设置</button>
+							<button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius">界面设置</button>
+						</div>
+					</div>
+					<div class="layui-row" >
+						<div id="tuxing" style="width: 1550px;height: 560px;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../../tools/jquery-3.5.1.js"></script>
+	<script src="../../layui/layui.js"></script>
+	<script src="../../layui/layui.all.js"></script>
+	<script src="../../tools/http.js"></script>
+	<script src="js/smsShow.js"></script>
+</html>

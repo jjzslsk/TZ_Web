@@ -1,0 +1,43 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "list": [{
+            "title": "动态产品制造(今日)",
+            "XXXPROP_AREA_1": "临近天气预报",
+            "XXXPROP_AREA_2": "2020-02-02",
+            "XXXPROP_AREA_3": "2020-02-02",
+            "XXXPROP_AREA_4": "李晓明",
+            "XXXPROP_AREA_5": "短时天气"
+          },{
+            "title": "动态产品制造(今日)",
+            "XXXPROP_AREA_1": "临近天气预报",
+            "XXXPROP_AREA_2": "2020-02-02",
+            "XXXPROP_AREA_3": "2020-02-02",
+            "XXXPROP_AREA_4": "李晓明",
+            "XXXPROP_AREA_5": "短时天气"
+          }, {
+            "title": "动态产品制造(今日)",
+            "XXXPROP_AREA_1": "临近天气预报",
+            "XXXPROP_AREA_2": "2020-02-02",
+            "XXXPROP_AREA_3": "2020-02-02",
+            "XXXPROP_AREA_4": "李晓明",
+            "XXXPROP_AREA_5": "短时天气"
+          }, {
+            "title": "动态产品制造(今日)",
+            "XXXPROP_AREA_1": "临近天气预报",
+            "XXXPROP_AREA_2": "2020-02-02",
+            "XXXPROP_AREA_3": "2020-02-02",
+            "XXXPROP_AREA_4": "李晓明",
+            "XXXPROP_AREA_5": "短时天气"
+          }, {
+            "title": "动态产品制造(今日)",
+            "XXXPROP_AREA_1": "临近天气预报",
+            "XXXPROP_AREA_2": "2020-02-02",
+            "XXXPROP_AREA_3": "2020-02-02",
+            "XXXPROP_AREA_4": "李晓明",
+            "XXXPROP_AREA_5": "短时天气"
+          }]
+    }
+}

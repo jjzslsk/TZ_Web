@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>资料类型选择</title>
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+</head>
+<body>
+    <div id="datatypeTree" class="demo-tree"></div>
+</body>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script>
+    layui.use(['tree','upload','form'], function() {
+        var $ = layui.jquery,
+            tree = layui.tree,
+            form = layui.form,
+            upload = layui.upload;
+
+        $.ajax({
+            url: main_url +'/ssd-data-constant/findReferTypeTree',
+            type:'GET',
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            success: function (res) {
+                if(res.code == 0){
+                    var data = res.data;
+                    tree.render({
+                        elem: '#datatypeTree'
+                        ,data: data
+                        ,onlyIconControl: true
+                        ,click: function(obj){
+                            $("#typeId",parent.document).val(obj.data.id);
+                            $("#typename",parent.document).val(obj.data.title);
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        }
+                    });
+                }
+            },
+            error: function (result) {
+                layer.msg("获取参考资料类型错误");
+            }
+        });
+    });
+</script>
+</html>

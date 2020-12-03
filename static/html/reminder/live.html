@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/reset.css"/>
+	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css"/>
+	<link rel="stylesheet" type="text/css" href="css/swiper.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../../openlayers/v6.1.1-dist/ol.css" />
+	<script type="text/javascript">
+		var isPage = null
+		function includeLinkStyle(url) {
+			if(url == 'css/Index.css'){
+				isPage = true
+			}else{
+				isPage = false
+			}
+			 var link = document.createElement("link");
+			 link.rel = "stylesheet";
+			 link.type = "text/css";
+			 link.href = url;
+			 document.getElementsByTagName("head")[0].appendChild(link);
+		}
+		 // includeLinkStyle('css/newIndex.css')
+		includeLinkStyle('css/Index.css')
+		
+		window.onload = function(e){
+			if(!isPage){
+				init()
+			}else{
+				mapEchart()
+			}
+		}
+	</script>
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <script src="../../tools/echarts.min.js"></script>
+    <style>
+
+
+
+    </style>
+</head>
+
+<body>
+    <input id="dateTime" name="dateTime" value="" type="hidden" />
+	<div class="page">
+		<div class="pageTitle">
+			<div class="pageTitleBg">
+
+			</div>
+			<div class="title-box">
+				<span>自动站实况展示</span>
+				<div class="maximize">
+					<i class="layui-icon layui-icon-screen-full"></i>
+				</div>
+			</div>
+			<div id="liveDate" class="live-date">----年--月--日--时</div>
+		</div>
+		<div class="pageContent">
+			<div id="map2"></div>
+			<div class="pageLeft">
+				<!-- left -->
+				<div class="pageLeftItem pageLeftItem1">
+					<p class="itemTitle">洪家站实况趋势图</p>
+					<!-- left top -->
+					<div id="liveData" style="width: 100%; height: 80%;"></div>
+				</div>
+				<div class="nullBox"></div>
+				<div class="pageLeftItem pageLeftItem2">
+					<p class="itemTitle">降水信息</p>
+					<div class="selectShow">
+						<div class="iAcBox">
+							<i></i>
+							<span>达到标准的站点数</span>
+						</div>
+						<div>
+							<i></i>
+							<span>总站点数</span>
+						</div>
+					</div>
+					 <!-- left middle -->
+					<div class="lBEchartBox">
+						<div>
+							<div id="hourRain_sHeavy" style="width: 100%; height: 100%;"></div>
+						</div>
+						<div>
+							<div id="hourRain_lRain" style="width: 100%; height: 100%;"></div>
+						</div>
+						<div>
+							<div id="hourRain_mRain" style="width: 100%; height: 100%;"></div>
+						</div>
+						<div>
+							<div id="hourRain_hRain" style="width: 100%; height: 100%;"></div>
+						</div>
+						<div>
+							<div id="hourRain_rainstorm" style="width: 100%; height: 100%;"></div>
+						</div>
+					</div>
+				</div>
+				<div class="pageLeftItem pageLeftItem3">
+					<div id="heavyRain" style="width: 100%; height: 100%;"></div>
+				</div>
+			</div>
+			<div class="pageCenter">
+				<div class="nullBox nullBox2"></div>
+				<!-- middle -->
+				<div class="LiveBox">
+					<!--  站点小时极值查询 -->
+					<div class="layui-col-md3" style="color: #ffffff; text-align: center;">
+						<p id="maxRain"><span style="color: #019BFF;font-weight:bold;font-size: 24px;">--</span>mm --</p>
+						<p>小时最大降水</p>
+					</div>
+					<div class="layui-col-md3" style="color: #ffffff;text-align: center;">
+						<p id="maxWind"><span style="color: #B846FA;font-weight:bold;font-size: 24px;" >--</span> m/s --</p>
+						<p>小时极大风</p>
+					</div>
+					<div class="layui-col-md3" style="color: #ffffff; text-align: center;">
+						<p id="MaxTemp"><span style="color: #FFCD04;font-weight:bold;font-size: 24px;" >--</span>°C --</p>
+						<p>小时最高气温</p>
+					</div>
+					<div class="layui-col-md3" style="color: #ffffff; text-align: center;">
+						<p id="MinTemp"><span style="color: #275DFE;font-weight:bold;font-size: 24px;" >--</span>°C --</p>
+						<p>小时最低气温</p>
+					</div>
+				</div>
+				<div class="liveEchartBox">
+					<!-- 接口 地区 雨量和风力等级统计 -->
+					<div>
+						<div id="area_rain0" style="width: 100%; height: 100%;"></div>
+					</div>
+					<div>
+						<div id="area_rain20" style="width: 100%; height: 100%;"></div>
+					</div>
+					<div>
+						<div id="area_wind9" style="width: 100%; height: 100%;"></div>
+					</div>
+					<div>
+						<div id="area_wind11" style="width: 100%; height: 100%;"></div>
+					</div>
+				</div>
+				<div class="mapBox">
+					<div id="map">
+
+					</div>
+					<div class="darkSpots">
+
+					</div>
+				</div>
+			</div>
+			<div class="pageRight" style="float: right;">
+				<div class="extremumLive">
+					<div class="swiper-container" style="height:93%;">
+						<div class="swiper-wrapper" style="height:100%;">
+							<div class="swiper-slide" style="height:100%;">
+								<ul class="extremumLiveItem" id="nearStationExtremum">
+									<li style="height: 3%;width: 1px;"></li>
+									<li id="Extremum0">
+										<p class="extremumLiveTitle">本日</p>
+										<div class="extremumLiveItemCon">
+											<p><span>-</span> mm</p>
+											<p>最大累计降水</p>
+											<p>市区</p>
+										</div>
+										<div class="extremumLiveItemCon">
+											<p><span>--</span> mm</p>
+											<p>最大降水</p>
+											<p>三门</p>
+											<p>--月--日--时</p>
+										</div>
+										<div class="extremumLiveItemCon">
+											<p><span>-</span> m/s</p>
+											<p>最大极大风</p>
+											<p>市区</p>
+											<p>--月--日--时</p>
+										</div>
+										<div class="extremumLiveItemCon">
+											<p><span>-</span> ℃</p>
+											<p>最高气温</p>
+											<p>市区</p>
+											<p>--月--日--时</p>
+										</div>
+										<div class="extremumLiveItemCon">
+											<p><span>-</span> ℃</p>
+											<p>最低气温</p>
+											<p>市区</p>
+											<p>--月--日--时</p>
+										</div>
+									</li>
+									<li id="Extremum10">
+										<p class="extremumLiveTitle">近10天</p>
+										<div class="extremumLiveItemCon">
+											<span class="up">
+												<i>-</i>
+												<i></i>
+											</span>
+											<p><span>-</span>mm</p>
+											<p>最大累计降水</p>
+											<p>市区</p>
+										</div>
+										<div class="extremumLiveItemCon">
+											<span class="down">
+												<i>-</i>
+												<i></i>
+											</span>
+											<p><span>-</span>mm</p>
+											<p>最大降水</p>
+											<p>三门</p>
+											<p>--月--日--时</p>
+										</div>
+										<div class="extremumLiveItemCon">
+											<span class="">
+												<i>-</i>
+												<i></i>
+											</span>
+											<p><span>-</span>m/s</p>
+											<p>最大极大风</p>
+											<p>市区</p>
+											<p>--月--日--时</p>
+										</div>
+										<div class="extremumLiveItemCon">
+											<span class="">
+												<i>-</i>
+												<i></i>
+											</span>
+											<p><span>-</span>℃</p>
+											<p>最高气温</p>
+											<p>市区</p>
+											<p>--月--日--时</p>
+										</div>
+										<div class="extremumLiveItemCon">
+											<span class="">
+												<i>-</i>
+												<i></i>
+											</span>
+											<p><span>-</span>℃</p>
+											<p>最低气温</p>
+											<p>市区</p>
+											<p>--月--日--时</p>
+										</div>
+									</li>
+									<li id="Extremum30">
+										<p class="extremumLiveTitle">近30天</p>
+										<div class="extremumLiveItemCon">
+											<p><span>-</span>mm</p>
+											<p>最大累计降水</p>
+											<p>市区</p>
+										</div>
+										<div class="extremumLiveItemCon">
+											<p><span>-</span>mm</p>
+											<p>最大降水</p>
+											<p>三门</p>
+											<p>--月--日--时</p>
+										</div>
+										<div class="extremumLiveItemCon">
+											<p><span>-</span>m/s</p>
+											<p>最大极大风</p>
+											<p>市区</p>
+											<p>--月--日--时</p>
+										</div>
+										<div class="extremumLiveItemCon">
+											<p><span>-</span>℃</p>
+											<p>最高气温</p>
+											<p>市区</p>
+											<p>--月--日--时</p>
+										</div>
+										<div class="extremumLiveItemCon">
+											<p><span>-</span>℃</p>
+											<p>最低气温</p>
+											<p>市区</p>
+											<p>--月--日--时</p>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- <div class="swiper-button-prev">&lt;</div>
+					<div class="swiper-button-next">&gt;</div> -->
+				</div>
+				<div class="nullBox"></div>
+				<div class="liveEchartContent">
+					<ul class="liveType">
+						<li class="liAc">降水</li>
+						<li>平均气温</li>
+						<li>最高气温</li>
+						<li>最低气温</li>
+					</ul>
+					<div id="liveEchart"></div>
+					<!--<ul class="monthBox">
+						<li>1月</li>
+						<li>2月</li>
+						<li>3月</li>
+						<li>4月</li>
+						<li>5月</li>
+						<li>6月</li>
+						<li>7月</li>
+						<li>8月</li>
+						<li>9月</li>
+						<li>10月</li>
+						<li>11月</li>
+						<li>12月</li>
+					</ul>-->
+				</div>
+			</div>
+			
+			<div class="mapLenged">
+				<p id="mapName">单位 mm</p>
+				<!--<ul class="mapLengedCon">
+					<li>
+						<p>250</p>
+						<span></span>
+					</li>
+					<li>
+						<p>100</p>
+						<span></span>
+					</li>
+					<li>
+						<p>50</p>
+						<span></span>
+					</li>
+					<li>
+						<p>25</p>
+						<span></span>
+					</li>
+					<li>
+						<p>10</p>
+						<span></span>
+					</li>
+					<li>
+						<p>0.1</p>
+						<span></span>
+					</li>
+					<li>
+						<p>0</p>
+						<span></span>
+					</li>
+				</ul>-->
+			</div>
+		</div>
+	</div>
+</body>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../tools/http.js"></script>
+<script type="text/javascript" src="../../openlayers/v6.1.1-dist/ol.js"></script>
+<script type="text/javascript" src="js/config.js"></script>
+<script type="text/javascript" src="js/map.js"></script>
+<script src="../../layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/reset.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/live_echarts.js"></script>
+<script src="js/live.js"></script>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>快速排班</title>
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!--<link rel="stylesheet" href="../../layui/select/formSelects-v4.css">-->
+</head>
+<body>
+<div class="layui-container" id="alarmEditDiv">
+    <form id="form1" class="layui-form" lay-filter="formTest" style="margin-top: 4%">
+        <input id="ID" name="ID" type="hidden" value="" />
+        <div class="layui-row">
+            <!-- <div class="layui-col-xs1">　</div> -->
+            <div class="layui-col-xs10">
+                <div class="layui-form-item">
+                    <label class="layui-form-label date-label">日期范围</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="date" placeholder=" - ">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs2">　</div>
+        </div>
+        <div class="layui-row">
+            <!-- <div class="layui-col-xs1">　</div> -->
+            <div class="layui-col-xs10">
+                <div class="layui-form-item">
+                    <label class="layui-form-label date-label">人员选择</label>
+                    <div class="layui-input-inline">
+                        <div id="homeConfigDiv">
+                            <div class="list-tran flex flex-row">
+                                <div class="list-box flex-child">
+                                    <div class="list-header"><span class="header-label">所有人员</span></div>
+                                    <ul id="leftUl">
+                                    </ul>
+                                </div>
+                                <div class="list-tool flex-child">
+                                    <div class="list-tool-indiv">
+                                        <div class="flex flex-lie">
+                                            <i class="icon right">⇒</i>
+                                            <i class="icon up">⇑</i>
+                                            <i class="icon down">⇓</i>
+                                            <i class="icon left">⇐</i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list-box flex-child">
+                                    <div class="list-header"><span class="header-label">值班人员</span><span class="day">补休天数</span></div>
+                                    <ul id="rightUl">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="layui-col-xs2">　</div>
+        </div>
+        <div class="layui-row">
+            <!--<div class="layui-col-xs1">　</div>-->
+            <div class="layui-col-xs10">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">最后值班人</label>
+                    <div class="layui-input-block">
+                        <table class="layui-hide" id="tableList" lay-filter="list"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs2">　</div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs4">　</div>
+            <div class="layui-col-xs4">
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="button" class="layui-btn layui-btn-sm" id="saveQuickSch">保存</button>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs4">　</div>
+        </div>
+    </form>
+</div>
+</body>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="js/quickScheduling_xxfwzx.js"></script>
+</html>

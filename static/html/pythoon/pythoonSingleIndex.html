@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <style>
+        .layui-form-label{
+            float: none;
+            display: inline-block;
+            width: auto;
+        }
+    </style>
+</head>
+<body style="position: absolute;width: 100%;height: 100%;">
+<div class="layui-fluid ssd-container demoTable">
+    <div class="layui-row layui-col-space10 ssd-row">
+        <div class="box layui-col-sm3  layui-col-md2 ssd-col-xlg1 ssd-col" style="border: 1px solid #dadada">
+            <div class="r-demo" style="position:relative;width: 100%;">
+                <div style="text-align:center;padding-top: 6px;">
+                    <span style="font-size: 20px; color: #1E9FFF;display: inline-block;vertical-align: middle;">台风选择</span>
+                   <!-- <div class="layui-row layui-form layui-form-item" style="display: inline-block;margin-bottom:0;vertical-align: middle;">
+                        <div class="layui-input-inline" style="width: auto;margin-left: 10px;">
+                            <a class="layui-btn" id="find" data-type="reload">搜索</a>
+                        </div>
+                    </div>-->
+                </div>
+                <div class="layui-form" style="width: 100%;margin-top: 5px;">
+<!--                    <div class="layui-form-item">-->
+<!--                        <div class="layui-inline">-->
+                            <label class="layui-form-label" style="width: 20%;text-align: center;padding: 0;">时间</label>
+                            <div class="layui-input-inline" style="width: 75%;">
+                                <input type="text" class="layui-input" id="dateRange" placeholder="请选择时间">
+                            </div>
+<!--                        </div>-->
+<!--                    </div>-->
+                </div>
+                <hr>
+                <div id="pythoonTree" class="demo-tree"></div>
+            </div>
+        </div>
+        <div class="box layui-col-sm9 layui-col-md10 ssd-col-xlg9 ssd-col">
+            <div class="r-demo ssd-search-box"  style="overflow-y:hidden;border-bottom: 1px solid #dadada;display: none;" id="tabDiv">
+                <div class="layui-tab-content">
+                    <div class="search-set">
+                        <div style="">
+                            <p style="font-size: 20px;color: #1E99E3;">台风基本信息：</p>
+                            <div class="layui-row layui-form layui-form-item" id="pythoonDiv">
+                            </div>
+                        </div>
+                        <div class="layui-row">
+                            <p style="font-size: 20px;color: #1E99E3;">各站极值数据：</p>
+                            <table class="layui-hide" id="test" lay-filter="test"></table>
+                            <script type="text/html" id="toolbarDemo2">
+                                <div class="layui-btn-container">
+                                </div>
+                            </script>
+                            <div id="paging" style="margin-left: 50px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="../../tools/echarts.min.js"></script>
+<script>
+    $(document).click(function(e) { // 在页面任意位置点击而触发此事件
+        if($(e.target).attr('class') === "layui-tree-txt"){ // 防止因为点击展开按钮把已选中的样式取消
+            $(".layui-tree-txt").removeClass("tree-txt-active"); // 移除点击样式
+            $(e.target).addClass("tree-txt-active"); // e.target表示被点击的目标
+        }
+    });
+    $('.box').css({'height':$('body').height(),'overflow':'auto'})
+    layui.use(['element', 'form','tree','table'],function() {
+        var laydate = layui.laydate //日期
+        , layer = layui.layer //弹层
+        , form = layui.form //表单
+        ,tree = layui.tree
+        ,table = layui.table;
+        //日期范围
+        laydate.render({
+            elem: '#dateRange'
+            ,range: true
+            ,type: 'month'
+            ,range: '~'
+            ,done: function(value){
+                getTyphoonType(value);
+            }
+            //,format: 'yyyyMM'
+        });
+        getTyphoonType();
+        function getTyphoonType(dateStr) {
+            if(dateStr==undefined){
+                dateStr='';
+            }
+            $.ajax({
+                url: main_url + '/TyphoonData/getTyphoonType?dateStr='+dateStr,
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                // timeout: ajaxTimeout,
+                // data: {},
+                success: function (res) {
+                    var data = res.data;
+                    var checkCode = '';
+                    for (var i = 0; i < data.length; i++) {
+                        var childrenData = data[i].children;
+                        for (var j = 0; j < childrenData.length; j++) {
+                            checkCode = childrenData[j].id
+                        }
+                    }
+                    var checkList = res.checkList;
+                    tree.render({
+                        elem: '#pythoonTree'
+                        , id: 'pythoonTreeId'
+                        , data: data
+                        , showCheckbox: false
+                        , click: function (obj) {
+                            getpythoonCheck(obj.data.id, 'pythoonTreeId');
+                        }
+                    });
+                    getpythoonCheck(checkCode, 'pythoonTreeId');
+                    // tree.setChecked('pythoonTreeId', checkList);
+                    // getpythoonCheck(tree,'pythoonTreeId');
+                    // $("#find").click();
+                },
+                error: function (result) {
+                    layer.msg("获取台风信息异常");
+                }
+            });
+        }
+        function formatDate(datetime) {
+            var date = new Date(datetime);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+            var year = date.getFullYear(),
+                month = ("0" + (date.getMonth() + 1)).slice(-2),
+                sdate = ("0" + date.getDate()).slice(-2),
+                hour = ("0" + date.getHours()).slice(-2),
+                minute = ("0" + date.getMinutes()).slice(-2),
+                second = ("0" + date.getSeconds()).slice(-2);
+            // 拼接
+            var result = year + "-"+ month +"-"+ sdate +" "+ hour +":"+ minute +":" + second;
+            // 返回
+            return result;
+        }
+        function getpythoonCheck(code,treeId) {
+            if(code!=''){
+                $.ajax({
+                    url: main_url + '/TyphoonData/getTyphoonInfo',
+                    type: 'GET',
+                    data:{"code":code},
+                    dataType: 'json',
+                    contentType: "application/json; charset=utf-8",
+                    // timeout: ajaxTimeout,
+                    // data: {},
+                    success: function (res) {
+                        var data = res.data;
+                        var da = data[0];
+                        var startTime = formatDate(da.startTime);
+                        var endTime = formatDate(da.endTime);
+                        var thead=`<label class="layui-form-label">台风编号：${da.TyphoonCode}</label>
+                                <label class="layui-form-label">台风名称：${da.TyphoonName}</label>
+                                <label class="layui-form-label">登录强度：${da.Grade}</label><br>
+                                <label class="layui-form-label">影响开始时间：${startTime}</label>
+                                <label class="layui-form-label">影响结束时间：${endTime}</label><br>
+                                <label class="layui-form-label">登录地址：${da.Address}</label>
+                                <label class="layui-form-label">登录经度：${da.Lon}</label>
+                                <label class="layui-form-label">登录纬度：${da.Lat}</label>`;
+                        $("#pythoonDiv").html(thead);
+                    }
+                })
+                table.render({
+                    elem: '#test'
+                    ,toolbar: '#toolbarDemo'
+                    ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                        title: '提示'
+                        ,layEvent: 'LAYTABLE_TIPS'
+                        ,icon: 'layui-icon-tips'
+                    }]
+                    ,url: main_url + '/TyphoonData/getTyphoonRealTimeData?code='+code
+                    ,page: true //开启分页
+                    ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                    ,cols: [[
+                        {field:'zizeng',type:"numbers", width:80, title: '序号', sort: true,align:'center'}
+                        ,{field:'stationNum', width:120, title: '站点编号', sort: true,align:'center'}
+                        ,{field:'stationName', title: '站点名称',align:'center'}
+                        ,{field:'maxWindV', width:120, title: '极大风(m/s)', sort: true,style:'color:red',align:'center'}
+                        ,{field:'maxWindVTime', width:155, title: '极大风出现时间',align:'center', minWidth: 50,templet:function(time){
+                                return formatTime(time.maxWindVTime);
+                            }}
+                        ,{field:'maxRain', title: '小时雨强', width:120,align:'center'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                        ,{field:'maxRainTime', title: '小时雨强出现时间', width: 160,align:'center', minWidth: 50, sort: true,templet:function(time){
+                                return formatTime(time.numberRainendTime);
+                            }}
+                        ,{field:'sumRain', title: '累计降水', sort: true, width:120,align:'center'}
+                        ,{field:'numberRain', title: '极大风持续时间', width:150,align:'center'}
+                        ,{field:'numberRainStartTime', title: '极大风开始时间',align:'center', width:155,templet:function(time){
+                                return formatTime(time.numberRainStartTime);
+                            }}
+                        ,{field:'numberRainendTime', title: '极大风结束时间',align:'center', width:155,templet:function(time){
+                                return formatTime(time.numberRainendTime);
+                            }}
+                    ]]
+                });
+                function formatTime(time){
+                    if(time=='-'){
+                        return '-';
+                    }else{
+                        return time.substring(0,4)+"-"+time.substring(4,6)+"-"+time.substring(6,8)+" "+time.substring(8,10)+":"+time.substring(10,12);
+                    }
+                }
+                $("#tabDiv").show();
+            }
+        }
+    })
+</script>
+</body>
+</html>

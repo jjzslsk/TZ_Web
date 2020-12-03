@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <style>
+        .layui-form-label{
+            float: none;
+            display: inline-block;
+            width: auto;
+        }
+    </style>
+</head>
+<body style="position: absolute;width: 100%;height: 100%;">
+<div class="layui-fluid ssd-container demoTable">
+    <div class="layui-row layui-col-space10 ssd-row">
+        <div class="box layui-col-sm3  layui-col-md2 ssd-col-xlg1 ssd-col" style="border: 1px solid #dadada">
+            <div class="r-demo" style="position:relative;width: 100%;">
+                <div style="text-align:center;padding-top: 6px;">
+                    <span style="font-size: 20px; color: #1E9FFF;display: inline-block;vertical-align: middle;">台风选择</span>
+                    <div class="layui-row layui-form layui-form-item" style="display: inline-block;margin-bottom:0;vertical-align: middle;">
+                        <div class="layui-input-inline" style="width: auto;margin-left: 10px;">
+                            <a class="layui-btn" id="find" data-type="reload">统计</a>
+                            <a class="layui-btn" id="impoort" data-type="reload">导入</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form" style="width: 100%;margin-top: 5px;">
+                    <!--                    <div class="layui-form-item">-->
+                    <!--                        <div class="layui-inline">-->
+                    <label class="layui-form-label" style="width: 20%;text-align: center;padding: 0;">时间</label>
+                    <div class="layui-input-inline" style="width: 75%;">
+                        <input type="text" class="layui-input" id="dateRange" placeholder="请选择时间">
+                    </div>
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                </div>
+                <hr>
+                <div id="pythoonTree" class="demo-tree"></div>
+            </div>
+        </div>
+        <div class="box layui-col-sm9 layui-col-md10 ssd-col-xlg9 ssd-col">
+            <div class="layui-tab ">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">极大风排序</li>
+                    <li>极大风持续时间排序</li>
+                    <li>平均雨量排序</li>
+                    <li>小时雨强</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <table class="layui-hide" id="test" lay-filter="test"></table>
+                        <script type="text/html" id="toolbarDemo">
+                            <div class="layui-btn-container">
+                            </div>
+                        </script>
+                    </div>
+                    <div class="layui-tab-item">
+                        <table class="layui-hide" id="test1" lay-filter="test1"></table>
+                        <script type="text/html" id="toolbarDemo1">
+                            <div class="layui-btn-container">
+                            </div>
+                        </script>
+                    </div>
+                    <div class="layui-tab-item">
+                        <table class="layui-hide" id="test2" lay-filter="test2"></table>
+                        <script type="text/html" id="toolbarDemo2">
+                            <div class="layui-btn-container">
+                            </div>
+                        </script>
+                    </div>
+                    <div class="layui-tab-item">
+                        <table class="layui-hide" id="test3" lay-filter="test3"></table>
+                        <script type="text/html" id="toolbarDemo3">
+                            <div class="layui-btn-container">
+                            </div>
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="windowemport" class="wh_size" style="display: none">
+    <form id='moduleForm' name='moduleForm'>
+        <div class='bootstrap'>
+            <ul>
+                <li class='lab-value' style="margin-top: 30px;margin-left: 10px">
+                    文件路径： <input id='importFile' name='importFile' type='text' style="height: 32px" readOnly='readOnly'/>
+                    <input type='file' id='importExcle' name='importExcle' style='display: none;'/>
+                    <button type="button" class="layui-btn" id="chooseFileBtn"><i class="layui-icon"></i>上传文件</button>
+
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="../../tools/echarts.min.js"></script>
+<script src="../../ajaxfileupload/ajaxfileupload.js"></script>
+<script>
+    $('.box').css({'height':$('body').height(),'overflow':'auto'})
+    layui.use(['element', 'form','tree','table','laydate'],function() {
+        var laydate = layui.laydate //日期
+            , layer = layui.layer //弹层
+            , form = layui.form //表单
+            ,tree = layui.tree
+            ,laydate = layui.laydate
+            ,table = layui.table;
+        var code = "";
+
+        //日期范围
+        laydate.render({
+            elem: '#dateRange'
+            ,range: true
+            ,type: 'month'
+            ,range: '~'
+            ,done: function(value){
+                getTyphoonType(value);
+            }
+            //,format: 'yyyyMM'
+        });
+        getTyphoonType();
+        function getTyphoonType(dateStr){
+            if(dateStr==undefined){
+                dateStr='';
+            }
+            var a=main_url +'/TyphoonData/getTyphoonType?dateStr='+dateStr
+            $.ajax({
+                url: main_url +'/TyphoonData/getTyphoonType?dateStr='+dateStr,
+                type:'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                // timeout: ajaxTimeout,
+                // data: {},
+                success: function (res) {
+                    var data = res.data;
+                    var checkList = res.checkList;
+                    tree.render({
+                        elem: '#pythoonTree'
+                        ,id:'pythoonTreeId'
+                        ,data: data
+                        ,showCheckbox: true
+                        ,oncheck: function(obj){
+                            getpythoonCheck(tree,'pythoonTreeId');
+                        }
+                    });
+                    tree.setChecked('pythoonTreeId', checkList);
+                    getpythoonCheck(tree,'pythoonTreeId');
+                    $("#find").click();
+                },
+                error: function (result) {
+                    layer.msg("获取台风信息异常");
+                }
+            });
+        }
+        function getpythoonCheck(tree,treeId){
+            code = "";
+            var checkedData = tree.getChecked('pythoonTreeId'); //获取选中节点的数据
+            for(var i = 0;i<checkedData.length;i++){
+                var childrenData=checkedData[i].children;
+                for(var k = 0;k<childrenData.length;k++){
+                    code += childrenData[k].id+",";
+                }
+            }
+            if(code.endsWith(",")){
+                code = code.substring(0,code.length-1);
+            }
+        }
+
+        function getPythoonManyData(){
+            var s=main_url + '/TyphoonData/getPythoonManyDataByWindV?code='+code+"&order=maxWindV"
+            table.render({
+                elem: '#test'
+                ,toolbar: '#toolbarDemo'
+                ,url: main_url + '/TyphoonData/getPythoonManyDataByWindV?code='+code+'&order=maxWindV'
+                ,page: true //开启分页
+                ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                    title: '提示'
+                    ,layEvent: 'LAYTABLE_TIPS'
+                    ,icon: 'layui-icon-tips'
+                }]
+                ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                ,cols: [[
+                    {field:'TyphoonCode',  title: '台风编号', sort: true,align:'center'}
+                    ,{field:'TyphoonName',  title: '台风名称',align:'center'}
+                    ,{field:'StationNum',  title: "站点编号", sort: true,align:'center'}
+                    ,{field:'StationName',  title: '站点名称',align:'center'}
+                    ,{field:'maxWindV', title: '极大风（m/s）', style:'color:red',align:'center'}
+                    ,{field:'maxWindVTime', title: '极大风出现时间',width:141,align:'center', templet:function(time){
+                            return formatTime(time.maxWindVTime);
+                        }},
+                    {field:'numberRain', title: '极大风持续时间（小时）',align:'center',width:185}
+                    ,{field:'numberRainStartTime', title: '极大风开始时间',width:141,align:'center',templet:function(time){
+                            return formatTime(time.numberRainStartTime);
+                        }}
+                    ,{field:'numberRainendTime', title: '极大风结束时间',width:141,align:'center', templet:function(time){
+                            return formatTime(time.numberRainendTime);
+                        }}
+                    ,{field:'avgRain', title: '平均雨量(mm)', align:'center'}
+                    ,{field:'maxRain', title: '小时雨强（mm/h）', align:'center'}
+                    /*,{field:'numberRainStartTime', title: '极大风开始时间', width:150,templet:function(time){
+                            return formatTime(time.numberRainStartTime);
+                        }}
+                    ,{field:'numberRainendTime', title: '极大风结束时间', width:150,templet:function(time){
+                            return formatTime(time.numberRainendTime);
+                        }}*/
+
+                ]]
+            });
+            table.render({
+                elem: '#test1'
+                ,toolbar: '#toolbarDemo1'
+                ,url: main_url + '/TyphoonData/getPythoonManyDataByWindV?code='+code+"&order=numberRain"
+                ,page: true //开启分页
+                ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                    title: '提示'
+                    ,layEvent: 'LAYTABLE_TIPS'
+                    ,icon: 'layui-icon-tips'
+                }]
+                ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                ,cols: [[
+                    {field:'TyphoonCode',  title: '台风编号', sort: true,align:'center'}
+                    ,{field:'TyphoonName', title: '台风名称',align:'center'}
+                    ,{field:'StationNum',  title: "站点编号", sort: true,align:'center'}
+                    ,{field:'StationName',  title: '站点名称',align:'center'}
+                    ,{field:'numberRain', title: '极大风持续时间（小时）',width:141, style:'color:red',align:'center'}
+                    ,{field:'maxWindV', title: '极大风（m/s）', align:'center'}
+                    ,{field:'maxWindVTime', title: '极大风出现时间',width:141,align:'center', templet:function(time){
+                            return formatTime(time.maxWindVTime);
+                        }}
+                    ,{field:'numberRainStartTime', title: '极大风开始时间',width:141, align:'center',templet:function(time){
+                            return formatTime(time.numberRainStartTime);
+                        }}
+                    ,{field:'numberRainendTime', title: '极大风结束时间',width:141,align:'center',templet:function(time){
+                            return formatTime(time.numberRainendTime);
+                        }}
+                    ,{field:'avgRain', title: '平均雨量(mm)',align:'center'}
+                    ,{field:'maxRain', title: '小时雨强（mm/h）', align:'center'}
+
+                ]]
+            });
+            table.render({
+                elem: '#test2'
+                ,toolbar: '#toolbarDemo2'
+                ,url: main_url + '/TyphoonData/getPythoonManyDataByRain?code='+code
+                ,page: true //开启分页
+                ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                    title: '提示'
+                    ,layEvent: 'LAYTABLE_TIPS'
+                    ,icon: 'layui-icon-tips'
+                }]
+                ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                ,cols: [[
+                    {field:'TyphoonCode',  title: '台风编号', sort: true,align:'center'}
+                    ,{field:'TyphoonName',  title: '台风名称',align:'center'}
+                    ,{field:'avgRain', title: '平均雨量', style:'color:red',align:'center'}
+                    ,{field:'maxRain', title: '最大雨量',align:'center'}
+                    ,{field:'maxWindVAndTime', title: '极大风（m/s）',align:'center',templet:function(time){
+                            var maxWindVAndTime = time.maxWindVAndTime.split('-');
+                            return maxWindVAndTime[0];
+                        }}
+                ]]
+            });
+            table.render({
+                elem: '#test3'
+                ,toolbar: '#toolbarDemo3'
+                ,url: main_url + '/TyphoonData/getPythoonManyDataByMaxRain?code='+code
+                ,page: true //开启分页
+                ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                    title: '提示'
+                    ,layEvent: 'LAYTABLE_TIPS'
+                    ,icon: 'layui-icon-tips'
+                }]
+                ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                ,cols: [[
+                    {field:'TyphoonCode',  title: '台风编号', sort: true,align:'center'}
+                    ,{field:'TyphoonName',  title: '台风名称',align:'center'}
+                    ,{field:'StationNum',  title: "站点编号", sort: true,align:'center'}
+                    ,{field:'StationName',  title: '站点名称',align:'center'}
+                    ,{field:'maxRain', title: '小时雨强（mm）',style:'color:red',align:'center'}
+                    ,{field:'maxRainTime', title: '出现时间',align:'center',templet:function(time){
+                            return formatTime(time.maxRainTime);
+                        }}
+                    ,{field:'maxWindV', title: '极大风（m/s）',align:'center'}
+                    ,{field:'maxWindVTime', title: '极大风出现时间',width:141, align:'center',templet:function(time){
+                            return formatTime(time.maxWindVTime);
+                        }}
+                ]]
+            });
+        }
+        function formatTime(time){
+            if(typeof time!='undefined'){
+                if(time.length<12){
+                    return '';
+                }else{
+                    return time.substring(0,4)+"-"+time.substring(4,6)+"-"+time.substring(6,8)+" "+time.substring(8,10)+":"+time.substring(10,12);
+                }
+            }
+            return '';
+        }
+        $("#find").click(function(){
+            getPythoonManyData();
+            $("#tabDiv").show();
+        })
+    })
+
+    /**
+     * 导入按钮事件
+     */
+    $("#impoort").bind("click",function(){
+        $("#importFile").val("");
+        index=layer.open({
+            type: 1,
+            maxmin: false,
+            title: '导入',
+            content: $("#windowemport"),
+            area: ['400px', '150px'],
+            full: function(index, layero){},
+            restore: function(index, layero){},
+        });
+    });
+
+
+    $("#chooseFileBtn").bind("click",function(){
+        $("#importExcle").click();
+    });
+    var index ="";
+    $("#importExcle").bind("change",function() {
+        var fileName = $(this).val();
+        $("#importFile").val(fileName);
+        var px = /\.[^\.]+/.exec(fileName)
+        if (fileName != "") {
+            if (px != ".xls" && px !=".xlsx") {//&&px!=".xlsx"或xlsx
+                layer.msg('文件类型不正确，支持xls和xlsx！', {
+                    time: 1500, //1500ms后自动关闭
+                });
+                return;
+            }
+            layer.close(index);
+            $.ajaxFileUpload({
+                async: false,
+                url: main_url + '/TyphoonData/importTyphoon', 			//用于文件上传的服务器端请求地址
+                secureuri: false, 					//是否需要安全协议，一般设置为false
+                fileElementId: "importExcle", 			//文件上传域的ID
+                contentType: false,
+                data: {},  //"listid":$.trim($("#usertype").val())
+                dataType: 'json', 					//返回值类型 一般设置为json
+                success: function (data) {
+
+                },
+                error: function () {	//服务器响应失败处理函数
+
+                }
+            });
+
+
+        }
+    });
+
+
+</script>
+</body>
+</html>

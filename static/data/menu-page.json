@@ -1,0 +1,46 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "rowCount": 120,
+        "pageSize": 10,
+        "pageIndex": 3,
+        "list": [{
+            "XXXPROP_MENU_id": "1",
+            "XXXPROP_MENU_1": "模块管理",
+            "XXXPROP_MENU_2": "/index.action",
+            "XXXPROP_MENU_3": "home",
+            "XXXPROP_MENU_4": "0",
+            "XXXPROP_MENU_5": "模块管理"
+        }, {
+            "XXXPROP_MENU_id": "2",
+            "XXXPROP_MENU_1": "首页",
+            "XXXPROP_MENU_2": "page/index.html",
+            "XXXPROP_MENU_3": "index",
+            "XXXPROP_MENU_4": "1",
+            "XXXPROP_MENU_5": "模块管理"
+        }, {
+            "XXXPROP_MENU_id": "3",
+            "XXXPROP_MENU_1": "产品制作",
+            "XXXPROP_MENU_2": "page/index.html",
+            "XXXPROP_MENU_3": "cpzz",
+            "XXXPROP_MENU_4": "1",
+            "XXXPROP_MENU_5": "模块管理"
+        }, {
+            "XXXPROP_MENU_id": "4",
+            "XXXPROP_MENU_1": "产品制作",
+            "XXXPROP_MENU_2": "page/index.html",
+            "XXXPROP_MENU_3": "cpzz",
+            "XXXPROP_MENU_4": "1",
+            "XXXPROP_MENU_5": "模块管理"
+        }, {
+            "XXXPROP_MENU_id": "5",
+            "XXXPROP_MENU_1": "产品制作",
+            "XXXPROP_MENU_2": "page/index.html",
+            "XXXPROP_MENU_3": "cpzz",
+            "XXXPROP_MENU_4": "1",
+            "XXXPROP_MENU_5": "模块管理"
+        }]
+    }
+}

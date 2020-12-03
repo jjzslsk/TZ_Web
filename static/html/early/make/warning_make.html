@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../../layui/css/layui.css">
+    <title>预警信号制作发布</title>
+    <style>
+        #table .imgBox {
+            float: left;
+            width: 25%;
+            margin: 0;
+            cursor: pointer;
+            padding: 5px;
+            display: block;
+            box-sizing: border-box;
+            user-select: none;
+            -moz-user-select: none;
+        }
+
+        #table .imgBox img {
+            width: 100%;
+        }
+
+        #table .imgBox.active {
+            background-color: #aeb4b3;
+        }
+
+        #table img.now {
+            animation: ssd-scale 4s linear infinite;
+        }
+        @keyframes ssd-scale {
+            from{
+                transform: scale(1);
+            }
+            25%{
+                transform: scale(1.2);
+            }
+            50%{
+                transform: scale(1);
+            }
+            75%{
+                transform: scale(1.2);
+            }
+            to{
+                transform: scale(1);
+            }
+        }
+        /*动画*/
+        .r-demo {
+            height: 100%;
+            border-top: 3px solid #63cff5;
+            border-bottom: 1px solid #c9c9c9;
+            border-left: 1px solid #c9c9c9;
+            border-right: 1px solid #c9c9c9;
+            padding: 5px;
+            overflow: auto;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #table td,
+        #table th {
+            text-align: center;
+        }
+
+        .ssd-border {
+            border: 1px solid;
+            border-color: #c9c9c9;
+        }
+
+        .ssd-border-div {
+            text-align: center;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        #table tr td {
+            padding: 9px 10px;
+            white-space: nowrap;
+        }
+
+        #table tr td>div {
+            display: none;
+        }
+
+        #table.edit tr:HOVER td:first-child>div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: white;
+            color: red;
+            display: block;
+        }
+
+        #table.edit tr:HOVER td:first-child>div>div {
+            display: table;
+            width: 100%;
+            height: 100%;
+        }
+
+        #table.edit tr:HOVER td:first-child>div>div>div {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .addWarningTypeForm .layui-form-checkbox {
+            margin-top: 5px;
+        }
+
+        .fdp {
+            color: #555;
+        }
+
+        .fbd .text-center {
+            text-align: center;
+            margin: 7px 0;
+        }
+
+        .fbd .text-right {
+            text-align: right;
+            float: right;
+        }
+
+        .fbd .text-indent {
+            text-indent: 2em;
+        }
+
+        .fbd hr {
+            border: 2px solid red;
+            height: 0;
+        }
+
+        .fbd .fbd-title {
+            color: red;
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+
+        .fbd .issue {
+            padding: 5px 0;
+        }
+
+        .fbd .content {
+            line-height: 30px;
+        }
+
+        .fbd .org-msg {
+            font-size: 0;
+            padding: 5px 0;
+        }
+
+        .fbd .org-msg>div {
+            display: inline-block;
+            width: 33.33333333%;
+            font-size: 1rem;
+        }
+
+        .fbd .warning-title {
+            padding: 10px;
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+
+        .fbd .warning-img {
+            width: 60px;
+            padding: 10px;
+        }
+
+        .fbd .warning-map {
+            padding: 10px 0;
+            max-width: 100%;
+        }
+
+        .fbd .defense {
+            padding-left: 2rem;
+            font-family: initial;
+            line-height: 30px;
+        }
+
+        .fbd .qfr {
+            display: inline-block;
+            width: 50px;
+            height: 18px;
+            text-align: left;
+        }
+
+        .fbd .qfr:empty::before {
+            color: lightgrey;
+            content: attr(placeholder);
+        }
+
+        .bt_sub {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+
+        .areaHuaFen {
+            display: none;
+        }
+
+        .areaSwitch {
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .areaSwitch.r {
+            transform: rotate(180deg);
+        }
+
+        .channels {
+            display: none;
+        }
+
+        .channelSwitch {
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .channelSwitch.r {
+            transform: rotate(180deg);
+        }
+
+        table {
+            table-layout: fixed;
+        }
+
+        table tr td {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            -moz-text-overflow: ellipsis;
+            -webkit-text-overflow: ellipsis;
+        }
+
+        #channelBox>span {
+            padding: 5px 10px;
+            border: 1px solid #5eb878;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+
+        #channelBox>span:last-child {
+            margin-right: 0;
+        }
+        .search-key{
+            color: #d60e3c;
+            /*font-size: 18px;*/
+            font-weight: 600;
+        }
+        .layui-form-label{
+            padding: 9px 15px 9px 0;
+        }
+        .layui-form-item .layui-input-inline{
+            width: 150px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layui-fluid ssd-container">
+        <div class="layui-row layui-col-space10 ssd-row">
+                <input type="hidden" id="headline" ></input>
+            <div class="layui-col-sm4  layui-col-md3 ssd-col-xlg2 ssd-col noprint">
+                <div class="r-demo">
+                    <div
+                        style="top:5px;left:5px;right:5px;bottom:50px;overflow: auto;display: flex;flex-direction: column;">
+                        <div style="flex-basis: 47px;flex-grow: 0;flex-shrink: 0;">
+                            <p style="text-align:center; ">
+                                <span style="font-size: 20px; color: #163C87;">预警信息选择</span>
+                            </p>
+                            <hr>
+                        </div>
+                        <div style="flex-grow: 1;flex-shrink: 1;overflow: auto;" class="">
+                            <table class="layui-table" lay-filter="foreastTab" id="table"
+                                style="border-collapse:separate; border-spacing:0px;">
+                                <colgroup>
+                                    <col class="layui-bg-gray " style="width:25%;">
+                                    <col style="width:75%;">
+                                </colgroup>
+                            </table>
+                        </div>
+                    </div>
+                    <div
+                        style="height:40px;background-color:white;padding:5px;box-sizing:border-box;text-align: center;border-top: 1px solid #cdcdcd;">
+                        <div class="ssd-btn-group" style="border:none!important;">
+                            <!--<button id="editTable" class="layui-btn layui-btn-sm ssd-btn-xs-add" data-msg="列表设置"
+                                data-hover-spin="true"><i class="fa fa-cog"
+                                    style="font-size:20px!important;line-height: 30px;"></i>列表设置</button>-->
+                            <button id="changeWarning" class="layui-btn layui-btn-sm ssd-btn-xs-edit" data-msg="预警变更"><i
+                                    class="fa fa-sort-amount-desc"
+                                    style="font-size:20px!important;line-height: 30px;"></i>预警变更</button>
+                            <button id="removeWarning" class="layui-btn layui-btn-sm ssd-btn-xs-remove"
+                                data-msg="解除发布"><i class="fa fa-bell-slash-o"
+                                    style="font-size:20px!important;line-height: 30px;"></i>解除发布</button>
+                            <!--<button id="reservePlan" class="layui-btn layui-btn-sm ssd-btn-xs-view" data-msg="发布预案"
+                                data-hover-spin="true">发布预案<i class="fa fa-crosshairs"
+                                    style="font-size:20px!important;line-height: 30px;"></i></button>-->
+                        </div>
+                        <button class="layui-btn layui-btn-sm ssd-btn-xs-add editBtn" id="addTrBtn"
+                            style="display:none;"><i class="layui-icon">&#xe654;</i>添加</button>
+                        <button class="layui-btn layui-btn-sm ssd-btn-xs-edit editBtn" id="editEndBtn"
+                            style="display:none;"><i class="layui-icon">&#xe618;</i>完成</button>
+                        <!--<button class="layui-btn layui-btn-sm ssd-btn-xs-add removeWarningBtn" id="removeWarningBtn" style="display:none;"><i class="layui-icon">&#xe618;</i>确认解除</button> -->
+                        <button class="layui-btn layui-btn-sm ssd-btn-xs-remove removeWarningBtn"
+                            id="noRemoveWarningBtn" style="display:none;"><i
+                                class="layui-icon">&#xe65c;</i>不解除了</button>
+                        <button class="layui-btn layui-btn-sm ssd-btn-xs-add" id="noChangeWarningBtn"
+                            style="display:none;"><i class="layui-icon">&#xe65c;</i>取消变更</button>
+                    </div>
+                </div>
+            </div>
+            <div class=" layui-col-sm8 layui-col-md5 ssd-col-xlg5 ssd-col noprint">
+                <div class="r-demo flex-box">
+                    <div class="box-title">
+                        <p style="text-align:center;">
+                            <span style="font-size: 20px; color: #163C87;">预警信息发布</span>
+                        </p>
+                        <hr>
+                    </div>
+                    <div class="box-body ">
+                        <form class="layui-form" id="warningForm">
+                            <!-- 预警过程 -->
+                            <input type="hidden" id="processId" class="layui-input">
+                            <input type="hidden" id="taskId" class="layui-input">
+                            <div class="layui-form-item" style="text-align:center;">
+                                <div style="position: relative;display: inline-block;">
+                                    <div
+                                        style="display: inline-block;width: 80px;padding:10px 13px;box-sizing: border-box;">
+                                        <img id="photo" style="width:100%;" src="../image/w73.png" />
+                                    </div>
+                                    <i class="fa fa-question-circle-o" style="position: absolute;right: -5px;top:0;cursor: pointer;color:darkgray;" data-msg="无"></i>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label ">发布单位:</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" id="orgName" name="username" value="台州市气象台"
+                                            lay-verify="required" placeholder="请输入" autocomplete="off"
+                                            class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">发布时间:</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" class="layui-input" lay-verify="required" id="publishTime"
+                                            placeholder="yyyy-MM-dd HH:mm">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label ">期号:</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" id="issue" lay-verify="required" placeholder="请输入"
+                                            autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">有效期(h):</label>
+                                    <div class="layui-input-inline ssd-inline-num">
+                                        <input type="text" id="validityTime" value="24" lay-verify="required"
+                                            placeholder="请输入" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">预警标题:</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="title" id="warningTitle" lay-verify="required"
+                                        autocomplete="off" placeholder="请输入标题" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">预警内容:</label>
+                                <div class="layui-input-block">
+                                    <textarea placeholder="请输入内容" id="warningContent" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">防御指南:</label>
+                                <div class="layui-input-block">
+                                    <textarea placeholder="请输入内容" lay-verify="required" id="defense"
+                                        class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">影响范围:</label>
+                                    <div class="layui-input-inline" style="width:300px;">
+                                        <input type="checkbox" value="331000" title="台州市"
+                                            lay-filter="warningArea" />
+                                        <span class="areaSwitch r"><i class="layui-icon">&#xe61a;</i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item areaHuaFen" style="display: block;">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">台州市:</label>
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" name="taizhou" value="331001" title="市区"
+                                            lay-skin="primary"  />
+                                        <input type="checkbox" name="taizhou" value="331083" title="玉环"
+                                            lay-skin="primary"  />
+                                        <input type="checkbox" name="taizhou" value="331082" title="临海"
+                                            lay-skin="primary"  />
+                                        <input type="checkbox" name="taizhou" value="331081" title="温岭"
+                                            lay-skin="primary"  />
+                                        <input type="checkbox" name="taizhou" value="331024" title="仙居"
+                                            lay-skin="primary"  />
+                                        <input type="checkbox" name="taizhou" value="331023" title="天台"
+                                            lay-skin="primary" />
+                                        <input type="checkbox" name="taizhou" value="331022" title="三门"
+                                            lay-skin="primary" />
+                                        <input type="checkbox" name="taizhou" value="331004" title="路桥"
+                                            lay-skin="primary" />
+                                        <input type="checkbox" name="taizhou" value="331003" title="黄岩"
+                                            lay-skin="primary" />
+                                        <input type="checkbox" name="taizhou" value="331002" title="椒江"
+                                            lay-skin="primary" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item ">
+	                            <div class="layui-inline">
+                                    <label class="layui-form-label">发布人:</label>
+                                    <div class="layui-input-inline">
+                                        <select id="fbr" lay-verify="required">
+                                        </select>
+                                    </div>
+                                </div>
+	                            <div class="layui-inline">
+                                    <label class="layui-form-label">签发人:</label>
+                                    <div class="layui-input-inline">
+										<select id="qfr" lay-verify="required"></select>
+                                    </div>
+                                </div>
+	                            <div class="layui-inline">
+                                    <label class="layui-form-label">签发时间:</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" id="qfsj" lay-verify="required"
+                                            autocomplete="off" class="layui-input" placeholder="yyyy-MM-dd HH:mm:ss">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">国突类型:</label>
+                                    <div class="layui-input-inline">
+                                        <select id="gtType" lay-verify="required">
+                                            <option value="Actual">正式预警</option>
+                                            <option value="Test">测试预警</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item ">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">发布渠道:</label>
+                                    <div id="channelBox" class="layui-input-block">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item" style="text-align:center; ">
+                                <button class="layui-btn" id="submitWarningBtn" type="button"
+                                    style="display:none;">提交</button>
+                                <button class="layui-btn" id="viewDJD" type="button"
+                                    style="background-color: #1E99E3;min-width:12%;">发布单预览</button>
+                                <button class="layui-btn" id="channelDeploy" type="button" style="background-color: #009900;min-width:12%;">发布</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class=" layui-col-sm12  layui-col-md4 ssd-col-xlg3 ssd-col">
+                <div class="layui-tab ssd-tab"
+                    style="display: flex;flex-direction: column;height: 100%;position: relative;">
+                    <div style="height: 200px; overflow: auto;" class="noprint">
+                        <ul id="warnContent"></ul>
+                    </div>
+                    <ul class="layui-tab-title noprint" style="flex-basis: 41px;flex-shrink: 0;flex-grow: 0;">
+                        <li class="layui-this" style="font-size: 20px; color: #163C87;">预警发布单</li>
+                    </ul>
+
+                    <div class="bt_sub noprint" style="margin-top: 200px;">
+                        <button class="layui-btn layui-btn-warm layui-btn-sm" id="hisTask">历史</button>
+                        <button class="layui-btn layui-btn-sm" onclick="window.print();">打印</button>
+                    </div>
+
+                    <div class="layui-tab-content "
+                        style=" overflow: auto;display:none;font-family: '仿宋';">
+                        <div class="layui-tab-item layui-show fbd">
+                            <div class="text-center fbd-title" id="FBD_redTitle"></div>
+                            <div class="text-center" id="FBD_issue"></div>
+                            <div class="org-msg">
+                                <div id="FBD_orgName">台州市气象台</div>
+                                <div class="text-right" id="FBD_sendTime"></div>
+                            </div>
+                            <hr />
+                            <div class="text-indent content" id="FBD_title"></div>
+                            <div class="text-indent content" id="FBD_context"></div>
+                            <div class="text-indent content" id="FBD_block_img">
+                           		图标：<img class="warning-img" id="FBD_img" src="../image/w73.png" />
+                           	</div>
+                            <div id="FBD_defense" class="defense" style="font-family: '仿宋';"></div>
+                            <div style="text-indent: 1em;line-height: 40px;">
+                                <span style="display: inline-block;width:170px;"></span>
+                                <span></span>
+                            </div>
+                            <div style="text-indent: 1em;">
+                            	<span style="display: inline-block;width:170px;" id="makeUser"></span>
+                                <span id="qfUser"></span>
+                            </div>
+                            <div style="text-indent: 1em;">
+                                <span style="display: inline-block;width:170px;" id="makeTime"></span>
+                                <span id="qfTime"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../../tools/jquery-3.5.1.js"></script>
+    <script src="../../../layui/layui.js"></script>
+    <script src="../../../layui/layui.all.js"></script>
+    <script src="../../../tools/http.js"></script>
+    <script src="../../common/js/integrationUtil.js"></script>
+    <script src="../../common/js/dateFormat.js"></script>
+    <!-- layui Javascript组件 -->
+    <script>
+
+        layui.use(['element', 'laydate', 'form', 'table', 'jquery', 'layer','tree'], function (){
+            let laydate = layui.laydate;
+            let layer = layui.layer;
+            let tree = layui.tree
+            let table = layui.table; //表格
+            let $ = layui.jquery;
+            let element = layui.element;
+            let form = layui.form;
+            element.init();
+            form.render();
+            let colors = ["", "红色", "橙色", "黄色", "蓝色"];
+            let isRemoveWarning = false;
+            let lastedIssue = 0;
+            let warningSendType = 0; // 0-首发，1-继续，2-变更，3解除
+            var nowDate = new Date();
+            $("#publishTime").val(nowDate.format("yyyy-MM-dd hh:mm"));
+            nowDate.setMinutes(nowDate.getMinutes()+10);
+            $("#qfsj").val(nowDate.format("yyyy-MM-dd hh:mm"));
+
+           /* //发布机构为登陆人机构；
+            let loadUser = function (){
+            	$("#orgName").val('');
+            	$("#FBD_orgName").text('');
+            	let loadFbRole = function(obj){
+	            	$.post("role/getOrgUserByRoleKey.action",{roleKey:obj.key},function(d){
+	            		if(d!=null){
+	            			d.forEach(item=>{
+	            				$("#"+obj.id).append(`<option value="${item.name}" >${item.name}</option>`);
+	            			});
+	            			form.render();
+	            		}
+	            	});
+            	};
+            	loadFbRole({id:"fbr",key:"warning_publish"});
+            	loadFbRole({id:"qfr",key:"warning_signature"});
+            };*/
+            //loadUser();
+
+
+           /* // 查询排班
+            var currJobInfo = [];
+            let loadJob = function ()
+            {
+            	$.post("duty/getByDate.action",{ date : nowDate.format("yyyy-MM-dd") },function(data)
+       			{
+            		currJobInfo = data;
+           		});
+            };
+            loadJob();*/
+            $.get(main_url + "/ssd-early-warning/getWraningPerson", {"code": "WarningMake"}, function (data){
+                if(data!=null && data.code=='1'){
+                    var list = data.data;
+                    var options = "";
+                    $.each(list,function(i,item){
+                        options += `<option value="${item.id}"> ${item.name}</option>`;
+                    })
+                    $("#fbr").append(options);
+                    form.render('select');
+                }
+            });
+            $.get(main_url + "/ssd-early-warning/getWraningPerson", {"code": "WarningIssue"}, function (data){
+                if(data!=null && data.code=='1'){
+                    var list = data.data;
+                    var options = "";
+                    $.each(list,function(i,item){
+                        options += `<option value="${item.id}"> ${item.name}</option>`;
+                    })
+                    $("#qfr").append(options);
+                    form.render('select');
+                }
+            });
+            let sendUserList = []; //接收用户集合，{'渠道':[{id:'',name:'',address:'号码',pid:''}],}
+            let eachchannelcontent = {};	// 各渠道发布内容
+
+            let showChannels = [];	// 显示的渠道
+            let showTextArray = [];										// 显示文本框的渠道
+
+            form.on("checkbox(warningArea)", function (data)
+            {
+                $("input[name='taizhou']").prop("checked", data.elem.checked);
+                form.render();
+            });
+
+            function dateConvert(dateParms)
+            {
+                let temp_time = new Date(dateParms);
+                let datetime;
+                if (temp_time instanceof Date)
+                {
+                    datetime = temp_time;
+                }
+                if ((typeof dateParms == "string") && dateParms.constructor == String) {
+                    datetime = new Date(Date.parse(dateParms.replace(/-/g, "/")));
+                }
+                let year = datetime.getFullYear();
+                let month = datetime.getMonth() + 1;
+                let date = datetime.getDate();
+                let hour = datetime.getHours();
+                let minutes = datetime.getMinutes();
+                let second = datetime.getSeconds();
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                if (date < 10) {
+                    date = "0" + date;
+                }
+                if (hour < 10) {
+                    hour = "0" + hour;
+                }
+                if (minutes < 10) {
+                    minutes = "0" + minutes;
+                }
+                if (second < 10) {
+                    second = "0" + second;
+                }
+                let time = year + "-" + month + "-" + date + " " + hour + ":" + minutes;
+                return time;
+            }
+           /* //加载短临数据
+            $.post("warning/queryShortImminentInfo.action", function (obj)
+            {
+                let str = `<table class="layui-table" lay-size="sm">
+							<colgroup>
+							    <col width="20%">
+							    <col width="50%">
+							    <col width="30%">
+						  </colgroup>
+						<thead>
+						    <tr>
+						      <th>预警类型</th>
+						      <th>预警内容</th>
+						      <th>发布时间</th>
+						    </tr>
+					   </thead>
+					   <tbody>`;
+                obj.forEach(function (item)
+                {
+                    let time = dateConvert(item.publish_time);
+                    str += `<tr>
+						      <td>${item.codeName}${item.levelName}</td>
+						      <td title="${item.content}">${item.content}</td>
+						      <td>` + time + `</td>
+						    </tr>`;
+                });
+                str += "</tbody></table>";
+                $("#warnContent").html(str);
+            });*/
+
+            let channelList;
+            // 发布加载渠道
+            $.get(main_url + "/dict/queryDictByCode", {"code": "Channel"}, function (obj)
+            {
+                if (obj != null )
+                {
+                    channelList = obj;
+                    var channelHtml = '';
+                    $.each(obj,function(){
+                        channelHtml +='<input type="checkbox" name="channel" title="'+this.name+'" value="'+this.dicCode+'" lay-skin="primary"> ';
+                    })
+                    $("#channelBox").html(channelHtml);
+                    form.render();
+                }
+            });
+
+            $(".areaSwitch").click(function ()
+            {
+                if ($(this).hasClass("r"))
+                {
+                    $(".areaHuaFen").hide();
+                    $(this).removeClass("r");
+                }
+                else
+                {
+                    $(".areaHuaFen").show();
+                    $(this).addClass("r");
+                }
+            });
+
+            //加载预警类型
+            $.ajax({
+                url: main_url + "/ssd-early-warning/getAll",
+                type: "get",
+                dataType: "json",
+                success: function (data)
+                {
+                    if (data != null && data.success)
+                    {
+                        let warningTypes = {};
+                        var warnData = data.data.list;
+                        $.each(warnData, function ()
+                        {
+                            var items = this.items;
+                            $.each(items,function(){
+                                if (!warningTypes[this.name])
+                                {
+                                    warningTypes[this.name] = [];
+                                }
+                                warningTypes[this.name].push(this);
+                            })
+                        });
+                        for (let wt in warningTypes)
+                        {
+                            let tr = `<tr>
+							<td>${wt}<div><div><div>
+								<i class="layui-icon upTr" style="margin-right: 5px;cursor: pointer;">&#xe619;</i>
+								<button class="layui-btn layui-btn-xs ssd-btn-xs-remove delTr"><i class="layui-icon">&#xe640;</i>删除</button>
+								<i class="layui-icon downTr" style="margin-left: 5px;cursor: pointer;">&#xe61a;</i>
+							</div></div></div></td>
+							<td style="padding:0px;">`;
+                            $.each(warningTypes[wt], function ()
+                            {
+                                let color = colors[this.imageColor];
+                                tr += `<div class="imgBox">
+										<img src="../image/${this.code}_0${this.imageColor}.png" data-category="${this.name}" data-code="${this.code}" data-level-key="${color}" data-level-num="${this.levelCode}" data-defense="${this.defense}" data-warnid="${this.warnId}" data-description="${this.content}"/>
+									</div>`;
+                            });
+                            tr += `</td></tr>`;
+                            $("#table").append(tr);
+                        }
+                        // $("#table tr img").first().click();
+                        // 加载有效预警
+                        loadValidMarning();
+                    }
+                }
+            });
+
+            // 加载有效预警
+            let loadValidMarning = () =>
+            {
+                $("#table").find("img").removeClass("now");
+                $.ajax({
+                    url: main_url + "/ssd-early-warning/findValidWarning",
+                    type: "get",
+                    dataType: "json",
+                    success: function (data)
+                    {
+                        if (data != null)
+                        {
+                            $.each(data, function ()
+                            {
+                                let nowImg = $("#table").find("img[data-code='" + this.code + "'][data-level-num='" + this.level + "']");
+                                nowImg.addClass("now");
+                                nowImg.data("id", this.id);
+                                nowImg.data("processId", this.process_id);
+                                nowImg.data("issueNum", this.issue_number);
+                                nowImg.data("issueLatter", this.issue_letter);
+                                nowImg.data("taskId",this.id);
+                            });
+                        }
+                    }
+                });
+            };
+
+            // 预警图标点击事件
+            $("#table").on("click", "img", function ()
+            {
+                if ($(this).hasClass("disabled"))
+                {
+
+                    return;
+                }
+
+                if (warningSendType == 0 && $(this).parent().parent().find(".now").length > 0)
+                {layer.msg("无法操作！已经存在有效预警，只能变更或解除！");
+                    return;
+                }
+                if (warningSendType == 0)
+                {
+                    // 首发获取最新期号
+                    $.ajax({
+                        url: main_url + "/ssd-early-warning/getLastIssue",
+                        type: "get",
+                        dataType: "json",
+                       // async: false,
+                        success: function (data)
+                        {
+                            if (data != null)
+                            {
+                                lastedIssue = data.issue_number;
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    // 非首发
+                    if ($(this).hasClass("now"))
+                    {
+                        $("#photo").data("id", $(this).data("id"));
+                    }
+                }
+
+                /*
+                受（影响系统）影响，（目前灾害情况）预计*日*时到*日*时，我区（范围）将出现（天气现象）。苏州气象台已升级**（灾种）**色预警信号为**（灾种）**色预警信号，并建议将苏州**（灾种）*级应急响应升级为**（灾种）*级应急响应。
+                */
+                let url = $(this).attr("src");
+                $("#photo").attr("src", url);
+                let category = $(this).data("category"); //预警名称
+                let levelKey = $(this).data("levelKey"); //预警级别
+                let headline = $("#orgName").val();
+                let levelNum = $(this).data("levelNum");
+                let msgType = '';
+                let titles = '';
+                if(levelKey=='蓝色'){
+                    titles = '[IV级/一般]';
+                }else if(levelKey=='黄色'){
+                    titles = '[III级/较重]';
+                }else if(levelKey=='橙色'){
+                    titles = '[II级/严重]';
+                }else if(levelKey=='红色'){
+                    titles = '[I级/特别严重]';
+                }
+                let code = $(this).data("code");
+                let defense = $(this).data("defense"); //预警防御指南
+                let description = $(this).data("description");
+                let now = new Date();
+                let title = now.format("yyyy年MM月dd日hh时mm分")+(isRemoveWarning ? "解除" : "发布") + category + levelKey + "预警信号";
+                let content = isRemoveWarning ? "无" : description;
+
+                if (warningSendType == 1 || warningSendType == 2 || warningSendType == 3)
+                {
+                    let oldWaring = $(this).parent().parent().find(".now");
+                    // 预警过程
+                    let processId = oldWaring.data("processId");
+                    // 当前已发布的预警的期号、预警过程ID
+                    let issueNum = oldWaring.data("issueNum");
+                    let issueLatter = oldWaring.data("issueLatter");
+                    if (warningSendType == 1 || warningSendType == 2)
+                    {
+                        // 继续或变更
+                        let oldIndex = oldWaring.parent().index();
+                        let newIndex = $(this).parent().index();
+                        msgType = "Update";
+                        if (newIndex == oldIndex)
+                        {
+                            // 继续发布
+                            tool = "继续发布";
+                            content = tool + category + levelKey + "预警信号。";
+                            headline += tool+category + levelKey +"预警";
+                        }
+                        else
+                        {
+                            // 变更发布
+                            let tool = "";
+                            if (newIndex > oldIndex)
+                            {
+                                warningSendType = 2;
+                                tool = "降级";
+                            }
+                            else if (newIndex < oldIndex)
+                            {
+                                warningSendType = 1;
+                                tool = "升级";
+                            }
+                            headline += tool+category + levelKey +"预警";
+                            content =  tool + category + oldWaring.data("levelKey") + "预警信号为" + category + levelKey + "预警信号：" + description;
+                        }
+
+                        // 继续、变更，数字期号不变，字母期号累加
+                        issueLatter = getIssueLetter(warningSendType, issueLatter);
+                    }
+                    else
+                    {
+                        msgType = "Cancel";
+                        // 解除：期号变为Z
+                        issueLatter = "Z";
+                        headline += "解除"+category + levelKey +"预警";
+                    }
+                    $("#issue").val("[" + now.format("yyyy") + "]" + issueNum + "-" + issueLatter);
+                    // 预警过程
+                    $("#processId").val(processId);
+                }
+                else
+                {
+                    // 首发
+                    let issueNum = lastedIssue + 1;
+                    msgType = "Alert";
+                    let issueLatter = "A";
+                    // 设置期号
+                    $("#issue").val("[" + now.format("yyyy") + "]" + issueNum + "-" + issueLatter);
+                    headline += "发布"+category + levelKey +"预警";
+                    // 预警过程
+                    $("#processId").val("ALARM" + now.format("yyyyMMddhhmmssS"));
+                }
+                headline +=titles;
+                // 任务ID
+                $("#taskId").val("TASK" + now.format("yyyyMMddhhmmssS"));
+
+                $("#warningTitle").val(title);
+                $("#warningContent").val(content);
+                $("#defense").val((isRemoveWarning ? "无" : defense));
+                $("#photo").parent().next().data("msg", description);
+                $("#photo").data("code", code);
+                $("#photo").data("msgType",msgType);
+                $("#photo").data("level", levelNum);
+                $("#photo").data("levelKey", $(this).data("levelKey"));
+                $("#photo").data("warnid", $(this).data("warnid"));
+                $("#headline").val(headline);
+                $("#photo").data("taskId", $(this).data("taskId"));
+                $("#photo").data("name", category);
+                $("#table .active").removeClass("active");
+                $(this).parent().addClass("active");
+                $(this).css('background-color','#c4bad1');
+
+                sendUserList = []; //换预警了，清空选择的接收用户
+                eachchannelcontent = {};
+
+            });
+
+            // 编辑列表点击事件
+            $("#editTable").click(function ()
+            {
+                $("#table").addClass("edit");
+                $(".editBtn").show();
+                $(this).parent().hide();
+            });
+
+            // 时间选择器
+            laydate.render(
+            {
+                elem: '#publishTime',
+                type: 'datetime',
+                format: 'yyyy-MM-dd HH:mm'
+            });
+            laydate.render(
+            {
+                elem: '#qfsj',
+                type: 'datetime',
+                format: 'yyyy-MM-dd HH:mm'
+            });
+
+            //列表编辑完
+            $("#editEndBtn").click(function ()
+            {
+                let typeCodes = "";
+                $("#table tr").each(function ()
+                {
+                    typeCodes += "," + $(this).find("img").data("code");
+                });
+                if (typeCodes.length > 0)
+                {
+                    typeCodes = typeCodes.substr(1);
+                }
+                $.ajax({
+                    url: "warningType/setUserType.action",
+                    type: "post",
+                    data:
+                    {
+                        'typeCodes': typeCodes
+                    },
+                    dataType: "json",
+                    success: function (data)
+                    {
+                        if (data != null && data == 1)
+                        {
+                            $("#table").removeClass("edit");
+                            $(".editBtn").hide();
+                            $("#editTable").parent().show();
+                        }
+                        else
+                        {
+                            layer.msg("系统错误");
+                        }
+                    }
+                });
+            });
+
+            // 解除预警
+            $("#removeWarning").click(function ()
+            {
+                $("#table img").each(function ()
+                {
+                    if (!$(this).hasClass("now"))
+                    {
+                        $(this).addClass("disabled");
+                        $(this).css('filter','grayscale(100%)');
+                    }
+                });
+                $(".removeWarningBtn").show();
+                $(this).parent().hide();
+                isRemoveWarning = true;
+                warningSendType = 3;
+            });
+
+            // 不解除
+            $("#noRemoveWarningBtn").click(function ()
+            {
+                $("#table img").removeClass("disabled");
+                $("#table img").css('filter','grayscale(0%)');
+                $(".removeWarningBtn").hide();
+                $("#removeWarning").parent().show();
+                isRemoveWarning = false;
+                warningSendType = 0;
+            });
+
+            // 预警变更
+            $("#changeWarning").click(function ()
+            {
+                $("#table tr").each(function ()
+                {
+                    if ($(this).find(".now").length == 0)
+                    {
+                        $(this).find("img").addClass("disabled");
+                        $(this).find("img").css('filter','grayscale(100%)');
+                    }
+                });
+                $("#noChangeWarningBtn").show();
+                $(this).parent().hide();
+                warningSendType = 2;
+            });
+
+            // 不变更了
+            $("#noChangeWarningBtn").click(function ()
+            {
+                $("#table img").removeClass("disabled");
+                $("#table img").css('filter','grayscale(0%)');
+                $(this).hide();
+                $("#changeWarning").parent().show();
+                warningSendType = 0;
+            });
+
+            $("#reservePlan").click(function ()
+            {
+                linkURL("page/foreastWarning/reservePlan.html");
+            });
+
+            // 删除预警类型
+            $("#table").on("click", ".delTr", function ()
+            {
+                $(this).parents("tr").remove();
+            });
+
+            //排序
+            $("#table").on("click", ".upTr", function (){
+            	let tr = $(this).parents("tr");
+            	if(tr.index()==0){
+            		alert('已到第一位');
+            	}else{
+            		tr.parent().children().eq(tr.index()-1).before(tr);
+            	}
+            });
+            $("#table").on("click", ".downTr", function (){
+            	let tr = $(this).parents("tr");
+            	if(tr.index()==tr.parent().children().length-1){
+            		alert('已到最后一位');
+            	}else{
+            		tr.parent().children().eq(tr.index()+1).after(tr);
+            	}
+            });
+
+            // 查看同类型前五条期号
+            $("#hisTask").click(function ()
+            {
+                let code = $("#photo").data("code");
+                let level = $("#photo").data("level");
+                let url = "./historyWarning.html";
+                $.post(url, {}, function (str)
+                {
+                    layer.open({
+                        type: 1,
+                        title: '历史发布单',
+                        shadeClose: true,
+                        scrollbar: true,
+                        shade: [0.8, '#393D49'],
+                        maxmin: true, //开启最大化最小化按钮
+                        area: ['900px', '400px'],
+                        content: str, //注意，如果str是object，那么需要字符拼接。
+                        success: function (layero, index)
+                        {
+                            $.post(main_url + "/ssd-early-warning/findOldWarning", { 'code': code,  'level': level }, function (o)
+                            {
+                                if (o != null && o.state == 1)
+                                {
+                                    o.data.forEach(function (item)
+                                    {
+                                        var times = item.times;
+                                        layero.find("#titleList").append(`<li data-c="${item.content}" data-a="${item.title}" data-d="${item.defense}">${times} </li>`);
+                                    });
+                                    form.render(); //重新渲染
+                                    layero.find("#titleList").on("click", "li", function ()
+                                    {
+                                        layero.find("#content").text($(this).data("c"));
+                                        layero.find("#title").text($(this).data("a"));
+                                       	layero.find("#defe").text($(this).data("d"));
+                               		});
+                                    if (o.data.length == 0)
+                                    {
+                                        layero.find("#content").text("无历史预警");
+                                    }
+                                    else
+                                    {
+                                        layero.find("#titleList li").eq(0).click();
+                                    }
+                                }
+                                else
+                                {
+                                    layero.html("无历史预警");
+                                }
+                            });
+                        }
+                    });
+                });
+            })
+
+            //查看发布单
+            $("#viewDJD").click(() =>
+           	{
+                $(".bt_sub").css("display", "block");
+                $(".layui-tab-content").css("display", "block");
+
+                let send = (isRemoveWarning ? "解除" : "发布");
+
+                // 红头标题
+                $("#FBD_redTitle").text("气象灾害预警信号" + send + "通知单");
+                // 期号
+                let issue = $("#issue").val();
+                let name = $("#photo").data("name");
+                let orgName = $("#orgName").val();
+                let levelKey = $("#photo").data("levelKey");
+                $("#FBD_issue").text(issue + " " + name + levelKey.substring(0, 1));
+                // 发布日期
+                let publishTime = $("#publishTime").val();
+                let date = new Date(publishTime.replace(/-/g, "/"));
+                $("#FBD_sendTime").text(date.format("yyyy年MM月dd日"));
+				// 预警标题
+                $("#FBD_title").text($("#warningTitle").val());
+                // 预警内容、预警图标、防御指南
+                if(isRemoveWarning)
+               	{
+					// 解除
+					$("#FBD_block_img").css("display", "none");
+					$("#FBD_context").html("<br/>");
+					$("#FBD_defense").html("<br/><br/><br/>");
+               	}
+                else
+               	{
+                	// 发布
+	                $("#FBD_context").html($("#warningContent").val());
+                	$("#FBD_block_img").css("display", "block");
+					$("#FBD_img").attr("src", $("#photo").attr("src"));
+	                $("#FBD_defense").html("防御指南：<br/>" + $("#defense").val());
+               	}
+
+                $("#makeUser").text("预报员签名：" + $("#fbr option:selected").text());
+                $("#qfUser").text("签发人签名：" + $("#qfr option:selected").text());
+                $("#makeTime").text("制作时间：" + date.format("hh时mm分"));
+                $("#qfTime").text("签发时间：" + date.format("yyyy年MM月dd日hh时mm分"));
+                $('.layui-tab-content').css("display","");
+            });
+            var userList=[];
+            function getCheckedId(jsonObj) {
+                $.each(jsonObj, function (index, item) {
+                    if ( item.mark=='1') {
+                        userList.push({"id":item.id,'name':item.name,'address':item.address,'mark':item.mark});
+                    }
+                    getCheckedId(item.children);
+                    //ids={"id":item.id,'name':item.title,'address':item.address,'mark':item.mark};
+                });
+                return userList;
+            }
+
+            //提交按钮点击事件
+            $("#submitWarningBtn").click(() =>
+            {
+                // 期号校验
+                let inputIssue = $("#issue").val();
+                let thisIssueYear = 2020;
+                let thisIssueNum = 0;
+                let thisIssueLatter = "";
+                let issueReg = /\[[0-9]{4}\][0-9]*-[A-Z]{1}/;
+                if (!issueReg.test(inputIssue))
+                {
+                    layer.msg("期号不正确。数字-编号，例：[2019]1-A");
+                    return;
+                }
+                else
+                {
+                    thisIssueYear = inputIssue.substring(inputIssue.indexOf('[') + 1, inputIssue.indexOf(']'));
+                    thisIssueNum = inputIssue.substring(inputIssue.indexOf(']') + 1, inputIssue.indexOf('-'));
+                    thisIssueLatter = inputIssue.substring(inputIssue.indexOf('-') + 1);
+                }
+
+                let areas = [];
+                $("input[name='taizhou']:checked").each(function () {
+                    areas.push(this.value);
+                });
+                let areasName = [];
+                $("input[name='taizhou']:checked").each(function () {
+                    areasName.push(this.title);
+                });
+                if (areas.length == 0)
+                {
+                    layer.msg("请选择受影响区域。");
+                    return;
+                }
+
+                var data = {
+                    code: $("#photo").data("code"),
+                    level: $("#photo").data("level"),
+                    processId: $("#photo").data("warnid"),
+                    publishId:'',
+                    publishOrg: $("#orgName").val(),
+                    effective: $("#validityTime").val(),
+                    issueYear: thisIssueYear,
+                    issueNumber: thisIssueNum,
+                    issueLetter: thisIssueLatter,
+                    title: $("#warningTitle").val(),
+                    defense: $("#defense").val(),
+                    content: $("#warningContent").val(),
+                    headline:$("#headline").val(),
+                    status: 1,
+                    publish:1,
+                    finish:1,
+                    msgType:$("#photo").data("msgType"),
+                    gtType:$("#gtType option:selected").val(),
+                    effectArea: areas.join(","),
+                    effectAreaName:areasName.join(","),
+                    type: warningSendType,
+                    makeUser: $("#fbr option:selected").text(),
+                    publishUser:$("#fbr option:selected").text(),
+                    publishTime:$("#publishTime").val() + ":00",
+                    makeTime:$("#publishTime").val() + ":00",
+                    checkUser: $("#qfr option:selected").text(),
+                    checkTime: $("#qfsj").val() + ":00",
+                   // sendUserList:JSON.stringify(sendUserList),
+                    channelContent:JSON.stringify(eachchannelcontent)
+                };
+
+                if (warningSendType == 3)
+                {
+                    // 解除
+                    //data.img = "../image/w73.png";
+                    data.oldId = $("#photo").data("id");
+                    data.publish_id = $("#photo").data("id");
+                }
+                else if (warningSendType == 1 || warningSendType == 2)
+                {
+                    // 升级/降级
+                    let oldWaring = $("#table .imgBox > img[data-code='" + $("#photo").data("code") + "'].now");
+                    data.oldId = oldWaring.data("id");
+                   // data.oldLevel = oldWaring.data("levelNum");
+                    data.publish_id = oldWaring.data("id");
+                }
+                //var loadingId = layer.open({type:3});
+                $.ajax({
+                    url: main_url + "/ssd-early-warning-publish/add",
+                    type: "post",
+                    data: data,
+                    dataType: "json",
+                    success: function (da)
+                    {
+                        //layer.close(loadingId);
+                        if (da.code == 0){
+                            layer.msg("入库成功。");
+                            var obj = da.data;
+                            for (var i = 0 ; i< sendUserList.length ; i++){
+                                sendUserList[i].publishId=obj.id;
+                                if(sendUserList[i].publishChannel=='GT'){
+                                    sendUserList[i].task = data;
+                                }
+                            }
+                            $.ajax({
+                                url: main_url + "/ssd-early-warning-publish/addTaskAndDetail",
+                                type: "post",
+                                data: {'data':JSON.stringify(sendUserList)},
+                                dataType: "json",
+                                success: function (data){
+                                    layer.msg("发布成功。等待回执！");
+                                }
+                            })
+                            loadValidMarning();
+                            if (warningSendType == 3)
+                            {
+                                $("#noRemoveWarningBtn").click();
+                            }
+                            else if (warningSendType == 1 || warningSendType == 2)
+                            {
+                                $("#noChangeWarningBtn").click();
+                            }
+                            // 成功后，预警标题、预警内容、防御指南内容清空
+                            $("#warningTitle").val('');
+                            $("#warningContent").val('');
+                            $("#defense").val('');
+                            $("#taskId").val('');
+                            $("#processId").val('');
+                            window.open("./warningInfo.html?data="+JSON.stringify(obj));
+                            location.reload();
+                        }
+                    },
+                    error:function(e,f,g){
+                        debugger;
+
+                    }
+                });
+            });
+
+            //渠道配置
+            $("#channelDeploy").click(function ()
+            {
+                let showChannels=[];
+                let showTextArray=[];
+                let areas = [];
+                let inputIssue = $("#issue").val();
+                let issueReg = /\[[0-9]{4}\][0-9]*-[A-Z]{1}/;
+                if (!issueReg.test(inputIssue))
+                {
+                    layer.msg("期号不正确。数字-编号，例：[2019]1-A");
+                    return;
+                }
+                $("input[name='taizhou']:checked").each(function ()
+                {
+                    areas.push(this.value);
+                });
+                $("input[name='channel']:checked").each(function ()
+                {
+                    showChannels.push(this.value);
+                });
+                $("input[name='channel']:checked").each(function ()
+                {
+                    showTextArray.push(this.title);
+                });
+                if (showChannels.length == 0)
+                {
+                    layer.msg("请选择发布渠道。");
+                    return;
+                }
+                if (areas.length == 0)
+                {
+                    layer.msg("请选择受影响区域。");
+                    return;
+                }
+                let warningTitle = $("#warningTitle").val();
+                let warningContent = $("#warningContent").val();
+                // 各文本区域的内容
+                let textContent = warningSendType == 3 ? warningTitle : warningTitle + '：' + warningContent;
+                let paramData = [];
+                for (var i=0 ;i<showChannels.length;i++){
+                    paramData.push({"eleKey":showChannels[i],"eleName":showTextArray[i],"content":textContent})
+                }
+                var paramStr = {"eventType":$("#photo").data("code") ,"severity": $("#photo").data("level"),"relieaseTime": $("#publishTime").val() + ":00","data":JSON.stringify(paramData)};
+                $.ajax({
+                    type: "get",
+                    url: main_url + "/thesaurus/warnCheck",
+                    data:paramStr,
+                    dataType: "json",
+                    success:function(json){
+                        if (json.returnCode == 0) {
+                            if (json.data.length > 0) {
+                                hasOutSideWord = JSON.stringify(json.data);
+                                    var html = "";
+                                    html += "<form  id='moduleForm' name='moduleForm' >";
+                                    html += "<div class='bootstrap'>";
+                                    for (var i = 0; i < json.data.length; i++) {
+                                        html += "<ul  style='border-bottom: 1px dashed #4495f3';>";
+                                        html += "<li class='lab_nameNew'>" + json.data[i].eleName + "</li>";
+                                        html += "<li class='lab_valueNew'>" + json.data[i].content + "</li>";
+                                        html += "</ul>";
+                                    }
+                                    html += "</div>";
+                                    html += "</form>";
+                                layer.open(
+                                    {
+                                        title: '警告：预警内容包含词库以外的字词，是否继续',
+                                        scrollbar: true,
+                                        shade: [0.8, '#393D49'],
+                                        btn:['继续','取消'],
+                                        btnAlign: 'c',
+                                        maxmin: true,
+                                        area: ['1100px', '600px'],
+                                        content: html,
+                                        yes : function(index,layero){
+                                            let url = "./channel.html";
+                                            $.get(url, {}, function (str){
+                                                layer.open({
+                                                        title: '发布渠道',
+                                                        scrollbar: true,
+                                                        shade: [0.8, '#393D49'],
+                                                        btn:['发布','关闭'],
+                                                        btnAlign: 'c',
+                                                        maxmin: true,
+                                                        area: ['1100px', '600px'],
+                                                        content: str,
+                                                        success: function (layero, index)
+                                                        {
+                                                            let warningCode = $("#photo").data("code");
+                                                            let warningLevel = $("#photo").data("level");
+                                                            let warningTitle = $("#warningTitle").val();
+                                                            let warningContent = $("#warningContent").val();
+                                                            // 各文本区域的内容
+                                                            let textContent = warningSendType == 3 ? warningTitle : warningTitle + '：' + warningContent;
+
+                                                            let channelCheckedJson = {};//各渠道选择的用户数量
+                                                            $.get(main_url + "/dict/queryDictByCode", {"code": "Channel"}, function (obj)
+                                                            {
+                                                                var showChannelIndex = 0;
+                                                                if (obj != null )
+                                                                {
+                                                                    obj.forEach((item,i)=>
+                                                                    {
+                                                                        // 只显示配置的渠道
+                                                                        if(showChannels.includes(item.dicCode)) {
+                                                                            showChannelIndex++;
+                                                                            channelCheckedJson[item.name] = 0;  //默认选中0
+                                                                            var description = item.description;
+                                                                        //<page-office :url="docPath" id="products"></page-office>
+                                                                            $("#channelName").append(`<li class="${showChannelIndex == 1 ? 'layui-this' : ''}" data-v='${item.dicCode}'>${item.name}</li>`);
+                                                                            $("#channelUser").append(`<div data-v='${item.dicCode}' style="height:100%;" class="layui-tab-item ${showChannelIndex == 1 ? 'layui-show' : ''}">
+                                                                                    <div class=''  style='height:320px;width: 68%;margin-right: 2%;float: left;'>
+                                                                                        <p style="height: 30px;line-height: 30px;margin-bottom: 10px;background: #f4f4f4;padding-left: 10px;">${item.name}发布内容：</p><textarea class="layui-textarea" style="width:100%;height:240px;">${textContent}</textarea><p class="valueNum">已输入${textContent.length}个字符</p>
+                                                                                    </div>
+                                                                                    <div class='' style='height:320px;border: 1px solid #e6e6e6;width: 30%;float: left;box-sizing: border-box;'>
+                                                                                        <p style="height: 30px;line-height: 30px;margin-bottom: 10px;background: #f4f4f4;padding-left: 10px;">服务用户：</p>
+                                                                                        <ul id="tree${item.dicCode}" style="height: 270px;overflow-y:auto;" class="demo-tree"></ul>
+                                                                                    </div>
+                                                                                </div>`);
+                                                                            $.get(main_url + "/ssd-service-user-type/getServiceUserTree", {
+                                                                                'channelCodes': item.dicCode
+                                                                            }, function (obj) {
+                                                                                if(obj.code == 0) {
+                                                                                    var data = obj.data.list;
+                                                                                    function clickTitle(jsonObj){
+                                                                                        $.each(jsonObj, function (index, item) {
+                                                                                            item.title=item.name;
+                                                                                            clickTitle(item.children);
+                                                                                        });
+                                                                                        return userList;
+                                                                                    }
+                                                                                    clickTitle(data);
+                                                                                    tree.render({
+                                                                                        elem: '#tree'+item.dicCode
+                                                                                        ,id:'tree'+item.dicCode
+                                                                                        ,data: data
+                                                                                        ,showCheckbox: true
+                                                                                        ,oncheck: function(obj){
+                                                                                            var checkedData = tree.getChecked('tree'+item.dicCode); //获取选中节点的数据
+                                                                                            var checkedNodeNum = 0;
+                                                                                            let userList1 = getCheckedId(checkedData);
+                                                                                            sendUserList.push({'serviceUserList':userList1,'publishId':'','publishChannel':item.dicCode})
+                                                                                            channelCheckedJson[item.name] = userList1.length;
+                                                                                            layero.find("#checkedCount").text("已选用户");
+                                                                                            for (let key in channelCheckedJson) {
+                                                                                                var checkedCountTxt = layero.find("#checkedCount").text();
+                                                                                                layero.find("#checkedCount").text(`${checkedCountTxt}，${key}:${channelCheckedJson[key]}`);
+                                                                                            }
+                                                                                            userList = [];
+                                                                                        }
+                                                                                    });
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                }
+                                                            });
+                                                        },
+                                                        yes : function(index,layero)
+                                                        {
+                                                            let sendUserMap = {};
+                                                            eachchannelcontent = {};
+                                                            $("#channelBox").html("");
+                                                            layero.find("#channelName").children().each(function(){
+                                                                let channelCode = $(this).data("v");
+                                                                let channelName = $(this).text();
+                                                                let treeObj = tree.getChecked("tree"+channelCode);
+                                                                var ids = getCheckedId(treeObj);
+                                                                if(ids.length>0){
+                                                                    $("#channelBox").append(`<span>${channelName}</span>`);
+                                                                    sendUserMap['publishChannel']=channelCode;
+
+                                                                    if(showChannels.includes(channelCode)){
+                                                                        eachchannelcontent[channelCode] = $("#tree" + channelCode).parent().parent().find("textarea").val();
+                                                                    }
+                                                                }
+                                                            });
+                                                            if(Object.keys(sendUserList).length==0)
+                                                            {
+                                                                alert('请选择接收用户!');
+                                                                return false;
+                                                            }
+                                                            if (confirm("确认发布？"))
+                                                            {
+                                                                layer.close(index);
+                                                                $("#submitWarningBtn").click();//发布
+                                                            }
+                                                        },
+                                                    });
+                                            });
+                                        }
+                                    })
+                            } else {
+
+                            }
+                        }
+                    }
+                })
+            });
+        });
+    </script>
+</body>
+
+</html>

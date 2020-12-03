@@ -1,0 +1,166 @@
+{
+    "success": true,
+    "code": 0,
+    "message": "查询成功",
+    "data": {
+        "rain": {
+            "date": [
+                "9月16日",
+                "9月17日",
+                "9月18日",
+                "9月19日",
+                "9月20日",
+                "9月21日",
+                "9月22日"
+            ],
+            "list": [
+                {
+                    "data": [
+                        "6",
+                        "0",
+                        "0",
+                        "30",
+                        "0",
+                        "0",
+                        "2"
+                    ],
+                    "name": "IG"
+                }
+            ]
+        },
+        "temp": {
+            "date": [
+                "9月16日",
+                "9月17日",
+                "9月18日",
+                "9月19日",
+                "9月20日",
+                "9月21日",
+                "9月22日"
+            ],
+            "list": [
+                {
+                    "data": [
+                        "34",
+                        "33",
+                        "28",
+                        "24",
+                        "27",
+                        "25",
+                        "22"
+                    ],
+                    "name": "IG最高气温"
+                },
+                {
+                    "data": [
+                        "23",
+                        "23",
+                        "22",
+                        "21",
+                        "20",
+                        "19",
+                        "19"
+                    ],
+                    "name": "IG最低气温"
+                }
+            ]
+        },
+        "table": {
+            "date": [
+                "9月21日",
+                "9月22日",
+                "9月23日",
+                "9月24日",
+                "9月25日",
+                "9月26日",
+                "9月27日"
+            ],
+            "data": {
+                "windv": [
+                    {
+                        "data": [
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null
+                        ],
+                        "name": "IG"
+                    }
+                ],
+                "rain": [
+                    {
+                        "data": [
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null
+                        ],
+                        "name": "IG"
+                    }
+                ],
+                "windd": [
+                    {
+                        "data": [
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null
+                        ],
+                        "name": "IG"
+                    }
+                ],
+                "maxtemp": [
+                    {
+                        "data": [
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null
+                        ],
+                        "name": "IG"
+                    }
+                ],
+                "weather": [
+                    {
+                        "data": [
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null
+                        ],
+                        "name": "IG"
+                    }
+                ],
+                "mintemp": [
+                    {
+                        "data": [
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null
+                        ],
+                        "name": "IG"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,178 @@
+article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, figure, section, legend, textarea, p, blockquote, th, td, input, select, textarea, button { margin: 0; padding: 0 }
+body{font-family:"Microsoft Yahei",Arial,Helvetica,sans-serif;background-color: #fff;color:#424242;margin: 0 auto; font-size: 12px;}
+table{border-collapse:collapse;border-spacing:0}
+ul,ol,dd,dt,dl{list-style-type:none;}
+a{color:#333;text-decoration: none;-webkit-touch-callout: none;-webkit-user-select: none;}
+input,img{padding:0;}
+i,em{font-style:normal;}
+:focus{outline: none}
+.clearfix:after { display: block; clear: both; visibility: hidden; height: 0; overflow: hidden; content: "."; }
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #00275d;
+    background-clip: padding-box;
+    border: 1px solid #278bcc;
+    min-height: 28px;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-track-piece {
+    background-color: #075489;
+}
+::selection {
+    background: #6BB9FF;
+    text-shadow: none;
+    color: #FFFFFF;
+}
+.selectCon{
+    position: relative;
+    display: inline-block;
+    height: 38px;
+    line-height: 38px;
+    border: 1px solid #54bdf9;
+    background: #c1d9d8;
+    box-sizing: border-box;
+}
+.select{
+    padding: 0 20px 0 10px;
+    height: 100%;
+    font-size: 14px;
+    cursor: pointer;
+    max-width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.select>span{
+    display: block;
+    padding-right: 10px;
+    overflow: auto;
+    white-space: nowrap;
+}
+.selectCon:hover .optionBox{
+    display: block;
+}
+.select::after{
+    content: '';
+    position: absolute;
+    right: 6px;
+    top: 11px;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    border-top: 8px solid black;
+}
+.optionBox{
+    display: none;
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 0;
+    width: 450px;
+    border: 1px solid #DADADA;
+    background: #FFFFFF;
+    z-index: 99;
+}
+.optionItemBox{
+    padding: 15px 5px;
+    font-size: 0;
+}
+.optionItemBox>span{
+    display: inline-block;
+    vertical-align: top;
+    width: 10%;
+    font-size: 14px;
+}
+.optionItemBox>ul{
+    display: inline-block;
+    width: 90%;
+    font-size: 14px;
+}
+.optionItemBox>ul>li{
+    display: inline-block;
+    margin: 0 5px 5px;
+    padding: 0 5px;
+    line-height: 24px;
+    border: 1px solid #dadada;
+    cursor: pointer;
+}
+.optionItemBox>ul>.liAc{
+    border: 1px solid #54bdf9;
+    background: #c1d9d8;
+}
+.stationName{
+    padding: 0 5px 15px;
+}
+.essentialFactor{
+    position: absolute;
+    right: 20px;
+    top: 60px;
+    width: 500px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    background: #ffffff;
+}
+.essentialFactorItem{
+    position: relative;
+    width: 96%;
+    margin: 10px auto;
+    padding: 0 10px;
+    border: 1px solid #dadada;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.essentialFactorTitle{
+    position: absolute;
+    left: 0;
+    top: -11px;
+    font-size: 14px;
+    color: #493fbd;
+    padding: 0 10px;
+    background: #FFFFFF;
+}
+.essentialFactorItem>ul{
+    margin: 10px 0;
+    overflow: hidden;
+}
+.essentialFactorItem>ul>li{
+    float: left;
+    width: 33.3333%;
+    margin: 3px 0;
+}
+.essentialFactorItem>ul>li>input,.selectAll>input{
+    vertical-align: middle;
+    cursor: pointer;
+}
+.essentialFactorItem>ul>li>label,.selectAll>label{
+    font-size: 12px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.essentialFactorBtn{
+    margin-bottom: 15px;
+    padding-top: 10px;
+}
+.selectAll{
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 20px;
+}
+.essentialFactorBtn>span{
+    vertical-align: middle;
+    color: #FFFFFF;
+    padding: 3px 10px;
+    margin-left: 15px;
+    cursor: pointer;
+}
+.essentialFactorBtn>span:first-of-type{
+    background: #55b15a;
+}
+.essentialFactorBtn>span:first-of-type:hover{
+    background: #08b105;
+}
+.essentialFactorBtn>span:last-of-type{
+    background: #f2b04e;
+}
+.essentialFactorBtn>span:last-of-type:hover{
+    background: #f29a02;
+}

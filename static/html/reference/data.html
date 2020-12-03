@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lan>
+<head>
+    <meta charset="utf-8">
+    <title>参考资料管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .layui-table-body{overflow-x: auto;}
+        .layui-layer-page .layui-layer-content{overflow: auto !important;}
+        .layui-form-checkbox{margin-right: 0;}
+        .layui-table tbody tr:hover{background-color: white;}
+        .r-demo {
+            height: 100%;
+            border-top: 3px solid #63cff5;
+            border-bottom: 1px solid #c9c9c9;
+            border-left: 1px solid #c9c9c9;
+            border-right: 1px solid #c9c9c9;
+            padding: 5px;
+            overflow: auto;
+        }
+        #updateBtn,#uploadExcel,#modelUpload{
+            background: #63cff5;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .layui-table-cell{
+            height: 40px;
+        }
+        .layui-table-fixed .layui-table-header .layui-table[lay-size=sm] th .layui-table-cell{
+            line-height: 20px;
+            display: table-cell;
+            vertical-align: middle;
+            overflow: initial;
+        }
+        .layui-table-header .layui-table[lay-size=sm] th .layui-table-cell{
+            line-height: 20px;
+            overflow: initial;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai{
+            position: absolute;
+            right: 5px;
+            top:-5px;
+            cursor: pointer;
+            padding-bottom: 5px;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai .slide{
+            position: absolute;
+            background-color: white;
+            top: 24px;
+            right: -6px;
+            height: 26px;
+            width: 215px;
+            padding: 3px 0;
+            z-index: 9;
+            display: none;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai:hover .slide{
+            display: block;
+        }
+
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai .slide .ui-widget-header{background: #009688;}
+
+        .layui-table-sort{position: absolute;bottom: 0;right: 15px;}
+    </style>
+</head>
+<body>
+<div class="layui-fluid ssd-container">
+    <div class="layui-row layui-col-space10 ssd-row">
+        <div class="layui-col-sm3  layui-col-md2 ssd-col-xlg1 ssd-col">
+            <div class="r-demo" style="position:relative;">
+                <p style="text-align:center;padding-top: 6px;">
+                    <span style="font-size: 20px; color: #1E9FFF;">参考资料类型</span>
+                </p>
+                <hr>
+                <div id="datatypeTree" class="demo-tree"></div>
+            </div>
+        </div>
+        <div class="layui-col-sm9 layui-col-md10 ssd-col-xlg9 ssd-col">
+            <div class="r-demo ssd-search-box"  style="overflow-y:hidden">
+                <div class="layui-tab-content">
+                    <div class="search-set">
+                        <div class="search-wrap">
+                            <div class="layui-row layui-form layui-form-item">
+                                <label class="layui-form-label">资料类型</label>
+                                <div class="layui-input-inline">
+                                    <select id="dataType" name="dataType" lay-filter="aihao">
+                                        <option value="">全部</option>
+                                        <option value="url">文件</option>
+                                        <option value="image">图片</option>
+                                        <option value="text">文本</option>
+                                    </select>
+                                </div>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="dataName" name="dataName" value="" class="layui-input" placeholder="请输入资料名称">
+                                </div>
+                                <div class="layui-input-inline" style="width: auto;margin-left: 10px;">
+                                    <button class="layui-btn shortBtnSaveClass" id="find" type="button" style="background-color: #5689FE;">查询</button>
+                                    <button type="button" class="layui-btn" id="add" lay-event="add" >添加</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row table-box">
+                            <table class="layui-hide" id="tableList" lay-filter="list"></table>
+                            <div id="paging" style="margin-left: 50px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/html" id="toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+    </div>
+</script>
+<script type="text/html" id="operate">
+    <a class="layui-btn layui-btn-sm" lay-event="edit" name="edit" id="{{d.id}}_edit" >编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del" name="del" id="{{d.id}}" >删除</a>
+</script>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="js/data.js"></script>
+</html>

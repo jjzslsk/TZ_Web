@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../../layui/css/layui.css">
+    <style>
+        html,body,.h100{height: 100%;}
+        .warningQueryInfo .top::AFTER{content:'';clear: both;display:block;}
+        .warningQueryInfo .top > .warningInfo{
+            display:inline-block;
+            float: left;
+            width:20%;
+            padding:5px;
+            box-sizing:border-box;
+            height: 100%;
+        }
+        .warningQueryInfo .top > .warningInfo.orange{
+            background-color: orange;
+        }
+        .warningQueryInfo .top > .flow{
+            display:inline-block;
+            float:right;
+            width:80%;
+            height: 100%;
+        }
+        #charts{height: 220px;display: inline-block;margin: auto;}
+        .status{padding:5px;}
+        .status i{width: 20px; height: 13px;margin-right: 3px;border-radius: 3px;display: inline-block;}
+        .status.fbcg i{background-color: #71c438;}
+        .status.fbsb i{background-color: #fd5634;}
+        .status.tscg i{background-color: #2da1f8;}
+        .status.tssb i{background-color: #f99e1a;}
+        .status.zzts i{background-color: #744ff7;}
+    </style>
+</head>
+<body>
+<div class="warningQueryInfo h100">
+    <div class="top h100" id="ele">
+
+    </div>
+</div>
+<script src="../../../tools/jquery-3.5.1.js"></script>
+<script src="../../../layui/layui.js"></script>
+<script src="../../../layui/layui.all.js"></script>
+<script src="../../../tools/http.js"></script>
+<script src="../../../tools/echarts.min.js"></script>
+<script>
+    layui.use(['element'],function(){
+        let element = layui.element;
+        var myChart;
+        var url=location.search;
+        var data = eval ("(" + decodeURI(url.replace("?data=","").replace("}","")) + ")");
+        function addZero(num){
+            if(parseInt(num) < 10){
+                num = '0'+num;
+            }
+            return num;
+        }
+        function getMyDate(str) {
+            var oDate = new Date(str),
+                oYear = oDate.getFullYear(),
+                oMonth = oDate.getMonth()+1,
+                oDay = oDate.getDate(),
+                oHour = oDate.getHours(),
+                oMin = oDate.getMinutes(),
+                oSen = oDate.getSeconds(),
+                oTime = oYear +'-'+ addZero(oMonth) +'-'+ addZero(oDay) +' '+ addZero(oHour) +':'+
+                    addZero(oMin) +':'+addZero(oSen);
+            return oTime;
+        }
+        var time = getMyDate(data.publishTime);
+        var ele = ` <div class="warningInfo orange">
+            <p style="text-align:center;"><b>${time}发布</b></p>
+            <p style="text-align:center;margin-top:10px;">
+                <img style="width:80px;" src="../image/${data.code }_0${data.level }.png">
+            </p>
+            <h1 style="text-align:center;font-weight: bold;padding: 15px 0;">${data.title }</h1>
+            <p style="text-indent: 2rem;">${data.content }</p>
+            <p style="margin-top: 10px;font-size: large;font-weight: bold;">防御指南：</p>
+            <p>${data.defense }</p>
+            <input type="hidden" id="warningId" value="${data.id }"/>
+        </div>
+        <div class="flow h100" style="display:flex;flex-flow:column nowrap;">
+            <div style="width: 100%; overflow: auto;    text-align: center;">
+                <div id="charts"></div>
+            </div>
+            <div style="text-align: center;">
+                <span class="status fbcg"><i></i>发送成功 <span>0</span></span>
+                <span class="status fbsb"><i></i>发送失败 <span>0</span></span>
+                <span class="status zzts"><i></i>正在推送 <span>0</span></span>
+                <span class="status tscg"><i></i>推送成功 <span>0</span></span>
+                <span class="status tssb"><i></i>推送失败 <span>0</span></span>
+                <span class="status bfb">0.00%</span>
+                <span class="status time"><span>25</span>秒后刷新</span>
+            </div>
+            <div class="layui-tab" style="flex:1 1 0;display:flex;flex-flow:column;">
+                <ul class="layui-tab-title">
+                </ul>
+                <div class="layui-tab-content" style="flex:1 1 0;overflow:auto;">
+                </div>
+            </div>
+        </div>`;
+        $("#ele").html(ele);
+        let chartsColor = ['#71c438','#fd5634','#744ff7','#2da1f8','#f99e1a'];
+        let chartsLabel = ['发送成功','发送失败','正在推送','推送成功','推送失败'];
+        //加载刷新echarts及表格
+        let loadData = function(isFirst){
+            $.ajax({
+                url: main_url + "/ssd-early-warning-publish-detail/findSendMsg",
+                type: "get",
+                data:{"warningId":data.id},
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        let series = [];
+                        let title = [];
+                        let cent = 125;
+                        let channelSet = [];
+                        let statusNum = [0, 0, 0, 0, 0];
+                        data.status.forEach(item => {
+                            statusNum[item.status] += item.num;
+                            //生成echarts  option
+                            if(series.findIndex(s=>s.name==item.channelName)<0){
+                                channelSet.push({name:item.channelName,value:item.channel});
+                                series.push({
+                                    name : item.channelName,
+                                    center : [cent.toString(),'60%'],
+                                    data : [],
+                                    type: 'pie',
+                                    radius:[40,70],
+                                });
+                                title.push({
+                                    left : cent-20,
+                                    text: '',
+                                    subtext: item.channelName,
+                                });
+                                cent += 230;
+                            }
+                            series[series.findIndex(s=>s.name==item.channelName)].data.push({
+                                name : chartsLabel[item.status],
+                                value: item.num,
+                                itemStyle:{
+                                    color : chartsColor[item.status]
+                                }
+                            });
+                        });
+
+                        $(".status.fbcg").find("span").text(statusNum[0]);
+                        $(".status.fbsb").find("span").text(statusNum[1]);
+                        $(".status.zzts").find("span").text(statusNum[2]);
+                        $(".status.tscg").find("span").text(statusNum[3]);
+                        $(".status.tssb").find("span").text(statusNum[4]);
+                        $(".status.bfb").text(function () {
+                            let s = statusNum[0];
+                            let n = (s * 100 / (statusNum[0] + statusNum[1] + statusNum[2] + statusNum[3] + statusNum[4])).toFixed(2);
+                            return n + "%";
+                        }());
+
+                        if (isFirst) {
+                            $("#charts").css('width', (series.length * 230 + 10) + "px");
+                            myChart = echarts.init(document.getElementById('charts'));
+                            let option = {
+                                tooltip: {
+                                    trigger: 'item',
+                                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                                },
+                                calculable: true,
+                                series: []
+                            };
+                            myChart.setOption(option);
+                        }
+
+                        //更新echarts
+                        myChart.setOption({
+                            series,
+                            title,
+                        });
+
+                        if (isFirst) {
+                            channelSet.forEach((item, i) => {
+                                $(".layui-tab-title").append(`<li class="${i == 0 ? "layui-this" : ""}" data-channel="${item.value}">${item.name}</li>`);
+                                $(".layui-tab-content").append(`
+                            <div class="layui-tab-item ${i == 0 ? 'layui-show' : ''}">
+                                <table class="layui-table" id="${item.value}">
+                                    <thead>
+                                        <tr>
+                                            <th>用户名</th>
+                                            <th>号码</th>
+                                            <th>状态</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        `);
+                            });
+                            element.render();
+                        }
+                        let tables = {};
+                        data.list.forEach(item => {
+                            if (tables["#" + item.channel] == undefined) {
+                                tables["#" + item.channel] = '';
+                            }
+                            tables["#" + item.channel] += `
+                        <tr data-v="${item.user_num}">
+                            <td>${item.username}</td>
+                            <td>${item.user_num}</td>
+                            <td style="color:${chartsColor[item.status]}">${chartsLabel[item.status]}</td>
+                        </tr>
+                    `;
+                        });
+                        Object.keys(tables).forEach(key => {
+                            $(key).find("tbody").html(tables[key]);
+                        });
+                    }
+                }
+            });
+
+        };
+
+        loadData(true);
+        let shuaxin = 25;
+        setInterval(function(){
+            shuaxin--;
+            if(shuaxin<0){
+                shuaxin=25;
+                location.reload();
+            }
+            $(".time span").text(shuaxin);
+        },1000);
+    });
+</script>
+</body>
+</html>

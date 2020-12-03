@@ -1,0 +1,65 @@
+{
+	"success": true,
+	"code": 0,
+	"message": "查询成功",
+	"data": {
+		"rain": {
+			"date": ["9月10日", "9月11日", "9月12日", "9月13日", "9月14日", "9月15日", "9月16日"],
+			"list": [{
+				"data": ["8", "66", "0", "1", "2", "4", "25"],
+				"name": "IG"
+			}]
+		},
+		"temp": {
+			"date": ["9月10日", "9月11日", "9月12日", "9月13日", "9月14日", "9月15日", "9月16日"],
+			"list": [{
+				"data": ["34", "30", "33", "30", "28", "27", "32"],
+				"name": "IG最高气温"
+			}, {
+				"data": ["23", "23", "22", "21", "23", "23", "24"],
+				"name": "IG最低气温"
+			}]
+		},
+		"table": {
+			"date": ["9月15日", "9月16日", "9月17日", "9月18日", "9月19日", "9月20日", "9月21日"],
+			"data": {
+				"windv": [{
+					"data": [null, null, null, null, null, null, null],
+					"name": "IG"
+				}, {
+					"data": [null, null, null, null, null, null, null],
+					"name": "EC"
+				}, {
+					"data": [null, null, null, null, null, null, null],
+					"name": "OCF"
+				}],
+				"rain": [{
+					"data": [null, null, null, null, null, null, null],
+					"name": "IG"
+				}, {
+					"data": [null, null, null, null, null, null, null],
+					"name": "EC"
+				}],
+				"windd": [{
+					"data": [null, null, null, null, null, null, null],
+					"name": "IG"
+				}],
+				"maxtemp": [{
+					"data": [null, null, null, null, null, null, null],
+					"name": "IG"
+				}],
+				"weather": [{
+					"data": [null, null, null, null, null, null, null],
+					"name": "IG"
+				}, {
+					"data": [null, null, null, null, null, null, null],
+					"name": "EC"
+				}],
+				"mintemp": [{
+					"data": [null, null, null, null, null, null, null],
+					"name": "IG"
+				}]
+			}
+		}
+	}
+}

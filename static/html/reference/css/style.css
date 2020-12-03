@@ -1,0 +1,17 @@
+html,body{height: 100%;}
+.ssd-container,.ssd-row {height: 100%;}
+.ssd-container .ssd-row .ssd-col-xlg1{height: 100%;}
+.ssd-container .ssd-row .ssd-col-xlg1 .r-demo{padding: 0px;}
+.ssd-container .ssd-row .ssd-col-xlg9{height: 100%;}
+.ssd-container .ssd-row .ssd-col-xlg9 .r-demo{padding: 0px;}
+.ssd-container .ssd-row .ssd-col-xlg9 .layui-tab-content{height: 100%;}
+.ssd-container .ssd-row .ssd-col-xlg9 .layui-tab-content .search-set{height: 100%;}
+.ssd-container .ssd-row .ssd-col-xlg9 .search-wrap .layui-form-item{margin-top: 15px;}
+.ssd-container .ssd-row .ssd-col-xlg9 .table-box{height: calc(100% - 230px);}
+.ssd-container .ssd-row .ssd-col-xlg9 .table-box .layui-table-view{height: calc(100% - 5px)!important;}
+.ssd-container .ssd-row .ssd-col-xlg9 .table-box .layui-table-view .layui-table-box{height: calc(100% - 68px);}
+.ssd-container .ssd-row .ssd-col-xlg9 .table-box .layui-table-view .layui-table-box .layui-table-header{height: 40px;}
+.ssd-container .ssd-row .ssd-col-xlg9 .table-box .layui-table-view .layui-table-box .layui-table-body{height: 100% !important;}
+
+
+

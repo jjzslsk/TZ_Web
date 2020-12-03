@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+	<title>历史排位</title>
+	<style>
+		.layui-table-body{overflow-x: auto;}
+	    .layui-layer-page .layui-layer-content{overflow: auto !important;}
+		.layui-form-checkbox{margin-right: 0;}
+		.layui-table tbody tr:hover{background-color: white;}
+		.r-demo {
+			height: 100%;
+			border-top: 3px solid #63cff5;
+			border-bottom: 1px solid #c9c9c9;
+			border-left: 1px solid #c9c9c9;
+			border-right: 1px solid #c9c9c9;
+			padding: 5px;
+			overflow: auto;
+		}
+		#updateBtn,#uploadExcel,#modelUpload{
+			background: #63cff5;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="layui-fluid ssd-container">
+		<div class="layui-row layui-col-space10 ssd-row">
+			<div class="layui-col-sm3  layui-col-md2 ssd-col-xlg1 ssd-col">
+				<div class="r-demo" style="position:relative;">
+					<p style="text-align:center; ">
+                        <span style="font-size: 20px; color: #1E9FFF;">站点选择</span>
+					</p>
+					<hr>
+					<div style="right: 0;top: 120px;bottom: 50px;overflow: auto;">
+                        <div id="stationTree" class="demo-tree"></div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-sm9 layui-col-md10 ssd-col-xlg9 ssd-col">
+				<div class="r-demo ssd-search-box">
+					<div class="layui-tab">
+						<ul class="layui-tab-title">
+					    	<li  class="layui-this">旬</li>
+					    	<li>月</li>
+					    	<li>季</li>
+					    	<li>年</li>
+					  	</ul>
+			    		<div class="layui-tab-content">
+			    		    <div class="layui-tab-item layui-show">
+								<div class="search-set">
+							    	<div class="layui-row layui-form-item">
+							  			<label class="layui-form-label" style="width: 80px;"> 对比年份：</label>
+								   		<div class="layui-input-inline" style="width: 100px;">
+								       		<input type="text" class="layui-input" id="xun_range" placeholder="yyyy">
+								        </div>
+								        <label class="layui-form-label" style="width: 100px;"> 比对时间：</label>
+							  			<div class="layui-input-inline" style="width: 100px;">
+								       		<input type="text" class="layui-input" id="xun_time" placeholder="yyyy-MM">
+								        </div>
+								        <label class="layui-form-label" style="width: 20px;"> 旬：</label>
+							  			<div class="layui-form layui-input-inline" style="width: 80px;">
+								       		<select id="xun_type">
+							    				<option value="SX" selected="selected">上旬</option>
+							    				<option value="ZX">中旬</option>
+							    				<option value="XX">下旬</option>
+							    			</select>
+								        </div>
+								        <label class="layui-form-label" style="width: 100px;"> 要素选择：</label>
+							  			<div class="layui-form layui-input-inline" style="width: 120px;">
+							    			<select id="xun_element">
+							    				<option value="ta"    cal="Avg" name="平均气温(℃)" selected="selected">平均气温</option>
+							    				<option value="MinTemp" cal="Min" name="最低气温(℃)">最低气温</option>
+							    				<option value="MaxTemp" cal="Max" name="最高气温(℃)">最高气温</option>
+							    				<option value="Rain3"   cal="Sum" name="降水量(mm)">降水量</option>
+							    				<option value="SunTime" cal="Sum" name="日照时数(h)">日照时数</option>
+							    			</select>
+							  			</div>
+							  			<label class="layui-form-label" style="width: 80px;"> 搜索顺序：</label>
+							  			<div class="layui-form layui-input-inline" style="width: 80px;">
+								       		<select id="xun_sort">
+							    				<option value="Asc" selected="selected">升序</option>
+							    				<option value="Desc">降序</option>
+							    			</select>
+								        </div>
+							  			&nbsp;&nbsp;&nbsp;&nbsp;
+							  			<button class="layui-btn ssd-btn-search" type="button" onclick="doQuery('Xun')">搜索</button>
+									 	<!--<button class="layui-btn ssd-btn-search" type="button" onclick="doExport('Xun', '0')" style="background-color: #5689FE;">导出</button>
+									 	<button class="layui-btn ssd-btn-search" type="button" onclick="doExport('Xun', '1')" style="background-color: #5689FE;">对比数据导出</button>
+				-->		  			</div>
+					  			</div>
+					  			<div class="search-table">
+									<table class="layui-table" id="tableXun" lay-filter="tableXun" style="height: 100%;"></table>
+								</div>
+				  			</div>
+					    	<div class="layui-tab-item">
+					    		<div class="search-set">
+							    	<div class="layui-row layui-form-item">
+							  			<label class="layui-form-label" style="width: 80px;"> 对比年份：</label>
+								   		<div class="layui-input-inline" style="width: 100px;">
+								       		<input type="text" class="layui-input" id="month_range" placeholder="yyyy">
+								        </div>
+								        <label class="layui-form-label" style="width: 100px;"> 比对时间：</label>
+							  			<div class="layui-input-inline" style="width: 100px;">
+								       		<input type="text" class="layui-input" id="month_time" placeholder="yyyy-MM">
+								        </div>
+								        <label class="layui-form-label" style="width: 100px;"> 要素选择：</label>
+							  			<div class="layui-form layui-input-inline" style="width: 120px;">
+							    			<select id="month_element">
+							    				<option value="ta"    cal="Avg" name="平均气温(℃)" selected="selected">平均气温</option>
+							    				<option value="MinTemp" cal="Min" name="最低气温(℃)">最低气温</option>
+							    				<option value="MaxTemp" cal="Max" name="最高气温(℃)">最高气温</option>
+							    				<option value="Rain3"   cal="Sum" name="降水量(mm)">降水量</option>
+							    				<option value="SunTime" cal="Sum" name="日照时数(h)">日照时数</option>
+							    			</select>
+							  			</div>
+							  			<label class="layui-form-label" style="width: 80px;"> 搜索顺序：</label>
+							  			<div class="layui-form layui-input-inline" style="width: 80px;">
+								       		<select id="month_sort">
+							    				<option value="Asc" selected="selected">升序</option>
+							    				<option value="Desc">降序</option>
+							    			</select>
+								        </div>
+							  			&nbsp;&nbsp;&nbsp;&nbsp;
+							  			<button class="layui-btn ssd-btn-search" type="button" onclick="doQuery('Month')">搜索</button>
+									 	<!--<button class="layui-btn ssd-btn-search" type="button" onclick="doExport('Month', '0')" style="background-color: #5689FE;">导出</button>
+										<button class="layui-btn ssd-btn-search" type="button" onclick="doExport('Month', '1')" style="background-color: #5689FE;">对比数据导出</button>
+						  			--></div>
+						  		</div>
+						  		<div class="search-table">
+									<table class="layui-table" id="tableMonth" lay-filter="tableMonth" style="height: 100%;"></table>
+						  		</div>
+					  		</div>
+					   		<div class="layui-tab-item">
+					    		<div class="search-set">
+							    	<div class="layui-row layui-form-item">
+							  			<label class="layui-form-label" style="width: 80px;"> 对比年份：</label>
+								        <div class="layui-input-inline" style="width: 100px;">
+								       		<input type="text" class="layui-input" id="season_range" placeholder="yyyy" style="width: 110px;">
+								        </div>
+								        <label class="layui-form-label" style="width: 100px;"> 比对时间：</label>
+							  			<div class="layui-input-inline" style="width: 100px;">
+								       		<input type="text" class="layui-input" id="season_time" placeholder="yyyy">
+								        </div>
+								       	<label class="layui-form-label" style="width: 20px;"> 季：</label>
+							  			<div class="layui-form layui-input-inline" style="width: 80px;">
+							    			<select id="season_type">
+							    				<option value="CJ" selected="selected">春季</option>
+							    				<option value="XJ">夏季</option>
+							    				<option value="QJ">秋季</option>
+							    				<option value="DJ">冬季</option>
+							    			</select>
+							  			</div>
+								        <label class="layui-form-label" style="width: 100px;"> 要素选择：</label>
+							  			<div class="layui-form layui-input-inline" style="width: 120px;">
+							    			<select id="season_element">
+							    				<option value="ta"    cal="Avg" name="平均气温(℃)" selected="selected">平均气温</option>
+							    				<option value="MinTemp" cal="Min" name="最低气温(℃)">最低气温</option>
+							    				<option value="MaxTemp" cal="Max" name="最高气温(℃)">最高气温</option>
+							    				<option value="Rain3"   cal="Sum" name="降水量(mm)">降水量</option>
+							    				<option value="SunTime" cal="Sum" name="日照时数(h)">日照时数</option>
+							    			</select>
+							  			</div>
+							  			<label class="layui-form-label" style="width: 80px;"> 搜索顺序：</label>
+							  			<div class="layui-form layui-input-inline" style="width: 80px;">
+								       		<select id="season_sort">
+							    				<option value="Asc" selected="selected">升序</option>
+							    				<option value="Desc">降序</option>
+							    			</select>
+								        </div>
+							  			&nbsp;&nbsp;&nbsp;&nbsp;
+							  			<button class="layui-btn ssd-btn-search" type="button" onclick="doQuery('Season')">搜索</button>
+									 	<!--<button class="layui-btn ssd-btn-search" type="button" onclick="doExport('Season', '0')" style="background-color: #5689FE;">导出</button>
+										<button class="layui-btn ssd-btn-search" type="button" onclick="doExport('Season', '1')" style="background-color: #5689FE;">对比数据导出</button>
+						  			--></div>
+				  				</div>
+				  				<div class="search-table">
+									<table class="layui-table" id="tableSeason" lay-filter="tableSeason"></table>
+				  				</div>
+				  			</div>
+				  			<div class="layui-tab-item">
+								<div class="search-set">
+									<div class="layui-row layui-form-item">
+							  			<label class="layui-form-label" style="width: 80px;"> 对比年份：</label>
+								        <div class="layui-input-inline" style="width: 100px;">
+								       		<input type="text" class="layui-input" id="year_range" placeholder="yyyy" style="width: 110px;">
+								        </div>
+							  			<label class="layui-form-label" style="width: 100px;"> 比对时间：</label>
+							  			<div class="layui-input-inline" style="width: 100px;">
+								       		<input type="text" class="layui-input" id="year_time" placeholder="yyyy">
+								        </div>
+								        <label class="layui-form-label" style="width: 100px;"> 要素选择：</label>
+							  			<div class="layui-form layui-input-inline" style="width: 120px;">
+							    			<select id="year_element">
+							    				<option value="ta"    cal="Avg" name="平均气温(℃)" selected="selected">平均气温</option>
+							    				<option value="MinTemp" cal="Min" name="最低气温(℃)">最低气温</option>
+							    				<option value="MaxTemp" cal="Max" name="最高气温(℃)">最高气温</option>
+							    				<option value="Rain3"   cal="Sum" name="降水量(mm)">降水量</option>
+							    				<option value="SunTime" cal="Sum" name="日照时数(h)">日照时数</option>
+							    			</select>
+							  			</div>
+							  			<label class="layui-form-label" style="width: 80px;"> 搜索顺序：</label>
+							  			<div class="layui-form layui-input-inline" style="width: 80px;">
+								       		<select id="year_sort">
+							    				<option value="Asc" selected="selected">升序</option>
+							    				<option value="Desc">降序</option>
+							    			</select>
+								        </div>
+							  			&nbsp;&nbsp;&nbsp;&nbsp;
+							  			<button class="layui-btn ssd-btn-search" type="button" onclick="doQuery('Year')">搜索</button>
+									 	<!--<button class="layui-btn ssd-btn-search" type="button" onclick="doExport('Year', '0')" style="background-color: #5689FE;">导出</button>
+										<button class="layui-btn ssd-btn-search" type="button" onclick="doExport('Year', '1')" style="background-color: #5689FE;">对比数据导出</button>-->
+						  			</div>
+					  			</div>
+					  			<div class="search-table">
+									<table class="layui-table" id="tableYear" lay-filter="tableYear"></table>
+					  			</div>
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/html" id="drawChart">
+		<a class="layui-btn layui-btn-xs ssd-btn-xs-edit" lay-event="drawChart"><i class="layui-icon">&#xe642;</i>绘图</a>
+	</script>
+    <script src="../../tools/jquery-3.5.1.js"></script>
+    <script src="../../layui/layui.js"></script>
+    <script src="../../layui/layui.all.js"></script>
+    <script src="../../tools/http.js"></script>
+    <script src="../common/js/stationTree.js"></script>
+    <script src="../../tools/echarts.min.js"></script>
+	<script type="text/javascript">
+		var stationType = "";
+		layui.use(['laydate', 'laypage', 'layer','form', 'table', 'tree', 'upload', 'element'], function()
+		{
+			var laydate = layui.laydate //日期
+			,laypage = layui.laypage //分页
+			,layer = layui.layer //弹层
+			,tree = layui.tree //树
+			,form = layui.form //表单
+			,upload = layui.upload //上传
+			,element = layui.element; //元素操作
+            function getFormatDate(thisDate, format)
+            {
+                // 年
+                if(format.indexOf("yyyy") != -1)
+                {
+                    format = format.replace("yyyy", thisDate.getFullYear());
+                }
+                // 月
+                if(format.indexOf("MM") != -1)
+                {
+                    var month = thisDate.getMonth() + 1;
+                    month = month < 10 ? "0" + month : month;
+                    format = format.replace("MM", month);
+                }
+                // 日
+                if(format.indexOf("dd") != -1)
+                {
+                    var day = thisDate.getDate();
+                    day = day < 10 ? "0" + day : day;
+                    format = format.replace("dd", day);
+                }
+                // 时
+                if(format.indexOf("hh") != -1)
+                {
+                    var hour = thisDate.getHours();
+                    hour = hour < 10 ? "0" + hour : hour;
+                    format = format.replace("hh", hour);
+                }
+                // 时
+                if(format.indexOf("HH") != -1)
+                {
+                    var hour = thisDate.getHours();
+                    hour = hour < 10 ? "0" + hour : hour;
+                    format = format.replace("HH", hour);
+                }
+                // 分
+                if(format.indexOf("mm") != -1)
+                {
+                    var minute = thisDate.getMinutes();
+                    minute = minute < 10 ? "0" + minute : minute;
+                    format = format.replace("mm", minute);
+                }
+                return format;
+            }
+			var currDate = new Date;
+			var currYear = getFormatDate(currDate, "yyyy");
+			var currMonth = getFormatDate(currDate, "yyyy-MM");
+			var dateRange = "1981 - 2010";
+
+			// 旬
+			laydate.render({
+				elem : '#xun_range'
+				,type : 'year'
+				,range : true
+				,value: dateRange
+			});
+			laydate.render({
+				elem: '#xun_time',
+				type: 'month',
+				value: currMonth
+			});
+
+			// 月
+			laydate.render({
+				elem : '#month_range'
+				,type : 'year'
+				,range : true
+				,value: dateRange
+			});
+			laydate.render({
+				elem: '#month_time',
+				type: 'month',
+				value: currMonth
+			});
+
+			// 季
+			laydate.render({
+				elem : '#season_range'
+				,type : 'year'
+				,range : true
+				,value: dateRange
+			});
+			laydate.render({
+				elem: '#season_time',
+				type: 'year',
+				value: currYear
+			});
+
+			// 年
+			laydate.render({
+				elem : '#year_range'
+				,type : 'year'
+				,range : true
+				,value: dateRange
+			});
+			laydate.render({
+				elem: '#year_time',
+				type: 'year',
+				value: currYear
+			});
+
+		});
+
+
+		// 获取参数
+		function getParam(dataType)
+		{
+			var queryRange = "";
+			var queryTime  = "";
+			var queryDataType = "";
+			var querySort = "";
+			var queryCal = "";
+			var queryEle = "";
+			var queryEleName = "";
+			if(dataType == "Xun")
+			{
+				queryRange = $('#xun_range').val();
+				queryTime  = $('#xun_time').val();
+				queryDataType = $('#xun_type').val();	//上中下旬
+				querySort = $('#xun_sort').val();
+				queryCal = $('#xun_element').find("option:selected").attr("cal");
+				queryEle = $('#xun_element').find("option:selected").attr("value");
+				queryEleName = $('#xun_element').find("option:selected").attr("name");
+			}
+			else if(dataType == "Month")
+			{
+				queryRange = $('#month_range').val();
+				queryTime  = $('#month_time').val();
+				querySort = $('#month_sort').val();
+				queryCal = $('#month_element').find("option:selected").attr("cal");
+				queryEle = $('#month_element').find("option:selected").attr("value");
+				queryEleName = $('#month_element').find("option:selected").attr("name");
+			}
+			else if(dataType == "Season")
+			{
+				queryRange = $('#season_range').val();
+				queryTime  = $('#season_time').val();
+				queryDataType = $('#season_type').val();	//春夏秋冬
+				querySort = $('#season_sort').val();
+				queryCal = $('#season_element').find("option:selected").attr("cal");
+				queryEle = $('#season_element').find("option:selected").attr("value");
+				queryEleName = $('#season_element').find("option:selected").attr("name");
+			}
+			else if(dataType == "Year")
+			{
+				queryRange = $('#year_range').val();
+				queryTime  = $('#year_time').val();
+				querySort = $('#year_sort').val();
+				queryCal = $('#year_element').find("option:selected").attr("cal");
+				queryEle = $('#year_element').find("option:selected").attr("value");
+				queryEleName = $('#year_element').find("option:selected").attr("name");
+			}
+
+			var param =
+			{
+				rankingType   : dataType,
+				stationNums   : stationNums,
+				queryRange    : queryRange,
+				queryTime     : queryTime,
+				queryDataType : queryDataType,
+				querySort     : querySort,
+				queryEle      : queryEle,
+				queryEleName  : queryEleName,
+				queryCal      : queryCal
+			};
+			return param;
+		}
+
+		// 查询数据
+		function doQuery(dataType)
+		{
+			var param = getParam(dataType);
+			$.ajax({
+		        cache: true,
+		        type: "get",
+		        url: main_url +"/liveRanking/getRankingData",
+		        data: param,
+		        async: true,
+		        error: function(request)
+		        {
+		        	layer.msg("Connection error",function() { });
+		        },
+		        success: function(data)
+		        {
+		        	var tableId = "table" + dataType;
+
+		        	var map={};//创建map集合
+		        	var columns = new Array();
+		        	columns.push({ 'field' : 'ID',          'title' : '序号' });
+		        	columns.push({ 'field' : 'StationName', 'title' : '站名名称' });
+		        	columns.push({ 'field' : 'StationNum',  'title' : '站点编号' });
+		        	columns.push({ 'field' : 'DataValue',      'title' : param.queryEleName });
+		        	columns.push({ 'field' : 'DataRank',      'title' : '排名' });
+		        	columns.push({ 'title' : '操作', 'align' : 'center', 'minWidth' : '120', 'toolbar': '#drawChart'});
+
+		        	layui.use(['form', 'table'], function()
+		        	{
+						var table = layui.table;
+						var form = layui.form;
+						table.render({
+							skin: 'row'
+							,even: true
+							,size: 'lg'
+                            ,toolbar: '#toolbarDemo'
+                            ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                                title: '提示'
+                                ,layEvent: 'LAYTABLE_TIPS'
+                                ,icon: 'layui-icon-tips'
+                            }]
+							,height:600
+							,elem: '#' + tableId
+							,cols: [ columns ]
+							,data: data.data
+							,even: true
+							,page: false
+							,limit: 1000
+						});
+						table.on('tool(' + tableId + ')', function(obj)
+						{
+							var data = obj.data;
+							var layEvent = obj.event;
+							drawChart(dataType, data.StationNum);
+						});
+						form.render();
+						renderTableHeight();
+					});
+				}
+			});
+		}
+
+
+		// 数据导出
+		function doExport(dataType, exportType)
+		{
+			var param = getParam(dataType);
+			// 导出排名或全部导出
+			param.exportType = exportType;
+			$.ajax({
+				cache: true,
+				type: "POST",
+				url: main_url +"/liveRanking/doExportData",
+				data: param,
+				async: true,
+				error: function(request)
+				{
+					layer.msg("Connection error",function() { });
+				},
+				success: function(data)
+				{
+					if(data.msg == "success"){
+						window.location.href = "fileOperate/download?fileName=历史排位数据统计.xls&filePath=" + data.filePath;
+					}
+				}
+			});
+		}
+
+
+		// 数据绘图
+		function drawChart(dataType, stationNum)
+		{
+			var param = getParam(dataType);
+			param.stationNums = stationNum;
+
+			var elementName = param.queryEleName;
+			$.ajax({
+				cache: true,
+				type: "POST",
+				url: main_url + "/liveRanking/getChartData",
+				data: param,
+				error: function(request)
+				{
+					layer.msg("Connection error",function(){ });
+				},
+				success: function(data)
+				{
+					if(data.msg == "failed")
+					{
+						return;
+					}
+					layer.open({
+						type : 1
+						,title : false
+						,closeBtn : true
+						,area : [ '900px','400px' ]
+						,shade:  [0.8, '#393D49']
+						,btn: ['关闭']
+						,btnAlign : 'c'
+						,id : 'rankingChart'
+						,success : function(layero)
+						{
+							var name=new Array();//创建list集合
+							var value=new Array();//创建list集合
+							var datas = data.data;
+							for (var i = 0; i < datas.length; i++)
+							{
+								name[i] = datas[i].DateInfo;
+								value[i] = datas[i].DataValue;
+							}
+							var myChart = echarts.init(document.getElementById("rankingChart"));
+							var option =
+							{
+								title :
+								{
+									text : elementName,
+									x    : 'center'
+								},
+							    tooltip:
+							    {
+							        trigger: 'axis',
+							        axisPointer:
+							        {
+							            type: 'shadow'
+							        }
+							    },
+							    legend:
+							    {
+							        data: name
+							    },
+							    toolbox:
+							    {
+							        show: true,
+							        orient: 'vertical',
+							        left: 'right',
+							        top: 'center'
+							    },
+							    calculable: true,
+							    xAxis: [
+							        {
+							            type: 'category',
+							            axisTick: {show: false},
+							            axisLabel: {
+							               interval:0,
+							               rotate:40
+							            } ,
+							            data: name
+							        }
+							    ],
+							    yAxis: [
+							        {
+							            type: 'value'
+							        }
+                                ],
+                                dataZoom: [
+                                    {
+                                        show: true,
+                                        realtime: true,
+                                        start: 0,
+                                        end: 100
+                                    }
+                                ],
+							    series: [{
+							        data: value,
+							        type: 'bar'
+							    }]
+							};
+							myChart.clear();
+							myChart.setOption(option);
+						}
+						,yes : function(index, layero)
+						{
+							layer.close(index);
+						}
+					});
+				}
+			});
+		}
+		function renderTableHeight()
+		{
+			var tabheight = $(window).height() - 225;
+			$(".layui-table-view").css("height", tabheight - 75);
+			$(".layui-table-view").css("max-height", tabheight - 75);
+			$(".layui-table-main").css("max-height", tabheight - 125);
+		}
+
+	</script>
+</body>
+</html>

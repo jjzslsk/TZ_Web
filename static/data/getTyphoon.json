@@ -1,0 +1,19 @@
+{
+    "success": true,
+    "code": 0,
+    "message": "查询成功",
+    "data": [
+        {
+            "id": 2,
+            "title": "2",
+            "url": "www.baidu.com",
+            "typename": "气象爱好者"
+        },
+        {
+            "id": 1,
+            "title": "1",
+            "url": "www.baidu.com",
+            "typename": "台风监测"
+        }
+    ]
+}

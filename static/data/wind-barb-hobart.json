@@ -1,0 +1,160 @@
+{
+    "code": 0,
+    "success": true,
+    "message": "请求成功",
+    "data": {
+        "data": [
+            {
+                "time": "2017-06-28",
+                "maxToday": 39,
+                "minToday": 25,
+                "wind": "西北风 3级",
+                "rainHeight": 2,
+                "maxWind":"1",
+                "minWind":"12",
+                "skyIcon": "Sunny",
+                "dayDate":"10"
+            },
+            {
+                "time": "2017-06-29",
+                "maxToday": 38,
+                "minToday": 27,
+                "wind": "东南风 4级",
+                "rainHeight": 2.57,
+                "maxWind":"2",
+                "minWind":"12",
+                "skyIcon": "Sunny",
+                "dayDate":"11"
+            },
+            {
+                "time": "2017-06-30",
+                "maxToday": 35,
+                "minToday": 23,
+                "wind": "东南风 4级",
+                "rainHeight": 5,
+                "maxWind":"2",
+                "minWind":"12",
+                "skyIcon": "Cloudy",
+                "dayDate":"12"
+            },
+            {
+                "time": "2017-07-01",
+                "maxToday": 33,
+                "minToday": 20,
+                "wind": "东南风 4级",
+                "rainHeight": 2.44,
+                "maxWind":"2",
+                "minWind":"12",
+                "skyIcon": "Cloudy",
+                "dayDate":"13"
+            },
+            {
+                "time": "2017-07-02",
+                "maxToday": 35,
+                "minToday": 19,
+                "wind": "东南风 4级",
+                "rainHeight": 5,
+                "maxWind":"2",
+                "minWind":"12",
+                "skyIcon": "Cloudy",
+                "dayDate":"14"
+            },
+            {
+                "time": "2017-07-03",
+                "maxToday": 40,
+                "minToday": 28,
+                "wind": "东南风 4级",
+                "rainHeight": 2.34,
+                "maxWind":"2",
+                "minWind":"12",
+                "skyIcon": "Cloudy",
+                "dayDate":"15"
+            },
+            {
+                "time": "2017-07-04",
+                "maxToday": 43,
+                "minToday": 35,
+                "wind": "东南风 4级",
+                "rainHeight": 3,
+                "maxWind":"2",
+                "minWind":"12",
+                "skyIcon": "Cloudy",
+                "dayDate":"16"
+            }
+        ],
+        "title": "HOBART",
+        "forecast": [
+            {
+                "localDate": "2017-06-28",
+                "day":1,
+                "rn": 2,
+                "minTemp": 4,
+                "maxTemp": 13,
+                "skyIcon": "Cloudy",
+                "weatherIcon": "MostlySunnyPartlyCloudy",
+                "rangePrecipText": "0 to 1 mm"
+            },
+            {
+                "localDate": "2017-06-29",
+                "day":1,
+                "rn": 2,
+                "minTemp": 5,
+                "maxTemp": 11,
+                "skyIcon": "Showers",
+                "weatherIcon": "Shower",
+                "rangePrecipText": "0 to 1 mm"
+            },
+            {
+                "localDate": "2017-06-30",
+                "day":1,
+                "rn": 2,
+                "minTemp": 3,
+                "maxTemp": 11,
+                "skyIcon": "Showers",
+                "weatherIcon": "Shower",
+                "rangePrecipText": "0 to 1 mm"
+            },
+            {
+                "localDate": "2017-07-01",
+                "day":1,
+                "rn": 2,
+                "minTemp": 1,
+                "maxTemp": 11,
+                "skyIcon": "Sunny",
+                "weatherIcon": "MostlySunnyPartlyCloudy",
+                "rangePrecipText": "0 to 1 mm"
+            },
+            {
+                "localDate": "2017-07-02",
+                "day":1,
+                "rn": 2,
+                "minTemp": 2,
+                "maxTemp": 13,
+                "skyIcon": "Sunny",
+                "weatherIcon": "MostlySunnyPartlyCloudy",
+                "rangePrecipText": ""
+            },
+            {
+                "localDate": "2017-07-03",
+                "day":1,
+                "rn": 2,
+                "minTemp": 3,
+                "maxTemp": 12,
+                "skyIcon": "Sunny",
+                "weatherIcon": "MostlySunnyPartlyCloudy",
+                "rangePrecipText": "0 to 1 mm"
+            },
+            {
+                "localDate": "2017-07-04",
+                "day":1,
+                "rn": "12",
+                "minTemp": 5,
+                "maxTemp": 12,
+                "skyIcon": "Showers",
+                "weatherIcon": "Shower",
+                "rangePrecipText": "0 to 2 mm"
+            }
+        ]
+    }
+}
+

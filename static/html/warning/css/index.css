@@ -1,0 +1,164 @@
+.page{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.pageContent{
+	width: 94%;
+	height: 94%;
+}
+.beenSent{
+	float: left;
+	width: 37%;
+	height: 100%;
+	margin-right: 0.5%;
+	border: 2px solid #024464;
+	box-sizing: border-box;
+}
+.boxTitle{
+	width: 100%;
+	height: 6.5%;
+	background: #1a7fcd;
+	color: #FFFFFF;
+	font-size: 16px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.mapBox{
+	position: relative;
+	height: 93.5%;
+	width: 100%;
+}
+.notSent{
+	float: left;
+	height: 100%;
+	width: 62.5%;
+	border: 2px solid #024464;
+	box-sizing: border-box;
+}
+.mapWarningBox{
+	position: absolute;
+	top: 3%;
+	right: 1%;
+	width: 37%;
+	padding: 10px;
+	border: 2px solid #024464;
+	box-sizing: border-box;
+	border-radius: 5px;
+	background: rgb(55,132,169,0.1);
+    z-index: 1;
+}
+.tableBox{
+	width: 100%;
+	max-height: 202px;
+}
+.tableBox>table{
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	border-top: 1px solid #024464;
+	box-sizing: border-box;
+	margin: 0 auto;
+}
+.tableBox>table tr{
+	border-bottom: 1px solid #024464;
+	border-left: 1px solid #024464;
+	border-right: 1px solid #024464;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+.tableBox>table thead tr{
+	background: #1b80ce !important;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+.tableBox tr td{
+	width: 10%;
+	height: 20px;
+	cursor: pointer;
+	font-size: 14px;
+}
+.tableBox tr td:first-of-type{
+	width: 5%;
+}
+.tableBox tr td span{
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.tableBox>table td{
+	padding: 10px 0;
+}
+.tableBox table tbody{
+	display: block;
+	max-height: 160px;
+	overflow: auto;
+}
+table thead,tbody tr{
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+	box-sizing: border-box;
+}
+.tableBox tr td{
+	border-right: 1px solid #024464;
+	box-sizing: border-box;
+}
+.tableBox tr td:last-of-type{
+	border-right: none;
+}
+.tableBox tbody td{
+	color: #152c3c;
+	font-weight: bold;
+}
+.tableBox tbody tr:nth-of-type(2n){
+	background: #d4eaff;
+}
+.tableBox tbody tr:nth-of-type(2n+1){
+	background: #e6f2ff;
+}
+.textareaBox{
+	width: 100%;
+	margin-top: 5px;
+	border: 2px solid #024464;
+	box-sizing: border-box;
+	padding: 1% 2% 2%;
+	background: #d4eaff;
+	color: #152c3c;
+	font-weight: bold;
+	border-radius: 5px;
+}
+.textareaBox>span{
+	font-size: 14px;
+	margin-bottom: 5px;
+	display: block;
+}
+.textareaBox>p{
+	width: 100%;
+	min-height: 50px;
+	background: #d4eaff;
+}
+.sendWarning{
+	width: 100%;
+	text-align: center;
+}
+.sendWarning>span{
+	display: inline-block;
+	width: 70%;
+	height: 40px;
+	line-height: 40px;
+	color: #FFFFFF;
+	font-size: 16px;
+	font-weight: bold;
+	border: 2px solid #9c6403;
+	border-radius: 5px;
+	box-sizing: border-box;
+	background: linear-gradient(to bottom,#ffb20a,#fb3d09);
+	cursor: pointer;
+	margin-top: 5px;
+}
+.sendWarning>span:hover{
+	background: linear-gradient(to bottom,#ffe203,#ff3a09);
+}

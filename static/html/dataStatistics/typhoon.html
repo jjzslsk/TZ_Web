@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <style type="text/css">
+        .layui-table-view .layui-table {
+            width: 100%;
+        }
+    </style>
+
+</head>
+<body>
+<form class="layui-form" action="">
+    <div class="layui-col-sm12  layui-col-md12 ssd-col-xlg12">
+        <div class="demoTable" style="margin-top: 10px;">
+            <div class="layui-form-item" style="margin-bottom: 0px;display: inline-block;vertical-align: middle;">
+                <div class="layui-inline" style="margin-bottom: 0px;">
+                    <label class="layui-form-label" style="width:110px;padding: 9px 0px;">台风编号：</label>
+                    <input type="text" name="code"  placeholder="台风编号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-bottom: 0px;display: inline-block;vertical-align: middle;">
+                <div class="layui-inline" style="margin-bottom: 0px;">
+                    <label class="layui-form-label" style="width:110px;padding: 9px 0px;">台风名称：</label>
+                    <input type="text" name="name"  placeholder="台风名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-bottom: 0px;display: inline-block;vertical-align: middle;">
+                <div class="layui-inline" style="margin-bottom: 0px;">
+                    <label class="layui-form-label" style="width:110px;padding: 9px 0px;">影响地区：</label>
+                    <div class="layui-input-block">
+                        <select name="affectedArea">
+                            <option value="" selected="">请选择</option>
+                            <option value="市辖区" >市辖区</option>
+                            <option value="椒江区">椒江区</option>
+                            <option value="黄岩区">黄岩区</option>
+                            <option value="路桥区">路桥区</option>
+                            <option value="玉环县">玉环县</option>
+                            <option value="三门县">三门县</option>
+                            <option value="天台县">天台县</option>
+                            <option value="仙居县">仙居县</option>
+                            <option value="温岭市">温岭市</option>
+                            <option value="临海市">临海市</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-bottom: 0px;display: inline-block;vertical-align: middle;">
+                <div class="layui-inline" style="margin-bottom: 0px;">
+                    <label class="layui-form-label" style="width:110px;padding: 9px 0px;">时间：</label>
+                <input type="text" id="test" name="test" style="width: 60%;" lay-verify="date"  value='' placeholder="请输入" autocomplete="off" readonly class="layui-input" >
+            </div>
+            </div>
+            <a class="layui-btn" data-type="reload">搜索</a>
+        </div>
+        <table class="layui-hide" id="demo" lay-filter="test"></table>
+    </div>
+
+</form>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <a class="layui-btn layui-btn-sm" lay-event="add">添加</a>
+        <a class="layui-btn layui-btn-sm" lay-event="delete">删除</a>
+    </div>
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<style>
+
+    .demoTable .layui-input{width:50%}
+    .layui-form-label{
+        padding: 9px 0px;
+        width: 120px;
+    }
+    .layui-input-block{
+        margin-left: 120px;
+    }
+    .layui-select-title input{
+        width: 100% !important;
+    }
+</style>
+</body>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script>
+    var eventType='';var eventTypeColor='';
+    layui.use(['form','laydate', 'laypage', 'layer', 'table', 'element', 'slider','tree'], function ()
+    {
+        var laydate = layui.laydate //日期
+            ,laypage = layui.laypage //分页
+            ,layer = layui.layer //弹层
+            ,table = layui.table //表格
+            ,element = layui.element //元素操作
+            ,form = layui.form
+            ,tree = layui.tree;
+        laydate.render({
+            elem: '#test'
+            ,format: 'yyyy-MM-dd' //可任意组合
+            ,type: 'date'
+            ,range: true
+        });
+        table.render({
+            elem: '#demo'
+            , height: 'full-200'
+            , url: main_url + '/typhoonDisaster/find' //数据接口
+            , title: '台风灾情'
+            ,toolbar: '#toolbarDemo'
+            , id: 'testReload'
+            , page: true //开启分页
+            , cols: [[ //表头
+                 {type: 'checkbox', fixed: 'left'}
+                ,{field: 'KEYID', title: '序号' , width: 80,type: 'numbers'}
+                ,{field: 'code', title: '编码', width: 100}
+                ,{field: 'name', title: '台风名称', width: 100}
+                ,{field: 'affectedArea', title: '影响地区', width: 100}
+                ,{field: 'weather', title: '天气实况', width: 166}
+                ,{field: 'startTime', title: '灾害开始时间', width: 216,templet:function(d){
+                        return layui.util.toDateString(d.startTime, 'yyyy年MM月dd日 HH:mm:ss')
+                    }}
+                ,{field: 'endTime', title: '灾害结束时间', width: 216,templet:function(d){
+                        return layui.util.toDateString(d.endTime, 'yyyy年MM月dd日 HH:mm:ss')
+                    }}
+                ,{field: 'gdp', title: 'GDP', width: 100}
+                ,{fixed: 'right', title:'操作', width:178, align:'center', toolbar: '#barDemo'}
+            ]]
+        });
+        table.on('toolbar(test)', function(obj){
+            switch(obj.event){
+                case 'add':
+                    var tab = `<form id="pythoon" class="layui-form">
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">台风编号：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="code" lay-verify="required"  value='' placeholder="请输入" autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">台风名称：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="name" lay-verify="required"  value='' placeholder="请输入" autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">影响地区：</label>
+                            <div class="layui-input-block">
+                               <select name="affectedArea">
+        <option value="">请选择</option>
+        <option value="市辖区" selected="">市辖区</option>
+        <option value="椒江区">椒江区</option>
+        <option value="黄岩区">黄岩区</option>
+        <option value="路桥区">路桥区</option>
+        <option value="玉环县">玉环县</option>
+        <option value="三门县">三门县</option>
+        <option value="天台县">天台县</option>
+        <option value="仙居县">仙居县</option>
+        <option value="温岭市">温岭市</option>
+        <option value="临海市">临海市</option>
+      </select>
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                           <label class="layui-form-label">当年GDP：</label>
+                            <div class="layui-input-block">
+                             <input type="text" name="gdp" lay-verify="required"  value='' placeholder="请输入"  autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*(.[0-9]+)?)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">开始时间：</label>
+                            <div class="layui-input-block">
+                              <input type="text" id="startTime" name="startTime" lay-verify="datetime"  value='' placeholder="请输入" readonly autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">结束时间：</label>
+                            <div class="layui-input-block">
+                              <input type="text" id="endTime" name="endTime" lay-verify="datetime"  value='' placeholder="请输入" readonly autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">受灾人口：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="disasterPeople" lay-verify="required"  value='' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">死亡人口：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="diePeople" lay-verify="required"  value='' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*(.[0-9]+)?)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">失踪人口：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="missingPeople" lay-verify="required"  value='' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">受伤人口：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="hurtPeople" lay-verify="required"  value='' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">倒塌房屋：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="collapsingHouses" lay-verify="required"  value='' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">损坏房屋：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="damageHouses" lay-verify="required"  value='' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">直接经济损失：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="directEconomicLoss" lay-verify="required"  value='' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*(.[0-9]+)?)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">农作物受灾面积：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="cropDamageArea" lay-verify="required"  value='' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*(.[0-9]+)?)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">农作物成灾面积：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="cropInundatedArea" lay-verify="required"  value='' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*(.[0-9]+)?)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">农作物绝收面积：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="cropFailureArea" lay-verify="required"  value='' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*(.[0-9]+)?)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs12">
+<div class="layui-form-item">
+                              <label class="layui-form-label">气象要素实况：</label>
+                            <div class="layui-input-block">
+                               <textarea  name="weather"  placeholder="请输入" autocomplete="off" class="layui-textarea"></textarea>
+                            </div>
+                      </div>
+</div>
+</div></form>`;
+                    layer.open({
+                        type: 1
+                        ,title:'增加'
+                        ,area: ['700px', '600px']
+                        ,id: 'layerDemo'+new Date().getTime() //防止重复弹出
+                        ,content: '<div style="padding: 20px 10px;">'+ tab +'</div>'
+                        ,btn: ['保存', '取消']
+                        ,btnAlign: 'c' //按钮居中
+                        ,shade: 0 //不显示遮罩
+                        ,yes: function(index){
+                            var tabledata=$("#pythoon").serialize();
+                            var start_time=$("#startTime").val();
+                            var end_time=$("#endTime").val();
+                            if(start_time==null||start_time.length==0){
+                                layer.msg("开始时间不能为空");
+                                return;
+                            }
+                            if(end_time==null||end_time.length==0){
+                                layer.msg("结束时间不能为空");
+                                return;
+                            }
+                            layer.close(index);
+                            $.ajax({
+                                url: main_url + '/typhoonDisaster/add',
+                                type: 'GET',
+                                data:tabledata,
+                                dataType: 'json',
+                                contentType: "application/json; charset=utf-8",
+                                // timeout: ajaxTimeout,
+                                // data: {},
+                                success: function (res) {
+                                    if(res!=null && res=='1'){
+                                        layer.msg('保存成功');
+                                        $('.demoTable .layui-btn').click();
+                                        return true;
+                                    }else{
+                                        layer.msg('保存失败');
+                                        return false;
+                                    }
+                                }
+                            })
+                        }
+                    });
+                    laydate.render({
+                        elem: '#startTime'
+                        ,format: 'yyyy-MM-dd HH:mm:ss' //可任意组合
+                        ,type: 'datetime'
+                    });
+                    laydate.render({
+                        elem: '#endTime'
+                        ,format: 'yyyy-MM-dd HH:mm:ss' //可任意组合
+                        ,type: 'datetime'
+                    });
+                    form.render();
+                    break;
+                case 'delete':
+                    debugger;
+                    var checkStatus = table.checkStatus('testReload').data;
+                    var keyIds='';
+                    for (var i=0 ; i<checkStatus.length;i++){
+                        keyIds += checkStatus[i].id+",";
+
+                    }
+                    if(keyIds==''){
+                        layer.msg("请选择要删除的数据");
+                        return false;
+                    }else{
+                            if(keyIds.lastIndexOf(",")>-1){
+                                keyIds = keyIds.substring(0,keyIds.length-1);
+                            }
+                            $.ajax({
+                                url: main_url + '/typhoonDisaster/delete',
+                                type: 'GET',
+                                data: {'keyId': keyIds},
+                                dataType: 'json',
+                                contentType: "application/json; charset=utf-8",
+                                // timeout: ajaxTimeout,
+                                // data: {},
+                                success: function (res) {
+                                    if(res!=null && res!='0'){
+                                        layer.msg('删除成功');
+                                        $('.demoTable .layui-btn').click();
+                                        return true;
+                                    }else{
+                                        layer.msg('删除失败');
+                                        return false;
+                                    }
+                                }
+                            })
+                    }
+                    break;
+            };
+        });
+        table.on('tool(test)', function(obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            if(obj.event === 'detail'){
+                var disaster_people=data.disasterPeople==null?'':data.disasterPeople;
+                var die_people=data.diePeople==null?'':data.diePeople;
+                var missing_people=data.missingPeople==null?'':data.missingPeople;
+                var hurt_people=data.hurtPeople==null?'':data.hurtPeople;
+                var collapsing_houses=data.collapsingHouses==null?'':data.collapsingHouses;
+                var damage_houses=data.damageHouses==null?'':data.damageHouses;
+                var direct_economic_loss=data.directEconomicLoss==null?'':data.directEconomicLoss;
+                var crop_damage_area=data.cropDamageArea==null?'':data.cropDamageArea;
+                var crop_inundated_area=data.cropInundatedArea==null?'':data.cropInundatedArea;
+                var crop_failure_area=data.cropFailureArea==null?'':data.cropFailureArea;
+                var gdp=data.gdp==null?'':data.gdp;
+                var tab = `<form id="pythoon" class="layui-form">
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">台风编号：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="code" lay-verify="required"  value=`+data.code+` placeholder="请输入" readonly autocomplete="off"  class="layui-input">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">台风名称：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="name" lay-verify="required"  value=`+data.name+` placeholder="请输入" readonly autocomplete="off"  class="layui-input" >
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">影响地区：</label>
+                            <div class="layui-input-block">
+                             <input type="text" name="affectedArea" lay-verify="required"  value=`+data.affectedArea+` placeholder="请输入" readonly autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">当年GDP：</label>
+                            <div class="layui-input-block">
+                             <input type="text" name="gdp" lay-verify="required"  value='`+gdp+`' placeholder="请输入" readonly autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">开始时间：</label>
+                            <div class="layui-input-block">
+                              <input type="text" id="startTime" name="startTime" lay-verify="datetime"  value='`+data.startTime+`' placeholder="请输入" readonly autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">结束时间：</label>
+                            <div class="layui-input-block">
+                              <input type="text" id="endTime" name="endTime" lay-verify="datetime"  value='`+data.endTime+`' placeholder="请输入" readonly autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">受灾人口：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="disasterPeople" lay-verify="required"  value='`+disaster_people+`' placeholder="请输入" readonly autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">死亡人口：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="diePeople" lay-verify="required"  value='`+die_people+`' placeholder="请输入" readonly autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">失踪人口：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="missingPeople" lay-verify="required"  value='`+missing_people+`' placeholder="请输入" readonly autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">受伤人口：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="hurtPeople" lay-verify="required"  value='`+hurt_people+`' placeholder="请输入" readonly autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">倒塌房屋：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="collapsingHouses" lay-verify="required"  value='`+collapsing_houses+`' placeholder="请输入" autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">损坏房屋：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="damageHouses" lay-verify="required"  value='`+damage_houses+`' placeholder="请输入" readonly autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">直接经济损失：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="directEconomicLoss" lay-verify="required"  value='`+direct_economic_loss+`' placeholder="请输入" readonly autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">农作物受灾面积：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="cropDamageArea" lay-verify="required"  value='`+crop_damage_area+`' placeholder="请输入" readonly autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">农作物成灾面积：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="cropInundatedArea" lay-verify="required"  value='`+crop_inundated_area+`' placeholder="请输入" readonly autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">农作物绝收面积：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="cropFailureArea" lay-verify="required"  value='`+crop_failure_area+`' placeholder="请输入" readonly autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs12">
+<div class="layui-form-item">
+                            <label class="layui-form-label">气象要素实况：</label>
+                            <div class="layui-input-block">
+                               <textarea  name="weather"  placeholder="请输入" readonly autocomplete="off" class="layui-textarea">`+data.weather+`</textarea>
+                            </div>
+                      </div>
+</div>
+</div></form>`;
+                layer.open({
+                    type: 1
+                    ,title:'查看'
+                    ,area: ['700px', '600px']
+                    ,id: 'layerDemo'+new Date().getTime() //防止重复弹出
+                    ,content: '<div style="padding: 20px 10px;">'+ tab +'</div>'
+                    ,btn: '关闭'
+                    ,btnAlign: 'c' //按钮居中
+                    ,shade: 0 //不显示遮罩
+                    ,yes: function(){
+                        layer.closeAll();
+                    }
+                });
+                laydate.render({
+                    elem: '#startTime'
+                    ,format: 'yyyy-MM-dd HH:mm:ss' //可任意组合
+                    ,type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#endTime'
+                    ,format: 'yyyy-MM-dd HH:mm:ss' //可任意组合
+                    ,type: 'datetime'
+                });
+                form.render();
+            } else if(obj.event === 'del'){
+                layer.confirm('确认删除吗？', function(index){
+                    var keyId = data.id;
+                    layer.close(index);
+                    $.ajax({
+                        url: main_url + '/typhoonDisaster/delete',
+                        type: 'GET',
+                        data:{'keyId':keyId},
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
+                        // timeout: ajaxTimeout,
+                        // data: {},
+                        success: function (res) {
+                            if(res!=null && res=='1'){
+                                layer.msg('删除成功');
+                                $('.demoTable .layui-btn').click();
+                                return true;
+                            }else{
+                                layer.msg('删除失败');
+                                return false;
+                            }
+                        }
+                    })
+                });
+            } else if(obj.event === 'edit'){
+                var disaster_people=data.disasterPeople==null?'':data.disasterPeople;
+                var die_people=data.diePeople==null?'':data.diePeople;
+                var missing_people=data.missingPeople==null?'':data.missingPeople;
+                var hurt_people=data.hurtPeople==null?'':data.hurtPeople;
+                var collapsing_houses=data.collapsingHouses==null?'':data.collapsingHouses;
+                var damage_houses=data.damageHouses==null?'':data.damageHouses;
+                var direct_economic_loss=data.directEconomicLoss==null?'':data.directEconomicLoss;
+                var crop_damage_area=data.cropDamageArea==null?'':data.cropDamageArea;
+                var crop_inundated_area=data.cropInundatedArea==null?'':data.cropInundatedArea;
+                var crop_failure_area=data.cropFailureArea==null?'':data.cropFailureArea;
+                var gdp=data.gdp==null?'':data.gdp;
+                var area=['市辖区','椒江区','黄岩区','路桥区','玉环县','三门县','天台县','仙居县','温岭市','临海市'];
+                var option='';
+                var selectArea=data.affectedArea;
+                area.forEach((value,index,array)=>{
+                    if(value==selectArea){
+                        option+='<option value="'+value+'" selected="">'+value+'</option>'
+                    }else{
+                        option+='<option value="'+value+'">'+value+'</option>'
+                    }
+                });
+
+                var tab = `<form id="pythoon" class="layui-form"><input type="hidden" id="id" name="id" value="${data.id}"/>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">台风编号：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="code" lay-verify="required"  value="${data.code}" placeholder="请输入" autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">台风名称：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="name" lay-verify="required"  value="${data.name}" placeholder="请输入" autocomplete="off" class="layui-input">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">影响地区：</label>
+                            <div class="layui-input-block">
+                              <select name="affectedArea">
+                            `+option+`
+                              </select>
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">当年GDP：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="gdp" lay-verify="required"  value='`+gdp+`'  placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*(.[0-9]+)?)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">开始时间：</label>
+                            <div class="layui-input-block">
+                              <input type="text" id="startTime" name="startTime" lay-verify="datetime"  value="${data.startTime}" placeholder="请输入"  autocomplete="off" readonly class="layui-input">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">结束时间：</label>
+                            <div class="layui-input-block">
+                              <input type="text" id="endTime" name="endTime" lay-verify="datetime"  value="${data.endTime}" placeholder="请输入"  autocomplete="off" readonly class="layui-input">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">受灾人口：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="disasterPeople" lay-verify="required"  value='`+disaster_people+`' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">死亡人口：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="diePeople" lay-verify="required"  value='`+die_people+`' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">失踪人口：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="missingPeople" lay-verify="required"  value='`+missing_people+`' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">受伤人口：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="hurtPeople" lay-verify="required"  value='`+hurt_people+`' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">倒塌房屋：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="collapsingHouses" lay-verify="required"  value='`+collapsing_houses+`' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">损坏房屋：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="damageHouses" lay-verify="required"  value='`+damage_houses+`' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">直接经济损失：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="directEconomicLoss" lay-verify="required"  value='`+direct_economic_loss+`' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*(.[0-9]+)?)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">农作物受灾面积：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="cropDamageArea" lay-verify="required"  value='`+crop_damage_area+`' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*(.[0-9]+)?)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">农作物成灾面积：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="cropInundatedArea" lay-verify="required"  value='`+crop_inundated_area+`' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*(.[0-9]+)?)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+<div class="layui-col-xs6">
+<div class="layui-form-item">
+                            <label class="layui-form-label">农作物绝收面积：</label>
+                            <div class="layui-input-block">
+                              <input type="text" name="cropFailureArea" lay-verify="required"  value='`+crop_failure_area+`' placeholder="请输入" autocomplete="off" class="layui-input" onblur="this.value= this.value.match(/(^[0-9][0-9]*(.[0-9]+)?)$/)?this.value:''">
+                            </div>
+                      </div>
+</div>
+</div>
+<div class="layui-row">
+<div class="layui-col-xs12">
+<div class="layui-form-item">
+                           <label class="layui-form-label">气象要素实况：</label>
+                            <div class="layui-input-block">
+                               <textarea  name="weather"  placeholder="请输入" autocomplete="off" class="layui-textarea">`+data.weather+`</textarea>
+                            </div>
+                      </div>
+</div>
+</div></form>`;
+                layer.open({
+                    type: 1
+                    ,title:'修改'
+                    ,area: ['700px', '600px']
+                    ,id: 'layerDemo'+new Date().getTime() //防止重复弹出
+                    ,content: '<div style="padding: 20px 10px;">'+ tab +'</div>'
+                    ,btn: ['保存', '取消']
+                    ,btnAlign: 'c' //按钮居中
+                    ,shade: 0 //不显示遮罩
+                    ,yes: function(index){
+                        var tabledata=$("#pythoon").serialize();
+                        var start_time=$("#startTime").val();
+                        var end_time=$("#endTime").val();
+                        if(start_time==null||start_time.length==0){
+                            layer.msg("开始时间不能为空");
+                            return;
+                        }
+                        if(end_time==null||end_time.length==0){
+                            layer.msg("结束时间不能为空");
+                            return;
+                        }
+                        layer.close(index);
+                        $.ajax({
+                            url: main_url + '/typhoonDisaster/update',
+                            type: 'GET',
+                            data:tabledata,
+                            dataType: 'json',
+                            contentType: "application/json; charset=utf-8",
+                            // timeout: ajaxTimeout,
+                            // data: {},
+                            success: function (res) {
+                                if(res!=null && res=='1'){
+                                    layer.msg('保存成功');
+                                    $('.demoTable .layui-btn').click();
+                                    return true;
+                                }else{
+                                    layer.msg('保存失败');
+                                    return false;
+                                }
+                            }
+                        })
+                    }
+                });
+                laydate.render({
+                    elem: '#startTime'
+                    ,format: 'yyyy-MM-dd HH:mm:ss' //可任意组合
+                    ,type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#endTime'
+                    ,format: 'yyyy-MM-dd HH:mm:ss' //可任意组合
+                    ,type: 'datetime'
+                });
+                form.render();
+            }
+        });
+        var $ = layui.$, active = {
+            reload: function(){
+                var code = $('[name="code"]').val();
+                var name = $('[name="name"]').val();
+                var affectedArea = $('[name="affectedArea"]').val();
+                var time = $('[name="test"]').val();
+                var startTime="";
+                var endTime="";
+                debugger;
+                if(time!=null&&time.length>0){
+                    startTime=time.substr(0,10);
+                    endTime=time.substr(13,20);
+                }
+                //执行重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        code: code,
+                        name: name,
+                        affectedArea: affectedArea,
+                        startTime: startTime,
+                        endTime: endTime
+                    }
+                }, 'data');
+            }
+        };
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+
+
+</script>
+</html>

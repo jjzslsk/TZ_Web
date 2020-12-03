@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>历史排名统计</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .layui-table-body{overflow-x: auto;}
+        .layui-layer-page .layui-layer-content{overflow: auto !important;}
+        .layui-form-checkbox{margin-right: 0;}
+        .layui-table tbody tr:hover{background-color: white;}
+        .r-demo {
+            height: 100%;
+            border-top: 3px solid #63cff5;
+            border-bottom: 1px solid #c9c9c9;
+            border-left: 1px solid #c9c9c9;
+            border-right: 1px solid #c9c9c9;
+            padding: 5px;
+            overflow: auto;
+        }
+        #updateBtn,#uploadExcel,#modelUpload{
+            background: #63cff5;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .layui-table-cell{
+            height: 40px;
+        }
+        .layui-table-fixed .layui-table-header .layui-table[lay-size=sm] th .layui-table-cell{
+            line-height: 20px;
+            display: table-cell;
+            vertical-align: middle;
+            overflow: initial;
+        }
+        .layui-table-header .layui-table[lay-size=sm] th .layui-table-cell{
+            line-height: 20px;
+            overflow: initial;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai{
+            position: absolute;
+            right: 5px;
+            top:-5px;
+            cursor: pointer;
+            padding-bottom: 5px;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai .slide{
+            position: absolute;
+            background-color: white;
+            top: 24px;
+            right: -6px;
+            height: 26px;
+            width: 215px;
+            padding: 3px 0;
+            z-index: 9;
+            display: none;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai:hover .slide{
+            display: block;
+        }
+
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai .slide .ui-widget-header{background: #009688;}
+
+        .layui-table-sort{position: absolute;bottom: 0;right: 15px;}
+    </style>
+</head>
+<body>
+<div class="layui-fluid ssd-container demoTable">
+    <div class="layui-row layui-col-space10 ssd-row">
+        <div class="layui-col-sm3  layui-col-md2 ssd-col-xlg1 ssd-col">
+            <div class="r-demo" style="position:relative;">
+                <p style="text-align:center;padding-top: 6px;">
+                    <span style="font-size: 20px; color: #1E9FFF;">站点选择</span>
+                </p>
+                <hr>
+                <div id="stationTree" class="demo-tree"></div>
+            </div>
+        </div>
+        <div class="layui-col-sm9 layui-col-md10 ssd-col-xlg9 ssd-col">
+            <div class="r-demo ssd-search-box"  style="overflow-y:hidden">
+                <div class="layui-tab-content">
+                    <div class="search-set">
+                        <div style="height: 20px;">
+                            <div class="layui-row layui-form layui-form-item">
+                                <label class="layui-form-label">时间类型：</label>
+                                <div class="layui-input-inline">
+                                    <select id="timeType1" name="timeType1" lay-filter="timeType1">
+                                        <option value=""></option>
+                                        <option value="0">近10天</option>
+                                        <option value="1">近30天</option>
+                                        <option value="2">本月以来</option>
+                                        <option value="3">今年以来</option>
+                                    </select>
+                                </div>
+                                <label class="layui-form-label">要素类型：</label>
+                                <div class="layui-input-inline">
+                                    <select id="eleType" name="eleType" lay-filter="eleType">
+                                        <option value=""></option>
+                                        <option value="rain">降水日数</option>
+                                        <option value="temp">平均气温</option>
+                                        <option value="maxtemp">最高气温</option>
+                                        <option value="maxtempDay">最高气温日数</option>
+                                        <option value="mintemp">最低气温</option>
+                                        <option value="maxRain">最大降水</option>
+                                        <option value="minRain">最小降水</option>
+                                        <option value="suntime">日照时数</option>
+                                        <option value="continuousRain">连续降水日数</option>
+                                        <option value="continuousMaxTemp">连续高温日数</option>
+                                    </select>
+                                </div>
+                                <div class="layui-input-inline" style="width: auto;margin-left: 10px;">
+                                    <a class="layui-btn" id="find" data-type="reload">搜索</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row">
+                            <table class="layui-hide" id="demo" lay-filter="test"></table>
+                            <div id="paging" style="margin-left: 50px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="rank">详细排名</a>
+</script>
+
+
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="../common/js/stationTree.js"></script>
+<script>
+    layui.config({
+        version: '1594038785991' //为了更新 js 缓存，可忽略
+    });
+
+    layui.use(['form','laydate', 'laypage', 'layer', 'table', 'element', 'slider'], function(){
+        var laydate = layui.laydate //日期
+            ,laypage = layui.laypage //分页
+            ,layer = layui.layer //弹层
+            ,table = layui.table //表格
+            ,element = layui.element //元素操作
+            ,form = layui.form
+        //监听Tab切换
+        element.on('tab(demo)', function(data){
+            layer.tips('切换了 '+ data.index +'：'+ this.innerHTML, this, {
+                tips: 1
+            });
+        });
+        //首先初始化时间格式工具，可直接复制到js里面
+        Date.prototype.Format = function (fmt){
+            var o = {
+                "M+": this.getMonth() + 1,  //月份
+                "d+": this.getDate() ,  //日
+                "h+": this.getHours() ,  //24小时制
+                "m+": this.getMinutes(),  //分
+                "s+": this.getSeconds(),  //秒
+                "q+": Math.floor((this.getMonth()+3)/3),  //季度
+                "S": this.getMilliseconds()  //毫秒
+            };
+            if(/(y+)/.test(fmt))
+                fmt = fmt.replace(RegExp.$1,(this.getFullYear()+"").substr(4-RegExp.$1.length));
+            for(var k in o)
+                if(new RegExp("("+k+")").test(fmt))
+                    fmt = fmt.replace(RegExp.$1,(RegExp.$1.length ==1) ? (o[k]):(("00"+o[k]).substr((""+o[k]).length)));
+            return fmt;
+
+        };
+
+        //其次，对方法进行封装
+        function formatTime(timeSecond){
+            var d = new Date(timeSecond);//注意timeSecond是毫秒
+            return d.Format("yyyy-MM-dd");
+        }
+
+        //最后，使用方式,输出结果:"2017-12-15 21:49:03"
+        function getFormatTime(second){
+            return formatTime(second);
+        }
+
+        $("#find").on('click', function () {
+            var timeType = $("#timeType1").val();
+            var eleType = $("#eleType").val();
+
+            //执行一个 table 实例
+            table.render({
+                elem: '#demo'
+                ,height: 'full-72'
+                ,url: main_url + '/ssd-UnusualClimate-count/getRealTimeData' //数据接口
+                ,title: '用户表'
+                ,id: 'testReload'
+                ,page: true //开启分页
+                ,limit: 20
+                ,where: {
+                    stationNum: stationNums,
+                    timeType:timeType,
+                    eleType:eleType
+                }
+                ,cols: [[ //表头
+                    {field: 'zizeng', title: '序号', type:'numbers',align:'center'}
+                    ,{field: 'stationNum',align:'center', title: '站点编号'}
+                    ,{field: 'type', title: '要素类型',align:'center', templet: function (d) {
+                            var type = d.type;
+                            if (type == 'rain') {
+                                return '降水日数';
+                            } else if(type == 'temp') {
+                                return '平均气温';
+                            } else if(type == 'maxtemp') {
+                                return '最高气温';
+                            }else if(type=='maxtempDay'){
+                                return '最高气温日数';
+                            } else if(type == 'mintemp') {
+                                return '最低气温';
+                            } else if(type == 'maxRain') {
+                                return '最大降水';
+                            } else if(type == 'minRain') {
+                                return '最小降水';
+                            } else if(type == 'suntime') {
+                                return '日照时数';
+                            } else if(type == 'continuousRain') {
+                                return '连续降水日数';
+                            } else if(type == 'continuousMaxTemp') {
+                                return '连续高温日数';
+                            }else{
+                                return type;
+                            }
+                        }
+                    }
+                    ,{field: 'timeType', title: '统计时间类型',align:'center', templet: function (d) {
+                            var timeType = d.timeType;
+                            if(timeType=='0'){
+                                return '近10天';
+                            }else if(timeType=='1'){
+                                return '近30天';
+                            }else if(timeType=='2'){
+                                return '本月以来';
+                            }else if(timeType=='3'){
+                                return '今年以来';
+                            }
+                        }}
+                    ,{field: 'Extremum', title: '极值',align:'center',sort: true}
+                    ,{field: 'Ranking', title: '排位',align:'center'}
+                    ,{field: 'RankList', title: '排名',hide:true,align:'center'}
+                    ,{field: 'AppearTime', title: '开始时间',width: 210,align:'center', sort: true, totalRow: true,
+                        templet:function(d){
+                            return layui.util.toDateString(d.AppearTime, 'yyyy年MM月dd日 HH:mm:ss')
+                        }
+                    }
+                    ,{field: 'alarmTime', title: '创建时间',width: 210,align:'center',sort: true, totalRow: true,
+                        templet:function(d){
+                            return layui.util.toDateString(d.alarmTime, 'yyyy年MM月dd日 HH:mm:ss')
+                        }
+                    }
+                    ,{fixed: 'right', title:'操作', align:'center',align:'center', toolbar: '#barDemo'}
+                ]]
+            });
+        })
+
+        table.on('tool(test)', function(obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            var RankList = JSON.parse(data.RankList);
+            var tab = `<table class="layui-table" style="width: 500px;"><thead>
+                <tr>
+                <th style="width: 100px">排名</th>
+                <th style="width: 100px">年份</th>
+                <th style="width: 200px">出现时间</th>
+                </tr>
+                </thead><tbody>`
+            for (var i=0 ; i<RankList.length;i++){
+                tab+=`<tr>
+                        <td>`+RankList[i].rownum+`</td>
+                        <td>`+RankList[i].yyyy+`</td>
+                        <td>`+getFormatTime(RankList[i].tTime)+`</td>
+                      </tr>`;
+            }
+            tab +=` </tbody>
+                    </table>  `;
+            if (layEvent === 'rank') { //查看
+                layer.open({
+                    type: 1
+                    ,title:'详细排名'
+                    ,area: ['700px', '600px']
+                    ,id: 'layerDemo'+new Date().getTime() //防止重复弹出
+                    ,content: '<div style="padding: 20px 100px;">'+ tab +'</div>'
+                    ,btn: '关闭'
+                    ,btnAlign: 'c' //按钮居中
+                    ,shade: 0 //不显示遮罩
+                    ,yes: function(){
+                        layer.closeAll();
+                    }
+                });
+            }
+        })
+
+        // var timeType = '';
+        // var eleType = '';
+        // form.on('select(timeType1)', function(data){
+        //     timeType = data.value;
+        // });
+        // form.on('select(eleType)', function(data){
+        //     eleType = data.value;
+        // });
+        // var $ = layui.$, active = {
+        //     reload: function(){
+        //         var stationNum=stationNums;
+        //         //执行重载
+        //         table.reload('testReload', {
+        //             page: {
+        //                 curr: 1 //重新从第 1 页开始
+        //             }
+        //             ,where: {
+        //                     stationNum: stationNum,
+        //                     timeType:timeType,
+        //                     eleType:eleType
+        //             }
+        //         }, 'data');
+        //     }
+        // };
+        // $('.demoTable .layui-btn').on('click', function(){
+        //     var type = $(this).data('type');
+        //     active[type] ? active[type].call(this) : '';
+        // });
+
+    });
+</script>
+</body>
+</html>
+

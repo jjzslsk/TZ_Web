@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>日数据统计</title>
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .layui-table-body{overflow-x: auto;}
+        .layui-layer-page .layui-layer-content{overflow: auto !important;}
+        .layui-form-checkbox{margin-right: 0;}
+        .layui-table tbody tr:hover{background-color: white;}
+        .r-demo {
+            height: 100%;
+            border-top: 3px solid #63cff5;
+            border-bottom: 1px solid #c9c9c9;
+            border-left: 1px solid #c9c9c9;
+            border-right: 1px solid #c9c9c9;
+            padding: 5px;
+            overflow: auto;
+        }
+        #updateBtn,#uploadExcel,#modelUpload{
+            background: #63cff5;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .layui-table-cell{
+            height: 40px;
+        }
+        .layui-table-fixed .layui-table-header .layui-table[lay-size=sm] th .layui-table-cell{
+            line-height: 20px;
+            display: table-cell;
+            vertical-align: middle;
+            overflow: initial;
+        }
+        .layui-table-header .layui-table[lay-size=sm] th .layui-table-cell{
+            line-height: 20px;
+            overflow: initial;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai{
+            position: absolute;
+            right: 5px;
+            top:-5px;
+            cursor: pointer;
+            padding-bottom: 5px;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai .slide{
+            position: absolute;
+            background-color: white;
+            top: 24px;
+            right: -6px;
+            height: 26px;
+            width: 215px;
+            padding: 3px 0;
+            z-index: 9;
+            display: none;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai:hover .slide{
+            display: block;
+        }
+
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai .slide .ui-widget-header{background: #009688;}
+
+        .layui-table-sort{position: absolute;bottom: 0;right: 15px;}
+
+        /* th[data-field='DataTime'] .layui-table-sort{top:auto;}
+        .layui-input-block {
+            min-height: 26px;
+        }
+        .layui-form-checkbox {
+            height: 22px;
+            line-height: 20px;
+            padding-right: 18px;
+        }
+        .layui-form-checkbox span {
+            padding: 0 2px;
+            font-size: 14px;
+        }
+        .layui-form-checkbox i {
+            width: 18px;
+            font-size: 12px;
+        } */
+
+    </style>
+
+</head>
+<body>
+<div class="layui-fluid ssd-container">
+    <div class="layui-row layui-col-space10 ssd-row">
+        <div class="layui-col-sm3  layui-col-md2 ssd-col-xlg1 ssd-col">
+            <div class="r-demo" style="position:relative;">
+                <p style="text-align:center;padding-top: 6px;">
+                    <span style="font-size: 20px; color: #1E9FFF;">站点选择</span>
+                </p>
+                <hr>
+                <div id="stationTree" class="demo-tree"></div>
+            </div>
+        </div>
+        <div class="layui-col-sm9 layui-col-md10 ssd-col-xlg9 ssd-col">
+            <div class="r-demo ssd-search-box"  style="overflow-y:hidden">
+                <div class="layui-tab-content">
+                    <div class="search-set">
+                        <div class="search-wrap">
+                        <div class="layui-row ">
+                            <label class="layui-form-label"> 要素选择：</label>
+                            <div class="layui-input-inline">
+                                <div class="layui-form layui-input-block" style="margin-left:0;">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="wind_max" title="极大风风速">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="wind_max_direction" title="极大风风向">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="sunshine_amount" title="累计日照">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="accumulated_snow_day" title="积雪天数">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="sunlight_shortage_day" title="寡照天数">
+                                </div>
+                                <div class="layui-form layui-input-block" style="margin-left:0;">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" checked="" value="temp_average"	title="平均气温" >
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" checked="" value="temp_max" title="最高气温" >
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" checked="" value="temp_min" title="最低气温">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="low_temp5_day" title="5℃以下低温日数">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="low_temp0_day" title="0℃以下低温日数">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="low_temp_2_day" title="-2℃以下低温日数">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="low_temp_5_day" title="-5℃以下低温日数">
+                                </div>
+                                <div class="layui-form layui-input-block" style="margin-left:0;">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="height_temp35_day" title="35℃以上高温日数">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="height_temp36_day" title="36℃以上高温日数">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="height_temp37_day" title="37℃以上高温日数">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="height_temp38_day" title="38℃以上高温日数">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="height_temp39_day" title="39℃以上高温日数">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="height_temp40_day" title="40℃以上高温日数">
+                                </div>
+                                <div class="layui-form layui-input-block" style="margin-left:0;">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" checked="" value="rain_amount" title="累计降水">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" checked="" value="rain_day" title="雨天">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" checked="" value="sunny_day" title="无雨天">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="rain_day_continuity" title="最大连续降雨日数">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="sunny_day_continuity" title="最大连续无降雨日数">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="light_rain_day" title="小雨日数">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="moderate_rain_day" title="中雨日数">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="heavy_rain_day" title="大雨日数">
+                                    <input type="checkbox" name="dayEle" data-cal="1" data-precision="1" value="torrential_rain_day" title="暴雨日数">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row layui-form layui-form-item">
+                            <label class="layui-form-label">开始时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="startDate" id="startDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                            </div>
+                            <label class="layui-form-label">结束时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="endDate" id="endDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                            </div>
+                            <label class="layui-form-label">数据类型</label>
+                            <div class="layui-input-inline">
+                                <select id="dataType" name="dataType" lay-filter="aihao">
+                                    <option value="">全部</option>
+                                    <option value="day">今日</option>
+                                    <option value="day5">近五天</option>
+                                    <option value="day10">近十天</option>
+                                    <option value="day20">近二十天</option>
+                                    <option value="day30">近三十天</option>
+                                    <option value="day60">近六十天</option>
+                                    <option value="tenDays">本旬以来</option>
+                                    <option value="month">本月以来</option>
+                                    <option value="season">本季以来</option>
+                                    <option value="year">今年以来</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline" style="width: auto;margin-left: 10px;">
+                                <button class="layui-btn shortBtnSaveClass" id="find" type="button" style="background-color: #5689FE;">查询</button>
+                                <button class="layui-btn shortBtnSaveClass" id="export" type="button" style="background-color: #5689FE;">导出</button>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="layui-row table-box">
+                            <table class="layui-hide" id="tableList" lay-filter="list"></table>
+                            <div id="paging" style="margin-left: 50px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="js/dayDateStatistics.js"></script>
+</html>

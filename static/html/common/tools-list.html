@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工具栏</title>
+  <link rel="stylesheet" href="../../layui/css/layui.css"  media="all">
+	<style type="text/css"> 
+		.head-ul >li {
+			/* border: 1px solid #eee; */
+    		border-bottom: 0px;
+        /* background-color: #3347c4; */
+        /* color: #fff; */
+		}
+    /* .layui-tab-brief>.head-ul .layui-this {
+        color: #fff;
+        background-color: #337dc4;
+    }
+    .layui-table-page {
+      background-color: #fff;
+    }
+    .layui-table thead tr{
+        color: #fff;
+    background-color: #337dc4;
+}
+.head-ul {
+  border: #3347c4;
+
+} */
+	</style>
+</head>
+<body>
+   <!-- <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+	  <legend>工具栏</legend>
+	</fieldset> -->
+ 
+	<div class="layui-tab layui-tab-brief" >
+	  <ul class="layui-tab-title head-ul">
+	    <li class="layui-this">业务规范</li>
+	    <li>联系电话</li>
+	    <li>常用网址</li>
+	    <li>修改密码</li>
+	    <li>参考菜单配置</li>
+	    <li>图片资料配置</li>
+	  </ul>
+	  <div class="layui-tab-content" style="height: 100px;">
+	    <div class="layui-tab-item layui-show">
+	    	<table class="layui-hide" id="busspec" lay-filter="busspec"></table>
+	    </div>
+	    <div class="layui-tab-item">
+	    	<table class="layui-hide" id="telphone"></table>
+	    </div>
+	    <div class="layui-tab-item">
+	    	<table class="layui-hide" id="netlink"></table>
+      </div>
+      <div class="layui-tab-item">
+        <div class="layui-card">
+          <div class="layui-card-body">
+            <form class="layui-form" action="">
+              <div class="layui-form-item">
+                <label class="layui-form-label">旧密码</label>
+                <div class="layui-input-inline">
+                  <input type="password" name="oldpwd" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">新密码</label>
+                <div class="layui-input-inline">
+                  <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">确认密码</label>
+                <div class="layui-input-inline">
+                  <input type="password" name="password" required lay-verify="required|confirmPass" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <div class="layui-input-block">
+                  <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="layui-tab-item">
+        <div class="layui-card configuration">
+          <button class="layui-btn" id="clickTest">立即提交</button>
+        </div>
+      </div>
+      <div class="layui-tab-item">
+        <div class="layui-card">
+          <div class="layui-card-body">
+          <form class="layui-form" action="" lay-filter="scoreRuleForm">
+            <div class="layui-form-item">
+                <div class="layui-tab layui-tab-card">
+                  <ul class="layui-tab-title">
+                    <li class="layui-this">左上角</li>
+                    <li>右上角</li>
+                    <li>左下角</li>
+                    <li>右下角</li>
+                  </ul>
+                  <div class="layui-tab-content" style="min-height: 260px;">
+                    <div class="layui-tab-item layui-show">
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">范围</label>
+                        <div class="layui-input-block" id="scopeCheckbox0">
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">模式</label>
+                        <div class="layui-input-block" id="modelCheckbox0">
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">要素</label>
+                        <div class="layui-input-block" id="eleFactorCheckbox0">
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">高度</label>
+                        <div class="layui-input-block" id="eleHeightCheckbox0">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="layui-tab-item">
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">范围</label>
+                        <div class="layui-input-block" id="scopeCheckbox1">
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">模式</label>
+                        <div class="layui-input-block" id="modelCheckbox1">
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">要素</label>
+                        <div class="layui-input-block" id="eleFactorCheckbox1">
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">高度</label>
+                        <div class="layui-input-block" id="eleHeightCheckbox1">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="layui-tab-item">
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">范围</label>
+                        <div class="layui-input-block" id="scopeCheckbox2">
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">模式</label>
+                        <div class="layui-input-block" id="modelCheckbox2">
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">要素</label>
+                        <div class="layui-input-block" id="eleFactorCheckbox2">
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">高度</label>
+                        <div class="layui-input-block" id="eleHeightCheckbox2">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="layui-tab-item">
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">范围</label>
+                        <div class="layui-input-block" id="scopeCheckbox3">
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">模式</label>
+                        <div class="layui-input-block" id="modelCheckbox3">
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">要素</label>
+                        <div class="layui-input-block" id="eleFactorCheckbox3">
+                        </div>
+                      </div>
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">高度</label>
+                        <div class="layui-input-block" id="eleHeightCheckbox3">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo1">保存全部</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+              </div>
+            </div>
+          </form>
+          </div>
+        </div>
+	    </div>
+	  </div>
+	</div> 
+</body>
+<script type="text/html" id="operate">
+    <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="show" name="show" id="{{d.id}}" data-url="{{d.filePath}}" data-filename="{{d.name}}" >预览</a>
+    <a class="layui-btn layui-btn-sm" lay-event="download" name="download" id="{{d.id}}_down" data-url="{{d.filePath}}" data-filename="{{d.name}}" >下载</a>
+</script>
+<script type="text/javascript" src="../../tools/jquery-3.5.1.js" charset="utf-8"></script>
+<script type="text/javascript" src="../../layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="../../tools/http.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/common.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/information.js" charset="utf-8"></script>
+<script type="text/javascript">
+layui.use(['element','table','form'], function(){
+  var $ = layui.jquery,
+  table = layui.table,
+  form = layui.form;
+  element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+  
+  table.render({
+    elem: '#busspec'
+    ,url: main_url + '/tools/business'
+    ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+    ,cols: [[
+      {field:'id', title: '序号', sort: true,type: 'numbers',width:80}
+      ,{field:'name', title: '名称'} //width 支持：数字、百分比和不填写。你还可以通过 minWidth 参数局部定义当前单元格的最小宽度，layui 2.2.1 新增
+      ,{field:'content', title: '说明', sort: true}
+      ,{field:'publishDate', title: '发布日期'}
+      ,{field:'oper', title: '操作',width:250, toolbar: '#operate'}
+    ]],
+    page:true,//开启分页
+    id:'bussReload',
+    limit:10,
+    where:{"type":"file"},
+    limits:[10,20,50,100],
+    parseData: function(res){
+		return {
+			"count":res.data.rowCount,
+			"code": res.code, //解析接口状态
+			"data": res.data.list //解析数据列表
+		};
+	}
+	,done: function(res, curr, count){
+        bindOnclick();
+    }
+  });
+  
+  table.render({
+    elem: '#telphone'
+    ,url: main_url + '/tools/phone'
+    ,cols: [[
+       {field:'id', title: '序号', sort: true,type: 'numbers',width:80}
+      ,{field:'name', title: '名称'} //width 支持：数字、百分比和不填写。你还可以通过 minWidth 参数局部定义当前单元格的最小宽度，layui 2.2.1 新增
+      ,{field:'content', title: '电话'}
+      ,{field:'updateTime', title: '更新日期'}
+    ]],
+    page:true,//开启分页
+    id:'phoneReload',
+    limit:10,
+    where:{"type":"phone"},
+    limits:[10,20,50,100],
+    parseData: function(res){
+		return {
+			"count":res.data.rowCount,
+			"code": res.code, //解析接口状态
+			"data": res.data.list //解析数据列表
+		};
+	}
+  });
+  
+  table.render({
+    elem: '#netlink'
+    ,url: main_url + '/tools/netlink'
+    ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+    ,cols: [[
+    	 {field:'id', title: '序号', sort: true,type: 'numbers',width:80}
+        ,{field:'name', title: '名称'} //width 支持：数字、百分比和不填写。你还可以通过 minWidth 参数局部定义当前单元格的最小宽度，layui 2.2.1 新增
+        ,{field:'content', title: '地址'}
+        ,{field:'updateTime', title: '更新日期'}
+    ]],
+    page:true,//开启分页
+    id:'netReload',
+    limit:10,
+    where:{"type":"url"},
+    limits:[10,20,50,100],
+    parseData: function(res){
+		return {
+			"count":res.data.rowCount,
+			"code": res.code, //解析接口状态
+			"data": res.data.list //解析数据列表
+		};
+	}
+  });
+
+  // 校验两次密码是否一致
+form.verify({
+confirmPass:function(value){
+    if($('input[name=password]').val() !== value)
+        return '两次密码输入不一致！';
+}
+})
+  //修改密码
+form.on('submit(formDemo)', function(data){
+  // layer.msg(JSON.stringify(data.field));
+  let param = {
+    userId:loginInfo.uid,
+    oldpwd:data.field.oldpwd,//旧密码
+    newpwd:data.field.password,//新密码
+  }
+  getData(main_url,'/ssd-data-constant/updateUser?',param).then(res=>{
+    layer.msg(res.message);
+  })
+  return false;
+});
+
+//监听参考资料配置提交
+form.on('submit(formDemo1)', async function(data){
+    await postForm(main_url,'/ssd-data-constant/saveProductPicture?',{loginUserId:loginInfo.id,...data.field}).then(res=>{return res.data})
+    return false;
+  });
+
+
+
+  let customParam = [
+    {position:'1',model:null,modelName:null,ele:null,range:null,height:null},
+    {position:'2',model:null,modelName:null,ele:null,range:null,height:null},
+    {position:'3',model:null,modelName:null,ele:null,range:null,height:null},
+    {position:'4',model:null,modelName:null,ele:null,range:null,height:null},
+  ]
+
+  //监听图片配置单选
+  for (let index = 0; index < 4; index++) {
+
+    form.on(`radio(modelRadio${index})`, function(data){
+      customParam[index].model = data.value
+      customParam[index].modelName = data.elem.title
+      console.log(customParam)
+      refreshEleFactor(data.elem.title,index)
+    });
+    form.on(`radio(eleFactorRadio${index})`, function(data){
+      customParam[index].ele = data.value
+      console.log(customParam)
+      refreshEleHeigh(customParam[index].modelName,data.elem.title,index)
+    });
+
+    form.on(`radio(scopeRadio${index})`, function(data){
+      customParam[index].range = data.value
+      console.log(customParam)
+    });
+
+    form.on(`radio(eleHeightRadio${index})`, function(data){
+      customParam[index].height = data.value
+      console.log(customParam)
+    });
+
+
+  }
+
+    //获取高度
+  async function refreshEleHeigh (_model,_factor,key){
+    eleHeight = await getData(main_url,'/ssd-forecast-model/getElementByModelAndname?',{model:_model,ele_name:_factor}).then(res=>{return res.data});
+    eleHeightDom = []
+    $.each(eleHeight,function(_index,item){
+      eleHeightDom.push(_index == 0? `<input type="radio" lay-filter=${"eleHeightRadio" + key} name=${"eleHeight" + key} value=${item.ele_height} title=${item.ele_height} checked>`:
+      `<input type="radio" lay-filter=${"eleHeightRadio" + key} name=${"eleHeight" + key} value=${item.ele_height} title=${item.ele_height}>`)
+    })
+    $("#eleHeightCheckbox" + key).html(eleHeightDom);
+    form.render()
+  }
+
+  //获取要素，根据模式
+  async function refreshEleFactor (data,key){
+    factor = await getData(main_url,'/ssd-forecast-model/getElmentByModel?',{model:data}).then(res=>{return res.data})
+    factorDom = []
+    $.each(factor,function(_index,item){
+      factorDom.push(_index == 0? `<input type="radio" lay-filter=${"eleFactorRadio" + key} name=${"factor" + key} value=${item.img_path} title=${item.ele_name} checked>`:
+      `<input type="radio" lay-filter=${"eleFactorRadio" + key} name=${"factor" + key} value=${item.img_path} title=${item.ele_name}>`)
+    })
+    $("#eleFactorCheckbox" + key).html(factorDom)
+    refreshEleHeigh(data,factor[0].ele_name,key)
+    form.render()
+  }
+
+  requestData().then(()=>{
+    let modelDom = []
+    let scopeDom = []
+    let eleHeightDom = []
+    let factorDom = []
+    for (let index = 0; index < 4; index++) {
+    modelDom = []
+    scopeDom = []
+    eleHeightDom = []
+    factorDom = []
+
+    $.each(model,function(_index,item){
+      modelDom.push(`<input type="radio" lay-filter=${"modelRadio" + index} name=${"model" + index} value=${item.img_path} title=${item.ele_name}>`)
+    })
+    $("#modelCheckbox" + index).html(modelDom);
+
+    $.each(scope,function(_index,item){
+      scopeDom.push(`<input type="radio" lay-filter=${"scopeRadio" + index} name=${"scope" + index} value=${item.img_path} title=${item.ele_name}>`)
+    })
+    $("#scopeCheckbox" + index).html(scopeDom)
+
+    // $.each(factor,function(_index,item){
+    //   factorDom.push(`<input type="radio" lay-filter=${"eleFactorRadio" + index} name=${"factor" + index} value=${item.img_path} title=${item.ele_name}>`)
+    // })
+    // $("#eleFactorCheckbox" + index).html(factorDom)
+
+    // $.each(eleHeight,function(_index,item){
+    //   eleHeightDom.push(`<input type="radio" lay-filter=${"eleHeightRadio" + index} name=${"eleHeight" + index} value=${item.ele_height} title=${item.ele_height}>`)
+    // })
+    // $("#eleHeightCheckbox" + index).html(eleHeightDom)
+    
+    }
+
+    userInfoConfig? form.val("scoreRuleForm", { // class="layui-form" 所在元素属性 lay-filter="" 对应的值
+      "model0": userInfoConfig[0].model0,
+      "scope0": userInfoConfig[0].scope0,
+      "factor0": userInfoConfig[0].factor0,
+      "eleHeight0": userInfoConfig[0].eleHeight0,
+      "model1": userInfoConfig[1].model1,
+      "scope1": userInfoConfig[1].scope1,
+      "factor1": userInfoConfig[1].factor1,
+      "eleHeight1": userInfoConfig[1].eleHeight1,
+      "model2": userInfoConfig[2].model2,
+      "scope2": userInfoConfig[2].scope2,
+      "factor2": userInfoConfig[2].factor2,
+      "eleHeight2": userInfoConfig[2].eleHeight2,
+      "model3": userInfoConfig[3].model3,
+      "scope3": userInfoConfig[3].scope3,
+      "factor3": userInfoConfig[3].factor3,
+      "eleHeight3": userInfoConfig[3].eleHeight3,
+    }):''
+    
+    
+
+    form.render()
+  })
+
+let model;//模式
+let scope;//范围
+let factor;//要素
+let eleHeight;//高度
+
+let modelPath;//模式选中
+let scopePath;//范围选中
+let factorName;//要素选中
+let heightPath;//高度选中
+
+let userInfoConfig = null;//用户配置
+// //初始化获取数据
+async function requestData(){
+    //获取模式
+    model = await getData(main_url,'/ssd-forecast-element/getElemnetInfo?',{eleType:'模式'}).then(res=>{return res.data})
+    //获取范围
+    scope = await getData(main_url,'/ssd-forecast-element/getElemnetInfo?',{eleType:'范围'}).then(res=>{return res.data})
+
+    //获取要素,根据第一个模式查询
+    // factor = await getData(main_url,'/ssd-forecast-model/getElmentByModel?',{model:model[0].ele_name}).then(res=>{return res.data})
+
+    //获取高度,根据第一个要素查询
+    // eleHeight = await getData(main_url,'/ssd-forecast-model/getElementByModelAndname?',{model:model[0].ele_name,ele_name:factor[0].ele_name}).then(res=>{return res.data});
+
+        //获取高度 方法
+  async function _refreshEleHeigh (_model,_factor,key,heightPath){
+    eleHeight = await getData(main_url,'/ssd-forecast-model/getElementByModelAndname?',{model:_model,ele_name:_factor}).then(res=>{return res.data});
+    eleHeightDom = []
+    $.each(eleHeight,function(_index,item){
+      eleHeightDom.push(item.ele_height ==  heightPath? `<input type="radio" lay-filter=${"eleHeightRadio" + key} name=${"eleHeight" + key} value=${item.ele_height} title=${item.ele_height} checked>`:
+      `<input type="radio" lay-filter=${"eleHeightRadio" + key} name=${"eleHeight" + key} value=${item.ele_height} title=${item.ele_height}>`)
+    })
+    $("#eleHeightCheckbox" + key).html(eleHeightDom);
+    form.render()
+
+  }
+      //获取要素，根据模式 方法
+  async function _refreshEleFactor (data,key,factorPath,heightPath){
+    factor = await getData(main_url,'/ssd-forecast-model/getElmentByModel?',{model:data}).then(res=>{return res.data})
+    factorDom = []
+    $.each(factor,function(_index,item){
+      factorDom.push(item.img_path ==  factorPath? `<input type="radio" lay-filter=${"eleFactorRadio" + key} name=${"factor" + key} value=${item.img_path} title=${item.ele_name} checked>`:
+      `<input type="radio" lay-filter=${"eleFactorRadio" + key} name=${"factor" + key} value=${item.img_path} title=${item.ele_name}>`)
+    })
+    $("#eleFactorCheckbox" + key).html(factorDom)
+    factor.forEach(_item => {
+      if(_item.img_path ==  factorPath){
+        _refreshEleHeigh(data,_item.ele_name,key,heightPath)
+      }
+    });
+    form.render()
+  }
+
+    //查询用户配置
+    userInfoConfig = await getData(main_url,'/ssd-data-constant/getProductPicture?',{loginUserId:loginInfo.id}).then(res=>{return res.data})
+    if(!userInfoConfig)return //用户未配置时。不执行
+    model.forEach(element => {//根据用户信息 遍历渲染
+      if(element.img_path == userInfoConfig[0].model0){
+        _refreshEleFactor(element.ele_name,0,userInfoConfig[0].factor0,userInfoConfig[0].eleHeight0)
+      }
+      if(element.img_path == userInfoConfig[1].model1){
+        _refreshEleFactor(element.ele_name,1,userInfoConfig[1].factor1,userInfoConfig[1].eleHeight1)
+      }
+      if(element.img_path == userInfoConfig[2].model2){
+        _refreshEleFactor(element.ele_name,2,userInfoConfig[2].factor2,userInfoConfig[2].eleHeight2)
+      }
+      if(element.img_path == userInfoConfig[3].model3){
+        _refreshEleFactor(element.ele_name,3,userInfoConfig[3].factor3,userInfoConfig[3].eleHeight3)
+      }
+    });
+
+}
+
+
+
+});
+
+$('.layui-tab-title').on('click', function(title) {
+if(title.toElement.textContent=="参考菜单配置"){
+  window.parent['vueDefinedMyProp']({name: 'ckzl', type: '参考菜单配置'});
+}else {
+  window.parent['vueDefinedMyProp']({name: 'other', type: ''});
+}
+});
+
+function bindOnclick(){
+    $("table").delegate("a","click",function(){
+        var event = this.name;
+        var id = this.id;
+        var url = this.getAttribute("data-url");
+        var title = this.getAttribute("data-filename");
+        if(event == 'show'){
+            if (url.indexOf('.pdf') != -1) {
+          	  layer.open({
+                    type: 2,
+                    title: title,
+                    shadeClose: false,
+                    shade:[0.8, '#393D49'],
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['1200px', '800px'],
+                    scrollbar: true,
+                    content: main_url + '/' + url//注意，如果str是object，那么需要字符拼接。
+                });
+            } else if (url.indexOf('.doc') != -1 || url.indexOf('.docx') != -1) {
+            	 layer.open({
+                     type: 2,
+                     title: title,
+                     shadeClose: false,
+                     shade:[0.8, '#393D49'],
+                     maxmin: true, //开启最大化最小化按钮
+                     area: ['1200px', '800px'],
+                     scrollbar: true,
+                     content: main_url + "/tools/preview?filepath="+url+"&filename="+title
+                 });
+            }
+        }else if(event == 'download'){
+        	 window.open(main_url + "/tools/download?filepath="+url+"&filename="+title,"_self");//下载文件url
+        }
+    });
+}
+
+$('#clickTest').click(function(){
+  //调用父页面关闭窗口方法
+  window.parent['vueDefinedMyProp']({name: 'saveForm', tyoe: 'saveForm'});
+})
+
+
+
+</script>
+<style>
+  .configuration{
+    position: relative;
+    height: 390px;
+  }
+  #clickTest{
+    position: absolute;
+    top: 343px;
+    left: calc(50% - 46px);
+  }
+</style>
+</html>

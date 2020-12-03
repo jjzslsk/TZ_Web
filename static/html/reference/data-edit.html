@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>参考资料-编辑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="css/style.css">
+    <style type="text/css">
+        .layui-hidde{display: none;}
+        .layui-textarea{min-height: 140px;}
+    </style>
+</head>
+<body>
+<form class="layui-form" action="" id="referdata" lay-filter="refertype">
+    <input name="id" value="#id#" type="hidden" id="id">
+    <input name="operate" value="edit" type="hidden">
+    <div class="layui-form-item">
+        <label class="layui-form-label">资料名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="title" id="title" lay-verify="title" autocomplete="off" placeholder="请输入资料名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">资料编号</label>
+        <div class="layui-input-inline">
+            <input type="text" name="code" id="code" lay-verify="code" autocomplete="off" placeholder="请输入资料编号" class="layui-input" readonly>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">数据类型</label>
+        <div class="layui-input-inline">
+            <select id="dataType" name="type" lay-filter="dataType">
+                <option value="text">文本</option>
+                <option value="url" >文件</option>
+                <option value="image">图片</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">资料类型</label>
+        <div class="layui-input-inline">
+            <input type="hidden" id="typeId" name="typeId">
+            <input type="text" id="typename" name="typename" required="" autocomplete="off" class="layui-input" readonly onclick="showDataTree()">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">显示顺序</label>
+        <div class="layui-input-inline">
+            <input type="text" name="sort" autocomplete="off" class="layui-input" value="0" id="sort">
+        </div>
+    </div>
+
+    <div class="layui-form-item" id="txt">
+        <label class="layui-form-label">文本内容</label>
+        <div class="layui-input-block" style="width: 80%">
+            <textarea placeholder="请输入内容" class="layui-textarea" id="text" name="content"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hidde" id="file">
+        <label class="layui-form-label">文件路径</label>
+        <div class="layui-input-inline" style="min-width: 300px;">
+            <input type="text" name="url" class="layui-input" id="url">
+        </div>
+        <button class="layui-btn layui-btn-normal" style="margin-left: -10px" id="uploadfile" type="button">上传文件</button>
+    </div>
+    <div class="layui-form-item layui-hidde" id="img">
+        <label class="layui-form-label">图片路径</label>
+        <div class="layui-input-inline" style="min-width: 300px;">
+            <input type="text" name="image" class="layui-input" id="image">
+        </div>
+        <button class="layui-btn layui-btn-normal" style="margin-left: -10px" id="uploadImage" type="button">上传图片</button>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="save">保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+</body>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script>
+    layui.use(['tree','upload','form'], function() {
+        var $ = layui.jquery,
+            tree = layui.tree,
+            form = layui.form,
+            upload = layui.upload;
+
+        upload.render({
+            elem: '#uploadfile'
+            ,url: main_url +'/ssd-data-constant/fileupload'
+            ,accept: 'file' //普通文件
+            ,exts: 'doc|docx' //只允许上传word文件
+            ,done: function(res){
+                if(res.code == 0){
+                    $("#url").val(res.data);
+                    layer.msg(res.message);
+                }else{
+                    layer.msg(res.message);
+                }
+            }
+        });
+        upload.render({
+            elem: '#uploadImage'
+            ,url: main_url +'/ssd-data-constant/fileupload'
+            ,accept: 'image' //普通文件
+            ,done: function(res){
+                if(res.code == 0){
+                    $("#image").val(res.data);
+                    layer.msg(res.message);
+                }else{
+                    layer.msg(res.message);
+                }
+            }
+        });
+        $.ajax({
+            url: main_url +'/ssd-data-constant/findReferDataById',
+            type:'GET',
+            dataType: 'json',
+            data:{"id":$("#id").val()},
+            contentType: "application/json; charset=utf-8",
+            async:true,
+            success: function (res) {
+                if(res.code == 0){
+                    var data = res.data;
+                    var type = data.type;
+
+                    form.val("refertype", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
+                        "title": data.name // "name": "value"
+                        ,"typeId": data.typeId
+                        ,"typename": data.typeName
+                        ,"code": data.code
+                        ,"sort": data.sort
+                        ,"type": data.type
+                    });
+
+                    if (type == 'url') {
+                        $("#url").val(data.content)
+                        $("#file").show();
+                        $("#img").hide();
+                        $("#txt").hide();
+                    } else if (type == 'image') {
+                        $("#image").val(data.content);
+                        $("#img").show();
+                        $("#txt").hide();
+                        $("#file").hide();
+                    } else if (type == 'text') {
+                        $("#text").val(data.content)
+                        $("#txt").show();
+                        $("#img").hide();
+                        $("#file").hide();
+                    }
+                }
+            },
+            error: function (result) {
+                layer.msg("获取参考资料错误");
+            }
+        });
+        //监听提交
+        form.on('submit(save)', function(data){
+            $.ajax({
+                url:main_url +'/ssd-data-constant/editReferData',
+                data:$('#referdata').serialize(),
+                type:'post',
+                dataType:'json',
+                success:function(result){
+                    debugger;
+                    if (result.code != 0) {
+                        layer.alert(result.message, {icon: 2})
+                    } else {
+                        layer.alert(result.message, {icon: 6}, function () {
+                            parent.layui.table.reload('tableList',{page: {curr: 1}});
+                            layer.closeAll();
+                        });
+                    }
+                },
+                error:function () {
+                    return false;
+                }
+            })
+            return false;
+        });
+        form.on('select(dataType)', function(data){
+            var type = data.value;
+            if (type == 'url') {
+                $("#file").show();
+                $("#img").hide();
+                $("#txt").hide();
+            } else if (type == 'image') {
+                $("#img").show();
+                $("#txt").hide();
+                $("#file").hide();
+            } else if (type == 'text') {
+                $("#txt").show();
+                $("#img").hide();
+                $("#file").hide();
+            }
+        });
+    });
+    function showDataTree() {
+        var url = web_url+'/html/reference/datatype-tree.html';
+        layer.open({
+            type: 2,
+            area: ['300px', '400px'],
+            fix: false, //不固定
+            shadeClose: true,
+            title: "选择资料类型",
+            content: url
+        });
+    }
+</script>
+</html>

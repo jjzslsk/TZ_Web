@@ -1,0 +1,23 @@
+{
+    "datatime":"数据时间",
+    "stations":[
+        {
+            "stationName":"站点名称",
+            "stationNum":"站点编号",
+            "Latitude":"纬度",
+            "Longitude":"经度",
+            "rain":"降雨",
+            "temp":"温度",
+            "wind":"风速",
+            "press":"气压",
+            "relhum":"相对湿度"
+        }
+    ],
+    "imgs":{
+        "rain":"图片路劲",
+        "temp":"图片路劲",
+        "wind":"图片路劲",
+        "press":"图片路劲",
+        "relhum":"图片路劲"
+    }
+}
