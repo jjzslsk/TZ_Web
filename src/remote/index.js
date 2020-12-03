@@ -200,10 +200,10 @@ export const requestProductMakeTextList = generateGetWithEvn(`{{host}}/${url_int
 // 产品制作 参考资料 会商通知 
 export const requestProductMakeMessageList = generateGetWithEvn(`{{host}}/${url_integration}/ssd-data-constant/getReferData?dataCode=quansheng_hs`);
 // 产品制作 参考资料 浙江warms
-export const requestProductMakeWarms = generateGetWithEvn(dataStaticBase + 'windvDiagram.json');
-// export const requestProductMakeWarms = payload => generateGetWithEvn(`{{host}}/${url_integration}/ssd-forecast-model/windvDiagram`)(payload).then(res => {
-//     return res
-// })
+// export const requestProductMakeWarms = generateGetWithEvn(dataStaticBase + 'windvDiagram.json');
+export const requestProductMakeWarms = payload => generateGetWithEvn(`{{host}}/${url_integration}/ssd-forecast-model/windvDiagram`)(payload).then(res => {
+    return res
+})
 // 产品制作 参考资料 提示语
 export const requestProductMakeAlertList = generateGetWithEvn(`{{host}}/${url_integration}/ssd-data-tip/getLatestData`);
 // 产品制作 参考资料 模式预报 获取站点

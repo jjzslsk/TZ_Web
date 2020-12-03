@@ -46,58 +46,23 @@ export default {
   watch:{
     forecastTime:{
       handler(val, oldVal){
-                // this.isShow = false
-                requestProductMakeWarms({forecasttime:`${this.forecastTime.dateOption.split('-').join('')}`}).then(res=>{
-                  this.resData = res.data
-                  this.resData.list.forEach((item,_index) => {
-                    this.resData.list[_index].winddata = this.resData.list[_index].windd.map((element,index) => {
-                      return {value:element,symbolRotate: 360 - Number(this.resData.list[_index].windv[index])}
-                    });
-                  });
-                  // this.isShow = true
-                  this.myEcharts(this.resData);
-                })
+                this.requestData({forecastTime:`${this.forecastTime.dateOption.split('-').join('')}01`})
             },
             deep:true
     }
   },
   methods:{
-
-    getWindd(windd){
-      if(windd>11.25&&windd<=33.75){
-          return "北到东北";
-      }else if(windd>33.75&&windd<=56.25){
-          return "东北";
-      }else if(windd>56.25&&windd<=78.75){
-          return "东到东北";
-      }else if(windd>78.75&&windd<=101.25){
-          return "偏东";
-      }else if(windd>101.25&&windd<=123.75){
-          return "东到东南";
-      }else if(windd>123.75&&windd<=146.25){
-          return "东南";
-      }else if(windd>146.25&&windd<=168.75){
-          return "南到东南";
-      }else if(windd>168.75&&windd<=191.25){
-          return "偏南";
-      }else if(windd>191.25&&windd<=213.75){
-          return "南到西南";
-      }else if(windd>213.75&&windd<=236.25){
-          return "西南";
-      }else if(windd>236.25&&windd<=258.75){
-          return "西到西南";
-      }else if(windd>258.75&&windd<=281.25){
-          return "偏西";
-      }else if(windd>281.25&&windd<=303.75){
-          return "西到西北";
-      }else if(windd>303.75&&windd<=326.25){
-          return "西北";
-      }else if(windd>326.25&&windd<=348.75){
-          return "北到西北";
-      }else{
-          return "偏北";
-      }
-  },
+    requestData(param){
+      requestProductMakeWarms(param).then((res)=>{
+          this.resData = res.data
+          this.resData.list.forEach((item,_index) => {
+            this.resData.list[_index].winddata = this.resData.list[_index].windd.map((element,index) => {
+              return {name:item.name,value:element,symbolRotate: 360 - Number(this.resData.list[_index].windv[index]),windv:this.resData.list[_index].windv[index],winddName:this.resData.list[_index].winddName[index]}
+            });
+          });
+          this.myEcharts(this.resData);
+        })
+      },
 
 	  myEcharts(resData){
         var _this = this
@@ -122,7 +87,7 @@ export default {
         formatter: function(params){
           let res =`<div style="text-align: left;">${params[0].axisValue}时<div>`;
             params.map((element,index) => {
-              res += `<div style="text-align: left;display: inline-block;width: 8px;height: 8px;border-radius: 50%;vertical-align: middle;margin-right: 5px;background:${element.color};"></div>${element.name}：${element.value}风力  ${_this.getWindd(element.data.windv)}<br>`
+              res += `<div style="text-align: left;display: inline-block;width: 8px;height: 8px;border-radius: 50%;vertical-align: middle;margin-right: 5px;background:${element.color};"></div>${element.name}：${element.value}风力 ${element.data.winddName}<br>`
           });
           return res
         }
@@ -131,14 +96,14 @@ export default {
         y:'bottom',
           data: function(){
             return resData.list.map(element => {
-              return element.code
+              return element.name
             })
           }()
       },
       series: function (){
         return resData.list.map(element => {
             return {
-              name: element.code,
+              name: element.name,
               type: 'line',
               data: element.winddata,
               symbol: "image://./../../../../../../static/images/windPoint.png",
@@ -152,15 +117,7 @@ export default {
     }
   },
   mounted() {
-    requestProductMakeWarms({forecasttime:`${this.forecastTime.dateOption.split('-').join('')}`}).then((res)=>{
-      this.resData = res.data
-      this.resData.list.forEach((item,_index) => {
-        this.resData.list[_index].winddata = this.resData.list[_index].windd.map((element,index) => {
-          return {name:item.code,value:element,symbolRotate: 360 - Number(this.resData.list[_index].windv[index]),windv:this.resData.list[_index].windv[index]}
-        });
-      });
-      this.myEcharts(this.resData);
-    })
+    this.requestData({forecastTime:`${this.forecastTime.dateOption.split('-').join('')}01`})
   }
 }
 </script>
