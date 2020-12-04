@@ -390,10 +390,10 @@
                     @click.native="handleInput"
                     placeholder="请输入内容"
                     v-model="productMade.content"
-                    show-word-limit
-                    :maxlength='productMade.wordtype == 0 ? productMade.limitnumber * 2 : productMade.limitnumber'
+                    :show-word-limit="true"
                     @input="suggestInput(productMade)" 
                   ></el-input>
+                  <span class="words">{{productMade.content? productMade.content.length:'0'}}/{{productMade.limitnumber? productMade.limitnumber:'n'}}</span>
                 </div>
               </div>
             </el-form>
@@ -864,6 +864,23 @@ export default {
   },
   methods: {
     suggestInput(data) {
+      console.log(data)
+      // :maxlength='productMade.wordtype == 0 ? productMade.limitnumber * 2 : productMade.limitnumber'
+      if (
+        !this.lastItemClicked ||
+        !this.productMade.fileName ||
+        !this.productMade.issue ||
+        !this.productMade.content
+      ) {
+        this.$message.error("选择产品，并填写完整信息!");
+        return;
+      }
+      if(data.content.length > data.limitnumber ){
+        this.$message({
+          message: '已超字数',
+          type: 'warning'
+        });
+      }
     },
     //刷新分步导航
     async substep(res){
@@ -1300,6 +1317,13 @@ export default {
         this.$message.error("选择产品，并填写完整信息!");
         return;
       }
+      if(item.content.length > item.limitnumber ){
+        this.$message({
+          message: '已超字数',
+          type: 'warning'
+        });
+        return;
+      }
 
       let param = {
         orgId: this.loginInfo.orgId,
@@ -1362,6 +1386,15 @@ export default {
         this.$message.error("选择产品，并填写完整信息!");
         return;
       }
+
+      if(item.content.length > item.limitnumber ){
+        this.$message({
+          message: '已超字数',
+          type: 'warning'
+        });
+        return
+      }
+
       this.visibleDialogConsult = fast == 'fast' ? false:true
       if(fast == 'fast'){ 
         //快速发布
@@ -1951,6 +1984,13 @@ export default {
             /* margin-bottom: 15px; */
             /* height: calc(100% - 15px)!important; */
             width: calc(100% - 30px);
+            .words{
+              position: absolute;
+              right: 40px;
+              bottom: 8px;
+              color: #909399;
+              font-size: 13px;
+            }
           }
       }
       .content-box {
@@ -1995,6 +2035,7 @@ export default {
           }
           .text-editor{
             height: 100%;
+            position: relative;
             .el-textarea{
               height: 100%;
               overflow: hidden;
@@ -2311,6 +2352,7 @@ export default {
   textarea{
     height: 100%;
     font-size: 1rem;
+    resize:none;
   }
 
   .el-form{
