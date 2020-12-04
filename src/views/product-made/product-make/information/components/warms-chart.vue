@@ -1,6 +1,6 @@
 <template>
   <div class="temperature-echarts-wrap">
-    <div class="content" v-if="isShow">
+    <div class="content" >
         <div class="item-wrap">
           <div class="date-option">
             <el-row>
@@ -22,7 +22,6 @@
           </div>
       </div>
       <div class="echarts-box" ref="myChartRef"></div>
-      <!-- <p v-else>暂无数据</p> -->
     </div>
   </div>
 </template>
@@ -35,12 +34,14 @@ export default {
   props: ['data','value'],
   data() {
     return {
-      isShow:true,
       forecastTime:{
         dateOption: JSON.stringify(new Date()).substring(1,11),
         // formTime:'08',
       },
-      resData:null,
+      resData:{
+        time:[],
+        list:[],
+      },
     };
   },
   watch:{
@@ -56,8 +57,8 @@ export default {
       requestProductMakeWarms(param).then((res)=>{
           this.resData = res.data
           this.resData.list.forEach((item,_index) => {
-            this.resData.list[_index].winddata = this.resData.list[_index].windd.map((element,index) => {
-              return {name:item.name,value:element,symbolRotate: 360 - Number(this.resData.list[_index].windv[index]),windv:this.resData.list[_index].windv[index],winddName:this.resData.list[_index].winddName[index]}
+            this.resData.list[_index].winddata = this.resData.list[_index].windv.map((element,index) => {
+              return {name:item.name,value:element,symbolRotate: 360 - Number(this.resData.list[_index].windd[index]),windv:this.resData.list[_index].windv[index],winddName:this.resData.list[_index].winddName[index]}
             });
           });
           this.myEcharts(this.resData);
@@ -65,7 +66,6 @@ export default {
       },
 
 	  myEcharts(resData){
-        var _this = this
         var myChart = this.$echarts.init(this.$refs.myChartRef);
         var option = {
           xAxis: {
@@ -87,7 +87,7 @@ export default {
         formatter: function(params){
           let res =`<div style="text-align: left;">${params[0].axisValue}时<div>`;
             params.map((element,index) => {
-              res += `<div style="text-align: left;display: inline-block;width: 8px;height: 8px;border-radius: 50%;vertical-align: middle;margin-right: 5px;background:${element.color};"></div>${element.name}：${element.value}风力 ${element.data.winddName}<br>`
+              res += `<div style="text-align: left;display: inline-block;width: 8px;height: 8px;border-radius: 50%;vertical-align: middle;margin-right: 5px;background:${element.color};"></div>${element.name}：${element.value}(风力) ${element.data.winddName}(风向)<br>`
           });
           return res
         }
