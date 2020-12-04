@@ -247,7 +247,7 @@
                     <div v-if="isIframe" class="iframe-content-box">
                       <page-office :url="docPath" id="products"></page-office>
                     </div>
-                    <div v-else class="form-txt">
+                    <div v-else class="form-txt items">
                       <el-input
                         id="mytextareas"
                         type="textarea"
@@ -256,8 +256,9 @@
                         placeholder="请输入内容"
                         v-model="productTabList[index].content"
                         show-word-limit
-                        :maxlength='productTabList[index].wordtype == 0 ? productTabList[index].limitnumber * 2 : productTabList[index].limitnumber'
+                        @input="suggestInput(productTabList[index])" 
                       ></el-input>
+                      <span class="words">{{productTabList[index].content? productTabList[index].content.length:'0'}}/{{productTabList[index].limitnumber? productTabList[index].limitnumber:'n'}}</span>
                     </div>
                   </el-form>
                 </div>
@@ -351,7 +352,7 @@
                         placeholder="请输入内容"
                         v-model="productMade.content"
                         show-word-limit
-                        :maxlength='productMade.wordtype == 0 ? productMade.limitnumber * 2 : productMade.limitnumber'
+                        @input="suggestInput(productMade)" 
                         @blur="onInputBlur"
                       ></el-input>
                     </el-col>
@@ -2446,6 +2447,17 @@ export default {
       }
     }
   }
+  
+    .items{
+      position: relative;
+      .words{
+        position: absolute;
+        right: 40px;
+        bottom: 8px;
+        color: #909399;
+        font-size: 13px;
+      }
+    } 
 
   .direction-icon-edit {
       position: fixed;
