@@ -256,9 +256,9 @@
                         placeholder="请输入内容"
                         v-model="productTabList[index].content"
                         show-word-limit
-                        @input="suggestInput(productTabList[index])" 
+                        @input="suggestInput(productTabList[index])"  
                       ></el-input>
-                      <span class="words">{{productTabList[index].content? productTabList[index].content.length:'0'}}/{{productTabList[index].limitnumber? productTabList[index].limitnumber:'n'}}</span>
+                      <span class="words">{{productTabList[index].content? getSemiangleLength(productTabList[index].content,JSON.stringify(productTabList[index].wordtype)):'0'}}/{{productTabList[index].limitnumber? productTabList[index].limitnumber:'n'}}</span>
                     </div>
                   </el-form>
                 </div>
@@ -394,7 +394,7 @@
                     :show-word-limit="true"
                     @input="suggestInput(productMade)" 
                   ></el-input>
-                  <span class="words">{{productMade.content? productMade.content.length:'0'}}/{{productMade.limitnumber? productMade.limitnumber:'n'}}</span>
+                  <span class="words">{{productMade.content? getSemiangleLength(productMade.content,JSON.stringify(productMade.wordtype)):'0'}}/{{productMade.limitnumber? productMade.limitnumber:'n'}}</span>
                 </div>
               </div>
             </el-form>
@@ -864,6 +864,25 @@ export default {
 
   },
   methods: {
+    //全角、半角 获取字符串长度  val:字符串 type为0时,汉字计算为2个字符
+     getSemiangleLength(val,type) {
+        var len = 0.0;
+        if(type!='' && type==0){
+            for (var i = 0; i < val.length; i++) {
+              var a = val.charAt(i);
+                if (a.match(/[^\x00-\xff]/ig) != null && type == '0') {
+                  len += 2;
+                }
+                else {
+                  len += 1;
+                }
+            }
+        }else {
+            len=val.length;
+        }
+        console.log(len)
+        return len;
+    },
     suggestInput(data) {
       console.log(data)
       // :maxlength='productMade.wordtype == 0 ? productMade.limitnumber * 2 : productMade.limitnumber'
