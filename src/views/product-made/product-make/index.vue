@@ -814,42 +814,36 @@ export default {
         this.optionsTypeValue=this.$route.query.optionsTypeValue
         this.navTab = '制作流程'
         console.log('routeObj:',this.routeObj)
-        // console.log('optionsTypeValue:',this.optionsTypeValue)
       }
-
     // this.$router.replace({ name: "product-make-images" });
-
     // this.$router.replace({ name: this.tabsList[0].name});
 
-
+    //获取 tab 类型数据
     requestIntegratedHoneOption({
       orgId: this.loginInfo.orgId,
       isUse: "1"
     }).then(res => {
       this.optionsType = res.data.list;
-      // this.optionsValue =this.optionsType[0]
-
+      //判断 用户userJob所在的岗位，设置tab岗位选中
       if(!this.userJob){
-      this.optionsValue =this.optionsType[0]
+        this.optionsValue =this.optionsType[0]
       }
-      if(!this.optionsTypeValue){
-        if(this.userJob == null){
+      if(!this.optionsTypeValue){ //不是从综合首页进来 执行
+        if(!this.userJob){
           this.optionsValue = res.data.list[0]
-          return
-        }
-                if(this.userJob.length == 0){
+        }else if(this.userJob.length == 0){
           this.optionsValue = res.data.list[0]
-          return
         }else if(this.userJob.length > 0){
-            res.data.list.forEach(item =>{
-            if(item.id==this.userJob[0].id){
-                this.optionsValue = item
-              }
-            })
+          //
+          this.optionsValue = this.findFn(this.userJob[0],res.data.list)
+          this.optionsValue = this.optionsValue||res.data.list[0]
+          //  this.optionsValue = res.data.list.find(item =>{
+          //     return item.id==this.userJob[0].id
+          //   })
         }
       }
 
-      if(!this.optionsTypeValue) return
+      if(!this.optionsTypeValue) return //从综合首页进来 执行
       this.optionsType.forEach(item=>{
           if(item.id == this.optionsTypeValue.id){
             this.optionsValue = item
@@ -864,6 +858,12 @@ export default {
 
   },
   methods: {
+    //数组对象过滤id
+    findFn(contrastObj,arrs){
+      return arrs.find((item)=>{
+          return item.id == contrastObj.id
+        })
+    },
     //获取字符串长度  val:字符串   全角、半角  type为0时,汉字计算为2个字符
      getSemiangleLength(val,type) {
         var len = 0.0;
