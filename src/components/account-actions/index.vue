@@ -179,6 +179,9 @@ export default {
     mounted() {
         //vue，触发html方法
         // window.frames['iframeName1'].lodaHtmlFn()
+        window['vueDefinedMyProp'] = (receiveParams) => {
+            this.receiveParamsFromHtml(receiveParams)
+        }
         
         this.ensureAccountInfo();
         requestClockInState().then(res=>{

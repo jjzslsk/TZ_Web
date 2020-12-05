@@ -836,9 +836,6 @@ export default {
         }else if(this.userJob.length > 0){
           this.optionsValue = this.findFn(this.userJob[0],res.data.list)
           this.optionsValue = this.optionsValue||res.data.list[0]
-          //  this.optionsValue = res.data.list.find(item =>{
-          //     return item.id==this.userJob[0].id
-          //   })
         }
       }
 
