@@ -864,7 +864,7 @@ export default {
 
   },
   methods: {
-    //全角、半角 获取字符串长度  val:字符串 type为0时,汉字计算为2个字符
+    //获取字符串长度  val:字符串   全角、半角  type为0时,汉字计算为2个字符
      getSemiangleLength(val,type) {
         var len = 0.0;
         if(type!='' && type==0){
@@ -880,7 +880,6 @@ export default {
         }else {
             len=val.length;
         }
-        console.log(len)
         return len;
     },
     suggestInput(data) {
