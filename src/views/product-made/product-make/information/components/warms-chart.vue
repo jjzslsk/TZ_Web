@@ -85,9 +85,10 @@ export default {
         show: true,
         trigger: 'axis',
         formatter: function(params){
-          let res =`<div style="text-align: left;">${params[0].axisValue}时<div>`;
+          let res =`<div style="text-align: left;">${params[0].axisValue}时&nbsp;站点&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;风力&nbsp;&nbsp;风向<div>`;
             params.map((element,index) => {
-              res += `<div style="text-align: left;display: inline-block;width: 8px;height: 8px;border-radius: 50%;vertical-align: middle;margin-right: 5px;background:${element.color};"></div>${element.name}：${element.value}(风力) ${element.data.winddName}(风向)<br>`
+              res += `<div style="text-align: left;display: inline-block;width: 8px;height: 8px;border-radius: 50%;vertical-align: middle;margin-right: 5px;background:${element.color};"></div>
+              <span style="width:80px;display: inline-block;">${element.name}：</span>${element.value}&nbsp;&nbsp;${element.data.winddName}<br>`
           });
           return res
         }

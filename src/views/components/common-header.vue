@@ -311,7 +311,6 @@ export default {
 
     htmlFun(){
       this.ssdMenuDemo = false
-      alert('1')
     },
     //只有一级菜单时，被点击 如天气概览、3D监测
     menuItemClick(itemValue){
