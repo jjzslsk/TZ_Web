@@ -115,8 +115,8 @@ export const requestLogout = generatePostWithEvnToken(`{{host}}/${url_system}/ss
 // export const requestLogout = generateGet(commonSuccess);
 
 //全局声音弹窗  发布信息列表
-// export const requestProductAllTaskList = generateGetWithEvn(dataStaticBase + 'productAllTaskList.json');
-export const requestProductAllTaskList = generateGetWithEvn(`{{host}}/${url_integration}/ssd-business-duty-task/getPastTask`);
+export const requestProductAllTaskList = generateGetWithEvn(dataStaticBase + 'productAllTaskList.json');
+// export const requestProductAllTaskList = generateGetWithEvn(`{{host}}/${url_integration}/ssd-business-duty-task/getPastTask`);
 
 // 产品制作-产品制作-分组左侧导航
 // export const requestProductClassTreeList = generateGetWithEvn(dataStaticBase + 'product-tree.json');
@@ -1294,7 +1294,7 @@ export const requestProductAppoint= payload => generateGetWithEvn(`{{host}}/${ur
 // 产品预约管理弹窗
 export const requestDialogFormProductAppointInput = payload => {
     let param = {
-        productId:payload.productId,
+        ...payload,
         timingDate:payload.tiMing
     }
     return payload.id ? generateGetWithEvn(`{{host}}/${url_integration}/ssd-product-publish/updateTiming`)(param) : generateGetWithEvn(`{{host}}/${url_integration}/ssd-product-source/add`)(param)
@@ -1302,10 +1302,10 @@ export const requestDialogFormProductAppointInput = payload => {
 
 // 产品预约管理删除
 export const requestProductAppointDelItem = payload => {
-    let param = {
-        productId:payload.id,
-    }
-    return generateGetWithEvn(`{{host}}/${url_integration}/ssd-product-publish/deleteTiming`)(param)
+    // let param = {
+    //     productId:payload.id,
+    // }
+    return generateGetWithEvn(`{{host}}/${url_integration}/ssd-product-publish/deleteTiming`)(payload)
 };
 
 // 产品标签

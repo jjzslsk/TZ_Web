@@ -1064,6 +1064,8 @@ export default {
     },
     emitPhraes(){},
     timelineClick(data){
+      this.handleNodeClick(data)
+
       if(data.productInfoId == null || data.productInfoId == ''){
           window.open(data.productAttr, '_blank');
           this.$message.warning("非产品，不在系统内制作")
@@ -1515,9 +1517,10 @@ export default {
       // });
     },
     onTreeClickItem(item) {
+        this.handleNodeClick(item)
+
         this.cityData = null
         this.tvText = null
-
       
       // this.makeTimeData = null
       this.productTabProductInfoId = null
@@ -1701,7 +1704,7 @@ export default {
       vm.formItem = data;
       vm.topTitle = "";
       vm.topTitle = data.label;
-      if (data.label == "789") {
+      if (data.label == "测试word") {
         vm.isIframe = true;
         // vm.docPath = `http://222.216.5.171:8891/gxims//railway/showWordForecastMonth.action?productId=20200228164618013583871`;
         vm.docPath = `/product/ssd-page-office/openProductWord?productInfoId=P20000`;

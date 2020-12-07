@@ -11,11 +11,12 @@
                         <page-table ref="table" remote="requestProductAppoint" :formatPayload="formatPayload">
                             <el-table-column prop="" label="序列" width="80px" type="index"></el-table-column>
                             <el-table-column prop="productInfoName" label="名称" />
-                            <el-table-column prop="tiMing" label="时间" />
+                            <el-table-column prop="make_time" label="产品时次" />
+                            <el-table-column prop="tiMing" label="预约时间" />
                             <el-table-column prop label="操作" width="200px">
                                 <template slot-scope="scope">
                                     <el-button type="text" size="small" @click="inputItem(scope.row)">编辑</el-button>
-                                    <c-button type="del" @click="onConfirmDelete({id:scope.row.productId})">
+                                    <c-button type="del" @click="onConfirmDelete(scope.row)">
                                         <span class="text-danger">删除</span>
                                     </c-button>
                                 </template>
@@ -26,7 +27,7 @@
             </el-card>
         </el-main>
     </el-container>
-    <dialog-form title="时间修改" @success="submitSuccess" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.createTime" remote="requestDialogFormProductAppointInput" v-if="formItem">
+    <dialog-form title="时间修改" class="dialog-box-wrapper" @success="submitSuccess" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.createTime" remote="requestDialogFormProductAppointInput" v-if="formItem">
         <template>
             <el-form-item label="修改预约时间" label-width="120px">
                     <el-date-picker
@@ -90,6 +91,12 @@ export default {
     }
 };
 </script>
-<style scoped>
-
+<style lang="postcss" scoped>
+</style>
+<style lang="postcss">
+.dialog-box-wrapper{
+    .el-dialog{
+        width: 700px !important;
+    }
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div>1
+    <div>
         <button @click="iframeClick()">iframeId</button>
         <!-- <iframe :src="officeurl" frameborder="0" class="iframe" ref="iframeId"></iframe> -->
         <iframe ref="iframe" :src="officeurl" class="iframe"></iframe>

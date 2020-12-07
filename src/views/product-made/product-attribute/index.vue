@@ -79,6 +79,7 @@
           <el-form-item label="产品类型" label-width="120px">
             <el-radio-group v-model="formLeftTreeMinor.type">
               <el-radio label="word"></el-radio>
+              <el-radio label="excel"></el-radio>
               <el-radio label="txt"></el-radio>
             </el-radio-group>
           </el-form-item>

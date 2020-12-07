@@ -16,7 +16,7 @@
     </el-calendar>
 </el-card>
 
-    <dialog-form @success="submitSuccess" title="节假日修改" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.dataType" remote="requestUpdateVacation" v-if="formItem">
+    <dialog-form @success="submitSuccess" class="dialog-box-holiday" title="节假日修改" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.dataType" remote="requestUpdateVacation" v-if="formItem">
         <template>
             <el-form-item label="类型选择" label-width="120px">
                   <el-radio v-model="formItem.dataType" label="0">工作日</el-radio>
@@ -148,6 +148,11 @@ export default {
 #calendarBox {
     .el-calendar-day{
       height: 70px;
+    }
+}
+.dialog-box-holiday{
+    .el-dialog{
+        width: 700px !important;
     }
 }
 </style>
