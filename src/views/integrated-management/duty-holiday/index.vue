@@ -98,7 +98,6 @@ export default {
             if(element.dateType == 2){element.content = '节假日'}
           });
           this.resDate = resData
-          console.log(this.resDate)
         })
       },
     },

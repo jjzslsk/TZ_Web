@@ -858,7 +858,7 @@ export default {
     findFn(contrastObj,arrs){
       return arrs.find((item)=>{
           return item.id == contrastObj.id
-        })
+      })
     },
     //获取字符串长度  val:字符串   全角、半角  type为0时,汉字计算为2个字符
      getSemiangleLength(val,type) {
@@ -1097,6 +1097,8 @@ export default {
           );
         })
     },
+
+    //点击制作时次
     channelDate(makeItem,tabItem,tabIndex){
       console.log('makeItem',makeItem)
       console.log('tabItem',tabItem)
@@ -1706,8 +1708,8 @@ export default {
       vm.topTitle = data.label;
       if (data.label == "测试word") {
         vm.isIframe = true;
-        // vm.docPath = `http://222.216.5.171:8891/gxims//railway/showWordForecastMonth.action?productId=20200228164618013583871`;
-        vm.docPath = `/product/ssd-page-office/openProductWord?productInfoId=P20000`;
+        vm.docPath = `http://222.216.5.171:8891/gxims//railway/showWordForecastMonth.action?productId=20200228164618013583871`;
+        // vm.docPath = `/product/ssd-page-office/openProductWord?productInfoId=P20000`;
       } else {
         vm.isIframe = false;
       }

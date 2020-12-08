@@ -4,11 +4,13 @@
     <el-main :class="mainShow? 'main-show':'main-hide'">
       <router-view :pathUrl='menuInfo' :extUrl='extUrl' @fatherMethod="fatherMethod"></router-view>
     </el-main>
+     <popup-music></popup-music>
   </el-container>
 </template>
 
 <script>
 import pageHeader from '../components/common-header';
+import popupMusic from '../components/popup-music';
 import fullPath from "@/router/full-path.js";
 import { requestRouterList } from "@/remote/";
 export default {
@@ -21,7 +23,7 @@ export default {
       extUrl:null,
     }
   },
-  components: {pageHeader},
+  components: {pageHeader,popupMusic},
   computed: {
     // menuInfo() {
     //   // return this.menus[this.activityId] || {};

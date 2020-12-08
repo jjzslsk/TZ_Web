@@ -1,22 +1,14 @@
 <template>
 <div id="app">
     <router-view v-if="isRouterAlive"></router-view>
-    <video id="video" src="./../static/music/alert.mp3" controls="controls" hidden="hidden" autoplay="autoplay"  loop="loop"> </video>
 </div>
 </template>
 <script>
-import {
-requestProductAllTaskList,
-} from "@/remote/";
 export default {
     name: 'App',
     provide () {    //父组件中通过provide来提供变量，在子组件中通过inject来注入变量。                                             
             return {
                 reload: this.reload,
-                audio:null,
-                music:null,
-                start:false,
-                loginInfo:null,
             }
         },
         data() {
@@ -25,101 +17,16 @@ export default {
             }
         },
         methods: {
-             notifyFn(data){
-                //  console.log(window.location.href)
-                //  console.log(window.location.href.indexOf("product-make") != -1 );
-                 if(window.location.href.indexOf("product-make") != -1){
-
-                 }else{
-                     this.$router.push({path:'/product-made/product-make/product-make-images',query: {data:{productInfoId:data.id},optionsTypeValue:{id:"bf5df19b976d4381bb1a2f841ab544a7"}}})
-                 }
-            },
             reload () {
                 this.isRouterAlive = false; //先关闭，
                 this.$nextTick(function () {
                     this.isRouterAlive = true; //再打开
                 }) 
             },
-            //播放-暂停
-            startPlay(state){
-                let vo = document.getElementById("video")
-                this.start = state
-                if(state){
-                    vo.autoplay = true
-                    vo.play()
-                }
-                else{
-                    vo.pause()
-                }
-            },
-            //循环提示
-            cycleFn(){
-                // 发布信息列表
-                requestProductAllTaskList({userId:this.loginInfo.id}).then(
-                    res => {
-                        let edit = false
-                        res.data.length == 0?  edit = false:edit = true
-                        if(edit){
-                            this.startPlay(true)
-                            let vm = this
-                            const notify = this.$notify({
-                                // title: '注意',
-                                dangerouslyUseHTMLString: true,
-                                message: function(){
-                                    let setDom = ``
-                                     res.data.forEach(element => {
-                                        setDom += `<li style="list-style: none;color:#0066ff;cursor:pointer;font-size:12px;font-weight:400;" id=${element.infoId}>${element.title}</li>`
-                                    });
-                                    setDom = 
-                                        `<strong>
-                                            您有${res.data.length}个产品要发布
-                                            <ul style="padding:0;margin:0">
-                                                ${setDom}
-                                            </ul>
-                                        </strong>`
-                                    return setDom
-                                }(),
-                                position: 'bottom-right',
-                                // type: 'warning',
-                                onClose:function(){
-                                    vm.startPlay(false)
-                                },
-                                duration:10000,
-                            });
-
-                            let docEl = notify.$el.getElementsByTagName("li")
-                            let _this = this
-                            docEl.forEach(element => {
-                                element.onclick = function (){
-                                    _this.notifyFn(element)
-                                }
-                            });
-                            notify.$el.querySelector('ul').onclick = () => {
-                                // 点击后关闭notify 不需要的话可删掉
-                                notify.close();
-                            };
-
-                        }
-                        setTimeout(() => {
-                            this.cycleFn()
-                        }, 120000);
-                    }
-                );
-               
-            },
-
-                
         },
         mounted() {
-            this.loginInfo = JSON.parse(localStorage.getItem('loginInfo',))
-            let vo = document.getElementById("video")
-            vo.pause()
-            this.start = false
-            this.cycleFn()
+            
         },
-}
-function qwe (){
-    alert('2')   
 }
 </script>
 <style lang="postcss">

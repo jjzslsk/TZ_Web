@@ -4,11 +4,13 @@
     <el-main>
       <router-view></router-view>
     </el-main>
+     <popup-music></popup-music>
   </el-container>
 </template>
 
 <script>
 import pageHeader from '../components/common-header';
+import popupMusic from '../components/popup-music';
 import fullPath from "@/router/full-path.js";
 import { requestRouterList } from "@/remote/";
 export default {
