@@ -33,7 +33,7 @@
                 :size="activity.size"
                 :timestamp="activity.timestamp"
                 @click.native="timelineClick(activity)"
-                :class="activity.range=='早晨'? 'el-timeline-item-red':'' || activity.range=='上午'? 'el-timeline-item-green':'' || activity.range=='下午'? 'el-timeline-item-blue':'' || activity.range=='夜间'? 'el-timeline-item-yellow':''" 
+                :class="activity.range=='早晨'? 'el-timeline-item-red':'' || activity.range=='上午'? 'el-timeline-item-green':'' || activity.range=='下午'? 'el-timeline-item-blue':'' || activity.range=='夜间'? 'el-timeline-item-yellow':''"
               >
               {{activity.content}}
               <span class="timeFrame" :style="activity._zcIndex == 1? `top:${activity._zc*56/2}px`:''" v-if="activity._zcIndex == 1">{{activity.range}}</span>
@@ -115,7 +115,7 @@
         <div class="center-box item-wrap" ref="mainDom" v-if='isDirection' :style="isRight? ``:'width: calc(100% - 18px);'">
           <div class="nested" v-if="mainWidth" :style="mainWidth? `width:${mainWidth}px`:''">
           <div class="top-title no-border">
-            <div class="text">{{topTitle || '参考资料'}} 
+            <div class="text">{{topTitle || '参考资料'}}
               <!-- <span class="link" style="cursor:pointer" @click="inputItem()">显示编辑</span> -->
               </div>
             <!-- <el-button type="primary" size="small" @click="saveModule()">保存模板</el-button> -->
@@ -124,7 +124,7 @@
             <page-office :url="docPath" id="products"></page-office>
           </div>
           <div v-else class="content-box">
-            <div class="weather-forecast-box"> 
+            <div class="weather-forecast-box">
               <div class="forecast-title">天气预报</div>
               <div class="line-thick"></div>
               <div class="line-thin"></div>
@@ -256,7 +256,7 @@
                         placeholder="请输入内容"
                         v-model="productTabList[index].content"
                         show-word-limit
-                        @input="suggestInput(productTabList[index])"  
+                        @input="suggestInput(productTabList[index])"
                       ></el-input>
                       <span class="words">{{productTabList[index].content? getSemiangleLength(productTabList[index].content,JSON.stringify(productTabList[index].wordtype)):'0'}}/{{productTabList[index].limitnumber? productTabList[index].limitnumber:'n'}}</span>
                     </div>
@@ -302,7 +302,7 @@
                     </el-form-item>
 
                   </div>
-                  
+
                   <div class="edit-but">
                       <div class="time-box">
                         <el-form-item label="预约时间">
@@ -334,7 +334,7 @@
                         :picker-options="{start: '08:30',step: '00:15',end: '18:30'}"
                         placeholder="时间"
                       ></el-time-select> -->
-                  
+
                   <!-- </el-row> -->
               <div v-if="isIframe" class="iframe-content-box">
                 <page-office :url="docPath" id="products"></page-office>
@@ -352,7 +352,7 @@
                         placeholder="请输入内容"
                         v-model="productMade.content"
                         show-word-limit
-                        @input="suggestInput(productMade)" 
+                        @input="suggestInput(productMade)"
                         @blur="onInputBlur"
                       ></el-input>
                     </el-col>
@@ -392,7 +392,7 @@
                     placeholder="请输入内容"
                     v-model="productMade.content"
                     :show-word-limit="true"
-                    @input="suggestInput(productMade)" 
+                    @input="suggestInput(productMade)"
                   ></el-input>
                   <span class="words">{{productMade.content? getSemiangleLength(productMade.content,JSON.stringify(productMade.wordtype)):'0'}}/{{productMade.limitnumber? productMade.limitnumber:'n'}}</span>
                 </div>
@@ -943,13 +943,13 @@ export default {
       let _zc = 0,_sw = 0,_xw = 0,_yj = 0
         this.activities.forEach(element => {
           element.range === "早晨"? _zc = _zc + 1 : _zc = _zc + 0;
-          if(_zc == 1 && element.range === "早晨"){element._zcIndex = 1} 
+          if(_zc == 1 && element.range === "早晨"){element._zcIndex = 1}
           element.range === "上午"? _sw = _sw + 1 : _sw = _sw + 0;
-          if(_sw == 1 && element.range === "上午"){element._swIndex = 1} 
+          if(_sw == 1 && element.range === "上午"){element._swIndex = 1}
           element.range === "下午"? _xw = _xw + 1 : _xw = _xw + 0;
-          if(_xw == 1 && element.range === "下午"){element._xwIndex = 1} 
+          if(_xw == 1 && element.range === "下午"){element._xwIndex = 1}
           element.range === "夜间"? _yj = _yj + 1 : _yj = _yj + 0;
-          if(_yj == 1 && element.range === "夜间"){element._yjIndex = 1} 
+          if(_yj == 1 && element.range === "夜间"){element._yjIndex = 1}
         });
         this.activities.forEach(element => {
           element._zc = _zc
@@ -958,7 +958,7 @@ export default {
           element._yj = _yj
         });
     },
-    
+
     //穿梭框
     allocation(){
       let menu = []
@@ -1014,7 +1014,7 @@ export default {
     },
     addText(myValue){
       function insertAtCursor(myField, myValue) {
- 
+
         //IE 浏览器
         if (document.selection) {
           myField.focus();
@@ -1022,20 +1022,20 @@ export default {
           sel.text = myValue;
           sel.select();
         }
-      
+
         //FireFox、Chrome等
         else if (myField.selectionStart || myField.selectionStart == '0') {
           var startPos = myField.selectionStart;
           var endPos = myField.selectionEnd;
-      
+
           // 保存滚动条
           var restoreTop = myField.scrollTop;
           myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
-          
+
           if (restoreTop > 0) {
             myField.scrollTop = restoreTop;
           }
-          
+
           myField.focus();
           myField.selectionStart = startPos + myValue.length;
           myField.selectionEnd = startPos + myValue.length;
@@ -1205,7 +1205,7 @@ export default {
         this.isRouterAlive = true;
       })
       }, 300);
-      
+
 
       // this.isDirection = false
       // this.isDirection = true
@@ -1351,13 +1351,13 @@ export default {
         productInfoName: index === false? this.lastItemClicked.label:item.name,
         issue: item.issue,
         // reserve: item.reserve ? "1" : "0",
-        // reserveTime: item.reserveTime, 
+        // reserveTime: item.reserveTime,
         // reserveTime: '0',
         createUser: this.loginInfo.name,
         content: item.content,
-        fileName: item.fileName, 
-        makeTime: item.makeTime, 
-        // timingDate: item.timingDate, 
+        fileName: item.fileName,
+        makeTime: item.makeTime,
+        // timingDate: item.timingDate,
       };
       requestProducTreleaseSave(param).then(res => {
         this.saveProducId = res.data.id
@@ -1366,7 +1366,7 @@ export default {
           this.productMade = {
             ...res.data,
             makeTime: item.makeTime,
-            timingDate: item.timingDate, 
+            timingDate: item.timingDate,
 
           };
           if (res.success) {
@@ -1415,7 +1415,7 @@ export default {
       }
 
       this.visibleDialogConsult = fast == 'fast' ? false:true
-      if(fast == 'fast'){ 
+      if(fast == 'fast'){
         //快速发布
 
         _this.onSave(item,index,function(item,index){
@@ -1435,7 +1435,7 @@ export default {
 
         return
       }
-      
+
         //普通发布
         _this.onSave(item,index,function(item,index){
           console.log('普通发布：item',item)
@@ -1523,7 +1523,7 @@ export default {
 
         this.cityData = null
         this.tvText = null
-      
+
       // this.makeTimeData = null
       this.productTabProductInfoId = null
       console.log("click-tree-item1", item);
@@ -1531,7 +1531,7 @@ export default {
       this.$nextTick( () => {//刷新中间理由
         this.isRouterAlive = true;
       })
-      
+
         this.lastItemClicked = item;
       if(item.treeType == 'productType'){
         requestProducInfos({
@@ -1643,7 +1643,7 @@ export default {
         this.tabsList = res.data.list;
         this.$router.replace({ name: this.tabsList[0].name});
         this.tabsListValue = '0'
-        
+
         //默认所有菜单编辑
         this.editoAllMenu = res.data.list
         this.editoAllMenu.forEach(element => {
@@ -1681,7 +1681,7 @@ export default {
           this.treeOfList(res.data.list);
         }
       );
-      
+
     },
     submitSuccess(res) {
       this.requestData();
@@ -1706,10 +1706,10 @@ export default {
       vm.formItem = data;
       vm.topTitle = "";
       vm.topTitle = data.label;
-      if (data.label == "测试word") {
+      if (data.type == 'word' || data.type == 'excel') {
         vm.isIframe = true;
-        vm.docPath = `http://222.216.5.171:8891/gxims//railway/showWordForecastMonth.action?productId=20200228164618013583871`;
-        // vm.docPath = `/product/ssd-page-office/openProductWord?productInfoId=P20000`;
+        //vm.docPath = `http://222.216.5.171:8891/gxims//railway/showWordForecastMonth.action?productId=20200228164618013583871`;
+        vm.docPath = `/ssd-page-office/openProductOffice?productInfoId=`+data.id;
       } else {
         vm.isIframe = false;
       }
@@ -2129,7 +2129,7 @@ export default {
     padding: 0 20px 20px 20px;
     background: #fff;
     }
-    
+
 }
 
 .title {
@@ -2216,7 +2216,7 @@ export default {
         width: 100%;
         text-align: center;
       }
-      
+
       .text {
         text-align: center;
         padding: 20px;
@@ -2268,7 +2268,7 @@ export default {
           }
       }
       }
-      
+
     }
     .el-timeline-item {
       .el-timeline-item__wrapper {
@@ -2321,7 +2321,7 @@ export default {
         }
       }
       .el-tabs__nav-next, .el-tabs__nav-prev {
-        /* line-height: 44px;  
+        /* line-height: 44px;
         */
         line-height: 41px;
         font-size: 22px;
@@ -2334,7 +2334,7 @@ export default {
       margin-right:15px;
       button{
         margin-left: 5px;
-        padding: 7px 8px; 
+        padding: 7px 8px;
       }
     }
 
@@ -2390,7 +2390,7 @@ export default {
         justify-content: center;
         .el-form-item{
           margin-bottom: 2px;
-          
+
         }
       }
       .buts{
@@ -2466,7 +2466,7 @@ export default {
       }
     }
   }
-  
+
     .items{
       position: relative;
       .words{
@@ -2476,7 +2476,7 @@ export default {
         color: #909399;
         font-size: 13px;
       }
-    } 
+    }
 
   .direction-icon-edit {
       position: fixed;
