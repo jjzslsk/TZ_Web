@@ -245,7 +245,7 @@
                        </div>
                       </div>
                     <div v-if="isIframe" class="iframe-content-box">
-                      <page-office :url="docPath" id="products"></page-office>
+                      <page-office :url="docPath" ref="iframe" id="products"></page-office>
                     </div>
                     <div v-else class="form-txt items">
                       <el-input
@@ -337,7 +337,7 @@
 
                   <!-- </el-row> -->
               <div v-if="isIframe" class="iframe-content-box">
-                <page-office :url="docPath" id="products"></page-office>
+                <page-office :url="docPath" ref="iframe" id="products"></page-office>
               </div>
               <div v-else class="form-txt">
                 <div class="text-editor" v-if="inputs">
@@ -1325,6 +1325,7 @@ export default {
 
     //保存
     onSave(item,index,callback) {
+      this.$refs.iframe.iframeClick(this.lastItemClicked);
       console.log('onSave-item:',item)
       console.log('onSave-lastItemClicked:',item)
       if (

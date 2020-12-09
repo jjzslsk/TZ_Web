@@ -14,7 +14,7 @@ export default {
         url: String
     },
     methods :{
-        iframeClick(){
+        iframeClick(data){
             let vm = this
             console.log(vm.$refs.iframe)
             vm.$refs.iframe.contentWindow.saveProductPdf()

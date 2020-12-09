@@ -1,33 +1,21 @@
 {
-    "success": true,
-    "code": 0,
-    "message": "查询成功",
-    "data": [
-      {
-        "startTime": "10:50",
-        "endTime": "12:05",
-        "title": "测试01",
-        "infoId":"9c622501aaa648efa4967cc6cc850c9f"
-      },{
-        "startTime": "10:50",
-        "endTime": "12:05",
-        "title": "测试02",
-        "infoId":"9c622501aaa648efa4967cc6cc850c9f"
-      },{
-        "startTime": "10:50",
-        "endTime": "12:05",
-        "title": "测试03",
-        "infoId":"9c622501aaa648efa4967cc6cc850c9f"
-      },{
-        "startTime": "10:50",
-        "endTime": "12:05",
-        "title": "测试04",
-        "infoId":"9c622501aaa648efa4967cc6cc850c9f"
-      },{
-        "startTime": "10:50",
-        "endTime": "12:05",
-        "title": "测试06",
-        "infoId":"9c622501aaa648efa4967cc6cc850c9f"
-      }
-    ]
-  }
+  "success": true,
+  "code": 0,
+  "message": "查询成功",
+  "data": [
+    {
+      "jobId": "bf5df19b976d4381bb1a2f841ab544a7",
+      "infoId": "d2f713c655ad4911a9c590877331ea43",
+      "startTime": "15:00",
+      "endTime": "16:30",
+      "title": "海洋预报稿审核"
+    },
+    {
+      "jobId": "bf5df19b976d4381bb1a2f841ab544a7",
+      "infoId": "737d6c380ed04228a520b7a705bffef1",
+      "startTime": "16:00",
+      "endTime": "16:24",
+      "title": "测试2"
+    }
+  ]
+}

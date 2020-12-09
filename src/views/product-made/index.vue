@@ -4,7 +4,7 @@
     <el-main>
       <router-view></router-view>
     </el-main>
-     <popup-music></popup-music>
+     <popup-music v-on:childByValue="childByValue"></popup-music>
   </el-container>
 </template>
 
@@ -17,7 +17,8 @@ export default {
   name: "Admin",
   data() {
     return {
-      menuInfo:null
+      menuInfo:null,
+      childValue:null,
     }
   },
   components: {pageHeader,popupMusic},
@@ -52,6 +53,10 @@ export default {
       });
   },
   methods:{
+    childByValue: function (childValue) {
+        // childValue就是子组件传过来的值
+        this.childValue = childValue
+    },
     init(_list){
       let vm = this
       function menuForma(_list){

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <video id="video" controls="controls" hidden="hidden" autoplay="autoplay" loop="loop"></video>
-    <!-- <video id="video" src="./../../../static/music/alert.wav" controls="controls" hidden="hidden" autoplay="autoplay" loop="loop"></video> -->
+    <!-- <video id="video" controls="controls" hidden="hidden" autoplay="autoplay" loop="loop"></video> -->
+    <!-- <video id="video" v-if="state" src="./../../../static/music/alert.wav" controls="controls" hidden="hidden" autoplay="autoplay" loop="loop"></video> -->
     <!-- <button @click="notice(true)">true</button>
     <button @click="notice(false)">false</button> -->
   </div>
@@ -17,6 +17,7 @@ export default {
     return {
       state: false,
       loginInfo: null,
+      videoDom:null,
     };
   },
   watch: {
@@ -28,25 +29,26 @@ export default {
   computed: {},
   methods: {
     notifyFn(data) {
+      let paramObj = JSON.parse(data.id)
       if (window.location.href.indexOf("product-make") != -1) {
+        this.$emit('childByValue', {data:{ productInfoId: paramObj.infoId },optionsTypeValue:{ id: paramObj.jobId }})
       } else {
         this.$router.push({
           path: "/product-made/product-make/product-make-images",
           query: {
-            data: { productInfoId: data.id },
-            optionsTypeValue: { id: "bf5df19b976d4381bb1a2f841ab544a7" },
+            data: { productInfoId: paramObj.infoId },
+            optionsTypeValue: { id: paramObj.jobId },
           },
         });
       }
     },
-    //播放-暂停
+    //播放-暂停 
     startPlay(state) {
-      let vo = document.getElementById("video");
       if (state) {
-        vo.autoplay = true;
-        vo.play();
+        this.videoDom.autoplay = true;
+        this.videoDom.play();
       } else {
-        vo.pause();
+        this.videoDom.pause();
       }
     },
     //循环提示
@@ -57,7 +59,7 @@ export default {
         let edit = false;
         res.data.length == 0 ? (edit = false) : (edit = true);
         if (edit) {
-          this.startPlay(true);
+          // this.startPlay(true);
           let vm = this;
           const notify = this.$notify({
             // title: '注意',
@@ -65,10 +67,14 @@ export default {
             message: (function () {
               let setDom = ``;
               res.data.forEach((element) => {
-                setDom += `<li style="list-style: none;color:#0066ff;cursor:pointer;font-size:12px;font-weight:400;" id=${element.infoId}>${element.title}</li>`;
+                setDom += `<li style="list-style: none;color:#909399;cursor:pointer;font-size:12px;font-weight:400;" id=${JSON.stringify({infoId:element.infoId,jobId:element.jobId})} jobId=${element.jobId}>
+                ${element.title}
+                <span style="font-size:12px;font-weight:400;color:#909399;">${element.startTime}-${element.endTime}</span>
+                <span style="color:#0066ff;cursor:pointer;font-size:12px;font-weight:400;">查看详情</span>
+                </li>`;
               });
               setDom = `<strong>
-                            您有${res.data.length}个产品要发布
+                            您有 <span style="color:red;">${res.data.length}</span>个产品要发布
                             <ul style="padding:0;margin:0">
                                 ${setDom}
                             </ul>
@@ -78,14 +84,15 @@ export default {
             position: "bottom-right",
             // type: 'warning',
             onClose: function () {
-              vm.startPlay(false);
+              // vm.startPlay(false);
             },
-            duration: 5000,
+            duration: 10000,
           });
 
           let docEl = notify.$el.getElementsByTagName("li");
           let _this = this;
           docEl.forEach((element) => {
+          // console.log(element)
             element.onclick = function () {
               _this.notifyFn(element);
             };
@@ -103,13 +110,12 @@ export default {
     //循环查询制作通知开关 true 开， false 关
     notice(state) {
       this.state = state;
+      // this.videoDom = document.getElementById("video");
+      // this.videoDom.pause();
       if (this.state) {
-        let vo = document.getElementById("video");
-        vo.pause();
         this.cycleFn();
       } else {
-        let vo = document.getElementById("video");
-        vo.pause();
+
       }
     },
     // if(window.location.href.indexOf("welcome-login") != -1)
