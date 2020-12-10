@@ -2,7 +2,7 @@
   <el-container v-if="menuInfo">
     <page-header :menuInfo='menuInfo'></page-header>
     <el-main>
-      <router-view></router-view>
+      <router-view :childValue="childValue"></router-view>
     </el-main>
      <popup-music v-on:childByValue="childByValue"></popup-music>
   </el-container>

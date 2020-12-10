@@ -14,10 +14,32 @@
                 :clearable='false'
                 placeholder="选择日期">
               </el-date-picker>
-              <!-- <el-select class="form-time" v-model="forecastTime.formTime" size="mini" placeholder="请选择时段">
+              <el-select class="form-time" v-model="forecastTime.formTime" size="mini" placeholder="请选择时段">
+                <el-option label="00时" value="00"></el-option>
+                <el-option label="01时" value="01"></el-option>
+                <el-option label="02时" value="02"></el-option>
+                <el-option label="03时" value="03"></el-option>
+                <el-option label="04时" value="04"></el-option>
+                <el-option label="05时" value="05"></el-option>
+                <el-option label="06时" value="06"></el-option>
+                <el-option label="07时" value="07"></el-option>
                 <el-option label="08时" value="08"></el-option>
+                <el-option label="09时" value="09"></el-option>
+                <el-option label="10时" value="10"></el-option>
+                <el-option label="11时" value="11"></el-option>
+                <el-option label="12时" value="12"></el-option>
+                <el-option label="13时" value="13"></el-option>
+                <el-option label="14时" value="14"></el-option>
+                <el-option label="15时" value="15"></el-option>
+                <el-option label="16时" value="16"></el-option>
+                <el-option label="17时" value="17"></el-option>
+                <el-option label="18时" value="18"></el-option>
+                <el-option label="19时" value="19"></el-option>
                 <el-option label="20时" value="20"></el-option>
-              </el-select> -->
+                <el-option label="21时" value="21"></el-option>
+                <el-option label="22时" value="22"></el-option>
+                <el-option label="23时" value="23"></el-option>
+              </el-select>
             </el-row>
           </div>
       </div>
@@ -36,7 +58,7 @@ export default {
     return {
       forecastTime:{
         dateOption: JSON.stringify(new Date()).substring(1,11),
-        // formTime:'08',
+        formTime:'00',
       },
       resData:{
         time:[],
@@ -47,7 +69,7 @@ export default {
   watch:{
     forecastTime:{
       handler(val, oldVal){
-                this.requestData({forecastTime:`${this.forecastTime.dateOption.split('-').join('')}01`})
+                this.requestData({forecastTime:`${this.forecastTime.dateOption.split('-').join('')}${this.forecastTime.formTime}`})
             },
             deep:true
     }
@@ -118,7 +140,7 @@ export default {
     }
   },
   mounted() {
-    this.requestData({forecastTime:`${this.forecastTime.dateOption.split('-').join('')}01`})
+    this.requestData({forecastTime:`${this.forecastTime.dateOption.split('-').join('')}${this.forecastTime.formTime}`})
   }
 }
 </script>

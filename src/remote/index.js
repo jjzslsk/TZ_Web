@@ -115,8 +115,8 @@ export const requestLogout = generatePostWithEvnToken(`{{host}}/${url_system}/ss
 // export const requestLogout = generateGet(commonSuccess);
 
 //全局声音弹窗  发布信息列表
-export const requestProductAllTaskList = generateGetWithEvn(dataStaticBase + 'productAllTaskList.json');
-// export const requestProductAllTaskList = generateGetWithEvn(`{{host}}/${url_integration}/ssd-business-duty-task/getPastTask`);
+// export const requestProductAllTaskList = generateGetWithEvn(dataStaticBase + 'productAllTaskList.json');
+export const requestProductAllTaskList = generateGetWithEvn(`{{host}}/${url_integration}/ssd-business-duty-task/getPastTask`);
 
 // 产品制作-产品制作-分组左侧导航
 // export const requestProductClassTreeList = generateGetWithEvn(dataStaticBase + 'product-tree.json');

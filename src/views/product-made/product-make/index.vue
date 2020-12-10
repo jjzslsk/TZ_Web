@@ -573,6 +573,7 @@ import {
 } from "../../mixins/index";
 import { mapActions, mapGetters } from "vuex";
 export default {
+  props:['childValue'],
   mixins: [common, witchCommonList, withCommonLeftTree],
   components: {
     PageOffice,
@@ -717,6 +718,55 @@ export default {
   }
 },
   watch: {
+    childValue(val){
+      if(val){
+        this.navTab = '制作流程'
+        //获取 tab 类型数据
+        this.resTab().then((res)=>{
+          let param = this.activities.find(element => {
+            return element.productInfoId == val.data.productInfoId
+          });
+          this.timelineClick(param)
+        })
+        // this.optionsValue = this.optionsTypeValue.id
+        // 发布流程信息
+        // requestProductTaskList({ userId: this.loginInfo.id, jobId: this.optionsTypeValue.id }).then(
+        //   res => {
+        //     this.substep(res)
+        //   }
+        // );
+        //获取 tab 类型数据
+    requestIntegratedHoneOption({
+      orgId: this.loginInfo.orgId,
+      isUse: "1"
+    }).then(res => {
+      this.optionsType = res.data.list;
+      //判断 用户userJob所在的岗位，设置tab岗位选中
+      if(!this.userJob){
+        this.optionsValue =this.optionsType[0]
+      }
+      if(!this.optionsTypeValue){ //不是从综合首页进来 执行
+        if(!this.userJob){
+          this.optionsValue = res.data.list[0]
+        }else if(this.userJob.length == 0){
+          this.optionsValue = res.data.list[0]
+        }else if(this.userJob.length > 0){
+          this.optionsValue = this.findFn(this.userJob[0],res.data.list)
+          this.optionsValue = this.optionsValue||res.data.list[0]
+        }
+      }
+
+      if(!this.optionsTypeValue) return //从综合首页进来 执行
+      this.optionsType.forEach(item=>{
+          if(item.id == this.optionsTypeValue.id){
+            this.optionsValue = item
+          }
+        })
+      console.log('optionsValue:',this.optionsValue)
+    })
+        console.log(val)
+      }
+    },
     isDirection(){
       this.isRouterAlive = false;
       this.isEditAlive = false;
@@ -802,6 +852,9 @@ export default {
     //     // this.productMade.reserveTime = this.lastItemClicked.reserveTime
     //   }
     // }
+
+
+
   },
   mounted() {
     this.requestData();
@@ -819,39 +872,12 @@ export default {
     // this.$router.replace({ name: this.tabsList[0].name});
 
     //获取 tab 类型数据
-    requestIntegratedHoneOption({
-      orgId: this.loginInfo.orgId,
-      isUse: "1"
-    }).then(res => {
-      this.optionsType = res.data.list;
-      //判断 用户userJob所在的岗位，设置tab岗位选中
-      if(!this.userJob){
-        this.optionsValue =this.optionsType[0]
-      }
-      if(!this.optionsTypeValue){ //不是从综合首页进来 执行
-        if(!this.userJob){
-          this.optionsValue = res.data.list[0]
-        }else if(this.userJob.length == 0){
-          this.optionsValue = res.data.list[0]
-        }else if(this.userJob.length > 0){
-          this.optionsValue = this.findFn(this.userJob[0],res.data.list)
-          this.optionsValue = this.optionsValue||res.data.list[0]
-        }
-      }
-
-      if(!this.optionsTypeValue) return //从综合首页进来 执行
-      this.optionsType.forEach(item=>{
-          if(item.id == this.optionsTypeValue.id){
-            this.optionsValue = item
-          }
-        })
-      console.log('optionsValue:',this.optionsValue)
+    this.resTab().then((res)=>{
+      // 发布流程信息
+      requestProductTaskList({userId:this.loginInfo.id,name1:this.optionsValue,dutyMonth:this.paramObj.dutyMonth}).then(res => {
+        this.substep(res)
+      })
     })
-    // 发布流程信息
-    requestProductTaskList({userId:this.loginInfo.id,name1:this.optionsValue,dutyMonth:this.paramObj.dutyMonth}).then(res => {
-      this.substep(res)
-    })
-
   },
   methods: {
     //数组对象过滤id
@@ -860,6 +886,39 @@ export default {
           return item.id == contrastObj.id
       })
     },
+
+    //获取 tab 类型数据
+    async resTab(){
+      requestIntegratedHoneOption({
+        orgId: this.loginInfo.orgId,
+        isUse: "1"
+      }).then(res => {
+        this.optionsType = res.data.list;
+        //判断 用户userJob所在的岗位，设置tab岗位选中
+        if(!this.userJob){
+          this.optionsValue =this.optionsType[0]
+        }
+        if(!this.optionsTypeValue){ //不是从综合首页进来 执行
+          if(!this.userJob){
+            this.optionsValue = res.data.list[0]
+          }else if(this.userJob.length == 0){
+            this.optionsValue = res.data.list[0]
+          }else if(this.userJob.length > 0){
+            this.optionsValue = this.findFn(this.userJob[0],res.data.list)
+            this.optionsValue = this.optionsValue||res.data.list[0]
+          }
+        }
+
+        if(!this.optionsTypeValue) return //从综合首页进来 执行
+        this.optionsType.forEach(item=>{
+            if(item.id == this.optionsTypeValue.id){
+              this.optionsValue = item
+            }
+          })
+        console.log('optionsValue:',this.optionsValue)
+      })
+    },
+
     //获取字符串长度  val:字符串   全角、半角  type为0时,汉字计算为2个字符
      getSemiangleLength(val,type) {
         var len = 0.0;
@@ -1325,7 +1384,7 @@ export default {
 
     //保存
     onSave(item,index,callback) {
-      this.$refs.iframe.iframeClick(this.lastItemClicked);
+      //this.$refs.iframe.iframeClick(this.lastItemClicked);
       console.log('onSave-item:',item)
       console.log('onSave-lastItemClicked:',item)
       if (
@@ -1709,8 +1768,8 @@ export default {
       vm.topTitle = data.label;
       if (data.type == 'word' || data.type == 'excel') {
         vm.isIframe = true;
-        //vm.docPath = `http://222.216.5.171:8891/gxims//railway/showWordForecastMonth.action?productId=20200228164618013583871`;
-        vm.docPath = `/ssd-page-office/openProductOffice?productInfoId=`+data.id;
+        vm.docPath = `http://222.216.5.171:8891/gxims//railway/showWordForecastMonth.action?productId=20200228164618013583871`;
+        //vm.docPath = `http://10.137.4.30:6001/integration/main/ssd-page-office/productPreview?productInfoId=`+data.id;
       } else {
         vm.isIframe = false;
       }
