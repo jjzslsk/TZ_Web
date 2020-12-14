@@ -1,4 +1,5 @@
 "use strict";
+var planeTabActive //平面图 右侧 TAB 事件
 layui.use(['element', 'form', 'layer', 'laydate'], function () {
     var element = layui.element,
     form = layui.form,
@@ -128,4 +129,16 @@ layui.use(['element', 'form', 'layer', 'laydate'], function () {
             $("#rightSection").hide();
         }
     });
+
+    ///平面图 TAB 切换
+    element.on('tab(rightTab)', function(data){
+        planeRightTab(data)
+    });
+
+    //平面图 切换到指定Tab项
+    planeTabActive = {
+        tabChange: function (index) {
+            element.tabChange('rightTab', index);
+        }
+    }
 });

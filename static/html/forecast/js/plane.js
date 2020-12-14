@@ -1,3 +1,5 @@
+//平面图 js
+
 window.onload = function(){
     requestData()
 }
@@ -21,6 +23,7 @@ let dataHour = '';//间隔选中
 let factorPath;//选中要素ImgPadth
 let mixturePath;//选中综合ImgPadth
 let obtainImgList = [];//获取到的图片
+let rightTabIndex; //右侧TAB下标 0 实时查询， 1 历史查询
 
 //初始化获取数据
 async function requestData(){
@@ -38,6 +41,7 @@ async function requestData(){
         model = res.data
         formatModel(model)
         modelImgPath = model[0].img_path
+        selectedModel = model[0].ele_name
     })
     
     //获取高空要素
@@ -69,8 +73,9 @@ async function requestData(){
 
     //初始化第一张图片
     function fnAir(){
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
                 resolve()
+                // reject()
         })
     }
     await fnAir().then(res=>{fnDate()})
@@ -260,6 +265,9 @@ $(".model-li-plane").on("click", "li", function addfood() {
     $(".model-li-plane ul .is-active").each(function(i,o){
         modelImgPath = $(this).attr('img_path')
         selectedModel = $(this).text()
+        //切换到指定Tab项
+        planeTabActive.tabChange('01')
+
     });
 
     //重置 预报时间间隔
@@ -308,6 +316,10 @@ $('#cityArr').on('click','.cityArr',function(){
     $(this).addClass('city-time-active');
     selectedScope = $(this).attr('code')
     if(!forecastDate){layer.msg('未选择预报时间',{time:700});return}
+
+    //切换到指定Tab项
+    planeTabActive.tabChange('01')
+
     obtainImg(function(){
         stampsNum = 0 //清空邮票记步
         applyPreviewImg()
@@ -347,6 +359,9 @@ $('#groundFactor').on('click','.groundFactor',function(){
      if($("#synthesize .synthesize").hasClass("synthesize-time-active")){//移除综合分析 选中
         $("#synthesize .synthesize").removeClass("synthesize-time-active");
      }else{}
+
+     //切换到指定Tab项
+     planeTabActive.tabChange('01')
 
      factorPath = $(this).attr('img_path')
      fnDate()
@@ -410,6 +425,9 @@ $('#upperAirTitle').on('click','.upperAirTitle',function(){
         $("#synthesize .synthesize").removeClass("synthesize-time-active");
         }else{}
 
+        //切换到指定Tab项
+        planeTabActive.tabChange('01')
+
     factorPath = upperAirData[hPaIndex].content[0].img_path
     fnDate()
 });
@@ -463,6 +481,9 @@ $('#synthesize').on('click','.synthesize',function(){
         $("#groundFactor .groundFactor").removeClass("ground-factor-active");
         }else{}
 
+        //切换到指定Tab项
+        planeTabActive.tabChange('01')
+
     factorPath = $(this).attr('img_path')
     eleHeight = $(this).attr('eleHeight')
     fnDate()
@@ -480,6 +501,9 @@ $('#upperAir').on('click','li',function(){
      if($("#synthesize .synthesize").hasClass("synthesize-time-active")){//移除综合分析 选中
         $("#synthesize .synthesize").removeClass("synthesize-time-active");
      }else{}
+
+     //切换到指定Tab项
+     planeTabActive.tabChange('01')
 
     factorPath = $(this).attr('img_path')
     eleHeight = $(this).attr('eleHeight')
@@ -659,3 +683,39 @@ tips_index = layer.tips($(this).attr('content'),this,{time:0});
 },function(){
     layer.close(tips_index);
 });
+
+async function planeRightTab (data){
+    rightTabIndex = data.index
+    if(data.index == 1){
+        requestPlaneRightHistory()
+    }
+}
+
+async function requestPlaneRightHistory (){
+    let param = {
+        pattern:modelImgPath,
+        ele:factorPath,//地面要素
+        showAll:1
+    }
+    //获取范围
+    await getData(main_url,'/ssd-forecast-element/getDataTime?',param).then(res=>{
+        const planeHistoryArr = res.data
+        planeHistory = [];
+        $.each(planeHistoryArr, function(index, obj) {
+            index == 0? planeHistory.push(`<li code=${obj.elePath} class='planeHistory plane-time-active' style="cursor:pointer">${obj.hours}</li>`):
+            planeHistory.push(`<li code=${obj.elePath} class='planeHistory' style="cursor:pointer;">${obj.hours}</li>`)
+        });
+        $("#planeHistory").html(planeHistory);
+        $('#planeHistory').on('click','.planeHistory',function(){
+            $(this).parents('#planeHistory').find('.planeHistory').removeClass('plane-time-active');
+            $(this).addClass('plane-time-active');
+            forecastDate = $(this).attr('code')
+            obtainImg(function(){ //获取图片
+                stampsNum = 0 //清空邮票记步
+                applyPreviewImg() //渲染图片
+                drawingStamps() //渲染邮票模式
+            })
+        });
+
+    })
+}

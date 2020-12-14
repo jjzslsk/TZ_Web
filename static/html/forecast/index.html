@@ -313,10 +313,10 @@
 
   <div class="right right-box">
     <!-- 平面图右侧 -->
-    <div class="layui-tab layui-tab-card" id="rightTab">
+    <div class="layui-tab layui-tab-card" id="rightTab" lay-filter="rightTab">
       <ul class="layui-tab-title">
-        <li class="layui-this">实时查询</li>
-        <li>历史查询 </li>
+        <li class="layui-this" lay-id="01">实时查询</li>
+        <li lay-id="02">历史查询 </li>
       </ul>
       <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
@@ -347,7 +347,10 @@
             </div> -->
 
         </div>
-        <div class="layui-tab-item">暂无数据</div>
+        <div class="layui-tab-item">
+            <ul id="planeHistory">
+            </ul>
+        </div>
       </div>
     </div>
     

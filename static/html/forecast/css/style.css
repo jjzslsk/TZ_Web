@@ -110,7 +110,9 @@ html,body{height: 100%;}
 .tools #cityArr .city-time-active{color: cornsilk;background-color: #1E9FFF;border-radius: 100px;height: 10px;display: flex;justify-content: center;align-items: center;}
 .tools #agingArr .aging-time-active{color: cornsilk;background-color: #1E9FFF;border-radius: 100px;height: 10px;display: flex;justify-content: center;align-items: center;}
 
-
+.right #planeHistory {height: 600px;overflow: auto;}
+.right #planeHistory .planeHistory{text-align: center;line-height: 22px;color: #666;}
+.right #planeHistory .plane-time-active{color:#419FFF;}
 
 .left #synthesize .synthesize{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;padding: 3px 0px 3px 5px;}
 .left #temporalSite .temporalSite{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}

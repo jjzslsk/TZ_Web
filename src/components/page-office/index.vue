@@ -6,6 +6,7 @@
         <!-- <iframe :src="officeurl" frameborder="0" class="iframe" ref="iframeId"></iframe> -->
         <iframe ref="iframe" :src="officeurl" class="iframe"></iframe>
         <!-- <iframe ref="iframe" src="http://192.168.5.106:8080/publishMessage/toSaveWord2" class="iframe"></iframe> -->
+        <!-- <iframe ref="iframe" src="http://10.137.4.30:8888/basin/main/openProductFile.action?templateId=be42a586f9ea46daae073232908df04d" class="iframe"></iframe> -->
     </div>
 </template>
 

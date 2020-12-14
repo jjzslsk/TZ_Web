@@ -339,6 +339,7 @@
                       ></el-time-select> -->
 
                   <!-- </el-row> -->
+
               <div v-if="isIframe" class="iframe-content-box">
                 <page-office :url="docPath" ref="iframe" id="products"></page-office>
               </div>
@@ -1839,7 +1840,8 @@ export default {
       vm.topTitle = data.label;
       if (data.type == 'word' || data.type == 'excel') {
         vm.isIframe = true;
-        vm.docPath = `http://222.216.5.171:8891/gxims//railway/showWordForecastMonth.action?productId=20200228164618013583871`;
+        vm.docPath = `http://10.137.4.30:8888/basin/main/openProductFile.action?templateId=${data.id}`;
+        // vm.docPath = `http://222.216.5.171:8891/gxims//railway/showWordForecastMonth.action?productId=20200228164618013583871`;
         //vm.docPath = `http://10.137.4.30:6001/integration/main/ssd-page-office/productPreview?productInfoId=`+data.id;
       } else {
         vm.isIframe = false;
@@ -2170,7 +2172,7 @@ export default {
         }
         .iframe-content-box {
           width: 100%;
-          height: 67%;
+          height: calc(100% - 202px);
           margin: 20px 0;
         }
         .form-txt {
