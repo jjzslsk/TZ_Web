@@ -69,7 +69,7 @@ export default {
       handler(val, oldVal){
                 console.log("dateOption--formTime: "+val.dateOption, oldVal.formTime);
                 this.isShow = false
-                requestProductDay7List({stationNum:this.station[0].stationNum,forecasttime:`${this.forecastTime.dateOption.split('-').join('')}${this.forecastTime.formTime}`}).then(res=>{
+                requestProductDay7List({stationNum:this.station[0].stationNum,forecastTime:`${this.forecastTime.dateOption.split('-').join('')}${this.forecastTime.formTime}`}).then(res=>{
                   this.resData = res.data
                   this.isShow = true
                 })
@@ -81,7 +81,7 @@ export default {
     channelHit(item,index){
       this.tagHit = index
       this.isShow = false
-      requestProductDay7List({stationNum:this.station[index].stationNum,forecasttime:`${this.forecastTime.dateOption.split('-').join('')}${this.forecastTime.formTime}`}).then(res=>{
+      requestProductDay7List({stationNum:this.station[index].stationNum,forecastTime:`${this.forecastTime.dateOption.split('-').join('')}${this.forecastTime.formTime}`}).then(res=>{
         this.resData = res.data
         this.isShow = true
       })

@@ -57,7 +57,7 @@
             </page-table>
         </div>
     </div>
-    <dialog-form @success="submitSuccess" title="岗位流程配置" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!this.formItem.name||!this.formItem.jobId" remote="requestDialogFormDutyPostItemInput" v-if="formItem">
+    <dialog-form @success="submitSuccess" title="岗位流程配置" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItemFn()" :confirmDisabled="!this.formItem.name||!this.formItem.jobId" remote="requestDialogFormDutyPostItemInput" v-if="formItem">
         <template>
             <el-dialog class="popover-box" :modal='false' :visible.sync="visible">
                 <el-popover
@@ -76,13 +76,13 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="任务名称" label-width="120px">
-                <el-input v-model="formItem.name" autocomplete="off"></el-input>
+                <el-input v-model="formItem.name" autocomplete="off" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="任务说明" label-width="120px">
-                <el-input v-model="formItem.remark" autocomplete="off"></el-input>
+                <el-input v-model="formItem.remark" autocomplete="off" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="施行顺序" label-width="120px">
-                <el-input v-model="formItem.showOrder" autocomplete="off"></el-input>
+                <el-input v-model="formItem.showOrder" type="Number" placeholder="请输入数字" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="起止时间" label-width="120px">
                   <el-time-picker
@@ -136,11 +136,11 @@
             </el-form-item>
 
             <el-form-item label="产品选择" label-width="120px" v-if="formItem.product == '1'">
-               <el-input v-model="formItem.productInfoName" @click.native="inputEvent(formItem)" autocomplete="off"></el-input>
+               <el-input v-model="formItem.productInfoName" placeholder="请选择产品" @click.native="inputEvent(formItem)" autocomplete="off"></el-input>
             </el-form-item>
 
             <el-form-item label="其他任务地址" label-width="120px" v-if="formItem.product == '2'">
-               <el-input v-model="formItem.other"></el-input>
+               <el-input v-model="formItem.other" placeholder="请以http://或者https:// 格式开头"></el-input>
             </el-form-item>
         </template>
     </dialog-form>
@@ -456,15 +456,24 @@ export default {
         this.requestData()
     },
     methods: {
-        onConfirmDisabled(){
-            // let state = true
-            // if(!this.formItem.name||!this.formItem.remark||!this.formItem.jobId||!this.formItem.showOrder||!this.formItemTimeRange){
-            //     state = false
-            // }else
-            // if(this.formItem.product && !this.formItem.productInfoId){
-            //     state = true
-            // }
-            // return state
+        formItemFn(){
+            if(this.formItem.product == 1){
+                if (!this.formItem.productInfoName){
+                    this.$message.warning('请选择产品');
+                    return
+                }else{
+                    return this.formItem
+                }
+            }else if(this.formItem.product == 2){
+                if (!this.formItem.productUrl){
+                    this.$message.warning('请输入地址');
+                    return
+                }else{
+                    return this.formItem
+                }
+            }else{
+                return this.formItem
+            }
         },
         submitSuccess(res){
             this.onConfirmUpdate()

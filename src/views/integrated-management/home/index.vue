@@ -1125,6 +1125,7 @@ a{
   }
   .duty-table-pop{
     position: absolute;
+    z-index: 2;
     background: #fff;
     width: 240px;
     border:1px solid rgba(64, 158, 255, 1); 
@@ -1204,7 +1205,7 @@ a{
             .timeFrame{
               position: absolute;
               color: red;
-              z-index: 99;
+              z-index: 1;
               left: -30px;
             }
             .timeline-event{

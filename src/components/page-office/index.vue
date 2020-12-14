@@ -1,8 +1,11 @@
 <template>
     <div>
-        <button @click="iframeClick()">iframeId</button>
+        <!-- <button @click="iframeClick1()">发送</button>
+        <br>
+        <button @click="iframeClick2()">接收</button> -->
         <!-- <iframe :src="officeurl" frameborder="0" class="iframe" ref="iframeId"></iframe> -->
         <iframe ref="iframe" :src="officeurl" class="iframe"></iframe>
+        <!-- <iframe ref="iframe" src="http://192.168.5.106:8080/publishMessage/toSaveWord2" class="iframe"></iframe> -->
     </div>
 </template>
 
@@ -14,30 +17,38 @@ export default {
         url: String
     },
     methods :{
-        iframeClick(data){
+        iframeClick1(data){
             let vm = this
-            console.log(vm.$refs.iframe)
-            vm.$refs.iframe.contentWindow.saveProductPdf()
-            // this.$refs.iframeId.contentWindow.saveProductPdf()
-            // vm.$refs.iframeId.contentWindow.saveProductPdf()
-            // console.log(vm.$refs.iframeId)
-                // var map_iframe  = document.getElementById("iframeId"); //获取iframe标签
-                // var iwindow = iframe.contentWindow; //获取iframe的window对象
-                // var saveTemplateWord = iwindow.saveTemplateWord();
-                // alert(iwindow.saveTemplateWord);
-            //    var test = map_iframe.contentWindow.saveProductPdf();
-
-            // var map_iframe = document.frames("iframeId");
-            //    var map_iframe = document.getElementById("iframeId");
-                // map_iframe.onload = function() {
-                // map_iframe.contentWindow.saveProductPdf();
-            // };
+              this.iframeWin.postMessage({
+                cmd: 'getFormJson',
+                params: {}
+            }, '*')
+            window.addEventListener('message', this.handleMessage)
+        },
+        iframeClick2(data){
+            this.iframeWin = this.$refs.iframe.contentWindow
+            window.addEventListener('message', this.handleMessage)
+        },
+        handleMessage (event) {
+            // 根据上面制定的结构来解析iframe内部发回来的数据
+            const data = event.data
+            switch (data.cmd) {
+            case 'returnFormJson':
+                // 业务逻辑
+                break
+            case 'returnHeight':
+                // alert(JSON.stringify(data))
+                // 业务逻辑
+                break
+            }
         }
     },
     data() {
         console.log(this.url)
         return {
-            officeurl: this.url || ''
+            officeurl: this.url || '',
+            iframeWin: {},
+            isIframe:true,
         }
     },
     watch: {
@@ -45,7 +56,12 @@ export default {
             console.log(v, ov)
             this.officeurl = v
         }
-    }
+    },
+    mounted () {
+        this.iframeWin = this.$refs.iframe.contentWindow
+        // this.iframeClick2()
+    },
+
 }
 </script>
 

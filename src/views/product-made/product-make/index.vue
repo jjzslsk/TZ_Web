@@ -1,5 +1,8 @@
 <template>
   <div class="product-made-home product-made-make">
+    <!-- {{lastItemClicked}} -->
+    <!-- {{productTabList}} -->
+    <!-- {{parentList}} -->
 <!-- 宽mainWidth：{{mainWidth}}，中isDirection：{{isDirection}}，导isEditAlive：{{isEditAlive}}，右isRight：{{isRight}}，右刷isEditAlive：{{isEditAlive}}，中刷isRouterAlive：{{isRouterAlive}}， -->
     <!-- {{tabsList}} -->
     <!-- {{leftData}} -->
@@ -239,13 +242,13 @@
                       </div>
                       <div class="buts">
                         <el-button type="success" size="mini" @click="getLasts(productTabList[index],index)">最新发布</el-button>
-                        <el-button type="success" size="mini" @click="onSave(productTabList[index],index,function(){})">保存</el-button>
-                        <el-button type="primary" size="mini" @click="onConsult(productTabList[index],index,'fast')">保存并快速发布</el-button>
+                        <el-button type="success" size="mini" @click="onAllSave(productTabList[index],index,function(){})">全部保存</el-button>
+                        <el-button type="primary" size="mini" @click="onAllConsult(productTabList[index],index,'fast')">全部保存并发布</el-button>
                         <el-button type="primary" size="mini" @click="onConsult(productTabList[index],index,'')">保存并发布</el-button>
                        </div>
                       </div>
-                    <div v-if="isIframe" class="iframe-content-box">
-                      <page-office :url="docPath" ref="iframe" id="products"></page-office>
+                    <div v-if="productTabList[index].type == 'word' || productTabList[index].type == 'excel'" class="iframe-content-box">
+                      <page-office :url="productTabList[index].filePath" ref="iframe" id="products"></page-office>
                     </div>
                     <div v-else class="form-txt items">
                       <el-input
@@ -551,6 +554,8 @@ import {
   requestProducInfos,
   requestProducInfo,
   requestProducTreleaseSave,
+  requestProducTreleaseAllSave,
+  requestProducDoQuickAllPublish,
   requestProductUserList,
   requestProductInfoTpyeTreeList,
   requestProducTreleaseDoPublish,
@@ -581,6 +586,11 @@ export default {
   },
   data() {
     return {
+      expireTimeOption: {
+        disabledDate(date) {
+          return date.getTime() <= Date.now();
+        }
+      },
       mainWidth:null,//中间宽度
       activityObj:null,
       isNav:true,
@@ -619,47 +629,47 @@ export default {
       alertList: null,
       productMade: {},
       activities: [
-        {
-          content: "短时临近预报修改",
-          timestamp: "2018-04-12 20:46",
-          size: "large",
-          type: "primary",
-          icon: "el-icon-check",
-          color: "#409EFF"
-        },
-        {
-          content: "周边城市预报",
-          timestamp: "2018-04-03 20:46",
-          color: "#67C241",
-          icon: "el-icon-bell"
-        },
-        {
-          content: "周边城市报文",
-          timestamp: "2018-04-03 20:46",
-          size: "large"
-        },
-        {
-          content: "城市预报气象网",
-          timestamp: "2018-04-03 20:46"
-        },
-        {
-          content: "周边城市报文",
-          timestamp: "2018-04-03 20:46",
-          size: "large"
-        },
-        {
-          content: "城市预报气象网",
-          timestamp: "2018-04-03 20:46"
-        },
-        {
-          content: "周边城市报文",
-          timestamp: "2018-04-03 20:46",
-          size: "large"
-        },
-        {
-          content: "查看智能网格预报业务平台",
-          timestamp: "2018-04-03 20:46"
-        }
+        // {
+        //   content: "短时临近预报修改",
+        //   timestamp: "2018-04-12 20:46",
+        //   size: "large",
+        //   type: "primary",
+        //   icon: "el-icon-check",
+        //   color: "#409EFF"
+        // },
+        // {
+        //   content: "周边城市预报",
+        //   timestamp: "2018-04-03 20:46",
+        //   color: "#67C241",
+        //   icon: "el-icon-bell"
+        // },
+        // {
+        //   content: "周边城市报文",
+        //   timestamp: "2018-04-03 20:46",
+        //   size: "large"
+        // },
+        // {
+        //   content: "城市预报气象网",
+        //   timestamp: "2018-04-03 20:46"
+        // },
+        // {
+        //   content: "周边城市报文",
+        //   timestamp: "2018-04-03 20:46",
+        //   size: "large"
+        // },
+        // {
+        //   content: "城市预报气象网",
+        //   timestamp: "2018-04-03 20:46"
+        // },
+        // {
+        //   content: "周边城市报文",
+        //   timestamp: "2018-04-03 20:46",
+        //   size: "large"
+        // },
+        // {
+        //   content: "查看智能网格预报业务平台",
+        //   timestamp: "2018-04-03 20:46"
+        // }
       ],
       defaultProps: {
         children: "children",
@@ -684,6 +694,7 @@ export default {
       editoAllMenu:[],//编辑菜单里的所有菜单
       notMenu:false,// false未配置菜单，turn已配置
       tabsList1: [],
+      parentList:null,
       treeData: [],
       forecastList: [
         {
@@ -941,15 +952,12 @@ export default {
       console.log(data)
       // :maxlength='productMade.wordtype == 0 ? productMade.limitnumber * 2 : productMade.limitnumber'
       if (
-        !this.lastItemClicked ||
-        !this.productMade.fileName ||
-        !this.productMade.issue ||
-        !this.productMade.content
+        !this.lastItemClicked
       ) {
         this.$message.error("选择产品，并填写完整信息!");
         return;
       }
-      if(data.content.length > data.limitnumber ){
+      if(data.content.length > data.limitnumber && data.limitnumber !== 0 && data.limitnumber !== null){
         this.$message({
           message: '已超字数',
           type: 'warning'
@@ -1382,21 +1390,82 @@ export default {
       })
     },
 
+    //全部保存
+    onAllSave(){
+      return new Promise((resolve, reject) => {
+        var _productTabList = this.productTabList
+        var _lastItemClicked = this.lastItemClicked
+        var _parentList = this.parentList
+        let param = {
+          "orgId":this.loginInfo.orgId,
+          "productTypeId":this.lastItemClicked.id,
+          "createUser":this.loginInfo.username,
+          "createTime":null,
+          "content":(function(){
+            let obj1 = {}
+            let obj2
+            let obj3
+            _productTabList.find((element,index) => {
+              let _variable = _parentList[index].code
+              obj2 = {
+                  [_variable] : {
+                  reserve:element.reserve? 1:0,
+                  reserveTime:element.reserveTime,
+                  issue: element.issue,
+                  fileName:element.fileName,
+                  msg:element.content,
+                  fileType:_parentList[index].type,
+                  filePath:element.filePath
+                }
+              }
+              obj3 = Object.assign(obj1, obj2);
+            });
+            return obj3
+          }()),
+        }
+        requestProducTreleaseAllSave(param).then((res)=>{
+          res.success? this.$message({message: res.message,type: 'success'}) : this.$message.error(res.message)
+          res.success? resolve(res) : reject(res)
+        })
+      });
+    },
+
+
+
+    async onAllConsult(item,index,fast){
+      let _this = this
+      var _productTabList = _this.productTabList
+      var _lastItemClicked = _this.lastItemClicked
+      var _parentList = _this.parentList
+      let res = await _this.onAllSave()
+      let ids = _productTabList.map(element => {
+        return element.productInfoId
+      });
+      let param = {
+        publishIds: ids,
+        publishUser: _this.loginInfo.name,
+      };
+      requestProducDoQuickAllPublish(param).then(res=>{
+        if (res.success) {
+        _this.$message.success(res.message);
+        } else {
+          _this.$message.error(res.message);
+        }
+      })
+    },
+
     //保存
     onSave(item,index,callback) {
       //this.$refs.iframe.iframeClick(this.lastItemClicked);
       console.log('onSave-item:',item)
       console.log('onSave-lastItemClicked:',item)
       if (
-        !this.lastItemClicked ||
-        !item.fileName ||
-        !item.issue ||
-        !item.content
+        !this.lastItemClicked
       ) {
         this.$message.error("选择产品，并填写完整信息!");
         return;
       }
-      if(item.content.length > item.limitnumber ){
+      if(item.content.length > item.limitnumber && item.limitnumber !== 0 && item.limitnumber !== null){
         this.$message({
           message: '已超字数',
           type: 'warning'
@@ -1466,7 +1535,7 @@ export default {
         return;
       }
 
-      if(item.content.length > item.limitnumber ){
+      if(item.content.length > item.limitnumber && item.limitnumber !== 0 && item.limitnumber !== null){
         this.$message({
           message: '已超字数',
           type: 'warning'
@@ -1598,6 +1667,7 @@ export default {
             productTypeId: this.lastItemClicked.id,
           }).then(res => {
             let tabsList = res.data.list
+            this.parentList = res.data.list
             let ids = []
             res.data.list.forEach(i=>{
               ids.push(i.id)
@@ -1613,6 +1683,7 @@ export default {
                 })
                 this.productTabProductInfoId = this.productTabList[0].productInfoId
                 this.productTabList.forEach((element,_index)=>{
+                    element.type = this.parentList[_index].type
                     // element.makeTimes.forEach(data=>{
                     //   if(data.makeMode == 2){
                     //     element.makeTime = data.makeTime
@@ -2099,7 +2170,7 @@ export default {
         }
         .iframe-content-box {
           width: 100%;
-          height: 60vh;
+          height: 67%;
           margin: 20px 0;
         }
         .form-txt {
@@ -2335,7 +2406,7 @@ export default {
         .timeFrame{
           position: absolute;
           color: red;
-          z-index: 99;
+          z-index: 1;
           left: -30px;
         }
         .timeline-event{
