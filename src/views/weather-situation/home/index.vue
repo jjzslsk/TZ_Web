@@ -3,36 +3,38 @@
     <div class="wrap-box">
       <div class="left-box">
         <div class="left-top">
-        <div class="weather-forecast forecast-box el-tabs--border-card">
-          <div class="title-box">
-            <span class="bold-title">天气警报</span>
-            <span class="more" @click="toMore('天气警报')">更多+</span>
-          </div>
-          <div class="content-wrap-box" v-if="alarmList">
-            <el-tooltip class="item" :open-delay="800" v-for="item in alarmList" :key="item.id" effect="light" :content="item.publishOrg+'发布'+item.alarmName" placement="left-start">
-              <div class="content-box border-top"  @click="toMore('天气警报')">
-                <i class="iconfont" :class='item.icon'></i>
-                <div class="item">
-                  <div class="title-F56C6C">{{item.publishOrg+'发布'+item.alarmName}}</div>
-                  <div class="time">{{item.publishTime}}</div>
-                </div>
+          <div ref="collapseDom">
+          <el-collapse  v-model="activeNames" @change="handleChange">
+          <el-collapse-item name="1">
+            <template slot="title">
+             <span class="title-content">天气警报</span><span class="more">无数据</span>
+            </template>
+            <div class="weather-forecast forecast-box el-tabs--border-card">
+              <div class="content-wrap-box" v-if="alarmList">
+                <el-tooltip class="item" :open-delay="800" v-for="item in alarmList" :key="item.id" effect="light" :content="item.publishOrg+'发布'+item.alarmName" placement="left-start">
+                  <div class="content-box border-top"  @click="toMore('天气警报')">
+                    <i class="iconfont" :class='item.icon'></i>
+                    <div class="item">
+                      <div class="title-F56C6C">{{item.publishOrg+'发布'+item.alarmName}}</div>
+                      <div class="time">{{item.publishTime}}</div>
+                    </div>
+                  </div>
+                </el-tooltip>
               </div>
-            </el-tooltip>
-          </div>
-          <div class="content-wrap-box" v-if="!alarmList">
-            <img class="content-warning-img" src="../../../assets/img/yujing/warning-001.png" alt="" srcset="">
-          </div>
-        </div>
-        <div class="city-forecast forecast-box el-tabs--border-card">
-          <div class="title-box">
-            <span class="bold-title">市县预警</span>
-            <span class="more" @click="toMore('市县预警')">更多+</span>
-          </div>
+              <div class="content-wrap-box" v-if="!alarmList">
+                <img class="content-warning-img" src="../../../assets/img/yujing/warning-001.png" alt="" srcset="">
+              </div>
+            </div>
+          </el-collapse-item>
+          <el-collapse-item name="2">
+            <template slot="title">
+             <span class="title-content">市县预警</span><span class="more">无数据</span>
+            </template>
+          <div class="city-forecast forecast-box el-tabs--border-card">
           <div class="content-wrap-box" v-if="earlyList">
             <el-tooltip class="item" :open-delay="800" v-for="item in earlyList" :key="item.id" effect="light" :content="item.title" placement="left-start">
               <div class="content-box border-top"  @click="toMore('市县预警')">
                 <img-alarm class="pic yujing-img" :info="item|alermInfo"></img-alarm>
-                <!-- <img src="@/assets/img/yujing/0005-3ico.png" alt="" class="yujing-img"> -->
                 <div class="item">
                   <div class="title-F56C6C title-606266">{{item.title}}</div>
                   <div class="time">{{item.publishTime}}</div>
@@ -44,8 +46,11 @@
             <img class="content-warning-img" src="../../../assets/img/yujing/warning-002.png" alt="" srcset="">
           </div>
         </div>
+          </el-collapse-item>
+      </el-collapse>
+      </div>
         </div>
-        <div class="left-bottom">
+        <div class="left-bottom" :style="{height:`calc(100% - ${collapseDomHeight}px)`}">
           <div class="short-forecast short-forecast-tab tab-wrap short el-tabs--border-card">
             <div class="tab-top">
               <el-tabs v-model="activeName">
@@ -73,6 +78,7 @@
             </div>
           </div>
         </div>
+
 
       </div>
       <div class="right-box">
@@ -273,6 +279,7 @@ import {
     requestWarningemporary,
     requestWarningForecast,
     requestWarningCity,
+    requestWarningAroundCity,
     requestWarningObj,
     requestWarningBottomTabList,
     requestWarningMaxRainStation,
@@ -309,6 +316,8 @@ import mapBox from './../components/map-box';
     },
     data() {
       return {
+        collapseDomHeight:null,
+        activeNames: [],
         imgSource:null,
         defaultImg: 'this.src="' + require('../../../assets/img/noData.png') + '"',
         componentMapKey: 0,
@@ -373,6 +382,11 @@ import mapBox from './../components/map-box';
             id:'2',
             name:'城市预报',
             content:'暂无数据',
+          },
+          {
+            id:'3',
+            name:'周边城市预报',
+            content:'暂无数据',
           }
         ],
       }
@@ -401,6 +415,8 @@ import mapBox from './../components/map-box';
     },
     mounted(){
       this.windowHeight = document.body.clientWidth;
+      this.collapseDomHeight = this.$refs.collapseDom.offsetHeight;  //100
+
       // window.onresize = () => {
       //   return (() => {
       //     this.windowHeight = document.body.clientHeight;
@@ -410,6 +426,13 @@ import mapBox from './../components/map-box';
       // window.addEventListener('resize',function() {myChart.resize()});
     },
     methods:{
+      handleChange(val) {
+        setTimeout(() => {
+          this.collapseDomHeight = this.$refs.collapseDom.offsetHeight;  //100
+          console.log(this.collapseDomHeight)
+        }, 300);
+        // console.log(val);
+      },
       shiftMap(){
         this.shiftLeft = !this.shiftLeft;
         this.shiftRight = !this.shiftRight;
@@ -426,6 +449,7 @@ import mapBox from './../components/map-box';
         // 左侧 天气警报
         requestWarningAlarm().then(res=>{
           if(!res.data || res.data.length == 0) return
+          this.activeNames.push('1')
           this.alarmList = res.data
           this.alarmList.forEach(element => {
             element.icon = element.alarmCode.split(",")[0]
@@ -434,6 +458,7 @@ import mapBox from './../components/map-box';
         //左侧 市县警报
         requestWarningEarly().then(res=>{
           if(!res.data || res.data.length == 0) return
+          this.activeNames.push('2')
           this.earlyList = res.data
         })
         //左侧 短期 预报
@@ -455,6 +480,11 @@ import mapBox from './../components/map-box';
         requestWarningCity().then(res=>{
             let resData = res.data
           JSON.stringify(resData) == "{}"? this.cityByForecasts[0].content = '暂无数据':this.cityByForecasts[1].content = resData.content
+        })
+        //左侧 周边城市预报
+        requestWarningAroundCity().then(res=>{
+            let resData = res.data
+          JSON.stringify(resData) == "{}"? this.cityByForecasts[0].content = '暂无数据':this.cityByForecasts[2].content = resData.content
         })
         //底部 降水 风力 能见度
         // requestWarningBottomTabList().then(res=>{
@@ -624,7 +654,7 @@ import mapBox from './../components/map-box';
           }
         }
         .content-box{
-          padding: 10px 0px 10px 0px;
+          padding: 5px 0px 0px 0px;
           display: flex;
           justify-content: space-between;
           .taifengxiaoxi,
@@ -1008,7 +1038,8 @@ import mapBox from './../components/map-box';
         }
       }
     }
-    .title-box{
+
+    /* .title-box{
       padding: 0 10px 0 20px;
       height: 50px;
       line-height: 50px;
@@ -1021,13 +1052,7 @@ import mapBox from './../components/map-box';
         font-weight:bold;
         color:rgba(48,49,51,1);
       }
-      .more{
-        font-size:13px;
-        font-family:Microsoft YaHei;
-        color:rgba(144,147,153,1);
-        cursor: pointer;
-      }
-    }
+    } */
     .border-top{
       border-top:1px solid rgba(221, 221, 221, 1);
       cursor: pointer;
@@ -1264,12 +1289,16 @@ import mapBox from './../components/map-box';
 .weather-situation-page .wrap-box .right-box .top-right .el-tabs__content {height: calc(100% - 40px) !important;overflow: auto;}
 
 /* .weather-situation-page .wrap-box .left-box .forecast-box {margin: 0 !important;} */
-.weather-situation-page .wrap-box .left-box .left-top {height: 400px;}
-.weather-situation-page .wrap-box .left-box .left-top .forecast-box{height: calc(50%-7px);margin-bottom:5px;background: #fff;border:1px solid rgba(221, 221, 221, 1);}
-.weather-situation-page .wrap-box .left-box .left-bottom {height: calc(100%-400px);}
+/* .weather-situation-page .wrap-box .left-box .left-top {height: 400px;} */
+.weather-situation-page .wrap-box .left-box .left-top .forecast-box{height: 140px;margin-bottom:5px;background: #fff;border:1px solid rgba(221, 221, 221, 1);}
+/* .weather-situation-page .wrap-box .left-box .left-bottom {height: 100%;} */
+.weather-situation-page .wrap-box .left-box .el-collapse-item__content {padding:0}
+.weather-situation-page .wrap-box .left-box .title-content {padding-left: 20px;font-size: 15px;font-family: Microsoft YaHei;color: #303133;}
+.weather-situation-page .wrap-box .left-box .more {padding-left: 20px;font-size:15px;font-family:Microsoft YaHei;color:rgba(144,147,153,1);cursor: pointer;}
 .weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap {background: #fff;border: 1px solid #ddd;}
 .weather-situation-page .wrap-box .left-box .left-bottom .short{margin-bottom: 5px; height: calc(50% - 7px) !important;}
 .weather-situation-page .wrap-box .left-box .left-bottom .rim{height: calc(50% - 2px) !important;}
+.weather-situation-page .wrap-box .left-box .left-bottom .rim .el-tabs__item{padding: 5px;}
 .weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap .tab-top{height: 100%}
 .weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap .tab-top .el-tabs{height:100%}
 .weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap .tab-top .el-tabs .el-tabs__header{height:40px}

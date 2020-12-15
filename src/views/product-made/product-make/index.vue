@@ -245,6 +245,7 @@
                         <el-button type="success" size="mini" @click="onAllSave(productTabList[index],index,function(){})">全部保存</el-button>
                         <el-button type="primary" size="mini" @click="onAllConsult(productTabList[index],index,'fast')">全部保存并发布</el-button>
                         <el-button type="primary" size="mini" @click="onConsult(productTabList[index],index,'')">保存并发布</el-button>
+                        <el-button type="primary" size="mini" @click="goProduct()">查看发布结果</el-button>
                        </div>
                       </div>
                     <div v-if="productTabList[index].type == 'word' || productTabList[index].type == 'excel'" class="iframe-content-box">
@@ -325,6 +326,7 @@
                         <el-button type="success" size="mini" @click="onSave(productMade,false,function(){})">保存</el-button>
                         <el-button type="primary" size="mini" @click="onConsult(productMade,false,'fast')">保存并快速发布</el-button>
                         <el-button type="primary" size="mini" @click="onConsult(productMade,false,'')">保存并发布</el-button>
+                        <el-button type="primary" size="mini" @click="goProduct()">查看发布结果</el-button>
                       </div>
                   </div>
                       <!-- <el-checkbox class="select-time" v-model="productMade.reserve" size="small" label="预约发布" border></el-checkbox>
@@ -741,7 +743,7 @@ export default {
           this.timelineClick(param)
         })
         // this.optionsValue = this.optionsTypeValue.id
-        // 发布流程信息
+        // 发布流程信息 刷新
         // requestProductTaskList({ userId: this.loginInfo.id, jobId: this.optionsTypeValue.id }).then(
         //   res => {
         //     this.substep(res)
@@ -811,7 +813,7 @@ export default {
 
     optionsValue(vla) {
       console.log(vla);
-      // 发布流程信息
+      // 发布流程信息 刷新
       requestProductTaskList({ userId: this.loginInfo.id, jobId: vla.id }).then(
         res => {
           this.substep(res)
@@ -885,7 +887,7 @@ export default {
 
     //获取 tab 类型数据
     this.resTab().then((res)=>{
-      // 发布流程信息
+      // 发布流程信息 刷新
       requestProductTaskList({userId:this.loginInfo.id,name1:this.optionsValue,dutyMonth:this.paramObj.dutyMonth}).then(res => {
         this.substep(res)
       })
@@ -1157,7 +1159,7 @@ export default {
     popoverClick(id){
         this.visible = false
         requestProductDoFinish({id}).then(res=>{
-           // 发布流程信息
+           // 发布流程信息 刷新
           requestProductTaskList({ userId: this.loginInfo.id, jobId: this.optionsValue.id }).then(
             res => {
               this.substep(res)
@@ -1336,11 +1338,18 @@ export default {
         ...param
       };
 
+      //弹窗 普通发布 提交
       requestProducTreleaseDoPublish(param).then(res => {
         this.visibleDialogConsult = false;
         this.formConsult = null;
         if (res.success) {
           this.$message.success(res.message);
+          // 发布流程信息 刷新
+          requestProductTaskList({ userId: this.loginInfo.id, jobId: this.optionsValue.id }).then(
+            res => {
+              this.substep(res)
+            }
+          );
         } else {
           this.$message.error(res.message);
         }
@@ -1391,6 +1400,12 @@ export default {
       })
     },
 
+    //跳转监控页
+    goProduct(){
+      let routeUrl = this.$router.resolve({name: "product-state",query: {}});
+      window.open(routeUrl.href, '_blank');
+    },
+
     //全部保存
     onAllSave(){
       return new Promise((resolve, reject) => {
@@ -1424,6 +1439,7 @@ export default {
             return obj3
           }()),
         }
+        param.content = JSON.stringify(param.content)
         requestProducTreleaseAllSave(param).then((res)=>{
           res.success? this.$message({message: res.message,type: 'success'}) : this.$message.error(res.message)
           res.success? resolve(res) : reject(res)
@@ -1557,6 +1573,13 @@ export default {
           requestProducDoQuickPublish(param).then(res=>{
             if (res.success) {
             _this.$message.success(res.message);
+            // 发布流程信息 刷新
+            requestProductTaskList({ userId: _this.loginInfo.id, jobId: _this.optionsValue.id }).then(
+              res => {
+                _this.substep(res)
+              }
+            );
+
             } else {
               _this.$message.error(res.message);
             }

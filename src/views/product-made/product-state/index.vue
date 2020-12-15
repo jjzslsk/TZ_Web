@@ -18,7 +18,7 @@
                                 <span class="title">产品名称：</span>
                                 <el-input v-model="query.productInfoName" clearable placeholder="请输入产品名称"></el-input>
                                 <span class="title">制作人：</span>
-                                <el-input v-model="query.publishUser" clearable placeholder="请输入制作人"></el-input>
+                                <el-input v-model="query.createUser" clearable placeholder="请输入制作人"></el-input>
                                 <span class="title">发布时间：</span>
                                 <!-- <el-time-select
                                     v-model="query.publishTime"
@@ -203,11 +203,11 @@ export default {
             query:{
             handler(val, oldVal){
                 if(val.time){
-                    this.query.startTime = val.time[0],
-                    this.query.endTime = val.time[1]
+                    this.query.beforeTime = val.time[0],
+                    this.query.afterTime = val.time[1]
                 }else{
-                    this.query.startTime = null,
-                    this.query.endTime = null
+                    this.query.beforeTime = null,
+                    this.query.afterTime = null
                 }
             },
             deep:true

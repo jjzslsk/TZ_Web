@@ -19,6 +19,8 @@
                                 <el-input v-model="query.address" clearable placeholder="请输入名称"></el-input>
                                 <c-button type="search" @click="search()">搜索</c-button>
                                 <c-button type="add" @click="inputItem()">添加</c-button>
+                                <c-button type="search" @click="dowTem()">下载模板</c-button>
+                                <c-button type="search" @click="impTem()">导入用户</c-button>
                             </div>
                             <el-table-column type="index" label="序列" width="80px"></el-table-column>
                             <el-table-column prop="name" label="名称" />
@@ -60,6 +62,11 @@
                 <el-input v-model="formLeftTree.sort" autocomplete="off"></el-input>
             </el-form-item>
         </template>
+    </dialog-form>
+
+    <dialog-form title="文件导入" :visible.sync="visibleDialogFormItemUpload" :getPayload="()=>getPayload()" remote="requestDialogFormMenuItemInputAdd11"
+     v-if="formItem" @success="submitSuccess">
+        <fileUpload ref="mychild" :isItem="false" :queryChild='queryData' :uploadUrlChild='uploadUrl' @uploadResults='uploadResults'></fileUpload>
     </dialog-form>
 
     <dialog-form @success="submitSuccess" title="服务用户" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.name || formItem.serviceUserTypeIds.length == 0" remote="requestDialogFormServiceUserItemInput" v-if="formItem">
@@ -116,7 +123,9 @@
 import {
     requestServiceUserList,
     requestServiceUserListDelItem,
-    requestServiceUserTreeList
+    requestServiceUserTreeList,
+    requestServiceUserDowTem,
+    requestServiceUserimpTem
 } from "@/remote/";
 import {
     common,
@@ -130,6 +139,11 @@ export default {
     mixins: [common, witchCommonList, withCommonLeftTree],
     data() {
         return {
+            queryData: {
+                typeId:null
+            },
+            uploadUrl:'http://10.137.4.30:6001/integration/main/ssd-service-user/saveExcel',
+            visibleDialogFormItemUpload:false,
             treeDataList:[],
             treeData:[],
             popupTreeData:[],
@@ -176,6 +190,39 @@ export default {
         
     },
     methods: {
+        getPayload(){
+            this.$refs.mychild.parentHandleclick();
+            // return
+        },
+        //下载模板
+        dowTem(){
+            if(!this.lastItemClicked){
+                this.$message.warning('请选择用户组');
+                return
+            }
+            requestServiceUserDowTem({typeId:this.lastItemClicked.id}).tehn((res)=>{
+
+            })
+        },
+        //导入模板
+        impTem(){
+            if(!this.lastItemClicked){
+                this.$message.warning('请选择用户组');
+                return
+            }
+            this.queryData = {
+                typeId:this.lastItemClicked.id,
+            }
+            this.formItem = {
+                typeId:this.lastItemClicked.id,
+                fileName:null,
+            }
+            this.visibleDialogFormItemUpload = true;
+        },
+        uploadResults(){
+            this.visibleDialogFormItemUpload = false;
+            this.submitSuccess()
+        },
         submitSuccess(res){
             this.onConfirmUpdate()
             this.requestData()
@@ -284,6 +331,7 @@ export default {
         },
     },
     mounted () {
+        this.loginInfo = JSON.parse(localStorage.getItem('loginInfo',))
         this.requestData()
     },
 };

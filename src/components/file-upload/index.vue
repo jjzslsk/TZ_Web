@@ -18,10 +18,10 @@
                 <div slot="tip" class="el-upload__tip">只能导入xls/xlsx文件，且不超过2M</div>
             </el-upload>
         </el-form-item>
-        <el-form-item label="上传时间" label-width="120px">
+        <el-form-item v-if="isItem" label="上传时间" label-width="120px">
             <el-date-picker v-model="query.monthTime" format="yyyy-MM" value-format="yyyy-MM" type="month" placeholder="选择月" :picker-options="pickerOptionsYearMonth"></el-date-picker>
         </el-form-item>
-        <el-form-item label="首席人数" label-width="120px">
+        <el-form-item v-if="isItem" label="首席人数" label-width="120px">
           <el-select v-model="query.column" placeholder="请选择">
             <el-option label="0" value="0"></el-option>
             <el-option label="1" value="1"></el-option>
@@ -45,7 +45,20 @@ import {
 } from '../../views/mixins/index';
 export default {
     mixins: [common, witchCommonList, withCommonLeftTree],
-    props: ['queryChild','uploadUrlChild'],
+    props: {
+      queryChild:{
+        type:Object,
+        default:null
+      },
+      uploadUrlChild:{
+        type:String,
+        default:null
+      },
+      isItem:{
+        type:Boolean,
+        default:true
+      },
+    },
     data() {
         return {
             pickerOptionsYearMonth: this.banTime(),
@@ -86,7 +99,8 @@ export default {
     mounted(){
         const loginInfo = JSON.parse(localStorage.getItem('loginInfo',))
         this.loginInfo = loginInfo
-        this.query.monthTime = this.queryChild.monthTime
+        this.query.monthTime = this.queryChild.monthTime? this.queryChild.monthTime:null
+        this.query.typeId = this.queryChild.typeId? this.queryChild.typeId:null
     },
     methods:{
       // 小于当前月分的日期不可选
@@ -116,8 +130,9 @@ export default {
         },
         uploadInfo(){},
         schedulingUpload(){
-            this.uploadParam.monthTime = this.query.monthTime
-            this.uploadParam.column = this.query.column
+            this.uploadParam.monthTime = this.query.monthTime? this.query.monthTime:null
+            this.uploadParam.column = this.query.column? this.query.column:null
+            this.uploadParam.typeId = this.query.typeId? this.query.typeId:null
             return this.uploadUrlChild
         },
         //文件上传成功时的钩子

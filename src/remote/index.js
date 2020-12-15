@@ -144,10 +144,10 @@ export const requestProducTreleaseSave = generatePostWithEvn(`{{host}}/${url_int
 export const requestProducDoQuickPublish = generatePostJSONWithEvn(`{{host}}/${url_integration}/ssd-product-publish/doQuickPublish`);
 
 // 产品制作-产品制作-右侧 全部保存 （多个）
-export const requestProducTreleaseAllSave = generatePostJSONWithEvn(`{{host}}/${url_integration}/ssd-product-publish/doAllSave`);
+export const requestProducTreleaseAllSave = generatePostWithEvn(`{{host}}/${url_integration}/ssd-product-publish/doAllSave`);
 export const requestProducDoQuickAllPublish = generatePostJSONWithEvn(`{{host}}/${url_integration}/ssd-product-publish/doAllPublish`);
 
-// 产品制作-产品制作-右侧发布提交
+// 产品制作-产品制作-右侧 弹窗发布提交
 export const requestProducTreleaseDoPublish = generatePostJSONWithEvn(`{{host}}/${url_integration}/ssd-product-publish/doPublish`);
 
 // // 产品模板配置，获取数据源
@@ -1266,6 +1266,12 @@ export const requestDialogFormServiceUserInput = payload => {
 // 服务用户分类删除
 export const requestServiceUserTreeListDelItem = generatePostWithEvn(`{{host}}/${url_integration}/ssd-service-user-type/delete`);
 
+//服务用户 下载模板
+export const requestServiceUserDowTem = generateDownloadWithEvn(`{{host}}/${url_integration}/ssd-service-user/downloadUserModel`);
+//服务用户 导入用户
+export const requestServiceUserimpTem = generatePostWithEvn(`{{host}}/${url_integration}/ssd-service-user/saveExcel`);
+
+
 // 产品数据源
 // 产品数据源列表
 export const requestProductSourceList = generateGetWithEvnToken(`{{host}}/${url_integration}/ssd-product-source/getList`);
@@ -1374,10 +1380,12 @@ const transformResOfTaceDialog = payload => res => {
 //获取地图文件
 export const requestWarningCloudFigure = generateGet(dataStaticBase + 'warningCloudFigure.json');
 
-//左侧 天气警报
+//左侧 天气警报 
+// export const requestWarningAlarm = generateGet(dataStaticBase + 'getOverView1.json');
 export const requestWarningAlarm = generateGetWithEvn(`{{host}}/${url_integration}/ssd-early-alarm-publish/getOverView`);
 
 //左侧 市县警报 
+// export const requestWarningEarly = generateGet(dataStaticBase + 'getOverView2.json');
 export const requestWarningEarly = generateGetWithEvn(`{{host}}/${url_integration}/ssd-early-warning-publish/getOverView`);
 
 //左侧 短期 预报
@@ -1389,6 +1397,8 @@ export const requestWarningemporary = generateGetWithEvn(`{{host}}/${url_integra
 export const requestWarningForecast = generateGetWithEvn(`{{host}}/${url_integration}/ssd-product-publish/getLatestPublish?productCode=sttq`);
 //左侧 城市预报
 export const requestWarningCity = generateGetWithEvn(`{{host}}/${url_integration}/ssd-product-publish/getLatestPublish?productCode=csybqxw`);
+//左侧 周边城市预报
+export const requestWarningAroundCity = generateGetWithEvn(`{{host}}/${url_integration}/ssd-product-publish/getLatestPublish?productCode=zbcsyb`);
 
 //底部 chart.json
 // export const requestWarningObj = generateGet(dataStaticBase + 'wind-barb-hobart.json');
