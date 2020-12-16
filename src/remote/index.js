@@ -145,7 +145,7 @@ export const requestProducDoQuickPublish = generatePostJSONWithEvn(`{{host}}/${u
 
 // 产品制作-产品制作-右侧 全部保存 （多个）
 export const requestProducTreleaseAllSave = generatePostWithEvn(`{{host}}/${url_integration}/ssd-product-publish/doAllSave`);
-export const requestProducDoQuickAllPublish = generatePostJSONWithEvn(`{{host}}/${url_integration}/ssd-product-publish/doAllPublish`);
+updateexport const requestProducDoQuickAllPublish = generatePostWithEvn(`{{host}}/${url_integration}/ssd-product-publish/doAllPublish`);
 
 // 产品制作-产品制作-右侧 弹窗发布提交
 export const requestProducTreleaseDoPublish = generatePostJSONWithEvn(`{{host}}/${url_integration}/ssd-product-publish/doPublish`);
@@ -1179,7 +1179,7 @@ export const requestDutyPostListDelItem = generatePostWithEvn(`{{host}}/${url_in
 // export const requestDutyPostListDelItem = generateGetWithEvn(dataStaticBase + 'submit-success.json');
 
 // // 获取岗位流程配置 单个
-// export const requestDutyScheduling1 = generateGetWithEvn(`{{host}}/${url_integration}/ssd-business-duty-task/getOneSsdBusinessDutyTask`);
+export const requestDutyPost = generateGetWithEvn(`{{host}}/${url_integration}/ssd-business-job-task/getJobTaskById`);
 
 // 岗位流程配置弹窗提交数据
 // export const requestDialogFormDutyPostItemInput = generateGetWithEvn(dataStaticBase + 'submit-success.json');

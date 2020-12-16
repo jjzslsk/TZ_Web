@@ -120,7 +120,8 @@
                 <c-switch v-model="formItem.remind"></c-switch>
             </el-form-item>
             <el-form-item label="产品/地址" label-width="120px">
-                <el-radio v-model="formItem.product" label="1">是否为产品</el-radio>
+                <el-radio v-model="formItem.product" label="0">非产品</el-radio>
+                <el-radio v-model="formItem.product" label="1">产品</el-radio>
                 <el-radio v-model="formItem.product" label="2">其他任务地址</el-radio>
                 <!-- <c-switch v-model="formItem.product"></c-switch> -->
             </el-form-item>
@@ -259,6 +260,10 @@ export default {
                 }else{
                     return this.formItem
                 }
+            }else if(this.formItem.product == 0){
+                this.formItem.productInfoName = null
+                this.formItem.productUrl = null
+                return this.formItem
             }else{
                 return this.formItem
             }
@@ -370,7 +375,6 @@ export default {
                             // "XXXPROP_DUTY_SCHEDULING_X4": null,
                             id:res.data.id,
                             jobId:res.data.job_id,
-                            product:res.data.product? "1":"2",
                             dutyDate: res.data.duty_date,
                             source: JSON.stringify(res.data.source),
                             jobName: res.data.jobName,

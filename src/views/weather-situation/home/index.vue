@@ -1039,7 +1039,7 @@ import mapBox from './../components/map-box';
       }
     }
 
-    /* .title-box{
+    .title-box{
       padding: 0 10px 0 20px;
       height: 50px;
       line-height: 50px;
@@ -1052,7 +1052,7 @@ import mapBox from './../components/map-box';
         font-weight:bold;
         color:rgba(48,49,51,1);
       }
-    } */
+    }
     .border-top{
       border-top:1px solid rgba(221, 221, 221, 1);
       cursor: pointer;
@@ -1294,7 +1294,7 @@ import mapBox from './../components/map-box';
 /* .weather-situation-page .wrap-box .left-box .left-bottom {height: 100%;} */
 .weather-situation-page .wrap-box .left-box .el-collapse-item__content {padding:0}
 .weather-situation-page .wrap-box .left-box .title-content {padding-left: 20px;font-size: 15px;font-family: Microsoft YaHei;color: #303133;}
-.weather-situation-page .wrap-box .left-box .more {padding-left: 20px;font-size:15px;font-family:Microsoft YaHei;color:rgba(144,147,153,1);cursor: pointer;}
+.weather-situation-page .wrap-box .left-box .more {padding-left: 140px;font-size:15px;font-family:Microsoft YaHei;color:rgba(144,147,153,1);cursor: pointer;}
 .weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap {background: #fff;border: 1px solid #ddd;}
 .weather-situation-page .wrap-box .left-box .left-bottom .short{margin-bottom: 5px; height: calc(50% - 7px) !important;}
 .weather-situation-page .wrap-box .left-box .left-bottom .rim{height: calc(50% - 2px) !important;}

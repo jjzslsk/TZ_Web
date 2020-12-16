@@ -694,7 +694,7 @@ async function planeRightTab (data){
 async function requestPlaneRightHistory (){
     let param = {
         pattern:modelImgPath,
-        ele:factorPath,//地面要素
+        ele:factorPath,//要素
         showAll:1
     }
     //获取范围

@@ -131,7 +131,8 @@
             </el-form-item> -->
 
             <el-form-item label="产品/地址" label-width="120px">
-                <el-radio v-model="formItem.product" label="1">是否为产品</el-radio>
+                <el-radio v-model="formItem.product" label="0">非产品</el-radio>
+                <el-radio v-model="formItem.product" label="1">产品</el-radio>
                 <el-radio v-model="formItem.product" label="2">其他任务地址</el-radio>
             </el-form-item>
 
@@ -465,7 +466,7 @@ export default {
                     return this.formItem
                 }
             }else if(this.formItem.product == 2){
-                if (!this.formItem.productUrl){
+                if (!this.formItem.other){
                     this.$message.warning('请输入地址');
                     return
                 }else{
@@ -589,7 +590,6 @@ export default {
             //            this.formItem = {
             //                 id:res.data.id,
             //                 jobId:res.data.job_id,
-            //                 product:res.data.product? "1":"2",
             //                 dutyDate: res.data.duty_date,
             //                 source: JSON.stringify(res.data.source),
             //                 jobName: res.data.jobName,

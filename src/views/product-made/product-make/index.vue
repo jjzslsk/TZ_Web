@@ -1,7 +1,6 @@
 <template>
   <div class="product-made-home product-made-make">
     <!-- {{lastItemClicked}} -->
-    <!-- {{productTabList}} -->
     <!-- {{parentList}} -->
 <!-- 宽mainWidth：{{mainWidth}}，中isDirection：{{isDirection}}，导isEditAlive：{{isEditAlive}}，右isRight：{{isRight}}，右刷isEditAlive：{{isEditAlive}}，中刷isRouterAlive：{{isRouterAlive}}， -->
     <!-- {{tabsList}} -->
@@ -1134,18 +1133,25 @@ export default {
     },
     emitPhraes(){},
     timelineClick(data){
-      this.handleNodeClick(data)
 
-      if(data.productInfoId == null || data.productInfoId == ''){
-          window.open(data.productAttr, '_blank');
-          this.$message.warning("非产品，不在系统内制作")
-          return
-        }
-          this.treeDataList.forEach(item=>{
+      this.handleNodeClick(data)
+      if(data.product == 0){
+        this.$message.warning("非产品，无法编辑")
+        return
+      }else if(data.product == 1 && data.productInfoId){
+        this.treeDataList.forEach(item=>{
             if(item.id === data.productInfoId){
               this.onTreeClickItem(item)
             }
           })
+      }else if(data.product == 2 && data.productInfoId == null || data.productInfoId == ''){
+          window.open(data.productAttr, '_blank');
+          this.$message.warning("非产品，不在系统内制作")
+          return
+      }else{
+        this.$message.warning("非产品，无法编辑")
+        return
+      }
     },
     timelineEvent(data){
       console.log(data)
@@ -1416,7 +1422,6 @@ export default {
           "orgId":this.loginInfo.orgId,
           "productTypeId":this.lastItemClicked.id,
           "createUser":this.loginInfo.username,
-          "createTime":null,
           "content":(function(){
             let obj1 = {}
             let obj2
@@ -1456,13 +1461,13 @@ export default {
       var _parentList = _this.parentList
       let res = await _this.onAllSave()
       let ids = _productTabList.map(element => {
-        return element.productInfoId
+        return {publishId:element.productInfoId,timingDate:element.timingDate}
       });
       let param = {
         publishIds: ids,
         publishUser: _this.loginInfo.name,
       };
-      requestProducDoQuickAllPublish(param).then(res=>{
+      requestProducDoQuickAllPublish(JSON.stringify(param)).then(res=>{
         if (res.success) {
         _this.$message.success(res.message);
         } else {
