@@ -145,7 +145,7 @@ export const requestProducDoQuickPublish = generatePostJSONWithEvn(`{{host}}/${u
 
 // 产品制作-产品制作-右侧 全部保存 （多个）
 export const requestProducTreleaseAllSave = generatePostWithEvn(`{{host}}/${url_integration}/ssd-product-publish/doAllSave`);
-updateexport const requestProducDoQuickAllPublish = generatePostWithEvn(`{{host}}/${url_integration}/ssd-product-publish/doAllPublish`);
+export const requestProducDoQuickAllPublish = generatePostWithEvn(`{{host}}/${url_integration}/ssd-product-publish/doAllPublish`);
 
 // 产品制作-产品制作-右侧 弹窗发布提交
 export const requestProducTreleaseDoPublish = generatePostJSONWithEvn(`{{host}}/${url_integration}/ssd-product-publish/doPublish`);
