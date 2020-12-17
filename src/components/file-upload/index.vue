@@ -145,7 +145,7 @@ export default {
         this.$message.success(`导入成功`);
         this.formItem = {}
         this.fileList = []
-        this.$emit('uploadResults', '')
+        this.$emit('uploadResults', res,file)
         },
 
         //上传文件之前的钩子

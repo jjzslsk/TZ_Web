@@ -219,7 +219,8 @@ export default {
             }
             this.visibleDialogFormItemUpload = true;
         },
-        uploadResults(){
+        //上次成功执行
+        uploadResults(res,file){
             this.visibleDialogFormItemUpload = false;
             this.submitSuccess()
         },

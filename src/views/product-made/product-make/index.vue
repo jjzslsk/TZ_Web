@@ -1,6 +1,8 @@
 <template>
   <div class="product-made-home product-made-make">
     <!-- {{lastItemClicked}} -->
+    <!-- {{productTabList}}
+    {{productMade}} -->
     <!-- {{parentList}} -->
 <!-- 宽mainWidth：{{mainWidth}}，中isDirection：{{isDirection}}，导isEditAlive：{{isEditAlive}}，右isRight：{{isRight}}，右刷isEditAlive：{{isEditAlive}}，中刷isRouterAlive：{{isRouterAlive}}， -->
     <!-- {{tabsList}} -->
@@ -145,7 +147,7 @@
               >
               </el-tab-pane>
             </el-tabs>
-            <router-view class="router-wrap" v-if="isRouterAlive" v-on:dialogEmit="dialogEmit" @emitPhraes='clickPhraes' :viewData='lastItemClicked'></router-view>
+            <router-view class="router-wrap" v-if="isRouterAlive" v-on:dialogEmit="dialogEmit" @emitPhraes='clickPhraes' :viewData='lastItemClicked' :productTabProductInfoId='productTabProductInfoId'></router-view>
           </template>
           <div class="direction-icon-r" @click="directionRight()"  v-if="isRight">
           <i class="el-icon-arrow-left"></i>
@@ -243,8 +245,8 @@
                         <el-button type="success" size="mini" @click="getLasts(productTabList[index],index)">最新发布</el-button>
                         <el-button type="success" size="mini" @click="onAllSave(productTabList[index],index,function(){})">全部保存</el-button>
                         <el-button type="primary" size="mini" @click="onAllConsult(productTabList[index],index,'fast')">全部保存并发布</el-button>
-                        <el-button type="primary" size="mini" @click="onConsult(productTabList[index],index,'')">保存并发布</el-button>
-                        <el-button type="primary" size="mini" @click="goProduct()">查看发布结果</el-button>
+                        <el-button type="primary" size="mini" @click="onConsult(productTabList[index],index,'')">单个保存并发布</el-button>
+                        <el-button type="primary" size="mini" @click="goProduct(productTabList[index])">查看发布结果</el-button>
                        </div>
                       </div>
                     <div v-if="productTabList[index].type == 'word' || productTabList[index].type == 'excel'" class="iframe-content-box">
@@ -325,7 +327,7 @@
                         <el-button type="success" size="mini" @click="onSave(productMade,false,function(){})">保存</el-button>
                         <el-button type="primary" size="mini" @click="onConsult(productMade,false,'fast')">保存并快速发布</el-button>
                         <el-button type="primary" size="mini" @click="onConsult(productMade,false,'')">保存并发布</el-button>
-                        <el-button type="primary" size="mini" @click="goProduct()">查看发布结果</el-button>
+                        <el-button type="primary" size="mini" @click="goProduct(productMade)">查看发布结果</el-button>
                       </div>
                   </div>
                       <!-- <el-checkbox class="select-time" v-model="productMade.reserve" size="small" label="预约发布" border></el-checkbox>
@@ -563,6 +565,7 @@ import {
   requestProducTreleaseDoPublish,
   requestProducDoQuickPublish,
   requestIntegratedHoneOption,
+  requestProductUpdateDutyTask,
   requestProductTaskList,
   requestProductCityData,
   requestProductMakeAlertPageList,
@@ -975,7 +978,7 @@ export default {
       if(!res.data || !Array.isArray(res.data) ){}
       this.activities = res.data
       this.activities.forEach(i=>{
-      //状态：0 未完成；1 完成；2 进行中
+      //状态：
         if (i.state == '未制作') {
           finishIcon = "el-icon-bell";
           finishColor = "#eee";
@@ -1136,6 +1139,14 @@ export default {
 
       this.handleNodeClick(data)
       if(data.product == 0){
+        requestProductUpdateDutyTask({id:data.id}).then((res)=>{
+           // 发布流程信息 刷新
+          requestProductTaskList({ userId: this.loginInfo.id, jobId: this.optionsValue.id }).then(
+            res => {
+              this.substep(res)
+            }
+          );
+        })
         this.$message.warning("非产品，无法编辑")
         return
       }else if(data.product == 1 && data.productInfoId){
@@ -1145,10 +1156,26 @@ export default {
             }
           })
       }else if(data.product == 2 && data.productInfoId == null || data.productInfoId == ''){
+        requestProductUpdateDutyTask({id:data.id}).then((res)=>{
+           // 发布流程信息 刷新
+          requestProductTaskList({ userId: this.loginInfo.id, jobId: this.optionsValue.id }).then(
+            res => {
+              this.substep(res)
+            }
+          );
+        })
           window.open(data.productAttr, '_blank');
           this.$message.warning("非产品，不在系统内制作")
           return
       }else{
+        requestProductUpdateDutyTask({id:data.id}).then((res)=>{
+           // 发布流程信息 刷新
+          requestProductTaskList({ userId: this.loginInfo.id, jobId: this.optionsValue.id }).then(
+            res => {
+              this.substep(res)
+            }
+          );
+        })
         this.$message.warning("非产品，无法编辑")
         return
       }
@@ -1407,13 +1434,19 @@ export default {
     },
 
     //跳转监控页
-    goProduct(){
-      let routeUrl = this.$router.resolve({name: "product-state",query: {}});
+    goProduct(item){
+      if (
+        !this.lastItemClicked
+      ) {
+        this.$message.error("请先选择产品");
+        return;
+      }
+      console.log('122222',this.lastItemClicked)
+      let routeUrl = this.$router.resolve({name: "product-state",query: {id:item.productInfoId,leftTreeKeyPath:["9b7774844ba141248937dcea2185a3a5"]}});
       window.open(routeUrl.href, '_blank');
     },
-
     //全部保存
-    onAllSave(){
+    onAllSave(item){
       return new Promise((resolve, reject) => {
         var _productTabList = this.productTabList
         var _lastItemClicked = this.lastItemClicked
@@ -1459,15 +1492,16 @@ export default {
       var _productTabList = _this.productTabList
       var _lastItemClicked = _this.lastItemClicked
       var _parentList = _this.parentList
-      let res = await _this.onAllSave()
-      let ids = _productTabList.map(element => {
-        return {publishId:element.productInfoId,timingDate:element.timingDate}
+      let res = await _this.onAllSave(item)
+      let ids = _productTabList.map((element,index) => {
+        element.publishId = element.productInfoId == res.data[index].productInfoId ?  res.data[index].id:null //获取保存后的 publishId 发布ID
+        return {publishId:element.publishId,timingDate:element.timingDate? element.timingDate:''}
       });
       let param = {
-        publishIds: ids,
+        publishIds: JSON.stringify(ids),
         publishUser: _this.loginInfo.name,
       };
-      requestProducDoQuickAllPublish(JSON.stringify(param)).then(res=>{
+      requestProducDoQuickAllPublish(param).then(res=>{
         if (res.success) {
         _this.$message.success(res.message);
         } else {
@@ -1720,6 +1754,7 @@ export default {
                     //   }
                     // })
                   })
+
             })
           });
       }else if(item.treeType == 'product'){

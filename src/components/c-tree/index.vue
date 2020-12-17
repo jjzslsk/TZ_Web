@@ -1,5 +1,7 @@
 <template>
 <div>
+    <!-- {{keyCurrentNode}}当前选中的节点,<br>
+    {{keysExpandedDefault}}默认展开的节点的 key 的数组, -->
     <el-tree v-if="data" :data="data" class="c-tree" ref="tree" node-key="id" :current-node-key="keyCurrentNode" highlight-current :default-expanded-keys="keysExpandedDefault" :show-checkbox="showCheckbox"
       :default-expand-all="defaultExpandAll" :default-checked-keys="defaultCheckedKeys" :props="propsTree" @node-click="handleNodeClick" :filter-node-method="filterNodeMethod">
         <!--
@@ -60,6 +62,8 @@ export default {
         }
     },
     mounted() {
+        setTimeout(() => {
+        }, 100);
         const {
             lazy
         } = this;

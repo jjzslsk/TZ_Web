@@ -130,6 +130,9 @@ export const requestProductDoFinish = generateGetWithEvn(`{{host}}/${url_integra
 // // 产品制作-产品制作-分组左侧 流程信息
 export const requestProductTaskList = generateGetWithEvn(`{{host}}/${url_integration}/ssd-business-index/getSsdBusinessIndexTask`);
 
+// // 产品制作-产品制作-分组左侧 点击完成
+export const requestProductUpdateDutyTask = generateGetWithEvn(`{{host}}/${url_integration}/ssd-business-duty-task/updateDutyTask`);
+
 // 产品制作-产品制作-获取产品信息（多个） ssd-product-info/getProductList?productTypeId=xxxxx
 export const requestProducInfos = generateGetWithEvn(`{{host}}/${url_integration}/ssd-product-info/getProductList`);
 

@@ -31,7 +31,7 @@
                 </el-table-column>
                 <el-table-column label="是否为产品">
                     <template slot-scope="{row}">
-                        {{({'true':'√','false':'X'})[row.product]}}
+                        {{({'0':'X','1':'√','2':'X'})[row.product]}}
                     </template>
                 </el-table-column>
                 <!-- <el-table-column label="是否提醒" width="80px">
@@ -58,6 +58,11 @@
         </div>
     </div>
     <dialog-form @success="submitSuccess" title="岗位流程配置" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItemFn()" :confirmDisabled="!this.formItem.name||!this.formItem.jobId" remote="requestDialogFormDutyPostItemInput" v-if="formItem">
+        <!-- {{formItem}}
+        <br>
+        {{checkItemOptions}}
+        <br>
+        {{checkedItems}} -->
         <template>
             <el-dialog class="popover-box" :modal='false' :visible.sync="visible">
                 <el-popover
@@ -69,7 +74,6 @@
                 </el-popover>
             </el-dialog>
 
-            <!-- {{formItem}} -->
             <el-form-item label="岗位选择" label-width="120px">
                 <el-select v-model="formItem.jobId" placeholder="请选择">
                     <el-option v-for="item in postList" :label="item.name" :value="item.id" :key="item.id"></el-option>
@@ -109,12 +113,12 @@
                     <!-- <span v-if="formItem.XXXPROP_DUTY_POST_X3=='XXXLABEL_DUTY_POST_day'">时间类型：</span>
                     <el-radio-group v-model="formItem.remindType" v-if="formItem.XXXPROP_DUTY_POST_X3=='XXXLABEL_DUTY_POST_day'">
                         <el-radio label="1">阳历</el-radio>
-                        <el-radio label="0">阴历</el-radio>
+                        <el-radio label="0">农历</el-radio>
                     </el-radio-group> -->
                     <span>时间类型：</span>
                     <el-radio-group v-model="formItem.remindType">
                         <el-radio label="1">阳历</el-radio>
-                        <el-radio label="0">阴历</el-radio>
+                        <el-radio label="0">农历</el-radio>
                     </el-radio-group>
                 </div>
                 <div>
@@ -172,9 +176,6 @@ export default {
             visible: false,
             formItem:{
                 XXXPROP_DUTY_POST_X3:'',
-                remindDay:[],
-                remindMonth:[],
-                remindWeek:[],
             },
             MonthData:[
             {name:'一月',value:'1'},
@@ -336,7 +337,7 @@ export default {
             // this.checkedItems = [];
         },
         'formItem.XXXPROP_DUTY_POST_X3': function(val) {
-            console.log('1formItem.XXXPROP_DUTY_POST_X3::',val)
+            if(this.formItem.XXXPROP_DUTY_POST_X3 == '' && !this.formItem.id) return
             const {
                     formItem,
                 } = this;
@@ -443,11 +444,8 @@ export default {
 
             if(!data){
                 this.checkedItems = []
-                this.formItem.remindDay = null
-                this.formItem.remindMonth = null
-                this.formItem.remindWeek = null
                 this.periodType = ''
-
+                this.formItem = null
                 this.visible = false
             }
 
@@ -571,53 +569,17 @@ export default {
             }else{
                 this.formItemTimeRange = ['20:00','22:00']
             }
-            
-            if(!item.id){
-                this.formItem.XXXPROP_DUTY_POST_X3=='XXXLABEL_DUTY_POST_day'
-                this.periodType == 'XXXLABEL_DUTY_POST_day'
 
-                // return {
-                //         jobId:this.loginInfo.jobId,
-                //         productUrl:null,
-                //         product:'2',
-                //         "XXXPROP_DUTY_POST_X3": 'XXXLABEL_DUTY_POST_day',
-                //         "remindType": '1',
-                // }
-
-            }
-            // else{
-            //      requestDutyPostList({id:item.id}).then((res)=>{
-            //            this.formItem = {
-            //                 id:res.data.id,
-            //                 jobId:res.data.job_id,
-            //                 dutyDate: res.data.duty_date,
-            //                 source: JSON.stringify(res.data.source),
-            //                 jobName: res.data.jobName,
-            //                 name: res.data.name,
-            //                 startTime: res.data.start_time,
-            //                 endTime: res.data.end_time,
-            //                 remind: res.data.is_remind == 1? true:false,
-            //                 finish: res.data.is_finish == 1? true:false,
-            //                 remark: res.data.remark,
-            //                 showOrder: res.data.show_order,
-            //                 product: JSON.stringify(res.data.is_product),
-            //                 productUrl: res.data.product_attr,
-            //                 productInfoId: res.data.product_info_id,
-            //                 productInfoName: res.data.product_info_name,
-            //                 remindType: res.data.remind_type,
-                            
-            //                 product:res.data.product? "1":"2",
-            //                 productUrl:res.data.product_attr,
-            //                 "XXXPROP_DUTY_POST_X3": 'XXXLABEL_DUTY_POST_day',
-            //                 // remindType:res.data.remindType.toString(),
-
-            //             }
-            //         })
-            // }
+            setTimeout(() => {
+                if(!item.id){
+                    this.formItem.XXXPROP_DUTY_POST_X3 = 'XXXLABEL_DUTY_POST_day'
+                    this.periodType == 'XXXLABEL_DUTY_POST_day'
+                }
+            }, 100);
 
             return item.id ? {//编辑
                 ...item,
-                product:item.product? "1":"2",
+                product:JSON.stringify(item.product),
                 other:item.other,
                 remindType:item.remindType.toString(),
                 "XXXPROP_DUTY_POST_X3": 'XXXLABEL_DUTY_POST_day',
