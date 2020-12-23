@@ -334,7 +334,7 @@ import mapBox from './../components/map-box';
         bottomTabList:{
           rainfall:[
             {label:'站点数量',amount:100,content:'暂无数据',status:'success'},
-            {label:'小时最大降雨量',amount:100,content:'暂无数据',status:'success'},
+            {label:'今日小时最大雨强',amount:100,content:'暂无数据',status:'success'},
             {label:'日最大降雨量',amount:100,content:'暂无数据',status:'success'},
             {label:'突破历史同期',amount:100,content:'暂无数据',status:'success'},
           ],

@@ -131,7 +131,7 @@ export const requestProductDoFinish = generateGetWithEvn(`{{host}}/${url_integra
 export const requestProductTaskList = generateGetWithEvn(`{{host}}/${url_integration}/ssd-business-index/getSsdBusinessIndexTask`);
 
 // // 产品制作-产品制作-分组左侧 点击完成
-export const requestProductUpdateDutyTask = generateGetWithEvn(`{{host}}/${url_integration}/ssd-business-duty-task/updateDutyTask`);
+export const requestProductUpdateDutyTask = generatePostWithEvn(`{{host}}/${url_integration}/ssd-business-duty-task/updateDutyTask`);
 
 // 产品制作-产品制作-获取产品信息（多个） ssd-product-info/getProductList?productTypeId=xxxxx
 export const requestProducInfos = generateGetWithEvn(`{{host}}/${url_integration}/ssd-product-info/getProductList`);
@@ -1190,7 +1190,6 @@ export const requestDutyPost = generateGetWithEvn(`{{host}}/${url_integration}/s
 
 export const requestDialogFormDutyPostItemInput = payload => {
     const node = payload;
-    node.product_attr = node.productUrl
     node.product == 1? node.productUrl = '' : (node.productInfoName = '',node.productInfoId = '')
     // node.remindDay.length == 0? node.remindDay=null:node.remindDay=node.remindDay
     // node.remindWeek.length == 0? node.remindWeek=null:node.remindWeek=node.remindWeek

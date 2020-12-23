@@ -10,6 +10,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/css/style.css'
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts
+import VueContextMenu from 'vue-contextmenu'
+Vue.use(VueContextMenu)
 import {
     Button,
     Menu,

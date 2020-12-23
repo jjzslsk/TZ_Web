@@ -59,6 +59,11 @@
         <div class="transfer-box" v-if="transfer && tabsList">
           <c-transfer class="c-transfer" :leftData="leftData" :rightData="rightData" :titles="['未拥有', '已拥有']" @transfer="handleTransfer" @handleSort="handleSort">
           </c-transfer>
+          <el-switch
+            v-model="selected"
+            active-text="默认配置"
+            inactive-text="">
+          </el-switch>
         </div>
 
     </el-menu>
@@ -99,6 +104,7 @@ export default {
   },
   data() {
     return {
+      selected:true,
       transfer:false,
       leftData:[],
       rightData:[],
@@ -212,6 +218,7 @@ export default {
                 }
               });
             });
+            this.selected = res.selected == 0? true:false
           }
           this.tabsList = menu
         }else{
@@ -227,7 +234,7 @@ export default {
       this.rightData.forEach(element => {
         menu.push(element.content)
       });
-      return {reference:menu.toString()}
+      return {reference:menu.toString(),selected:this.selected? 0:1}
     },
     editTab(){
       this.visibleDialogEditTab = true
@@ -411,7 +418,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 .main-header {
   background-position: center;
   background-repeat: no-repeat;
@@ -530,6 +537,11 @@ export default {
     left: calc(50% - 400px);
     z-index: 9999;
     width: 800px;
+    .el-switch{
+      position: absolute;
+      top:355px;
+      left: 220px;
+    }
   }
 </style>
 <style lang="postcss">

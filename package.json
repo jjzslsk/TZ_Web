@@ -42,6 +42,7 @@
     "ramda": "^0.25.0",
     "throttle-debounce": "^2.1.0",
     "vue": "^2.6.10",
+    "vue-contextmenu": "^1.5.10",
     "vue-pdf": "^4.1.0",
     "vue-router": "^3.0.1",
     "vue-upload-component": "^2.8.20",

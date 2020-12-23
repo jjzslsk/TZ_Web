@@ -131,7 +131,7 @@
             </el-form-item>
 
             <el-form-item label="其他任务地址" label-width="120px" v-if="formItem.product == '2'">
-               <el-input v-model="formItem.productUrl" placeholder="请以http://或者https:// 格式开头"></el-input>
+               <el-input v-model="formItem.other" placeholder="请以http://或者https:// 格式开头"></el-input>
             </el-form-item>
 
             <!-- <el-form-item label="产品选择" label-width="120px" v-if="formItem.product">
@@ -254,7 +254,7 @@ export default {
                     return this.formItem
                 }
             }else if(this.formItem.product == 2){
-                if (!this.formItem.productUrl){
+                if (!this.formItem.other){
                     this.$message.warning('请输入地址');
                     return
                 }else{
@@ -262,7 +262,7 @@ export default {
                 }
             }else if(this.formItem.product == 0){
                 this.formItem.productInfoName = null
-                this.formItem.productUrl = null
+                this.formItem.other = null
                 return this.formItem
             }else{
                 return this.formItem
@@ -386,7 +386,7 @@ export default {
                             remark: res.data.remark,
                             showOrder: res.data.show_order,
                             product: JSON.stringify(res.data.is_product),
-                            productUrl: res.data.product_attr,
+                            other: res.data.other,
                             productInfoId: res.data.product_info_id,
                             productInfoName: res.data.product_info_name,
                             remindType: res.data.remind_type,
@@ -395,7 +395,7 @@ export default {
             }else{
                 return {
                         jobId:this.loginInfo.jobId,
-                        productUrl:null,
+                        other:null,
                         product:'2',
                 }
             }

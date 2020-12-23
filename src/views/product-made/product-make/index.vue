@@ -1,8 +1,7 @@
 <template>
   <div class="product-made-home product-made-make">
     <!-- {{lastItemClicked}} -->
-    <!-- {{productTabList}}
-    {{productMade}} -->
+    <!-- {{productTabList}} -->
     <!-- {{parentList}} -->
 <!-- 宽mainWidth：{{mainWidth}}，中isDirection：{{isDirection}}，导isEditAlive：{{isEditAlive}}，右isRight：{{isRight}}，右刷isEditAlive：{{isEditAlive}}，中刷isRouterAlive：{{isRouterAlive}}， -->
     <!-- {{tabsList}} -->
@@ -27,8 +26,8 @@
               >{{item.name}}</el-radio-button>
             </el-radio-group>
             <el-timeline v-if="activities.length > 0">
+              <div @contextmenu="showMenu" v-for="(activity, index) in activities" :key="index">
               <el-timeline-item
-                v-for="(activity, index) in activities"
                 style='cursor:pointer'
                 :key="index"
                 :icon="activity.icon"
@@ -44,7 +43,8 @@
               <span class="timeFrame" :style="activity._swIndex == 1? `top:${activity._sw*56/2}px`:''" v-if="activity._swIndex == 1">{{activity.range}}</span>
               <span class="timeFrame" :style="activity._xwIndex == 1? `top:${activity._xw*56/2}px`:''" v-if="activity._xwIndex == 1">{{activity.range}}</span>
               <span class="timeFrame" :style="activity._yjIndex == 1? `top:${activity._yj*56/2}px`:''" v-if="activity._yjIndex == 1">{{activity.range}}</span>
-              <div class="timeline-event" @click.stop="timelineEvent(activity)"></div>
+              <vue-context-menu :contextMenuData="contextMenuData" @finish="finish(activity)" @cancel="cancel" ></vue-context-menu>
+              <!-- <div class="timeline-event" @click.stop="timelineEvent(activity)"></div> -->
               <!-- <el-popover
                 v-if="activityItem.id == activity.id"
                 placement="top"
@@ -57,6 +57,7 @@
                 </div>
               </el-popover> -->
               </el-timeline-item>
+              </div>
             </el-timeline>
             <div class="text" v-else>
               暂无记录
@@ -119,7 +120,7 @@
         <div class="center-box item-wrap" ref="mainDom" v-if='isDirection' :style="isRight? ``:'width: calc(100% - 18px);'">
           <div class="nested" v-if="mainWidth" :style="mainWidth? `width:${mainWidth}px`:''">
           <div class="top-title no-border">
-            <div class="text">{{topTitle || '参考资料'}}
+            <div class="text">参考资料
               <!-- <span class="link" style="cursor:pointer" @click="inputItem()">显示编辑</span> -->
               </div>
             <!-- <el-button type="primary" size="small" @click="saveModule()">保存模板</el-button> -->
@@ -168,7 +169,7 @@
             <i class="el-icon-arrow-right"></i>
           </div>
           <div class="top-title">
-            <div class="text">产品制作</div> <span v-if="isDirection" @click="rightClose()" style="color: #409eff;font-size: 18px;cursor: pointer;"><i class="el-icon-d-arrow-right"></i></span>
+            <div class="text">{{topTitle || '产品制作'}}</div> <span v-if="isDirection" @click="rightClose()" style="color: #409eff;font-size: 18px;cursor: pointer;"><i class="el-icon-d-arrow-right"></i></span>
           </div>
 
           <!-- 多个产品编辑 -->
@@ -179,7 +180,7 @@
                   <el-form ref="form" label-width="90px" size="small">
                           <div class="item-input">
                           <el-form-item label="制作时次">
-                            <el-tag class="date-num" size="small" v-for="(makeItem,makeIndex) in item.makeTimes" :key="makeIndex" v-bind:class="{ 'activeThree1': makeItem.makeMode == 1? true:false,'activeThree2': makeItem.makeMode == 2? true:false,'activeThree3': makeItem.makeMode == 3? true:false,'activeThree4': makeItem.makeTime == productTabList[index].makeTime ? true:false, }" @click="channelDate(makeItem,item,index)">{{makeItem.makeTime}}</el-tag>
+                            <el-tag class="date-num" size="small" v-for="(makeItem,makeIndex) in item.makeTimes" :key="makeIndex" v-bind:class="{ 'activeThree1': makeItem.makeMode == 1? true:false,'activeThree2': makeItem.makeMode == 2? true:false,'activeThree3': makeItem.makeMode == 3? true:false,'activeThree4': makeItem.makeTime == productTabList[index].makeTime ? true:false, }" @click="channelDate(makeItem,item,index,makeIndex)">{{makeItem.makeTime}}</el-tag>
                           </el-form-item>
                         </div>
                         <div class="item-input">
@@ -242,10 +243,11 @@
                         </el-form-item>
                       </div>
                       <div class="buts">
-                        <el-button type="success" size="mini" @click="getLasts(productTabList[index],index)">最新发布</el-button>
+                        <el-button type="success" size="mini" @click="getLasts(productTabList[index],index)">最新保存</el-button>
                         <el-button type="success" size="mini" @click="onAllSave(productTabList[index],index,function(){})">全部保存</el-button>
                         <el-button type="primary" size="mini" @click="onAllConsult(productTabList[index],index,'fast')">全部保存并发布</el-button>
-                        <el-button type="primary" size="mini" @click="onConsult(productTabList[index],index,'')">单个保存并发布</el-button>
+                        <el-button type="primary" size="mini" @click="onConsult(productTabList[index],index,'')">保存并发布</el-button>
+                        <el-button type="primary" size="mini" @click="onSave(productTabList[index],index,function(){})">保存</el-button>
                         <el-button type="primary" size="mini" @click="goProduct(productTabList[index])">查看发布结果</el-button>
                        </div>
                       </div>
@@ -323,7 +325,7 @@
                         </el-form-item>
                       </div>
                       <div class="buts">
-                        <el-button type="success" size="mini" @click="getLast(productMade,false,function(){})">最新发布</el-button>
+                        <el-button type="success" size="mini" @click="getLast(productMade,false,function(){})">最新保存</el-button>
                         <el-button type="success" size="mini" @click="onSave(productMade,false,function(){})">保存</el-button>
                         <el-button type="primary" size="mini" @click="onConsult(productMade,false,'fast')">保存并快速发布</el-button>
                         <el-button type="primary" size="mini" @click="onConsult(productMade,false,'')">保存并发布</el-button>
@@ -591,6 +593,26 @@ export default {
   },
   data() {
     return {
+      // 菜单数据
+       contextMenuData: {
+         menuName: 'demo',
+         //菜单显示的位置
+         axis: {
+           x: null,
+           y: null
+         },
+         //菜单选项
+         menulists: [{
+           fnHandler: 'finish', //绑定事件
+           icoName: 'fa fa-home fa-fw', //icon图标
+           btnName: '完成' //菜单名称
+         }, {
+             fnHandler: 'cancel',
+             icoName: 'fa fa-minus-square-o  fa-fw',
+             btnName: '取消'
+         }]
+       },
+
       expireTimeOption: {
         disabledDate(date) {
           return date.getTime() <= Date.now();
@@ -896,6 +918,65 @@ export default {
     })
   },
   methods: {
+    //右键
+    showMenu () {
+        event.preventDefault()
+        var x = event.clientX
+        var y = event.clientY
+        // Get the current location
+      this.contextMenuData.axis = {
+        x, y
+      }
+    },
+    finish (data) {
+        requestProductUpdateDutyTask({id:data.id}).then((res)=>{
+              this.$message.success(res.message);
+           // 发布流程信息 刷新
+          requestProductTaskList({ userId: this.loginInfo.id, jobId: this.optionsValue.id }).then(
+            res => {
+              this.substep(res)
+            }
+          );
+        })
+
+        // this.$message.warning("非产品，无法编辑")
+    },
+    cancel () {
+      console.log('cancel!')
+    },
+
+    //时间校验 
+    verifyDate(item){
+        let sysDate = this.dislodgeZero(JSON.stringify(new Date()).substring(1,11))
+        var myDate = new Date(); 
+        let test3 = sysDate+ "-" + myDate.getHours()
+        var pattern = /([0-9]{4}年[0-9]{1,2}月[0-9]{1,2}日[0-9]{1,2}时)/,
+        str = item.content;
+        if(pattern.test(str)){
+          let test1 = pattern.exec(str)[0]
+          test1 = test1.replace(/年/g,"-")
+          test1 = test1.replace(/月/g,"-")
+          test1 = test1.replace(/日/g,"-")
+          test1 = test1.replace(/时/g,"")
+          return test3==test1? true:false
+        }else{
+          return true
+        }
+    },
+
+    // 去除0 参数 日期 如 2020-07-08 返回为 2020-7-8
+     dislodgeZero(str) {
+      let strArray = str.split("-");
+      strArray = strArray.map(function(val) {
+        if (val[0] == "0") {
+          return (val = val.slice(1));
+        } else {
+          return val;
+        }
+      });
+      return strArray.join("-");
+    },
+
     //数组对象过滤id
     findFn(contrastObj,arrs){
       return arrs.find((item)=>{
@@ -962,7 +1043,8 @@ export default {
         this.$message.error("选择产品，并填写完整信息!");
         return;
       }
-      if(data.content.length > data.limitnumber && data.limitnumber !== 0 && data.limitnumber !== null){
+      let textLength = this.getSemiangleLength(data.content,JSON.stringify(data.wordtype))
+      if(textLength > data.limitnumber && data.limitnumber !== 0 && data.limitnumber !== null){
         this.$message({
           message: '已超字数',
           type: 'warning'
@@ -1138,46 +1220,17 @@ export default {
     timelineClick(data){
 
       this.handleNodeClick(data)
-      if(data.product == 0){
-        requestProductUpdateDutyTask({id:data.id}).then((res)=>{
-           // 发布流程信息 刷新
-          requestProductTaskList({ userId: this.loginInfo.id, jobId: this.optionsValue.id }).then(
-            res => {
-              this.substep(res)
-            }
-          );
-        })
-        this.$message.warning("非产品，无法编辑")
-        return
-      }else if(data.product == 1 && data.productInfoId){
+if(data.product == 1 && data.productInfoId){
         this.treeDataList.forEach(item=>{
             if(item.id === data.productInfoId){
               this.onTreeClickItem(item)
             }
           })
       }else if(data.product == 2 && data.productInfoId == null || data.productInfoId == ''){
-        requestProductUpdateDutyTask({id:data.id}).then((res)=>{
-           // 发布流程信息 刷新
-          requestProductTaskList({ userId: this.loginInfo.id, jobId: this.optionsValue.id }).then(
-            res => {
-              this.substep(res)
-            }
-          );
-        })
-          window.open(data.productAttr, '_blank');
+
+          window.open(data.other, '_blank');
           this.$message.warning("非产品，不在系统内制作")
           return
-      }else{
-        requestProductUpdateDutyTask({id:data.id}).then((res)=>{
-           // 发布流程信息 刷新
-          requestProductTaskList({ userId: this.loginInfo.id, jobId: this.optionsValue.id }).then(
-            res => {
-              this.substep(res)
-            }
-          );
-        })
-        this.$message.warning("非产品，无法编辑")
-        return
       }
     },
     timelineEvent(data){
@@ -1202,7 +1255,7 @@ export default {
     },
 
     //点击制作时次
-    channelDate(makeItem,tabItem,tabIndex){
+    channelDate(makeItem,tabItem,tabIndex,makeIndex){
       console.log('makeItem',makeItem)
       console.log('tabItem',tabItem)
       console.log('tabIndex',tabIndex)
@@ -1248,6 +1301,7 @@ export default {
                           })
                           // this.makeTimeData = makeItem.makeTime //????????????????????????
                         }
+                        this.productTabList[tabIndex].timeIndex = makeIndex //多产品 多制作时次下标 修改
                   });
               }
     },
@@ -1441,7 +1495,6 @@ export default {
         this.$message.error("请先选择产品");
         return;
       }
-      console.log('122222',this.lastItemClicked)
       let routeUrl = this.$router.resolve({name: "product-state",query: {id:item.productInfoId,leftTreeKeyPath:["9b7774844ba141248937dcea2185a3a5"]}});
       window.open(routeUrl.href, '_blank');
     },
@@ -1467,6 +1520,8 @@ export default {
                   reserveTime:element.reserveTime,
                   issue: element.issue,
                   fileName:element.fileName,
+                  makeTime:element.makeTimes[element.timeIndex].makeTime,
+                  // makeTime:element.makeTimes,
                   msg:element.content,
                   fileType:_parentList[index].type,
                   filePath:element.filePath
@@ -1511,72 +1566,125 @@ export default {
     },
 
     //保存
-    onSave(item,index,callback) {
-      //this.$refs.iframe.iframeClick(this.lastItemClicked);
+    async onSave(item,index,callback) {
       console.log('onSave-item:',item)
-      console.log('onSave-lastItemClicked:',item)
-      if (
-        !this.lastItemClicked
-      ) {
+      if (!this.lastItemClicked) {
         this.$message.error("选择产品，并填写完整信息!");
         return;
       }
-      if(item.content.length > item.limitnumber && item.limitnumber !== 0 && item.limitnumber !== null){
+      let textLength = this.getSemiangleLength(item.content,JSON.stringify(item.wordtype))
+      if(textLength > item.limitnumber && item.limitnumber !== 0 && item.limitnumber !== null){
         this.$message({
           message: '已超字数',
           type: 'warning'
         });
-        return;
-      }
-
-      let param = {
-        orgId: this.loginInfo.orgId,
-        id: item.id,
-        productInfoId: index === false? this.lastItemClicked.id:item.productInfoId,
-        productInfoName: index === false? this.lastItemClicked.label:item.name,
-        issue: item.issue,
-        // reserve: item.reserve ? "1" : "0",
-        // reserveTime: item.reserveTime,
-        // reserveTime: '0',
-        createUser: this.loginInfo.name,
-        content: item.content,
-        fileName: item.fileName,
-        makeTime: item.makeTime,
-        // timingDate: item.timingDate,
-      };
-      requestProducTreleaseSave(param).then(res => {
-        this.saveProducId = res.data.id
-        if(index === false){
-          this.productMade = null;
-          this.productMade = {
-            ...res.data,
-            makeTime: item.makeTime,
-            timingDate: item.timingDate,
-
-          };
-          if (res.success) {
-            this.$message.success(res.message);
-            this.contentTabRoot = {};
-          } else {
-            this.$message.error(res.message);
-            this.contentTabRoot = {};
-          }
-        callback(item,index)
-        }else{
-          this.productTabList[index].channelContent = res.data.channelContent;
-          this.productTabList[index].fileName = res.data.fileName;
-          this.productTabList[index].id = res.data.id;
-          console.log('productTabList[index]:',this.productTabList[index])
+        return
+      }else if(!this.verifyDate(item)){//时间校验 
+        this.$confirm('发布时间与当前时间不匹配，是否继续保存或发布？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+        //提交
+        let param = {
+          orgId: this.loginInfo.orgId,
+          // id: item.id,
+          productInfoId: index === false? this.lastItemClicked.id:item.productInfoId,
+          productInfoName: index === false? this.lastItemClicked.label:item.name,
+          issue: item.issue,
+          // reserve: item.reserve ? "1" : "0",
+          // reserveTime: item.reserveTime,
+          // reserveTime: '0',
+          createUser: this.loginInfo.name,
+          content: item.content,
+          fileName: item.fileName,
+          makeTime: item.makeTime,
+          // timingDate: item.timingDate,
+        };
+        requestProducTreleaseSave(param).then(res => {
+          this.saveProducId = res.data.id
+          if(index === false){
+            this.productMade = null;
+            this.productMade = {
+              ...res.data,
+              makeTime: item.makeTime,
+              timingDate: item.timingDate,
+            };
+            if (res.success) {
+              this.$message.success(res.message);
+              this.contentTabRoot = {};
+            } else {
+              this.$message.error(res.message);
+              this.contentTabRoot = {};
+            }
           callback(item,index)
-          if (res.success) {
-            this.$message.success(res.message);
-            this.contentTabRoot = {};
-          } else {
-            this.$message.error(res.message);
-            this.contentTabRoot = {};
+          }else{
+            this.productTabList[index].channelContent = res.data.channelContent;
+            this.productTabList[index].fileName = res.data.fileName;
+            this.productTabList[index].id = res.data.id;
+            console.log('productTabList[index]:',this.productTabList[index])
+            callback(item,index)
+            if (res.success) {
+              this.$message.success(res.message);
+              this.contentTabRoot = {};
+            } else {
+              this.$message.error(res.message);
+              this.contentTabRoot = {};
+            }
           }
-        }
-      });
+        });
+        })
+      }else{
+        //提交
+        let param = {
+          orgId: this.loginInfo.orgId,
+          id: item.id,
+          productInfoId: index === false? this.lastItemClicked.id:item.productInfoId,
+          productInfoName: index === false? this.lastItemClicked.label:item.name,
+          issue: item.issue,
+          // reserve: item.reserve ? "1" : "0",
+          // reserveTime: item.reserveTime,
+          // reserveTime: '0',
+          createUser: this.loginInfo.name,
+          content: item.content,
+          fileName: item.fileName,
+          makeTime: item.makeTime,
+          // timingDate: item.timingDate,
+        };
+        requestProducTreleaseSave(param).then(res => {
+          this.saveProducId = res.data.id
+          if(index === false){
+            this.productMade = null;
+            this.productMade = {
+              ...res.data,
+              makeTime: item.makeTime,
+              timingDate: item.timingDate,
+
+            };
+            if (res.success) {
+              this.$message.success(res.message);
+              this.contentTabRoot = {};
+            } else {
+              this.$message.error(res.message);
+              this.contentTabRoot = {};
+            }
+          callback(item,index)
+          }else{
+            this.productTabList[index].channelContent = res.data.channelContent;
+            this.productTabList[index].fileName = res.data.fileName;
+            this.productTabList[index].id = res.data.id;
+            console.log('productTabList[index]:',this.productTabList[index])
+            callback(item,index)
+            if (res.success) {
+              this.$message.success(res.message);
+              this.contentTabRoot = {};
+            } else {
+              this.$message.error(res.message);
+              this.contentTabRoot = {};
+            }
+          }
+        });
+      }
     },
 
     onConsult(item,index,fast) {
@@ -1599,7 +1707,6 @@ export default {
         return
       }
 
-      this.visibleDialogConsult = fast == 'fast' ? false:true
       if(fast == 'fast'){
         //快速发布
 
@@ -1637,6 +1744,7 @@ export default {
                   orgId: _this.loginInfo.orgId,
                   productInfoId: index === false? _this.lastItemClicked.id:item.productInfoId,
                 }).then(res => {
+                  _this.visibleDialogConsult = fast == 'fast' ? false:true
                   _this.tabsList1 = res.data;
                   let checkeds = []; //已选中
 
@@ -1738,6 +1846,7 @@ export default {
             requestProductInfoIds({productInfoIds:ids.toString()}).then(res=>{
               this.productTabList = res.data.list
                 res.data.list.forEach((item,index)=>{
+                  this.productTabList[index].timeIndex = 0 //初始化 多产品 多制作时次下标
                   tabsList.forEach(i=>{
                     if(i.id == item.productInfoId){
                       this.productTabList[index].name = i.name
