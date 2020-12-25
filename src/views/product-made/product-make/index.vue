@@ -43,7 +43,7 @@
               <span class="timeFrame" :style="activity._swIndex == 1? `top:${activity._sw*56/2}px`:''" v-if="activity._swIndex == 1">{{activity.range}}</span>
               <span class="timeFrame" :style="activity._xwIndex == 1? `top:${activity._xw*56/2}px`:''" v-if="activity._xwIndex == 1">{{activity.range}}</span>
               <span class="timeFrame" :style="activity._yjIndex == 1? `top:${activity._yj*56/2}px`:''" v-if="activity._yjIndex == 1">{{activity.range}}</span>
-              <vue-context-menu :contextMenuData="contextMenuData" @finish="finish(activity)" @cancel="cancel" ></vue-context-menu>
+              <vue-context-menu :contextMenuData="contextMenuData" @finish="finish(activity)"></vue-context-menu>
               <!-- <div class="timeline-event" @click.stop="timelineEvent(activity)"></div> -->
               <!-- <el-popover
                 v-if="activityItem.id == activity.id"
@@ -244,10 +244,10 @@
                       </div>
                       <div class="buts">
                         <el-button type="success" size="mini" @click="getLasts(productTabList[index],index)">最新保存</el-button>
+                        <el-button type="success" size="mini" @click="onSave(productTabList[index],index,function(){})">保存</el-button>
                         <el-button type="success" size="mini" @click="onAllSave(productTabList[index],index,function(){})">全部保存</el-button>
                         <el-button type="primary" size="mini" @click="onAllConsult(productTabList[index],index,'fast')">全部保存并发布</el-button>
                         <el-button type="primary" size="mini" @click="onConsult(productTabList[index],index,'')">保存并发布</el-button>
-                        <el-button type="primary" size="mini" @click="onSave(productTabList[index],index,function(){})">保存</el-button>
                         <el-button type="primary" size="mini" @click="goProduct(productTabList[index])">查看发布结果</el-button>
                        </div>
                       </div>
@@ -606,10 +606,6 @@ export default {
            fnHandler: 'finish', //绑定事件
            icoName: 'fa fa-home fa-fw', //icon图标
            btnName: '完成' //菜单名称
-         }, {
-             fnHandler: 'cancel',
-             icoName: 'fa fa-minus-square-o  fa-fw',
-             btnName: '取消'
          }]
        },
 
@@ -940,9 +936,6 @@ export default {
         })
 
         // this.$message.warning("非产品，无法编辑")
-    },
-    cancel () {
-      console.log('cancel!')
     },
 
     //时间校验 
@@ -1501,9 +1494,11 @@ if(data.product == 1 && data.productInfoId){
     //全部保存
     onAllSave(item){
       return new Promise((resolve, reject) => {
+        let _this = this
         var _productTabList = this.productTabList
         var _lastItemClicked = this.lastItemClicked
         var _parentList = this.parentList
+        let beyond = null //字数 是否超出
         let param = {
           "orgId":this.loginInfo.orgId,
           "productTypeId":this.lastItemClicked.id,
@@ -1514,13 +1509,22 @@ if(data.product == 1 && data.productInfoId){
             let obj3
             _productTabList.find((element,index) => {
               let _variable = _parentList[index].code
+              let textLength = _this.getSemiangleLength(element.content,JSON.stringify(element.wordtype))
+              if(textLength > element.limitnumber && element.limitnumber !== 0 && element.limitnumber !== null){
+                _this.$message({
+                  message: `${element.name}已超字数`,
+                  type: 'warning'
+                });
+                beyond = true
+                return
+              }
               obj2 = {
                   [_variable] : {
                   reserve:element.reserve? 1:0,
                   reserveTime:element.reserveTime,
                   issue: element.issue,
                   fileName:element.fileName,
-                  makeTime:element.makeTimes[element.timeIndex].makeTime,
+                  makeTime:element.makeTimes.length>0? element.makeTimes[element.timeIndex].makeTime:null,
                   // makeTime:element.makeTimes,
                   msg:element.content,
                   fileType:_parentList[index].type,
@@ -1532,11 +1536,14 @@ if(data.product == 1 && data.productInfoId){
             return obj3
           }()),
         }
-        param.content = JSON.stringify(param.content)
-        requestProducTreleaseAllSave(param).then((res)=>{
-          res.success? this.$message({message: res.message,type: 'success'}) : this.$message.error(res.message)
-          res.success? resolve(res) : reject(res)
-        })
+        setTimeout(() => {
+          if(beyond) return
+          param.content = JSON.stringify(param.content)
+          requestProducTreleaseAllSave(param).then((res)=>{
+            res.success? this.$message({message: res.message,type: 'success'}) : this.$message.error(res.message)
+            res.success? resolve(res) : reject(res)
+          })
+        },400);
       });
     },
 
@@ -1845,8 +1852,14 @@ if(data.product == 1 && data.productInfoId){
             })
             requestProductInfoIds({productInfoIds:ids.toString()}).then(res=>{
               this.productTabList = res.data.list
-                res.data.list.forEach((item,index)=>{
-                  this.productTabList[index].timeIndex = 0 //初始化 多产品 多制作时次下标
+                this.productTabList.forEach((item,index)=>{
+                  if(item.makeTimes.length > 0){
+                    item.makeTimes.find((element,_index) => { 
+                      if(item.makeTime == element.makeTime){
+                        item.timeIndex = _index //初始化 多产品 多制作时次下标
+                      }
+                    });
+                  }
                   tabsList.forEach(i=>{
                     if(i.id == item.productInfoId){
                       this.productTabList[index].name = i.name

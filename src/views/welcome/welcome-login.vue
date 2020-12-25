@@ -265,6 +265,8 @@ export default {
       // })
 
       requestLogin(vm.form).then((res) => {
+		    localStorage.setItem("lastTime10",new Date().getTime())
+		    localStorage.setItem("lastTime04",new Date().getTime())
         //     return vm.gotAccountInfo(res.data);
         // }).then(res => {
         if (res.success && res.data) {

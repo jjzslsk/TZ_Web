@@ -62,8 +62,6 @@ export default {
         }
     },
     mounted() {
-        setTimeout(() => {
-        }, 100);
         const {
             lazy
         } = this;

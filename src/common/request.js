@@ -154,9 +154,68 @@ const checkStatus = response => {
         }
     }
 }
+
+
+function overtime10(config){
+    return new Promise((resolve, reject) => {
+        //10小时超时登录 （分钟 60*1000）（小时 60*60*1000）（天 24*60*60*1000）
+        function checkTimeout10() {
+            let timeOut = 10 * 60*60*1000  //设置超时时间: 10小时
+            let currentTime = new Date().getTime()//更新当前时间
+            let lastTime = localStorage.getItem("lastTime10");//登录时间
+            // console.log(currentTime - lastTime);
+            // console.log(timeOut);
+            if (currentTime - lastTime > timeOut) {
+                alert("登录超时，请重新登录！")
+                sessionStorage.clear()
+                window.location.href="/";
+                reject('reject')
+            }else{
+                resolve('resolve')
+            }
+        }
+        if(config.url == '/integration/system/ssd-sys-user/login'){
+            resolve('resolve')
+        }else{
+            checkTimeout10()
+        }
+    });
+}
+
+function overtime04(config){
+    return new Promise((resolve, reject) => {
+        //4小时超时登录 （分钟 60*1000）（小时 60*60*1000）（天 24*60*60*1000）
+        function checkTimeout04() {
+            let timeOut = 4 * 60*60*1000  //设置超时时间: 10小时
+            let currentTime = new Date().getTime()//更新当前时间
+            let lastTime = localStorage.getItem("lastTime04");//登录时间
+            if (currentTime - lastTime > timeOut) {
+                alert("登录超时，请重新登录！")
+                sessionStorage.clear()
+                window.location.href="/";
+                reject('reject')
+            }else{
+                localStorage.setItem("lastTime04",new Date().getTime())
+                resolve('resolve')
+            }
+        }
+        if(config.url == '/integration/system/ssd-sys-user/login'){
+            resolve('resolve')
+        }else{
+            checkTimeout04()
+        }
+    });
+}
+
+
 const generateRequest = config => async (param, {
     target
 } = {}) => {
+
+    let over10 = await overtime10(config)
+    let over04 = await overtime04(config)
+    if(over10 == 'reject'|| over04 == 'reject') return
+
     const loginInfo = JSON.parse(localStorage.getItem('loginInfo',))
     let data
     if(!loginInfo){
