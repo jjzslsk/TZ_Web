@@ -1330,7 +1330,7 @@ export default {
         : {
             name: "",
             sort: "",
-            pid: lastItemClicked.pid,
+            pid: lastItemClicked? lastItemClicked.pid:null,
             orgId: this.accountOrgId
             // remark:"",
           };

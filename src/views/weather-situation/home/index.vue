@@ -7,7 +7,9 @@
           <el-collapse  v-model="activeNames" @change="handleChange">
           <el-collapse-item name="1">
             <template slot="title">
-             <span class="title-content">天气警报</span><span class="more" v-if="!alarmList">无数据</span>
+             <span class="title-content">天气警报</span>
+             <span class="more" v-if="!alarmList">无数据</span>
+             <span class="more" v-if="alarmList">{{alarmList.length}}个</span>
             </template>
             <div class="weather-forecast forecast-box el-tabs--border-card">
               <div class="content-wrap-box" v-if="alarmList">
@@ -28,7 +30,9 @@
           </el-collapse-item>
           <el-collapse-item name="2">
             <template slot="title">
-             <span class="title-content">市县预警</span><span class="more" v-if="!earlyList">无数据</span>
+             <span class="title-content">市县预警</span>
+             <span class="more" v-if="!earlyList">无数据</span>
+             <span class="more" v-if="earlyList">{{earlyList.length}}个</span>
             </template>
           <div class="city-forecast forecast-box el-tabs--border-card">
           <div class="content-wrap-box" v-if="earlyList">
