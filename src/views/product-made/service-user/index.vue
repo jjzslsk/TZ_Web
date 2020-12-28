@@ -164,17 +164,17 @@ export default {
         }
     },
     watch:{
-        // 'formLeftTree.pid':{
-        //     handler: function(val, oldVal) {
-        //         this.collection.forEach(i=>{
-        //             if(val != 'null' && i.id == val){
-        //                 this.showChannel = true
-        //                 this.formLeftTree.channel = i.channel
-        //             }
-        //         })
-        //         if(val == 'null'){this.showChannel = false}
-        //  },
-        // },
+        'formLeftTree.pid':{
+            handler: function(val, oldVal) {
+                this.collection.forEach(i=>{
+                    if(val != 'null' && i.id == val){
+                        this.showChannel = true
+                        this.formLeftTree.channel = i.channel
+                    }
+                })
+                if(val == 'null'){this.showChannel = false}
+         },
+        },
         'formLeftTree.serviceUserTypeIds':{
             handler: function(val, oldVal) {
                 this.formLeftTree.pid = val[val.length-1]

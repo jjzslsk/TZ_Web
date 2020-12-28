@@ -1257,12 +1257,12 @@ export const requestDialogFormServiceUserItemInput = payload => {
 // 服务用户分类弹窗
 // export const requestServiceUserList = generateGet(dataStaticBase + 'product-service-user-list.json');
 export const requestDialogFormServiceUserInput = payload => {
-    payload.pid = payload.serviceUserTypeIds[payload.serviceUserTypeIds.length - 1]
-    payload.pid == 'null' ? delete payload.pid : payload.pid = payload.pid
-    payload.serviceUserTypeIds = payload.serviceUserTypeIds.toString()
-    delete payload.createTime
-    delete payload.updateTime
-    return payload.id ? generatePostWithEvn(`{{host}}/${url_integration}/ssd-service-user-type/update`)(payload) : generatePostWithEvn(`{{host}}/${url_integration}/ssd-service-user-type/add`)(payload)
+        let param = {...payload}
+        param.pid = payload.serviceUserTypeIds[payload.serviceUserTypeIds.length - 1]
+        param.serviceUserTypeIds = payload.serviceUserTypeIds.toString()
+        delete payload.createTime
+        delete payload.updateTime
+    return param.id ? generatePostWithEvn(`{{host}}/${url_integration}/ssd-service-user-type/update`)(param) : generatePostWithEvn(`{{host}}/${url_integration}/ssd-service-user-type/add`)(param)
 };
 
 // 服务用户分类删除

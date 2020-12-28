@@ -1484,12 +1484,31 @@ if(data.product == 1 && data.productInfoId){
         return;
       }
       requestProductMakeHistoryList({productInfoId:this.lastItemClicked.id}).then(res=>{
+        let pattern = /([0-9]{4}年[0-9]{1,2}月[0-9]{1,2}日[0-9]{1,2}时)/,
+        str = res.data[0].content;
+        let myDate = new Date(); 
+        let date = `${myDate.getFullYear()}年${myDate.getMonth()+1}月${myDate.getDate()}日${myDate.getHours()}时`
+        if(pattern.test(str)){
+            this.productMade.content = res.data[0].content = res.data[0].content.replace(pattern,date)
+        }else{
+            this.productMade.content = res.data[0].content = res.data[0].content
+        }
+
         this.productMade.content = res.data[0].content
       })
     },
+
     getLasts(item,index){
       requestProductMakeHistoryList({productInfoId:item.productInfoId}).then(res=>{
-        this.productTabList[index].content = res.data[0].content
+        let pattern = /([0-9]{4}年[0-9]{1,2}月[0-9]{1,2}日[0-9]{1,2}时)/,
+        str = res.data[0].content;
+        let myDate = new Date(); 
+        let date = `${myDate.getFullYear()}年${myDate.getMonth()+1}月${myDate.getDate()}日${myDate.getHours()}时`
+        if(pattern.test(str)){
+            this.productTabList[index].content = res.data[0].content.replace(pattern,date)
+        }else{
+            this.productTabList[index].content = res.data[0].content
+        }
       })
     },
 

@@ -1298,7 +1298,7 @@ import mapBox from './../components/map-box';
 /* .weather-situation-page .wrap-box .left-box .left-bottom {height: 100%;} */
 .weather-situation-page .wrap-box .left-box .el-collapse-item__content {padding:0}
 .weather-situation-page .wrap-box .left-box .title-content {padding-left: 20px;font-size: 15px;font-family: Microsoft YaHei;color: #303133;}
-.weather-situation-page .wrap-box .left-box .more {padding-left: 140px;font-size:15px;font-family:Microsoft YaHei;color:rgba(144,147,153,1);cursor: pointer;}
+.weather-situation-page .wrap-box .left-box .more {padding-left: 140px;font-size:15px;font-family:Microsoft YaHei;color:rgba(144,147,153,1);cursor: pointer;width: 45px;display: inline-block;text-align: right;}
 .weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap {background: #fff;border: 1px solid #ddd;}
 .weather-situation-page .wrap-box .left-box .left-bottom .short{margin-bottom: 5px; height: calc(50% - 7px) !important;}
 .weather-situation-page .wrap-box .left-box .left-bottom .rim{height: calc(50% - 2px) !important;}
