@@ -158,6 +158,9 @@ const checkStatus = response => {
 
 function overtime10(config){
     return new Promise((resolve, reject) => {
+        const indexKey = window.location.href.indexOf("/#/")
+        let cut = window.location.href.substring(indexKey)
+        let url1 = '/#/situation-page?key=%2Fsituation-page'
         //10小时超时登录 （分钟 60*1000）（小时 60*60*1000）（天 24*60*60*1000）
         function checkTimeout10() {
             let timeOut = 10 * 60*60*1000  //设置超时时间: 10小时
@@ -174,7 +177,7 @@ function overtime10(config){
                 resolve('resolve')
             }
         }
-        if(config.url == '/integration/system/ssd-sys-user/login'){
+        if(config.url == '/integration/system/ssd-sys-user/login' || cut == url1){
             resolve('resolve')
         }else{
             checkTimeout10()
@@ -184,6 +187,9 @@ function overtime10(config){
 
 function overtime04(config){
     return new Promise((resolve, reject) => {
+        const indexKey = window.location.href.indexOf("/#/")
+        let cut = window.location.href.substring(indexKey)
+        let url1 = '/#/situation-page?key=%2Fsituation-page'
         //4小时超时登录 （分钟 60*1000）（小时 60*60*1000）（天 24*60*60*1000）
         function checkTimeout04() {
             let timeOut = 4 * 60*60*1000  //设置超时时间: 10小时
@@ -194,12 +200,13 @@ function overtime04(config){
                 sessionStorage.clear()
                 window.location.href="/";
                 reject('reject')
+                return
             }else{
                 localStorage.setItem("lastTime04",new Date().getTime())
                 resolve('resolve')
             }
         }
-        if(config.url == '/integration/system/ssd-sys-user/login'){
+        if(config.url == '/integration/system/ssd-sys-user/login' || cut == url1){
             resolve('resolve')
         }else{
             checkTimeout04()
@@ -211,7 +218,6 @@ function overtime04(config){
 const generateRequest = config => async (param, {
     target
 } = {}) => {
-
     let over10 = await overtime10(config)
     let over04 = await overtime04(config)
     if(over10 == 'reject'|| over04 == 'reject') return

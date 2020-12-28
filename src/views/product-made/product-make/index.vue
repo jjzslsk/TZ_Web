@@ -241,12 +241,13 @@
                             placeholder="选择日期时间">
                           </el-date-picker>
                         </el-form-item>
+                        <el-button size="mini" @click="syncTime(productTabList[index])">同步预约时间</el-button>
                       </div>
                       <div class="buts">
                         <el-button type="success" size="mini" @click="getLasts(productTabList[index],index)">最新保存</el-button>
-                        <el-button type="success" size="mini" @click="onSave(productTabList[index],index,function(){})">保存</el-button>
                         <el-button type="success" size="mini" @click="onAllSave(productTabList[index],index,function(){})">全部保存</el-button>
                         <el-button type="primary" size="mini" @click="onAllConsult(productTabList[index],index,'fast')">全部保存并发布</el-button>
+                        <el-button type="success" size="mini" @click="onSave(productTabList[index],index,function(){})">保存</el-button>
                         <el-button type="primary" size="mini" @click="onConsult(productTabList[index],index,'')">保存并发布</el-button>
                         <el-button type="primary" size="mini" @click="goProduct(productTabList[index])">查看发布结果</el-button>
                        </div>
@@ -914,6 +915,18 @@ export default {
     })
   },
   methods: {
+    syncTime(item){
+      if(!item.timingDate || item.timingDate == undefined || item.timingDate == '' || item.timingDate == null){
+          this.$message.warning('请选择预约时间');
+          return
+      }
+      this.productTabList.forEach((element,index) => {
+        element.timingDate = item.timingDate
+        if(this.productTabList.length-1 == index ){
+          this.$message.success('同步成功');
+        }
+      });
+    },
     //右键
     showMenu () {
         event.preventDefault()
