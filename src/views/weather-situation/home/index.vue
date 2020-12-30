@@ -9,11 +9,11 @@
             <template slot="title">
              <span class="title-content">天气警报</span>
              <span class="more" v-if="!alarmList">无数据</span>
-             <span class="more" v-if="alarmList">{{alarmList.length}}个</span>
+             <!-- <span class="more" v-if="alarmList">{{alarmList.length}}个</span> -->
             </template>
             <div class="weather-forecast forecast-box el-tabs--border-card">
               <div class="content-wrap-box" v-if="alarmList">
-                <el-tooltip class="item" :open-delay="800" v-for="item in alarmList" :key="item.id" effect="light" :content="item.publishOrg+'发布'+item.alarmName" placement="left-start">
+                <el-tooltip class="item" :open-delay="800" v-for="item in alarmList.slice(0 , 2)" :key="item.id" effect="light" :content="item.publishOrg+'发布'+item.alarmName" placement="left-start">
                   <div class="content-box border-top"  @click="toMore('天气警报')">
                     <i class="iconfont" :class='item.icon'></i>
                     <div class="item">
@@ -22,6 +22,7 @@
                     </div>
                   </div>
                 </el-tooltip>
+                <div class="count" @click="toMore('天气警报')">更多({{alarmList.length}})</div>
               </div>
               <div class="content-wrap-box" v-if="!alarmList">
                 <img class="content-warning-img" src="../../../assets/img/yujing/warning-001.png" alt="" srcset="">
@@ -32,11 +33,11 @@
             <template slot="title">
              <span class="title-content">市县预警</span>
              <span class="more" v-if="!earlyList">无数据</span>
-             <span class="more" v-if="earlyList">{{earlyList.length}}个</span>
+             <!-- <span class="more" v-if="earlyList">{{earlyList.length}}个</span> -->
             </template>
           <div class="city-forecast forecast-box el-tabs--border-card">
           <div class="content-wrap-box" v-if="earlyList">
-            <el-tooltip class="item" :open-delay="800" v-for="item in earlyList" :key="item.id" effect="light" :content="item.title" placement="left-start">
+            <el-tooltip class="item" :open-delay="800" v-for="item in earlyList.slice(0 , 2)" :key="item.id" effect="light" :content="item.title" placement="left-start">
               <div class="content-box border-top"  @click="toMore('市县预警')">
                 <img-alarm class="pic yujing-img" :info="item|alermInfo"></img-alarm>
                 <div class="item">
@@ -45,6 +46,7 @@
                 </div>
               </div>
             </el-tooltip>
+            <div class="count"  @click="toMore('市县预警')">更多({{earlyList.length}})</div>
           </div>
           <div class="content-wrap-box" v-if="!earlyList">
             <img class="content-warning-img" src="../../../assets/img/yujing/warning-002.png" alt="" srcset="">
@@ -418,9 +420,6 @@ import mapBox from './../components/map-box';
       },
     },
     mounted(){
-      this.windowHeight = document.body.clientWidth;
-      this.collapseDomHeight = this.$refs.collapseDom.offsetHeight;  //100
-
       // window.onresize = () => {
       //   return (() => {
       //     this.windowHeight = document.body.clientHeight;
@@ -428,6 +427,7 @@ import mapBox from './../components/map-box';
       // };
       this.requestData()
       // window.addEventListener('resize',function() {myChart.resize()});
+      
     },
     methods:{
       handleChange(val) {
@@ -448,49 +448,10 @@ import mapBox from './../components/map-box';
         this.pdfUrl = `http://10.137.4.30:8888/fileservice${url}`
         window.open(this.pdfUrl, '_blank');
     },
-      requestData(){
+    async requestData(){
         this.chartResult = true
-        // 左侧 天气警报
-        requestWarningAlarm().then(res=>{
-          if(!res.data || res.data.length == 0) return
-          this.activeNames.push('1')
-          this.alarmList = res.data
-          this.alarmList.forEach(element => {
-            element.icon = element.alarmCode.split(",")[0]
-          });
-        })
-        //左侧 市县警报
-        requestWarningEarly().then(res=>{
-          if(!res.data || res.data.length == 0) return
-          this.activeNames.push('2')
-          this.earlyList = res.data
-        })
-        //左侧 短期 预报
-        requestWarningShort().then(res=>{
-          let resData = res.data
-          JSON.stringify(resData) == "{}"? this.shortForecas[0].content = '暂无数据':this.shortForecas[1].content = resData.content
-        })
-        //左侧 短临 预报
-        requestWarningemporary().then(res=>{
-            let resData = res.data
-          JSON.stringify(resData) == "{}"? this.shortForecas[0].content = '暂无数据':this.shortForecas[0].content = resData.content
-        })
-        //左侧 十天预报
-        requestWarningForecast().then(res=>{
-          let resData = res.data
-          JSON.stringify(resData) == "{}"? this.cityByForecasts[0].content = '暂无数据':this.cityByForecasts[0].content = resData.content
-        })
-        //左侧 城市预报
-        requestWarningCity().then(res=>{
-            let resData = res.data
-          JSON.stringify(resData) == "{}"? this.cityByForecasts[0].content = '暂无数据':this.cityByForecasts[1].content = resData.content
-        })
-        //左侧 周边城市预报
-        requestWarningAroundCity().then(res=>{
-            let resData = res.data
-          JSON.stringify(resData) == "{}"? this.cityByForecasts[0].content = '暂无数据':this.cityByForecasts[2].content = resData.content
-        })
-        //底部 降水 风力 能见度
+
+                //底部 降水 风力 能见度
         // requestWarningBottomTabList().then(res=>{
         //   this.bottomTabList = res.data
         // })
@@ -580,6 +541,50 @@ import mapBox from './../components/map-box';
           // this.rainImgs.day1 = 'https://img-bss.csdn.net/1606271766185.jpg'
         })
 
+        // 左侧 天气警报
+        await requestWarningAlarm().then(res=>{
+          if(!res.data || res.data.length == 0) return
+          this.activeNames.push('1')
+          this.alarmList = res.data
+          this.alarmList.forEach(element => {
+            element.icon = element.alarmCode.split(",")[0]
+          });
+        })
+        //左侧 市县警报
+        await requestWarningEarly().then(res=>{
+          if(!res.data || res.data.length == 0) return
+          this.activeNames.push('2')
+          this.earlyList = res.data
+        })
+        //左侧 短期 预报
+        await requestWarningShort().then(res=>{
+          let resData = res.data
+          JSON.stringify(resData) == "{}"? this.shortForecas[0].content = '暂无数据':this.shortForecas[1].content = resData.content
+        })
+        //左侧 短临 预报
+        await requestWarningemporary().then(res=>{
+            let resData = res.data
+          JSON.stringify(resData) == "{}"? this.shortForecas[0].content = '暂无数据':this.shortForecas[0].content = resData.content
+        })
+        //左侧 十天预报
+        await requestWarningForecast().then(res=>{
+          let resData = res.data
+          JSON.stringify(resData) == "{}"? this.cityByForecasts[0].content = '暂无数据':this.cityByForecasts[0].content = resData.content
+        })
+        //左侧 城市预报
+        await requestWarningCity().then(res=>{
+            let resData = res.data
+          JSON.stringify(resData) == "{}"? this.cityByForecasts[0].content = '暂无数据':this.cityByForecasts[1].content = resData.content
+        })
+        //左侧 周边城市预报
+        await requestWarningAroundCity().then(res=>{
+            let resData = res.data
+          JSON.stringify(resData) == "{}"? this.cityByForecasts[0].content = '暂无数据':this.cityByForecasts[2].content = resData.content
+        })
+
+        this.windowHeight = document.body.clientWidth;
+        this.collapseDomHeight = this.$refs.collapseDom.offsetHeight;  //100
+
       },
       toMore(data){
         //当前页面打开
@@ -651,6 +656,18 @@ import mapBox from './../components/map-box';
       .forecast-box{
         .content-wrap-box{
           padding: 0px 25px;
+          position: relative;
+            .count{
+              position: absolute;
+              right: 15px;
+              bottom: 0px;
+              width: 50px;
+              height: 20px;
+              color: #409eff;
+              display: inline-block;
+              font-size: 12px;
+              cursor:pointer;
+            }
           .content-warning-img {
             padding-top: 2rem;
             width: 100%;

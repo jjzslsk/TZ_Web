@@ -1606,11 +1606,37 @@ if(data.product == 1 && data.productInfoId){
 
     //保存
     async onSave(item,index,callback) {
-      console.log('onSave-item:',item)
       if (!this.lastItemClicked) {
         this.$message.error("选择产品，并填写完整信息!");
         return;
       }
+
+    //内容时间替换为预约时间
+     let replaceTime = await (param=>{
+       let pattern = /([0-9]{4}年[0-9]{1,2}月[0-9]{1,2}日[0-9]{1,2}时)/,
+        str = item.content;
+        return new Promise((resolve, reject) => {
+            if(item.timingDate && pattern.test(str)){
+              this.$confirm('是否将内容时间替换为预约时间？', '提示', {
+                confirmButtonText: '替换',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                let myDate=new Date(item.timingDate);  //开始时间  
+                let time = `${myDate.getFullYear()}年${myDate.getMonth()+1}月${myDate.getDate()}日${myDate.getHours()}时`
+                item.content = item.content.replace(pattern,time)
+                resolve()
+              })
+                .catch(() => {
+                  resolve()
+                });
+            }else{
+              resolve()
+            }
+        });
+     })()
+     
+      //字数校验
       let textLength = this.getSemiangleLength(item.content,JSON.stringify(item.wordtype))
       if(textLength > item.limitnumber && item.limitnumber !== 0 && item.limitnumber !== null){
         this.$message({
@@ -1748,7 +1774,6 @@ if(data.product == 1 && data.productInfoId){
 
       if(fast == 'fast'){
         //快速发布
-
         _this.onSave(item,index,function(item,index){
           let param = {
             publishId: index === false ? _this.productMade.id:_this.productTabList[index].id,
