@@ -393,7 +393,7 @@
                                 <div class="layui-inline">
                                     <label class="layui-form-label">影响范围:</label>
                                     <div class="layui-input-inline" style="width:300px;">
-                                        <input type="checkbox" value="331000" title="台州市"
+                                        <input type="checkbox" value="331000" title="台州市" name="taizhou1"
                                             lay-filter="warningArea" />
                                         <span class="areaSwitch r"><i class="layui-icon">&#xe61a;</i></span>
                                     </div>
@@ -543,6 +543,7 @@
             let $ = layui.jquery;
             let element = layui.element;
             let form = layui.form;
+            var areaId=userInfo.loginAreaId;
             element.init();
             form.render();
             let colors = ["", "红色", "橙色", "黄色", "蓝色"];
@@ -554,37 +555,33 @@
             nowDate.setMinutes(nowDate.getMinutes()+10);
             $("#qfsj").val(nowDate.format("yyyy-MM-dd hh:mm"));
 
-           /* //发布机构为登陆人机构；
-            let loadUser = function (){
+            //发布机构为登陆人机构；
+            let loadOrgName = function (){
             	$("#orgName").val('');
-            	$("#FBD_orgName").text('');
-            	let loadFbRole = function(obj){
-	            	$.post("role/getOrgUserByRoleKey.action",{roleKey:obj.key},function(d){
-	            		if(d!=null){
-	            			d.forEach(item=>{
-	            				$("#"+obj.id).append(`<option value="${item.name}" >${item.name}</option>`);
-	            			});
-	            			form.render();
-	            		}
-	            	});
-            	};
-            	loadFbRole({id:"fbr",key:"warning_publish"});
-            	loadFbRole({id:"qfr",key:"warning_signature"});
-            };*/
-            //loadUser();
-
-
-           /* // 查询排班
-            var currJobInfo = [];
-            let loadJob = function ()
-            {
-            	$.post("duty/getByDate.action",{ date : nowDate.format("yyyy-MM-dd") },function(data)
-       			{
-            		currJobInfo = data;
-           		});
+            	//$("#FBD_orgName").text('');//userInfo.loginAreaId
+                $.get(main_url +"/ssd-early-warning/getOrgName",{'loginAreaId':areaId},function(d){
+                    if(d!=null){
+                        $("#orgName").val(d.name+"气象台");
+                        if(d.name.indexOf('台州')>-1){
+                            $("input[name='taizhou1']").prop("checked",true);
+                            $("input[name='taizhou']").prop("checked", true);
+                            form.render();
+                        }else{
+                            $("input[name='taizhou']").each(function () {
+                                var title = this.title;
+                                if(d.name.indexOf(title)>-1){
+                                    $("input[title='"+title+"']").prop("checked", true);
+                                }else{
+                                    $("input[title='"+title+"']").prop("disabled", 'disabled');
+                                }
+                            });
+                            form.render();
+                        }
+                    }
+                });
             };
-            loadJob();*/
-            $.get(main_url + "/ssd-early-warning/getWraningPerson", {"code": "WarningMake"}, function (data){
+            loadOrgName();
+            $.get(main_url + "/ssd-early-warning/getWraningPerson", {"code": "WarningMake",'loginAreaId':areaId}, function (data){
                 if(data!=null && data.code=='1'){
                     var list = data.data;
                     var options = "";
@@ -595,7 +592,7 @@
                     form.render('select');
                 }
             });
-            $.get(main_url + "/ssd-early-warning/getWraningPerson", {"code": "WarningIssue"}, function (data){
+            $.get(main_url + "/ssd-early-warning/getWraningPerson", {"code": "WarningIssue",'loginAreaId':areaId}, function (data){
                 if(data!=null && data.code=='1'){
                     var list = data.data;
                     var options = "";
@@ -1450,7 +1447,7 @@
                                                                                         <ul id="tree${item.dicCode}" style="height: 270px;overflow-y:auto;" class="demo-tree"></ul>
                                                                                     </div>
                                                                                 </div>`);
-                                                                            $.get(main_url + "/ssd-service-user-type/getServiceUserTree", {
+                                                                            $.get(main_url + "/ssd-service-user-type/getServiceUserTree?loginAreaId="+areaId, {
                                                                                 'channelCodes': item.dicCode
                                                                             }, function (obj) {
                                                                                 if(obj.code == 0) {

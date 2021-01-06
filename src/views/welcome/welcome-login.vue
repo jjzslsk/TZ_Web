@@ -193,19 +193,26 @@
         </div>
       </div>
     </div>
+    <select-jobs v-if="isSelectJobs" @closeDrawer="closeDrawer"></select-jobs>
   </div>
 </template>
 <script>
 // import echarts from "echarts";
 import { mapActions, mapGetters } from "vuex";
-import { requestLogin, requestMyUserJob } from "@/remote/";
+import { requestLogin, requestMyUserJob,requestMyUserUpdateDutyJob } from "@/remote/";
+import selectJobs from './../components/common-jobs'
 export default {
+  components:{
+    selectJobs
+  },
   data() {
     return {
+      isSelectJobs:false,
       form: {
         uid: "",
         password: "",
       },
+      loginData:null,
     };
   },
   mounted() {
@@ -214,7 +221,22 @@ export default {
       this.$refs["oldPass-input"].$refs.input.focus();
     });
   },
+    watch:{
+      isSelectJobs(val){
+        if(val === false){
+          requestMyUserJob({ loginUserId: this.loginData.userId }).then((res) => {
+            localStorage.setItem("userJob", JSON.stringify(res.data));
+            this.$router.push({
+              name: "weather-situation",
+            });
+          });
+        }
+      }
+    },
   methods: {
+    closeDrawer(){
+      this.isSelectJobs = false
+    },
     linkUrl(info) {
       if (!info) {
         this.$message({
@@ -246,56 +268,19 @@ export default {
     //     })
     // },
 
-    onSubmit() {
+    async onSubmit() {
       const vm = this;
-      // requestLogin(vm.form).then(res => {
-      // if(res.success){
-      // localStorage.setItem('userinfo',JSON.stringify(res.data))
-      // const userinfo = JSON.parse(localStorage.getItem('userinfo'))
-      // vm.$router.push({
-      //     'name': 'welcome'
-      // });
-      //查询用户信息
-      // requestLogin(vm.form).then(res => {
-      //     if(res.success){
 
-      //     }
-      // })
-      // }
-      // })
 
-      requestLogin(vm.form).then((res) => {
+      let resLogin = await requestLogin(vm.form).then((res) => {
 		    localStorage.setItem("lastTime10",new Date().getTime())
 		    localStorage.setItem("lastTime04",new Date().getTime())
-        //     return vm.gotAccountInfo(res.data);
-        // }).then(res => {
+
         if (res.success && res.data) {
-          // let param = {
-          //     userinfo:res.data
-          // }
-          // vm.gotAccountInfo(param)
-          //
+
           localStorage.setItem("loginData", JSON.stringify(res.data));
-          const loginData = JSON.parse(localStorage.getItem("loginData"));
-
-          //获取岗位信息
-          requestMyUserJob({ loginUserId: loginData.userId }).then((res) => {
-            localStorage.setItem("userJob", JSON.stringify(res.data));
-          });
-          //获取用户和菜单信息
-          vm.gotAccountInfo(res.data).then((res) => {
-            vm.getAccountInfo().then((res) => {
-              vm.getMenuInfo().then((res) => {
-                if (res.success && res.data) {
-                  vm.$router.push({
-                    name: "weather-situation",
-                  });
-                }
-              });
-            });
-          });
+          this.loginData = JSON.parse(localStorage.getItem("loginData"));
         }
-
         // const rf = vm.$route.query.rf;
         // console.log('rf::',rf)
 
@@ -308,7 +293,25 @@ export default {
         //         'name': 'welcome'
         //     });
         // }
+        return res
       });
+
+       //获取岗位信息
+      await requestMyUserJob({ loginUserId: this.loginData.userId }).then((res) => {
+          localStorage.setItem("userJob", JSON.stringify(res.data));
+        });
+
+        //获取用户和菜单信息
+       await this.gotAccountInfo(resLogin.data).then((res) => {
+          this.getAccountInfo().then((res) => {
+            this.getMenuInfo().then((back) => {
+              if (back.success && back.data) {
+                this.isSelectJobs = true
+              }
+            });
+          });
+        });
+
     },
     ...mapActions(["gotAccountInfo", "getAccountInfo", "getMenuInfo"]),
   },

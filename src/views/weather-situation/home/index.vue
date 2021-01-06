@@ -1106,6 +1106,9 @@ import mapBox from './../components/map-box';
 
   .tab-top .el-tabs__nav{
     margin-left: 20px;
+ .el-tabs__item.is-top {
+      padding:0 5px;
+    }
   }
   .el-tabs__item{
     font-size:15px;

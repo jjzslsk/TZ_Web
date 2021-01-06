@@ -1107,6 +1107,10 @@ const warningSignIcon = Options => {
             iconType = '0017';
             eventType = '雷雨大风';
         break;
+        case '11B56':
+            iconType = '0018';
+            eventType = '低温';
+        break;
         default:
             iconType = 'other';
             eventType = '其它';

@@ -1224,7 +1224,6 @@ export default {
     },
     emitPhraes(){},
     timelineClick(data){
-
       this.handleNodeClick(data)
 if(data.product == 1 && data.productInfoId){
         this.treeDataList.forEach(item=>{
@@ -1232,11 +1231,21 @@ if(data.product == 1 && data.productInfoId){
               this.onTreeClickItem(item)
             }
           })
-      }else if(data.product == 2 && data.productInfoId == null || data.productInfoId == ''){
-
+      // }else if(data.product == 2 && data.productInfoId == null || data.productInfoId == ''){
+      }else if(data.product == 2 && data.other){
+        if(!data.other){
+          this.$message.warning("地址无效")
+        }else{
           window.open(data.other, '_blank');
-          this.$message.warning("非产品，不在系统内制作")
+        }
+          // this.$message.warning("非产品，不在系统内制作")
           return
+      }else{
+        if(!data.other){
+          this.$message.warning("地址无效")
+        }else{
+          window.open(data.other, '_blank');
+        }
       }
     },
     timelineEvent(data){
@@ -1672,6 +1681,8 @@ if(data.product == 1 && data.productInfoId){
             this.productMade = null;
             this.productMade = {
               ...res.data,
+              limitnumber:Number(item.limitnumber),
+              wordtype:Number(item.wordtype),
               makeTime: item.makeTime,
               timingDate: item.timingDate,
             };
@@ -1722,6 +1733,8 @@ if(data.product == 1 && data.productInfoId){
             this.productMade = null;
             this.productMade = {
               ...res.data,
+              limitnumber:Number(item.limitnumber),
+              wordtype:Number(item.wordtype),
               makeTime: item.makeTime,
               timingDate: item.timingDate,
 

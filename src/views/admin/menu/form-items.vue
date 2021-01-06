@@ -17,6 +17,12 @@
             <el-option label="第三级" :value="3"></el-option>
         </el-select>
     </el-form-item>
+    <el-form-item label="是否市县共享" label-width="120px">
+        <el-select v-model="form.type" placeholder="请选择">
+            <el-option label="共享" :value="1"></el-option>
+            <el-option label="不共享" :value="2"></el-option>
+        </el-select>
+    </el-form-item>
     <el-form-item label="是否可用" label-width="120px">
         <el-select v-model="form.enabled" placeholder="请选择">
             <el-option label="是" :value="1"></el-option>

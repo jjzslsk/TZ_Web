@@ -1,7 +1,8 @@
 <template>
 <!-- /static/images/alarm_icons/${imageType}-${imageColor}ico.png -->
 <!-- <img src="/static/images/alarm_icons/0001-3ico.png" alt=""> -->
-<img v-if="src" :src="src" :alt="`预警图片(${imageType}-${imageColor})`" class="img-alarm">
+<!-- <img v-if="src" :src="src" :alt="`预警图片(${imageType}-${imageColor})`" class="img-alarm"> -->
+<img v-if="src" :src="src" class="img-alarm">
 </template>
 
 <script>

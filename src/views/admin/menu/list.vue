@@ -177,6 +177,7 @@ export default {
                 // "code": '',
                 // "menuUrl": '',
                 // "imageUrl": '',
+                type:1
             };
         },
         ...mapActions(['getMenuInfo']),

@@ -90,6 +90,9 @@ export const requestLogin = generatePostWithEvn(`{{host}}/${url_system}/ssd-sys-
 // 获取当前用户岗位信息
 export const requestMyUserJob = generateGetWithEvnToken(`{{host}}/${url_integration}/ssd-business-duty/getUserJob`);
 
+// 岗位 修改
+export const requestMyUserUpdateDutyJob = generateGetWithEvn(`{{host}}/${url_integration}/ssd-business-job/updateDutyJob`);
+
 //打卡功能
 export const requestUserClockIn = generateGetWithEvn(`{{host}}/${url_integration}/ssd-business-check/clockIn`);
 

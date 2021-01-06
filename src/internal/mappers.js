@@ -14,6 +14,7 @@ export const weatherWarningType = {
     "霾": "0013",
     "道路结冰": "0014",
     "雷雨大风": "0015",
+    "低温": "0018",
     "其他": "other"
 };
 
@@ -28,7 +29,8 @@ export const weatherWarningTypeGBName = {
     "11B21": "道路结冰",
     "11B20": "雷暴",
     "11B19": "霾",
-    "11B09": "高温"
+    "11B09": "高温",
+    "11B56": "低温"
 };
 
 export const weatherWarningTypeGB = {

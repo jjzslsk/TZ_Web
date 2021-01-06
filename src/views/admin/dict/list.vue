@@ -52,6 +52,12 @@
             <el-form-item label="分类编码" label-width="120px">
                 <el-input v-model="formLeftTree.code" autocomplete="off"></el-input>
             </el-form-item>
+            <el-form-item label="是否市县共享" label-width="120px">
+                <el-select v-model="formLeftTree.type" placeholder="请选择">
+                    <el-option label="共享" :value="1"></el-option>
+                    <el-option label="不共享" :value="2"></el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item label="上级类型" label-width="120px">
                 <el-select v-model="formLeftTree.parentId" placeholder="请选择">
                     <el-option v-for="item in treeDataList" :label="item.label" :value="item.id" :key='item.id'></el-option>
@@ -230,6 +236,7 @@ export default {
                 "description": item.description,
             } : {
                 // parentId: lastItemClicked.id,
+                type:1
             };
         },
     }
