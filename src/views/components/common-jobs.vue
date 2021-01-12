@@ -3,12 +3,12 @@
         title="请选择值班岗位"
         :visible.sync="dialogVisible"
         width="40%"
-        :before-close="handleClose">
+        :before-close="beforeClose">
         <el-radio-group v-model="resource" size="small">
             <el-radio border v-for="i in jobs" :label="i.id" :key="i.id">{{i.name}}</el-radio>
         </el-radio-group>
         <span slot="footer" class="dialog-footer">
-            <el-button @click="handleClose('cancel')">取 消</el-button>
+            <el-button @click="handleClose('cancel')">直接登录</el-button>
             <el-button type="primary" @click="handleClose('submit')">确 定</el-button>
         </span>
         </el-dialog>
@@ -31,15 +31,26 @@ export default {
       };
     },
     methods: {
+      beforeClose(){
+          this.dialogVisible = false
+          this.$emit('closeDrawer','close')
+      },
       handleClose(state) {
           if(state == 'submit'){
+              if(!this.resource){
+                  this.$message({
+                    message: '请选择值班岗位',
+                    type: 'warning'
+                  });
+                  return
+              }
               requestMyUserUpdateDutyJob({userId:this.loginInfo.id,jobId:this.resource}).then((res)=>{
-                    this.dialogVisible = false
-                    this.$emit('closeDrawer',false)
+                this.dialogVisible = false
+                this.$emit('closeDrawer','submit')
               })
-          }else{
-                    this.dialogVisible = false
-                    this.$emit('closeDrawer',false)
+          }else if(state == 'cancel'){
+                this.dialogVisible = false
+                this.$emit('closeDrawer','cancel')
           }
       }
     },

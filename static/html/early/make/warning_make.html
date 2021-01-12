@@ -543,7 +543,8 @@
             let $ = layui.jquery;
             let element = layui.element;
             let form = layui.form;
-            var areaId=userInfo.loginAreaId;
+            var areaId='34197a647f8111eaae330221860e9b7e';
+            //var areaId=userInfo.loginAreaId;
             element.init();
             form.render();
             let colors = ["", "红色", "橙色", "黄色", "蓝色"];
@@ -1087,8 +1088,14 @@
             {
                 let code = $("#photo").data("code");
                 let level = $("#photo").data("level");
+                if(code==undefined){
+                    code='';
+                }
+                if(level==undefined){
+                    level='';
+                }
                 let url = "./historyWarning.html";
-                $.post(url, {}, function (str)
+                $.get(url, {}, function (str)
                 {
                     layer.open({
                         type: 1,
@@ -1101,7 +1108,7 @@
                         content: str, //注意，如果str是object，那么需要字符拼接。
                         success: function (layero, index)
                         {
-                            $.post(main_url + "/ssd-early-warning/findOldWarning", { 'code': code,  'level': level }, function (o)
+                            $.get(main_url + "/ssd-early-warning/findOldWarning?code="+code+"&level="+level+"&area_id="+areaId,function (o)
                             {
                                 if (o != null && o.state == 1)
                                 {
@@ -1128,7 +1135,7 @@
                                 }
                                 else
                                 {
-                                    layero.html("无历史预警");
+                                    layero.find("#tab-his").text("无历史预警");
                                 }
                             });
                         }
@@ -1215,8 +1222,13 @@
                 }
 
                 let areas = [];
+                let area_code=''
                 $("input[name='taizhou']:checked").each(function () {
                     areas.push(this.value);
+                    area_code=this.value;
+                });
+                $("input[name='taizhou1']:checked").each(function () {
+                    area_code = this.value;
                 });
                 let areasName = [];
                 $("input[name='taizhou']:checked").each(function () {
@@ -1237,6 +1249,9 @@
                     effective: $("#validityTime").val(),
                     issueYear: thisIssueYear,
                     issueNumber: thisIssueNum,
+                    area_id:areaId,
+                    area_code:area_code,
+                    orgName:$("#orgName").val(),
                     issueLetter: thisIssueLatter,
                     title: $("#warningTitle").val(),
                     defense: $("#defense").val(),
@@ -1289,7 +1304,7 @@
                             var obj = da.data;
                             for (var i = 0 ; i< sendUserList.length ; i++){
                                 sendUserList[i].publishId=obj.id;
-                                if(sendUserList[i].publishChannel=='GT'){
+                                if(sendUserList[i].publishChannel=='ST'){
                                     sendUserList[i].task = data;
                                 }
                             }

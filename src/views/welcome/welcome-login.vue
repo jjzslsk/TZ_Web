@@ -221,21 +221,19 @@ export default {
       this.$refs["oldPass-input"].$refs.input.focus();
     });
   },
-    watch:{
-      isSelectJobs(val){
-        if(val === false){
-          requestMyUserJob({ loginUserId: this.loginData.userId }).then((res) => {
-            localStorage.setItem("userJob", JSON.stringify(res.data));
-            this.$router.push({
-              name: "weather-situation",
-            });
-          });
-        }
-      }
-    },
   methods: {
-    closeDrawer(){
+    closeDrawer(state){
       this.isSelectJobs = false
+      if(state == 'submit'){
+        requestMyUserJob({ loginUserId: this.loginData.userId }).then((res) => {
+            localStorage.setItem("userJob", JSON.stringify(res.data));
+            this.$router.push({name: "weather-situation"});
+          });
+        }else if(state == 'cancel'){
+            this.$router.push({name: "weather-situation"});
+        }else if(state == 'close'){
+
+        }
     },
     linkUrl(info) {
       if (!info) {

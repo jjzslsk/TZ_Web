@@ -26,7 +26,7 @@
               >{{item.name}}</el-radio-button>
             </el-radio-group>
             <el-timeline v-if="activities.length > 0">
-              <div @contextmenu="showMenu" v-for="(activity, index) in activities" :key="index">
+              <div @contextmenu="showMenu(activity)" v-for="(activity, index) in activities" :key="index">
               <el-timeline-item
                 style='cursor:pointer'
                 :key="index"
@@ -232,6 +232,7 @@
                       <div class="time-box">
                         <el-form-item label="预约时间">
                           <el-date-picker
+                            @change="changePickers(index)"
                             size="mini"
                             :popper-class="'currentDatePickerClass'"
                             format="yyyy-MM-dd HH:mm"
@@ -316,6 +317,7 @@
                         <el-form-item label="预约时间">
                           <el-date-picker
                             size="mini"
+                            @change="changePicker(productMade)"
                             :popper-class="'currentDatePickerClass'"
                             format="yyyy-MM-dd HH:mm"
                             value-format="yyyy-MM-dd HH:mm"
@@ -594,6 +596,7 @@ export default {
   },
   data() {
     return {
+      contextMenuItem:null,
       // 菜单数据
        contextMenuData: {
          menuName: 'demo',
@@ -915,6 +918,32 @@ export default {
     })
   },
   methods: {
+    //修改内容时间 单个
+    changePicker(){
+      if (!this.lastItemClicked) {
+        this.$message.warning("请选择产品");
+        return;
+      }
+      let pattern = /([0-9]{4}年[0-9]{1,2}月[0-9]{1,2}日[0-9]{1,2}时)/,
+      str = this.productMade.content;
+      let myDate=new Date(this.productMade.timingDate);  //开始时间  
+      let time = `${myDate.getFullYear()}年${myDate.getMonth()+1}月${myDate.getDate()}日${myDate.getHours()}时`
+      this.productMade.content = this.productMade.content.replace(pattern,time)
+    },
+
+    //修改内容时间 多个
+    changePickers(index){
+      if (!this.lastItemClicked) {
+        this.$message.warning("请选择产品");
+        return;
+      }
+      let pattern = /([0-9]{4}年[0-9]{1,2}月[0-9]{1,2}日[0-9]{1,2}时)/,
+      str = this.productTabList[index].content;
+      let myDate=new Date(this.productTabList[index].timingDate);  //开始时间  
+      let time = `${myDate.getFullYear()}年${myDate.getMonth()+1}月${myDate.getDate()}日${myDate.getHours()}时`
+      this.productTabList[index].content = this.productTabList[index].content.replace(pattern,time)
+    },
+
     syncTime(item){
       if(!item.timingDate || item.timingDate == undefined || item.timingDate == '' || item.timingDate == null){
           this.$message.warning('请选择预约时间');
@@ -928,7 +957,8 @@ export default {
       });
     },
     //右键
-    showMenu () {
+    showMenu (i) {
+        this.contextMenuItem = i
         event.preventDefault()
         var x = event.clientX
         var y = event.clientY
@@ -938,7 +968,7 @@ export default {
       }
     },
     finish (data) {
-        requestProductUpdateDutyTask({id:data.id}).then((res)=>{
+        requestProductUpdateDutyTask({id:this.contextMenuItem.id}).then((res)=>{
               this.$message.success(res.message);
            // 发布流程信息 刷新
           requestProductTaskList({ userId: this.loginInfo.id, jobId: this.optionsValue.id }).then(
@@ -947,7 +977,6 @@ export default {
             }
           );
         })
-
         // this.$message.warning("非产品，无法编辑")
     },
 
@@ -1621,29 +1650,29 @@ if(data.product == 1 && data.productInfoId){
       }
 
     //内容时间替换为预约时间
-     let replaceTime = await (param=>{
-       let pattern = /([0-9]{4}年[0-9]{1,2}月[0-9]{1,2}日[0-9]{1,2}时)/,
-        str = item.content;
-        return new Promise((resolve, reject) => {
-            if(item.timingDate && pattern.test(str)){
-              this.$confirm('是否将内容时间替换为预约时间？', '提示', {
-                confirmButtonText: '替换',
-                cancelButtonText: '取消',
-                type: 'warning'
-              }).then(() => {
-                let myDate=new Date(item.timingDate);  //开始时间  
-                let time = `${myDate.getFullYear()}年${myDate.getMonth()+1}月${myDate.getDate()}日${myDate.getHours()}时`
-                item.content = item.content.replace(pattern,time)
-                resolve()
-              })
-                .catch(() => {
-                  resolve()
-                });
-            }else{
-              resolve()
-            }
-        });
-     })()
+    //  let replaceTime = await (param=>{
+    //    let pattern = /([0-9]{4}年[0-9]{1,2}月[0-9]{1,2}日[0-9]{1,2}时)/,
+    //     str = item.content;
+    //     return new Promise((resolve, reject) => {
+    //         if(item.timingDate && pattern.test(str)){
+    //           this.$confirm('是否将内容时间替换为预约时间？', '提示', {
+    //             confirmButtonText: '替换',
+    //             cancelButtonText: '取消',
+    //             type: 'warning'
+    //           }).then(() => {
+    //             let myDate=new Date(item.timingDate);  //开始时间  
+    //             let time = `${myDate.getFullYear()}年${myDate.getMonth()+1}月${myDate.getDate()}日${myDate.getHours()}时`
+    //             item.content = item.content.replace(pattern,time)
+    //             resolve()
+    //           })
+    //             .catch(() => {
+    //               resolve()
+    //             });
+    //         }else{
+    //           resolve()
+    //         }
+    //     });
+    //  })()
      
       //字数校验
       let textLength = this.getSemiangleLength(item.content,JSON.stringify(item.wordtype))

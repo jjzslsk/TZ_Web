@@ -474,8 +474,8 @@ export const requesProductMadeDown = generateDownloadWithEvn(`{{host}}/${url_int
 export const requestTraceDialogProductTask = generateGetWithEvnToken(`{{host}}/${url_integration}/ssd-product-task-detail/getStatistics`);
 
 //获取所有渠道信息
-export const requestChannelList = generateGetWithEvnToken(`{{host}}/${url_system}/ssd-sys-dictionary/getDictListByDictTypeCode?dictTypeCode=Channel`);
-// ---
+// export const requestChannelList = generateGetWithEvnToken(`{{host}}/${url_system}/ssd-sys-dictionary/getDictListByDictTypeCode?dictTypeCode=Channel`);
+export const requestChannelList = generateGetWithEvnToken(`{{host}}/${url_integration}/ssd-product-publish/getSendmethodByareCode`);
 
 // 获取导航列表
 // export const requestRouterList = generateGet(dataStaticBase + 'router.json');

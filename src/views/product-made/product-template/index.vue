@@ -543,7 +543,8 @@ import {
           vm.isIframe = true
           vm.isText = false
           // vm.docPath = `http://222.216.5.171:8891/gxims//railway/showWordForecastMonth.action?productId=20200228164618013583871`;
-          vm.docPath = `/product/ssd-page-office/openProductWord?productInfoId=P20000`;
+          // vm.docPath = `/product/ssd-page-office/openProductWord?productInfoId=P20000`;
+          vm.docPath = `http://10.137.4.30:8888/basin/main/openProductFile.action?templateId=`;
         } else if(data.type == 'txt' && data.moduleType == 'template'){
           this.textarea = this.lastItemClicked.content
           vm.isText = true
@@ -791,8 +792,8 @@ import {
       display: flex;
       flex-direction: column;
       flex: 1;
-      margin-left: 15px;
-      height: calc(100%-58px);
+      margin: 0 15px;
+      height: calc(100%-72px);
     }
     .no-border{
       border-bottom: none;

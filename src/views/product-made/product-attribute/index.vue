@@ -1070,7 +1070,7 @@ export default {
       });
       //获取发布渠道
       requestChannelList().then(res=>{
-        this.wayTpye = res.data.list
+        this.wayTpye = res.data
           // this.channelsOptions2 = []
           // this.infoStatistics.forEach(element => {
           //     res.data.list.forEach(i=>{

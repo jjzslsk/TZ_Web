@@ -179,9 +179,9 @@ export const withCommonLeftTree = {
                 vm.visibleDialog = false;
                 res.message && vm.$message.success(res.message);
                 vm.$emit("success", res);
+                this.submitSuccess()
             })
             // vm.$emit("success", 'res');
-            this.submitSuccess()
             // this.$message({
             //     type: 'success',
             //     message: '删除成功!'
@@ -213,13 +213,13 @@ export const withCommonLeftTree = {
         },
         // 删除节点
         onTreeDeleteMinor(data) {
-            // const vm = this;
-            // remote[data]({id: vm.lastItemClicked.id}).then(res => {
-            //     vm.visibleDialog = false;
-            //     res.message && vm.$message.success(res.message);
-            //     vm.$emit("success", res);
-            // })
-            // this.submitSuccess()
+            const vm = this;
+            remote[data]({id: vm.lastItemClicked.id}).then(res => {
+                vm.visibleDialog = false;
+                res.message && vm.$message.success(res.message);
+                vm.$emit("success", res);
+                this.submitSuccess()
+            })
         }
     }
 }

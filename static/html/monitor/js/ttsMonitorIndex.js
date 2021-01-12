@@ -10,20 +10,20 @@ layui.use('table', function(){
         ,cols: [[
             {field:'productName', width:180, title: '产品名称'}
             ,{field:'state', width:180, title: '发布状态',templet:function(d){
-                if(d.state=='0'){
+                if(d.state=='3'){
                     return "成功";
                 }else{
                     return "";
                 }
             }}
-            ,{field:'publish_time', width:180, title: '最新更新时间', sort: true,templet:function(d){
+            ,{field:'publish_time', width:230, title: '最新更新时间', sort: true,templet:function(d){
                     if(d.publish_time==undefined){
                         return "";
                     }else{
                         return layui.util.toDateString(d.publish_time, 'yyyy年MM月dd日 HH:mm:ss')
                     }
                 }}
-            ,{field:'content', width:380, title: '发布内容'}
+            ,{field:'content', title: '发布内容'}
         ]]
     });
 });

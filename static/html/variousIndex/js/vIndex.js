@@ -29,7 +29,7 @@ function lodingSelect() {
     $.ajax({
         type: 'GET',
         url: main_url + '/tools/getIndex',
-        data: {"loginAreaId": loginInfo.loginAreaId},// loginInfo.loginAreaId
+        data: {"loginAreaId": loginInfo.areaId},// loginInfo.loginAreaId
         dataType: 'json',
         success: function (data) {
             var fireLevel = data.data.fireLevel;//森林火险
@@ -96,7 +96,7 @@ function selectd(){
     $.ajax({
         type: 'GET',
         url: main_url + '/tools/getselectd',
-        data: {"loginAreaId": loginInfo.loginAreaId},// loginInfo.loginAreaId
+        data: {"loginAreaId": loginInfo.areaId},// loginInfo.loginAreaId
         dataType: 'json',
         success: function (data) {
             var datas = data.data;//森林火险
@@ -141,7 +141,7 @@ function save(){
     $.ajax({
         type: 'POST',
         url: main_url +'/tools/add',
-        data: {"loginAreaId": loginInfo.loginAreaId,"data": param},// loginInfo.loginAreaId
+        data: {"loginAreaId": loginInfo.areaId,"data": param},// loginInfo.loginAreaId
         dataType: 'json',
         success: function (data) {
             layer.msg("保存成功");

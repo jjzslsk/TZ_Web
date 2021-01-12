@@ -2,7 +2,7 @@
 <div class="page-wrapper service-user">
     <el-container>
         <common-left-tree title="服务用户导航" :isHeader='true' :data="treeData" @click-item="onTreeClickItem" class="left-tree">
-            <common-left-tree-actions slot="append" :lastItemClicked="lastItemClicked" @append="onTreeAppend" @edit="onTreeEdit" @delete="onTreeDelete('requestServiceUserTreeListDelItem')"></common-left-tree-actions>
+            <common-left-tree-actions slot="append" @success="submitSuccess" :lastItemClicked="lastItemClicked" @append="onTreeAppend" @edit="onTreeEdit" @delete="onTreeDelete('requestServiceUserTreeListDelItem')"></common-left-tree-actions>
         </common-left-tree>
         <el-main>
             <el-card class="box-card" shadow="never">
@@ -52,8 +52,13 @@
                     <el-option v-for="item in treeDataList" :label="item.label" :value="item.id" :key="item.id"></el-option>
                 </el-select> -->
             </el-form-item>
-            <el-form-item label="渠道" label-width="120px">
+           <!--  <el-form-item label="渠道" label-width="120px">
                 <el-input v-model="formLeftTree.channel" :disabled="showChannel" autocomplete="off"></el-input>
+            </el-form-item> -->
+            <el-form-item label="渠道" label-width="120px">
+                <el-select v-model="formLeftTree.channel" placeholder="请选择">
+                    <el-option v-for="item in wayTpye" :label="item.name" :value="item.code" :key="item.id"></el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="分类名称" label-width="120px">
                 <el-input v-model="formLeftTree.name" autocomplete="off"></el-input>
@@ -125,7 +130,8 @@ import {
     requestServiceUserListDelItem,
     requestServiceUserTreeList,
     requestServiceUserDowTem,
-    requestServiceUserimpTem
+    requestServiceUserimpTem,
+    requestChannelList,
 } from "@/remote/";
 import {
     common,
@@ -152,6 +158,7 @@ export default {
             collection:[],
             collection1:[],
             query: {},
+            wayTpye:null,
             // formItem:{
             //     serviceUserTypeIds:null,
             // }
@@ -258,6 +265,12 @@ export default {
                 })
                 this.treeDataList.unshift({id:'null',label:'一级分类'})
             });
+
+            //获取发布渠道
+            requestChannelList().then(res=>{
+                this.wayTpye = res.data
+            })
+
         },
         handleNodeClick(item){
             console.log(item)
@@ -327,6 +340,7 @@ export default {
                     item.serviceUserTypeIds = [ "null" ] 
                 }
                 item.orgId = this.accountOrgId
+                item.channel = this.wayTpye[0].code
             }
             return item
         },
