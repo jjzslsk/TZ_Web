@@ -1,5 +1,6 @@
 <template>
   <div class="weather-situation-page">
+    <div class="skin" @click="skinClick">换肤</div>
     <div class="wrap-box">
       <div class="left-box">
         <div class="left-top">
@@ -322,6 +323,7 @@ import mapBox from './../components/map-box';
     },
     data() {
       return {
+        skin:false,
         collapseDomHeight:null,
         activeNames: [],
         imgSource:null,
@@ -430,6 +432,9 @@ import mapBox from './../components/map-box';
       
     },
     methods:{
+      skinClick(){
+        this.skin = !this.skin
+      },
       handleChange(val) {
         setTimeout(() => {
           this.collapseDomHeight = this.$refs.collapseDom.offsetHeight;  //100
@@ -542,7 +547,7 @@ import mapBox from './../components/map-box';
         })
 
         // 左侧 天气警报
-        await requestWarningAlarm().then(res=>{
+        requestWarningAlarm().then(res=>{
           if(!res.data || res.data.length == 0) return
           this.activeNames.push('1')
           this.alarmList = res.data
@@ -551,36 +556,39 @@ import mapBox from './../components/map-box';
           });
         })
         //左侧 市县警报
-        await requestWarningEarly().then(res=>{
+        requestWarningEarly().then(res=>{
           if(!res.data || res.data.length == 0) return
           this.activeNames.push('2')
           this.earlyList = res.data
         })
+        
         //左侧 短期 预报
-        await requestWarningShort().then(res=>{
+        requestWarningShort().then(res=>{
           let resData = res.data
           JSON.stringify(resData) == "{}"? this.shortForecas[0].content = '暂无数据':this.shortForecas[1].content = resData.content
         })
         //左侧 短临 预报
-        await requestWarningemporary().then(res=>{
+        requestWarningemporary().then(res=>{
             let resData = res.data
           JSON.stringify(resData) == "{}"? this.shortForecas[0].content = '暂无数据':this.shortForecas[0].content = resData.content
         })
         //左侧 十天预报
-        await requestWarningForecast().then(res=>{
+        requestWarningForecast().then(res=>{
           let resData = res.data
           JSON.stringify(resData) == "{}"? this.cityByForecasts[0].content = '暂无数据':this.cityByForecasts[0].content = resData.content
         })
         //左侧 城市预报
-        await requestWarningCity().then(res=>{
+        requestWarningCity().then(res=>{
             let resData = res.data
           JSON.stringify(resData) == "{}"? this.cityByForecasts[0].content = '暂无数据':this.cityByForecasts[1].content = resData.content
         })
         //左侧 周边城市预报
-        await requestWarningAroundCity().then(res=>{
+        await  requestWarningAroundCity().then(res=>{
             let resData = res.data
           JSON.stringify(resData) == "{}"? this.cityByForecasts[0].content = '暂无数据':this.cityByForecasts[2].content = resData.content
         })
+
+        
 
         this.windowHeight = document.body.clientWidth;
         this.collapseDomHeight = this.$refs.collapseDom.offsetHeight;  //100
@@ -1098,12 +1106,26 @@ import mapBox from './../components/map-box';
       overflow: auto;
     }
   }
-
+  .skin {
+      position: fixed;
+      right: 0;
+      bottom: 20px;
+      width: 45px;
+      height: 25px;
+      border-radius: 25px 0 0 25px;
+      background: #409eff;
+      color: fff;
+      font-size: 14px;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+  }
 }
 </style>
 <style lang='postcss'>
 .weather-situation-page{
-
   .tab-top .el-tabs__nav{
     margin-left: 20px;
  .el-tabs__item.is-top {

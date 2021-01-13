@@ -30,7 +30,9 @@ export const weatherWarningTypeGBName = {
     "11B20": "雷暴",
     "11B19": "霾",
     "11B09": "高温",
-    "11B56": "低温"
+    "11B56": "低温",
+    "11B77": "森林火险",
+    "11B37": "无类型"
 };
 
 export const weatherWarningTypeGB = {

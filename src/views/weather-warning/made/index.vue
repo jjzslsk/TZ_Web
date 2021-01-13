@@ -569,7 +569,7 @@ export default {
 
       //获取发布渠道
       requestChannelList().then(res=>{
-        this.wayTpye = res.data.list
+        this.wayTpye = res.data
         this.wayTpye.forEach(i=>{
             i.label = i.name,
             i.value = i.code,

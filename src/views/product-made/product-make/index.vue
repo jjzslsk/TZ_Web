@@ -333,6 +333,8 @@
                         <el-button type="primary" size="mini" @click="onConsult(productMade,false,'fast')">保存并快速发布</el-button>
                         <el-button type="primary" size="mini" @click="onConsult(productMade,false,'')">保存并发布</el-button>
                         <el-button type="primary" size="mini" @click="goProduct(productMade)">查看发布结果</el-button>
+                        <!-- <el-button type="success" size="mini" @click="pageOfficeSave(productMade)">pageOffice保存</el-button> -->
+
                       </div>
                   </div>
                       <!-- <el-checkbox class="select-time" v-model="productMade.reserve" size="small" label="预约发布" border></el-checkbox>
@@ -918,6 +920,9 @@ export default {
     })
   },
   methods: {
+    pageOfficeSave(i){
+      this.$refs.iframe.childClick(i);
+    },
     //修改内容时间 单个
     changePicker(){
       if (!this.lastItemClicked) {

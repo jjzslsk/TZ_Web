@@ -224,7 +224,7 @@ export default {
                     this.channelsOptions2 = []
                     this.infoStatistics.forEach(element => {
                         // console.log('element:',element)
-                        res.data.list.forEach(i=>{
+                        res.data.forEach(i=>{
                             // console.log('ii:',i)
                             if(element.publishChannel == i.code){
                                 let param = {}

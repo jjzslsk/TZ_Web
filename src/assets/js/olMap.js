@@ -1111,6 +1111,14 @@ const warningSignIcon = Options => {
             iconType = '0018';
             eventType = '低温';
         break;
+        case '11B77':
+            iconType = '0019';
+            eventType = '森林火险';
+        break;
+        case '11B37':
+            iconType = '0020';
+            eventType = '无类型';
+        break;
         default:
             iconType = 'other';
             eventType = '其它';

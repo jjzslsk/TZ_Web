@@ -23,7 +23,7 @@ export default {
   },
       created() {
       //html，触发vue方法
-      window['vueDefinedMyProp'] = (receiveParams) => {
+      window['vueDefinedMyPropMax'] = (receiveParams) => {
         this.receiveParamsFromHtml(receiveParams)
       }
     },

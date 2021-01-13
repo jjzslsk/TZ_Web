@@ -64,7 +64,7 @@
           <el-button type="primary" size="small" @click="saveModule()">保存模板</el-button>
         </div>
         <div v-if="isIframe" class="iframe-content-box">
-          <page-office :url="docPath" id="products"></page-office>
+          <page-office :url="docPath" ref="iframe" id="products"></page-office>
         </div>
         <div v-else-if="isText" class="content-box">
           <el-input
@@ -489,24 +489,28 @@ import {
         },
       saveModule(){
         if(!this.lastItemClicked){
-            this.$message.error("无编辑模板！");
+            this.$message.warning("请选择产品");
             return
         }
-        this.lastItemClicked.content = this.textarea
-        this.lastItemClicked.labelCode = ''
-        let labelCodes = []
-        this.$refs.trees.forEach((i,index)=>{
-          labelCodes.push(this.$refs.trees[index].getCheckedKeys().toString() )
-        })
-        this.lastItemClicked.labelCode = labelCodes.toString()
-        requestDialogFormProductTemplateInput(this.lastItemClicked).then((res=>{
-           requestProductClassTreeList().then(res => {
-              this.$message.success(res.message);
-              this.treeData = res.data.list
-              this.treeDataList = []
-              this.treeOfList(res.data.list)
-            });
-        }))
+        if (this.lastItemClicked.type == 'word' || this.lastItemClicked.type == 'excel') {
+          this.$refs.iframe.childClick(this.lastItemClicked);
+        }else{
+          this.lastItemClicked.content = this.textarea
+          this.lastItemClicked.labelCode = ''
+          let labelCodes = []
+          this.$refs.trees.forEach((i,index)=>{
+            labelCodes.push(this.$refs.trees[index].getCheckedKeys().toString() )
+          })
+          this.lastItemClicked.labelCode = labelCodes.toString()
+          requestDialogFormProductTemplateInput(this.lastItemClicked).then((res=>{
+             requestProductClassTreeList().then(res => {
+                this.$message.success(res.message);
+                this.treeData = res.data.list
+                this.treeDataList = []
+                this.treeOfList(res.data.list)
+              });
+          }))
+        }
       },
       handleNodeClick(data) {
         let vm = this

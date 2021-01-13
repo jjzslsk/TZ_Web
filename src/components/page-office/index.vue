@@ -18,10 +18,14 @@ export default {
         url: String
     },
     methods :{
+        childClick(i){
+            this.iframeClick1(i)
+        },
         iframeClick1(data){
             let vm = this
               this.iframeWin.postMessage({
-                cmd: 'getFormJson',
+                // cmd: 'getFormJson',
+                cmd: 'saveDoc',
                 params: {}
             }, '*')
             window.addEventListener('message', this.handleMessage)

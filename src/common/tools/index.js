@@ -65,6 +65,10 @@ export const transformAlarmsInfo = info => {
     switch ("" + info.level) {
         case '蓝色':
         case 'blue':
+        case '5':
+            imageColor = '5'
+            levelName = '无'
+            break
         case '4':
             imageColor = '4'
             levelName = '蓝色'

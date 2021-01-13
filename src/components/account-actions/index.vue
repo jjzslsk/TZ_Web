@@ -285,6 +285,12 @@ export default {
     .iconfont{
         font-size: 20px !important;
     }
+    span{
+        max-width: 58px;
+        white-space:nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 .menu-logout {
     margin: 0 5px 0 4px!important;

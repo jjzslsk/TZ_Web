@@ -673,7 +673,7 @@ let pageWidth = windowWidth() == 1280? "30%":"20%"
 	});
 
     $('.maximize').on('click',function(){
-        window.parent['vueDefinedMyProp']({name: 'hideHead', type: ''});
+        window.parent['vueDefinedMyPropMax']({name: 'hideHead', type: ''});
     })
     
 // })
