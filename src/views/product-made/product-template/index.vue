@@ -49,6 +49,7 @@
                 </el-form-item>
                 <el-form-item label="模板类型" label-width="120px">
                   <el-radio v-model="formItem.type" label="word">word</el-radio>
+                  <el-radio v-model="formItem.type" label="excel">excel</el-radio>
                   <el-radio v-model="formItem.type" label="txt">txt</el-radio>
                 </el-form-item>
               <el-form-item label="排序" label-width="120px">
@@ -64,7 +65,7 @@
           <el-button type="primary" size="small" @click="saveModule()">保存模板</el-button>
         </div>
         <div v-if="isIframe" class="iframe-content-box">
-          <page-office :url="docPath" ref="iframe" id="products"></page-office>
+          <page-office :url="docPath" ref="iframe" id="products" @childEvent="childEvent"></page-office>
         </div>
         <div v-else-if="isText" class="content-box">
           <el-input
@@ -487,14 +488,17 @@ import {
                 this.requestData()
             })
         },
-      saveModule(){
+      saveModule(isDos = false,filePath){
         if(!this.lastItemClicked){
             this.$message.warning("请选择产品");
             return
         }
-        if (this.lastItemClicked.type == 'word' || this.lastItemClicked.type == 'excel') {
+        if(!isDos){
+          if (this.lastItemClicked.type == 'word' || this.lastItemClicked.type == 'excel') {
           this.$refs.iframe.childClick(this.lastItemClicked);
-        }else{
+          return
+          }
+        }
           this.lastItemClicked.content = this.textarea
           this.lastItemClicked.labelCode = ''
           let labelCodes = []
@@ -502,6 +506,7 @@ import {
             labelCodes.push(this.$refs.trees[index].getCheckedKeys().toString() )
           })
           this.lastItemClicked.labelCode = labelCodes.toString()
+          this.lastItemClicked.wordPath = filePath
           requestDialogFormProductTemplateInput(this.lastItemClicked).then((res=>{
              requestProductClassTreeList().then(res => {
                 this.$message.success(res.message);
@@ -510,7 +515,10 @@ import {
                 this.treeOfList(res.data.list)
               });
           }))
-        }
+   
+      },
+      childEvent(data){
+        this.saveModule(data.isDos,data.filePath)
       },
       handleNodeClick(data) {
         let vm = this
@@ -539,16 +547,15 @@ import {
           })
         }
         
-        console.log(data)
         vm.formItem = data
         vm.topTitle = ''
         vm.topTitle = data.label;
-        if(data.type == 'word' && data.moduleType == 'template'){
+        if(data.type == 'word' || data.type == 'excel' && data.moduleType == 'template' ){
           vm.isIframe = true
           vm.isText = false
           // vm.docPath = `http://222.216.5.171:8891/gxims//railway/showWordForecastMonth.action?productId=20200228164618013583871`;
           // vm.docPath = `/product/ssd-page-office/openProductWord?productInfoId=P20000`;
-          vm.docPath = `http://10.137.4.30:8888/basin/main/openProductFile.action?templateId=`;
+          vm.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openProductFile.action?templateId=${data.id}`;
         } else if(data.type == 'txt' && data.moduleType == 'template'){
           this.textarea = this.lastItemClicked.content
           vm.isText = true

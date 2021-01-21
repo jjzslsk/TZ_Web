@@ -226,8 +226,11 @@ export default {
             }
             this.visibleDialogFormItemUpload = true;
         },
-        //上次成功执行
+        //上传成功执行
         uploadResults(res,file){
+            if(res.data.length > 0){
+                this.$message.warning(`第${res.data[0].row}行,${res.data[0].content}`);
+            }
             this.visibleDialogFormItemUpload = false;
             this.submitSuccess()
         },

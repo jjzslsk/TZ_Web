@@ -242,9 +242,9 @@ async function selectChart (){
             data: ["6小时气温","24小时气温","6小时降水"]
         },
         series: [
-            {data:temporalTempData.tamp.temp6,type: 'line',name: '6小时气温',smooth: false,yAxisIndex: 1,},
+            {data:temporalTempData.tamp.temp6,type: 'line',name: '6小时气温',smooth: false,yAxisIndex: 0,},
             {data:arrTemp24,type: 'line',name: '24小时气温',smooth: false,connectNulls:true},
-            {data:temporalTempData.totalrain.rain6,type: 'bar',name: '6小时降水',smooth: false,},
+            {data:temporalTempData.totalrain.rain6,type: 'bar',name: '6小时降水',smooth: false,yAxisIndex: 1},
         ]
     };
     temporalChart.setOption(option);

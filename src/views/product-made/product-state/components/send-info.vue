@@ -34,7 +34,7 @@
                             style="width: 100%">
                             <el-table-column prop="" label="序号" width="60px" type="index"></el-table-column>
                         <el-table-column prop="serviceUserName" label="接收人" width="180px" />
-                        <el-table-column prop="serviceUserAddress" label="邮件"/>
+                        <el-table-column prop="serviceUserAddress" label="地址"/>
                         <el-table-column prop="publishTime" label="时间" width="180px"/>
                         <el-table-column prop="result" label="发送结果" width="180px"/>
                         <el-table-column prop="message" label="描述"/>

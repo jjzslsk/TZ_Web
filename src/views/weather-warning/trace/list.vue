@@ -72,7 +72,7 @@
                                     </template>
                                 </el-table-column>
                             </template>
-                            <el-table-column :prop="isWarning?'alarmContent':'content'" label="预警内容" class-name="text-eclipse" />
+                            <el-table-column :prop="isWarning?'alarmContent':'content'" label="预警内容" class-name="text-eclipse" show-overflow-tooltip/>
                             <el-table-column prop="publishTime" label="发布时间" width="180px" />
                             <el-table-column prop="publishOrg" label="发布单位" width="350px" />
                             <el-table-column prop label="操作" width="120px">

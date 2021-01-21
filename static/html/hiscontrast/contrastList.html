@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>日数据统计</title>
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <style>
+        .layui-table-body{overflow-x: auto;}
+        .layui-layer-page .layui-layer-content{overflow: auto !important;}
+        .layui-form-checkbox{margin-right: 0;}
+        .layui-table tbody tr:hover{background-color: white;}
+        .r-demo {
+            height: 100%;
+            border-top: 3px solid #63cff5;
+            border-bottom: 1px solid #c9c9c9;
+            border-left: 1px solid #c9c9c9;
+            border-right: 1px solid #c9c9c9;
+            padding: 5px;
+            overflow: auto;
+        }
+        #updateBtn,#uploadExcel,#modelUpload{
+            background: #63cff5;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .layui-table-cell{
+            height: 40px;
+        }
+        .layui-table-fixed .layui-table-header .layui-table[lay-size=sm] th .layui-table-cell{
+            line-height: 20px;
+            display: table-cell;
+            vertical-align: middle;
+            overflow: initial;
+        }
+        .layui-table-header .layui-table[lay-size=sm] th .layui-table-cell{
+            line-height: 20px;
+            overflow: initial;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai{
+            position: absolute;
+            right: 5px;
+            top:-5px;
+            cursor: pointer;
+            padding-bottom: 5px;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai .slide{
+            position: absolute;
+            background-color: white;
+            top: 24px;
+            right: -6px;
+            height: 26px;
+            width: 215px;
+            padding: 3px 0;
+            z-index: 9;
+            display: none;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai:hover .slide{
+            display: block;
+        }
+        .layui-table-view .layui-table[lay-size=sm] th .huakuai .slide .ui-widget-header{background: #009688;}
+        .layui-table-sort{position: absolute;bottom: 0;right: 15px;}
+    </style>
+</head>
+<body>
+<div class="layui-fluid ssd-container">
+    <div class="layui-row">
+        <div class="layui-col-sm12 layui-col-md12 ssd-col-xlg12 ssd-col">
+            <div class="ssd-search-box"  style="padding: 10px; overflow-y:hidden">
+                <div class="layui-tab-content">
+                    <div class="search-set">
+                        <div class="search-wrap">
+                            <div class="layui-row layui-form layui-form-item">
+                                <label class="layui-form-label layui-statistics">地区选择</label>
+                                <div class="layui-input-inline" style="width: auto;">
+                                    <div class="selectCon" >
+                                        <input type="hidden" id="stationNum" name="stationNum">
+                                        <div class="select" title="">
+                                            <span></span>
+                                        </div>
+                                        <div class="optionBox" style="width:650px;">
+                                            <div class="optionItemBox Township">
+                                                <span>地区:</span>
+                                                <ul id="place">
+                                                </ul>
+                                            </div>
+                                            <div class="optionItemBox stationName">
+                                                <span>站点:</span>
+                                                <ul id="station">
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">历史年份</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" class="layui-input" name="yearHis" id="yearHis" placeholder=" - ">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">日期类型</label>
+                                    <div class="layui-input-inline">
+                                        <select name="dateType" id ="dateType"  lay-filter="selectDateType" class="layui-select">
+                                            <option value="day">历史同日</option>
+                                            <option value="hou">历史同候</option>
+                                            <option value="xun">历史同旬</option>
+                                            <option value="mouth">历史同月</option>
+                                            <option value="ji">历史同季</option>
+                                            <option value="year">历史同年</option>
+                                            <option value="same">历史同期</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">日期</label>
+                                    <div class="layui-input-inline" id="div_current">
+                                        <input type="text" class="layui-input" name="current" id="current">
+                                    </div>
+                                    <div id="div_current_type" class="layui-input-inline" style="display: none;">
+                                    <select name="current_type" id="current_type">
+                                    </select>
+                                    </div>
+
+                                </div>
+
+                                <div class="layui-inline" style="width: auto;margin-left: 10px;">
+                                    <button class="layui-btn shortBtnSaveClass" id="find" type="button" style="background-color: #5689FE;">查询</button>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="layui-hide" id="tableList" lay-filter="list"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-row">
+        <div id="hisEcharts" style="width: 100%;height:500px;"></div>
+    </div>
+
+</div>
+</body>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="../../tools/echarts.min.js"></script>
+<script src="js/his_echarts.js"></script>
+<script src="js/contrastList.js"></script>
+
+</html>

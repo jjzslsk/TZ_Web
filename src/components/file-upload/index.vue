@@ -142,7 +142,11 @@ export default {
         // this.imageUrl = URL.createObjectURL(file.raw);
         this.fullscreenLoading = false;
         this.visibleDialogFormItem = false;
-        this.$message.success(`导入成功`);
+        if(res.success){
+          this.$message.success(res.message);
+        }else{
+          this.$message.error(res.message);
+        }
         this.formItem = {}
         this.fileList = []
         this.$emit('uploadResults', res,file)

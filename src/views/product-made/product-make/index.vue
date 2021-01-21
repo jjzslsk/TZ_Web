@@ -333,8 +333,6 @@
                         <el-button type="primary" size="mini" @click="onConsult(productMade,false,'fast')">保存并快速发布</el-button>
                         <el-button type="primary" size="mini" @click="onConsult(productMade,false,'')">保存并发布</el-button>
                         <el-button type="primary" size="mini" @click="goProduct(productMade)">查看发布结果</el-button>
-                        <!-- <el-button type="success" size="mini" @click="pageOfficeSave(productMade)">pageOffice保存</el-button> -->
-
                       </div>
                   </div>
                       <!-- <el-checkbox class="select-time" v-model="productMade.reserve" size="small" label="预约发布" border></el-checkbox>
@@ -351,7 +349,7 @@
                   <!-- </el-row> -->
 
               <div v-if="isIframe" class="iframe-content-box">
-                <page-office :url="docPath" ref="iframe" id="products"></page-office>
+                <page-office :url="docPath" ref="iframe" id="products" @childEvent="childEvent"></page-office>
               </div>
               <div v-else class="form-txt">
                 <div class="text-editor" v-if="inputs">
@@ -920,8 +918,8 @@ export default {
     })
   },
   methods: {
-    pageOfficeSave(i){
-      this.$refs.iframe.childClick(i);
+    childEvent(data){
+      this.onSave(data.item,data.index,data.callback,data.isDos,data.filePath)
     },
     //修改内容时间 单个
     changePicker(){
@@ -1100,7 +1098,7 @@ export default {
       if(!res.data || !Array.isArray(res.data) ){}
       this.activities = res.data
       this.activities.forEach(i=>{
-      //状态：
+      //状态： finish 0已过期 1已发布 2可制作 3未制作
         if (i.state == '未制作') {
           finishIcon = "el-icon-bell";
           finishColor = "#eee";
@@ -1258,7 +1256,6 @@ export default {
     },
     emitPhraes(){},
     timelineClick(data){
-      this.handleNodeClick(data)
 if(data.product == 1 && data.productInfoId){
         this.treeDataList.forEach(item=>{
             if(item.id === data.productInfoId){
@@ -1648,12 +1645,17 @@ if(data.product == 1 && data.productInfoId){
     },
 
     //保存
-    async onSave(item,index,callback) {
+    async onSave(item,index,callback,isDos = false,filePath) {
       if (!this.lastItemClicked) {
         this.$message.error("选择产品，并填写完整信息!");
         return;
       }
-
+      if(!isDos){
+        if(this.lastItemClicked.type == 'word' || this.lastItemClicked.type == "excel"){
+            this.$refs.iframe.childClick({item:item,index:index,callback:callback,isDos:isDos});
+            return
+        }
+      }
     //内容时间替换为预约时间
     //  let replaceTime = await (param=>{
     //    let pattern = /([0-9]{4}年[0-9]{1,2}月[0-9]{1,2}日[0-9]{1,2}时)/,
@@ -1678,7 +1680,6 @@ if(data.product == 1 && data.productInfoId){
     //         }
     //     });
     //  })()
-     
       //字数校验
       let textLength = this.getSemiangleLength(item.content,JSON.stringify(item.wordtype))
       if(textLength > item.limitnumber && item.limitnumber !== 0 && item.limitnumber !== null){
@@ -1708,6 +1709,7 @@ if(data.product == 1 && data.productInfoId){
           fileName: item.fileName,
           makeTime: item.makeTime,
           // timingDate: item.timingDate,
+          filePath: filePath,
         };
         requestProducTreleaseSave(param).then(res => {
           this.saveProducId = res.data.id
@@ -1760,6 +1762,7 @@ if(data.product == 1 && data.productInfoId){
           fileName: item.fileName,
           makeTime: item.makeTime,
           // timingDate: item.timingDate,
+          filePath: filePath,
         };
         requestProducTreleaseSave(param).then(res => {
           this.saveProducId = res.data.id
@@ -1771,7 +1774,6 @@ if(data.product == 1 && data.productInfoId){
               wordtype:Number(item.wordtype),
               makeTime: item.makeTime,
               timingDate: item.timingDate,
-
             };
             if (res.success) {
               this.$message.success(res.message);
@@ -1802,10 +1804,10 @@ if(data.product == 1 && data.productInfoId){
     onConsult(item,index,fast) {
       let _this = this
       if (
-        !this.lastItemClicked ||
+        !this.lastItemClicked
         // !item.fileName ||
         // !item.issue ||
-        !item.content
+        //  || !item.content
       ) {
         this.$message.error("选择产品，并填写完整信息!");
         return;
@@ -1930,7 +1932,6 @@ if(data.product == 1 && data.productInfoId){
       // });
     },
     onTreeClickItem(item) {
-        this.handleNodeClick(item)
 
         this.cityData = null
         this.tvText = null
@@ -2003,6 +2004,7 @@ if(data.product == 1 && data.productInfoId){
 
               console.log('productMade:',this.productMade);
             }
+            this.handleNodeClick(item,res.data.templateId)
           });
       }
 
@@ -2121,7 +2123,7 @@ if(data.product == 1 && data.productInfoId){
       });
     },
     saveModule() {},
-    handleNodeClick(data) {
+    handleNodeClick(data,_templateId) {
       let vm = this;
       console.log(data);
       vm.formItem = data;
@@ -2129,7 +2131,7 @@ if(data.product == 1 && data.productInfoId){
       vm.topTitle = data.label;
       if (data.type == 'word' || data.type == 'excel') {
         vm.isIframe = true;
-        vm.docPath = `http://10.137.4.30:8888/basin/main/openProductFile.action?templateId=${data.id}`;
+        vm.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openProductFile.action?templateId=${_templateId}&reLabel=1`;
         // vm.docPath = `http://222.216.5.171:8891/gxims//railway/showWordForecastMonth.action?productId=20200228164618013583871`;
         //vm.docPath = `http://10.137.4.30:6001/integration/main/ssd-page-office/productPreview?productInfoId=`+data.id;
       } else {

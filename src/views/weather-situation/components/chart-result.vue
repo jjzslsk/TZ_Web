@@ -277,7 +277,7 @@ ${api.value(dims.wind).substring(api.value(dims.wind).length-2)}`,
               // +
               // " " +
               // echarts.format.formatTime("hh:mm", params[0].value[dims.time])
-              "温度：" + params[0].value[dims.maxToday] + '℃-' + params[0].value[dims.minToday] + '℃',
+              "温度：" + params[0].value[dims.minToday] + '℃-' + params[0].value[dims.maxToday] + '℃',
               "风向：" + params[0].value[dims.windd],
               // "风速：" + params[0].value[dims.maxWind] + '-' + params[0].value[dims.minWind],
               "风力：" + params[0].value[dims.windl] + "m/s",

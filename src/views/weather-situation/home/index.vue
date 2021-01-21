@@ -1,7 +1,7 @@
 <template>
-  <div class="weather-situation-page">
+  <div class="weather-situation-page"  >
     <div class="skin" @click="skinClick">换肤</div>
-    <div class="wrap-box">
+    <div class="wrap-box" :class="skin? 'skinColor':''">
       <div class="left-box">
         <div class="left-top">
           <div ref="collapseDom">
@@ -95,13 +95,13 @@
               <div class="map-left" :class="shiftLeft? 'map-location':'map-location-hide'" :style="shiftLeft? 'width:100%;':'' ">
                 <div class="map-item">
                   <!-- <map-box :layerType='"radar"'></map-box> -->
-                  <iframe src="../../../../static/html/weatherMap/radar.html" class="inline" style="width:100%;height:100%;" frameborder="0"></iframe>
+                  <!-- <iframe src="../../../../static/html/weatherMap/radar.html" class="inline" style="width:100%;height:100%;" frameborder="0"></iframe> -->
                 </div>
               </div>
               <div class="map-right" :class="shiftRight? 'map-location':'map-location-hide'" :style="shiftRight? 'width:100%;':'' ">
                 <div class="map-item">
                   <!-- <map-box :layerType='"cloud"'></map-box> -->
-                  <iframe src="../../../../static/html/weatherMap/cloud.html" class="inline" style="width:100%;height:100%;" frameborder="0"></iframe>
+                  <!-- <iframe src="../../../../static/html/weatherMap/cloud.html" class="inline" style="width:100%;height:100%;" frameborder="0"></iframe> -->
                 </div>
               </div>
             </div>
@@ -1257,6 +1257,82 @@ import mapBox from './../components/map-box';
  .short-forecast-tab {
     .el-tabs__header {
       margin: 0 0 2px;
+    }
+  }
+  .skinColor {
+    background-color: #02133e !important;
+    .el-collapse-item__header{
+      background-color: #02133e;
+      color:#fff;
+      span{
+        color:#1cc0f6 !important;
+      }
+      .more{
+        color:#fff !important;
+      }
+    }
+    .content-wrap-box{
+      background-color: #02133e;
+    }
+    .left-box .forecast-box .content-box .item {
+      .title-606266{
+        color: #fff !important;
+      }
+      .time{
+        color:#fff !important;
+      }
+    }
+    .el-tabs--border-card{
+      background-color: #02133e !important;
+      border: 1px #00d0ff solid !important;
+      color:#fff !important;
+    }
+    .el-textarea__inner {
+      background-color: #02133e !important;
+      border: 1px #00d0ff solid !important;
+      color:#fff !important;
+    }
+    .el-tabs__nav-wrap:after{
+      background-color: #02133e !important;
+      border: 1px #00d0ff solid !important;
+      color:#fff !important;
+    }
+    .el-tabs--border-card>.el-tabs__header{
+      background-color: #02133e !important;
+      border: 1px #00d0ff solid !important;
+      color:#fff !important;
+    }
+    .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active{
+      background-color: #409eff !important;
+      color: #fff;
+    }
+    .right-box .right-bottom .bottom-right .forecast-box{
+      background-color: #02133e !important;
+      border: 1px #00d0ff solid !important;
+      color:#fff !important;
+    }
+    .el-collapse-item__wrap{
+      background-color: #02133e !important;
+      border: 1px #00d0ff solid !important;
+      color:#fff !important;
+    }
+    .right-box .right-top .top-right .material{
+      color:#fff !important;
+    }
+    .right-box .right-top .top-right .forecast-box .tab-content .item-text{
+      color:#fff !important;
+    }
+    .right-box .right-top .top-right .forecast-box .tab-content .item-text a{
+      color:rgb(110, 126, 216) !important;
+    }
+    .el-tabs__item{
+      color: #fff !important;
+    }
+    .title-box .bold-title{
+      color: #fff !important;
+    }
+    .right-bottom .short-title{
+      color: #fff !important;
     }
   }
 }

@@ -73,6 +73,10 @@ export const warningLevel = [
     {
         value: "4",
         label: "蓝色"
+    },
+    {
+        value: "5",
+        label: "无级别"
     }
 ];
 
