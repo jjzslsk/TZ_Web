@@ -55,7 +55,7 @@
       </div>
       <div class="layui-tab-item">
         <div class="layui-card">
-          <div class="layui-card-body">
+          <div class="layui-card-body form-password">
             <form class="layui-form" action="">
               <div class="layui-form-item">
                 <label class="layui-form-label">旧密码</label>
@@ -84,8 +84,7 @@
               <p class="hint">
                 必须长度为 6~16位,
                 包含数字,
-                小写字母,
-                大写字母,
+                字母,
                 特殊字符。
               </p>
             </form>
@@ -311,7 +310,7 @@ confirmPass:function(value){
     if($('input[name=password]').val() !== value){
       return '两次密码输入不一致！';
     }
-    if(!/^.*(?=.{6,16})(?=.*\d)(?=.*[A-Z]{1,})(?=.*[a-z]{1,})(?=.*[!@#$%^&*?.\(\)]).*$/.test(value)){
+    if(!/^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*])[\da-zA-Z~!@#$%^&*]{6,}$/.test(value)){
       return '格式不符合';
     }
 }
@@ -637,6 +636,14 @@ $('#clickTest').click(function(){
   .hint{
     color: rgb(136, 136, 136);
     font-size: 12px;
+  }
+  .form-password{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .form-password .layui-form{
+    display: inline-block;
   }
 </style>
 </html>

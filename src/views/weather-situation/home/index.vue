@@ -95,13 +95,13 @@
               <div class="map-left" :class="shiftLeft? 'map-location':'map-location-hide'" :style="shiftLeft? 'width:100%;':'' ">
                 <div class="map-item">
                   <!-- <map-box :layerType='"radar"'></map-box> -->
-                  <!-- <iframe src="../../../../static/html/weatherMap/radar.html" class="inline" style="width:100%;height:100%;" frameborder="0"></iframe> -->
+                  <iframe src="../../../../static/html/weatherMap/radar.html" class="inline" style="width:100%;height:100%;" frameborder="0"></iframe>
                 </div>
               </div>
               <div class="map-right" :class="shiftRight? 'map-location':'map-location-hide'" :style="shiftRight? 'width:100%;':'' ">
                 <div class="map-item">
                   <!-- <map-box :layerType='"cloud"'></map-box> -->
-                  <!-- <iframe src="../../../../static/html/weatherMap/cloud.html" class="inline" style="width:100%;height:100%;" frameborder="0"></iframe> -->
+                  <iframe src="../../../../static/html/weatherMap/cloud.html" class="inline" style="width:100%;height:100%;" frameborder="0"></iframe>
                 </div>
               </div>
             </div>
@@ -1106,6 +1106,11 @@ import mapBox from './../components/map-box';
       overflow: auto;
     }
   }
+   .wrap-box{
+     .border-top:first-of-type  {
+     border: 0px;
+    }
+   } 
   .skin {
       position: fixed;
       right: 0;
@@ -1121,7 +1126,9 @@ import mapBox from './../components/map-box';
       justify-content: center;
       align-items: center;
       color: #fff;
+      cursor: pointer;
   }
+
 }
 </style>
 <style lang='postcss'>
@@ -1261,8 +1268,14 @@ import mapBox from './../components/map-box';
   }
   .skinColor {
     background-color: #02133e !important;
+    .el-collapse{
+      border-top: 1px #00d0ff solid !important;
+    }
     .el-collapse-item__header{
       background-color: #02133e;
+      border-left: 1px #00d0ff solid !important;
+      border-right: 1px #00d0ff solid !important;
+      /* border-bottom: 1px #00d0ff solid !important; */
       color:#fff;
       span{
         color:#1cc0f6 !important;
@@ -1289,7 +1302,7 @@ import mapBox from './../components/map-box';
     }
     .el-textarea__inner {
       background-color: #02133e !important;
-      border: 1px #00d0ff solid !important;
+      border-bottom: 1px #00d0ff solid !important;
       color:#fff !important;
     }
     .el-tabs__nav-wrap:after{
@@ -1299,7 +1312,7 @@ import mapBox from './../components/map-box';
     }
     .el-tabs--border-card>.el-tabs__header{
       background-color: #02133e !important;
-      border: 1px #00d0ff solid !important;
+      /* border: 1px #00d0ff solid !important; */
       color:#fff !important;
     }
     .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active{
@@ -1308,12 +1321,12 @@ import mapBox from './../components/map-box';
     }
     .right-box .right-bottom .bottom-right .forecast-box{
       background-color: #02133e !important;
-      border: 1px #00d0ff solid !important;
+      /* border: 1px #00d0ff solid !important; */
       color:#fff !important;
     }
     .el-collapse-item__wrap{
       background-color: #02133e !important;
-      border: 1px #00d0ff solid !important;
+      /* border: 1px #00d0ff solid !important; */
       color:#fff !important;
     }
     .right-box .right-top .top-right .material{

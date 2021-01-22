@@ -31,17 +31,17 @@ async function requestData(){
      var param = {eleType:'范围',}
      await getData(main_url,'/ssd-forecast-element/getElemnetInfo?',param).then(res=>{
          scope = res.data
-         selectedScope = scope[0].img_path
-         formatScope(scope)
+         selectedScope = scope[3].img_path//初始化
+         formatScope(scope,3)//初始化
      })
 
     //获取模式
     var param = {eleType:'模式',}
     await getData(main_url,'/ssd-forecast-element/getElemnetInfo?',param).then(res=>{
         model = res.data
-        formatModel(model)
-        modelImgPath = model[0].img_path
-        selectedModel = model[0].ele_name
+        formatModel(model,0)//初始化
+        modelImgPath = model[0].img_path//初始化
+        selectedModel = model[0].ele_name//初始化
     })
     
     //获取高空要素
@@ -247,11 +247,11 @@ function previewMax(obj){
 }
 
 //模式 DOM 单选
-function formatModel(dataList){
+function formatModel(dataList,_index = 0){
     let str = "";
     let addstr = "";
     for (let i = 0; i < dataList.length; i++) {
-        if(i== 0){
+        if(i== _index){
             str = str + `<li style='cursor:pointer' img_path='${dataList[i].img_path}' class='is-active liClick'>${dataList[i].ele_name}</li>`;
         }else {
             str = str + `<li style='cursor:pointer' img_path='${dataList[i].img_path}' class='liClick'>${dataList[i].ele_name}</li>`;
@@ -259,31 +259,32 @@ function formatModel(dataList){
     }
     $(".model-li-plane ul").html(str);
 }
-$(".model-li-plane").on("click", "li", function addfood() {
+$(".model-li-plane").on("click", "li",async function addfood() {
     $(this).parents('#modelLiPlane').find('.liClick').removeClass('is-active');
     $(this).addClass('is-active');
     $(".model-li-plane ul .is-active").each(function(i,o){
         modelImgPath = $(this).attr('img_path')
         selectedModel = $(this).text()
-        //切换到指定Tab项
-        planeTabActive.tabChange('01')
-
+        resetModel()
     });
-
     //重置 预报时间间隔
     // $("#forecastAfter").html(forecastAfter);
     // dataHour = '003'
+});
 
-    //获取综合分析
-    var param = {eleType:'综合',model:selectedModel}
-    getData(main_url,'/ssd-forecast-element/getElemnetInfo?',param).then(res=>{
-        mixtureData = res.data
-        formatMixture(mixtureData)
-    })
+//选择模式 刷新数据
+async function resetModel(){
+    //切换到指定Tab项
+    planeTabActive.tabChange('01')
+
+    if(selectedModel == 'OCF' || selectedModel == '智能网格'){ //OCF 智能网格 默认选中台州
+        selectedScope = scope[0].img_path
+        formatScope(scope,0)
+    }
 
     //获取地面要素
     var param = {eleType:'地面',model:selectedModel}
-    getData(main_url,'/ssd-forecast-element/getElemnetInfo?',param).then(res=>{
+    await getData(main_url,'/ssd-forecast-element/getElemnetInfo?',param).then(res=>{
         groundData = res.data
         formatGround(groundData)
         factorPath = groundData[0].img_path
@@ -292,21 +293,49 @@ $(".model-li-plane").on("click", "li", function addfood() {
     })
     //获取高空要素
     var param = {forecastEle:selectedModel,}
-    getData(main_url,'/ssd-forecast-element/getHighEle?',param).then(res=>{
+    await getData(main_url,'/ssd-forecast-element/getHighEle?',param).then(res=>{
         upperAirData = []
         Object.keys(res.data).forEach(key=>{
             upperAirData.push({type:key,content:res.data[key]})
         })
         formatUpperAir(upperAirData)
     })
+    //获取综合分析
+    var param = {eleType:'综合',model:selectedModel}
+    await getData(main_url,'/ssd-forecast-element/getElemnetInfo?',param).then(res=>{
+        mixtureData = res.data
+
+        // 模式为ECMWF-IFS时，选中第一个综合
+        if(selectedModel == 'ECMWF-IFS'){
+            selectedScope = scope[3].img_path
+            formatScope(scope,3)
+            formatMixture(mixtureData,0)
+                if($("#upperAir .upper-item").hasClass("upper-factor-active")){//移除高空要素 选中
+                    $("#upperAir .upper-item").removeClass("upper-factor-active");
+                    }else{}
+                    if($("#groundFactor .groundFactor").hasClass("ground-factor-active")){//移除地面要素 选中 eleHeight
+                    $("#groundFactor .groundFactor").removeClass("ground-factor-active");
+                    }else{}
+        
+            factorPath = mixtureData[0].img_path
+            eleHeight = mixtureData[0].ele_height
+            fnDate()
+        }else{
+            formatMixture(mixtureData)
+        }
+
+    })
+
+
     
-});
+    
+}
 
 //范围DOM 单选
-function formatScope(dataList){
+function formatScope(dataList,_index = 0){
     const cityArrList = [];
     $.each(dataList, function(index, obj) {
-        index == 0? cityArrList.push(`<li code=${obj.img_path} class='cityArr city-time-active' style="cursor:pointer">${obj.ele_name}</li>`):
+        index == _index? cityArrList.push(`<li code=${obj.img_path} class='cityArr city-time-active' style="cursor:pointer">${obj.ele_name}</li>`):
         cityArrList.push(`<li code=${obj.img_path} class='cityArr' style="cursor:pointer;">${obj.ele_name}</li>`)
     });
     $("#cityArr").html(cityArrList);
@@ -434,7 +463,7 @@ $('#upperAirTitle').on('click','.upperAirTitle',function(){
 
 
 //平面图-左侧-综合分析 （单选）
-function formatMixture(dataList = []){
+function formatMixture(dataList = [],_index = null){
 const synthesizeData = [
     {content: '500hPa高度场+200hPa散度+500hPa风场111111111',code: 'long'},
     {content: '500hPa高度场+200hPa散度+500hPa风场2',code: 'long'},
@@ -464,8 +493,12 @@ const synthesizeData = [
 ]
 const synthesize = [];
 $.each(dataList, function(index, obj) {
-    // index == 0? synthesize.push(`<li class='synthesize synthesize-time-active' style="cursor:pointer">${obj.ele_name}</li>`):
-    synthesize.push(`<li img_path='${obj.img_path}' eleHeight='${obj.ele_height}' class='synthesize' style="cursor:pointer;">${obj.ele_name}</li>`)
+    if(_index !== null){
+            index == _index?  synthesize.push(`<li img_path='${obj.img_path}' eleHeight='${obj.ele_height}' class='synthesize synthesize-time-active' style="cursor:pointer">${obj.ele_name}</li>`):
+            synthesize.push(`<li img_path='${obj.img_path}' eleHeight='${obj.ele_height}' class='synthesize' style="cursor:pointer;">${obj.ele_name}</li>`)
+    }else{
+        synthesize.push(`<li img_path='${obj.img_path}' eleHeight='${obj.ele_height}' class='synthesize' style="cursor:pointer;">${obj.ele_name}</li>`)
+    }
 });
 $("#synthesize").html(synthesize);
 }

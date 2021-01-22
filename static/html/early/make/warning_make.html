@@ -1282,7 +1282,7 @@
                             $.ajax({
                                 url: main_url + "/ssd-early-warning-publish/addTaskAndDetail",
                                 type: "post",
-                                data: {'data':JSON.stringify(sendUserList)},
+                                data: {'data':JSON.stringify(sendUserList),'loginAreaId':areaId},
                                 dataType: "json",
                                 success: function (data){
                                     layer.msg("发布成功。等待回执！");

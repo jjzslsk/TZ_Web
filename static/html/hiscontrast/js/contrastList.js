@@ -227,7 +227,16 @@ layui.use(['laydate', 'layer', 'form', 'table', 'element', 'tree'], function () 
             ,{field: 'maxTime', title: '最高温出现时间'}
             ,{field: 'temp_min', title: '最低温(°C)'}
             ,{field: 'minTime', title: '最低温出现时间'}
-            ,{field: 'temp_average', title: '平均气温(°C)'}
+            ,{field: 'temp_average', title: '平均气温(°C)',templet:function(d){
+
+                    var avg= d.temp_average;
+                    if(avg != null && avg != "" && avg !="null"){
+                        return avg.toFixed(2);
+                    }else{
+                        return "";
+                    }
+
+                }}
             ,{field: 'rain_amount', title: '降水(ml)', sort: true}
             ,{field: 'sunshine_amount', title: '日照(h)'}
         ]]

@@ -64,7 +64,7 @@
                 <el-input v-model="formItem.uid" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="密码" label-width="120px" prop="password">
-                <el-input type="password" v-model="formItem.password" autocomplete="off" placeholder="必须长度为 6~16位,包含数字,小写字母,大写字母,特殊字符"></el-input>
+                <el-input type="password" v-model="formItem.password" autocomplete="off" placeholder="必须长度为 6~16位,包含数字,字母,特殊字符"></el-input>
             </el-form-item>
             <el-form-item label="性别" label-width="120px">
                 <el-select v-model="formItem.sex" placeholder="请选择">
@@ -125,20 +125,7 @@ import {
 export default {
     mixins: [common, witchCommonList],
     data() {
-        let validPassword=(rule,value,callback)=>{
-      let reg= /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{4,20}$/
-      if(!reg.test(value)){callback(new Error('密码必须是由4-20位字母+数字组合'))
-      }else{
-          callback()
-      }
-  };
         return {
-            rules: {
-          password: [
-            { required: true, message: '请输入确认密码', trigger: 'blur' },
-            { validator: validPassword, trigger: 'blur' }
-          ]
-        },
             query: {
                 // XXXPROP_USER_id: "",
                 // XXXPROP_USER_name: ""
@@ -174,9 +161,9 @@ export default {
     },
     methods: {
         formVerify(){
-            var verify = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Z]{1,})(?=.*[a-z]{1,})(?=.*[!@#$%^&*?.\(\)]).*$/;  //校验密码6-18位
+            var verify = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*])[\da-zA-Z~!@#$%^&*]{6,}$/;  //校验密码
             if (!verify.test(this.formItem.password)) {
-                this.$message.error('必须长度为 6~16位,包含数字,小写字母,大写字母,特殊字符。');
+                this.$message.error('必须长度为 6~16位,包含数字,字母,特殊字符。');
             }else{
                 return this.formItem
             }

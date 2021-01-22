@@ -17,7 +17,11 @@ function set_echarts(objMap){
         dateTime.push(map["timeName"]);
         maxTemp.push(map["temp_max"]);
         minTemp.push(map["temp_min"]);
-        avgTemp.push(map["temp_average"]);
+        var temp_avg = map["temp_average"];
+        if(temp_avg != null && temp_avg != "" && temp_avg !="null"){
+            temp_avg = temp_avg.toFixed(2);
+        }
+        avgTemp.push(temp_avg);
         rain.push(map["rain_amount"]);
         sunny.push(map["sunshine_amount"]);
         his_maxTemp.push(map["his_temp_max"]);

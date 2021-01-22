@@ -317,6 +317,9 @@
                         <el-form-item label="预约时间">
                           <el-date-picker
                             size="mini"
+                            ref="datePicker"
+                            @click.native="pickerClick()"
+                            @blur='blurEvent()'
                             @change="changePicker(productMade)"
                             :popper-class="'currentDatePickerClass'"
                             format="yyyy-MM-dd HH:mm"
@@ -348,7 +351,7 @@
 
                   <!-- </el-row> -->
 
-              <div v-if="isIframe" class="iframe-content-box">
+              <div v-if="isIframe" :class="!iframePosition? 'iframe-content-box':'iframe-position'">
                 <page-office :url="docPath" ref="iframe" id="products" @childEvent="childEvent"></page-office>
               </div>
               <div v-else class="form-txt">
@@ -596,6 +599,7 @@ export default {
   },
   data() {
     return {
+      iframePosition:false,
       contextMenuItem:null,
       // 菜单数据
        contextMenuData: {
@@ -881,6 +885,13 @@ export default {
     visibleDialogConsult(val) {
       if (!val) {
         this.formConsult = {};
+        if(this.lastItemClicked.type == 'word' || this.lastItemClicked.type == "excel"){
+          this.iframePosition = false
+        }
+      }else{
+        if(this.lastItemClicked.type == 'word' || this.lastItemClicked.type == "excel"){
+          this.iframePosition = true
+        }
       }
     },
     // "productMade.reserve": function(val) {
@@ -920,6 +931,16 @@ export default {
   methods: {
     childEvent(data){
       this.onSave(data.item,data.index,data.callback,data.isDos,data.filePath)
+    },
+    blurEvent(){
+      if(this.lastItemClicked.type == 'word' || this.lastItemClicked.type == "excel"){
+          this.iframePosition = false
+        }
+    },
+    pickerClick(){
+      if(this.lastItemClicked.type == 'word' || this.lastItemClicked.type == "excel"){
+          this.iframePosition = true
+        }
     },
     //修改内容时间 单个
     changePicker(){
@@ -2465,6 +2486,14 @@ if(data.product == 1 && data.productInfoId){
           width: 100%;
           height: calc(100% - 202px);
           margin: 20px 0;
+          
+        }
+        .iframe-position{
+          position: fixed !important;
+          right: 30rem !important;
+          bottom: 30rem !important;
+          width: 0 !important;
+          height: 0 !important;
         }
         .form-txt {
           height: calc(100% - 172px);

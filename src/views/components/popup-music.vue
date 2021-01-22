@@ -86,7 +86,7 @@ export default {
             onClose: function () {
               // vm.startPlay(false);
             },
-            duration: 10000,
+            duration: 0,
           });
 
           let docEl = notify.$el.getElementsByTagName("li");
