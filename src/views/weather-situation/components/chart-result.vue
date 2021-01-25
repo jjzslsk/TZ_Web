@@ -5,7 +5,7 @@
 import { requestWarningObj } from "@/remote/";
 import echarts from "echarts";
 export default {
-  props: ["type"],
+  props: ["type","skin"],
   data() {
     return {
       resObj:{
@@ -200,6 +200,7 @@ export default {
       }
 
       //头部图文配置
+      var _this = this
       function renderWeather(param, api) {
         var point = api.coord([
           api.value(dims.time) + (3600 * 24 * 1000) / 2,
@@ -235,7 +236,10 @@ ${api.value(dims.wind).substring(api.value(dims.wind).length-2)}`,
                 //   "°",
                 textFont: api.font({ fontSize: 14 }),
                 textAlign: "center",
-                textVerticalAlign: "bottom"
+                textVerticalAlign: "bottom",
+                fill: (function(){
+                  return _this.skin? '#fff':'#000'
+                })()
               },
               position: [point[0], 390]
             },
@@ -249,7 +253,10 @@ ${api.value(dims.wind).substring(api.value(dims.wind).length-2)}`,
                 text: `${api.value(dims.dayDate)}日`,
                 textFont: api.font({ fontSize: 14 }),
                 textAlign: "center",
-                textVerticalAlign: "bottom"
+                textVerticalAlign: "bottom",
+                fill: (function(){
+                  return _this.skin? '#fff':'#000'
+                })()
               },
               position: [point[0], 360]
             }
@@ -440,7 +447,9 @@ ${api.value(dims.wind).substring(api.value(dims.wind).length-2)}`,
             },
             itemStyle: {
               normal: {
-                color: "#0b28fb"
+                color: (function(){
+                  return _this.skin? '#409eff':'#0b28fb'
+                })()
               }
             },
             encode: {
@@ -506,6 +515,9 @@ ${api.value(dims.wind).substring(api.value(dims.wind).length-2)}`,
                 // data: [{type: 'max', name: '最大值',}]
             },
             label: {
+              color: (function(){
+                  return _this.skin? '#fff':''
+                })(),
               show: true,
               position: "top",
               formatter: function(item){

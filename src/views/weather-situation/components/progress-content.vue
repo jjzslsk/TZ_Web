@@ -6,8 +6,8 @@
                     <el-progress :status="item.status" :show-text='false' :key="index" type="circle" :percentage="Number(item.amount)"></el-progress>
                     <div class="content" >
                         <div class="text value" :class="item.status + '-color'">{{item.value}}</div>
-                        <div class="text label">{{item.label}}</div>
-                        <div class="text character">{{item.content}}</div>
+                        <div class="text label" :style="skin? 'color:#fff;':''">{{item.label}}</div>
+                        <div class="text character" :style="skin? 'color:#eee;':''">{{item.content}}</div>
                     </div>
                 </div>
             </template>
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-    props: ['progress'],
+    props: ['progress',"skin"],
     methods: {
 
     },

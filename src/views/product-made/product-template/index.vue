@@ -64,7 +64,7 @@
           <!-- <div class="text">{{topTitle || '产品内容'}}</div> -->
           <el-button type="primary" size="small" @click="saveModule()">保存模板</el-button>
         </div>
-        <div v-if="isIframe" class="iframe-content-box">
+        <div v-if="isIframe" :class="!iframePosition? 'iframe-content-box':'iframe-position'">
           <page-office :url="docPath" ref="iframe" id="products" @childEvent="childEvent"></page-office>
         </div>
         <div v-else-if="isText" class="content-box">
@@ -179,6 +179,7 @@ import {
     },
     data() {
       return {
+        iframePosition:false,//pageoffice 定位隐藏
         onAdd:false,
         dataCode:null,
         tabListData:[],
@@ -232,6 +233,32 @@ import {
         this.requestData()
     },
     watch:{
+      visibleDialogFormLeftTree(val){
+        if (!val) {
+          if(this.lastItemClicked.type == 'word' || this.lastItemClicked.type == "excel"){
+            this.iframePosition = false
+          }
+        }else{
+          if(this.lastItemClicked.type == 'word' || this.lastItemClicked.type == "excel"){
+            this.iframePosition = true
+          }
+        }
+      },
+      visibleDialogformLeftTreeMinor(val){
+        if(!val){
+            this.formItem.sourceId = []
+            this.checkList = []
+          }
+        if (!val) {
+          if(this.lastItemClicked.type == 'word' || this.lastItemClicked.type == "excel"){
+            this.iframePosition = false
+          }
+        }else{
+          if(this.lastItemClicked.type == 'word' || this.lastItemClicked.type == "excel"){
+            this.iframePosition = true
+          }
+        }
+      },
       onAdd(vla){
         if(vla){
           let checkboxDataArrs = this.getKeys()
@@ -245,12 +272,6 @@ import {
       checkList(vla){
         this.formItem.sourceId = vla.toString()
       },
-        visibleDialogformLeftTreeMinor(vla){
-          if(!vla){
-            this.formItem.sourceId = []
-            this.checkList = []
-          }
-        }
     },
     methods: {
       getKeys(){
@@ -805,6 +826,13 @@ import {
       flex: 1;
       margin: 0 15px;
       height: calc(100%-72px);
+    }
+    .iframe-position{
+          position: fixed !important;
+          right: 30rem !important;
+          bottom: 30rem !important;
+          width: 0 !important;
+          height: 0 !important;
     }
     .no-border{
       border-bottom: none;

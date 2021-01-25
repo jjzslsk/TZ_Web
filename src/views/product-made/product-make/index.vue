@@ -599,7 +599,7 @@ export default {
   },
   data() {
     return {
-      iframePosition:false,
+      iframePosition:false,//pageoffice 定位隐藏
       contextMenuItem:null,
       // 菜单数据
        contextMenuData: {

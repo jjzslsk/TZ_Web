@@ -1,5 +1,5 @@
 <template>
-  <div class="weather-situation-page"  >
+  <div class="weather-situation-page">
     <div class="skin" @click="skinClick">换肤</div>
     <div class="wrap-box" :class="skin? 'skinColor':''">
       <div class="left-box">
@@ -187,7 +187,7 @@
                   </div>
 
                   <div class="echarts-box info-right" v-if="radio1 == 'month'" :key="componentKey">
-                      <chart-result class="chart-line" :type='radio1' v-if="chartResult"></chart-result>
+                      <chart-result class="chart-line" :type='radio1' :skin='skin' v-if="chartResult"></chart-result>
                       <!-- <div class="chart-hint">
                           <div class="content">
                             历史最高温度：<span class="color-t"><--</span>
@@ -198,12 +198,12 @@
                       </div> -->
                   </div>
                   <div class="echarts-box info-right" v-if="radio1 == 'xun'" :key="componentKey">
-                      <chart-result class="chart-line" :type='radio1' v-if="chartResult"></chart-result>
+                      <chart-result class="chart-line" :type='radio1' :skin='skin' v-if="chartResult"></chart-result>
                       <!-- <chart-result v-if="chartResult"></chart-result> -->
                       <!-- <chart-bar class="chart-bar" v-if="chartResult"></chart-bar> -->
                   </div>
                   <div class="echarts-box info-right" v-if="radio1 == 'day'" :key="componentKey">
-                      <chart-result class="chart-line" :type='radio1' v-if="chartResult"></chart-result>
+                      <chart-result class="chart-line" :type='radio1' :skin='skin' v-if="chartResult"></chart-result>
                   </div>
                 </div>
               </el-tab-pane>
@@ -212,7 +212,7 @@
                   降水监测
                 </div> -->
                 <div class="pro-item">
-                  <progress-content :progress='bottomTabList.rainfall'></progress-content>
+                  <progress-content :skin='skin' :progress='bottomTabList.rainfall'></progress-content>
                 </div>
               </el-tab-pane>
               <el-tab-pane class="tab-pane-box-pro" label="风力监测" name="风力监测">
@@ -220,7 +220,7 @@
                   风力监测
                 </div> -->
                 <div class="pro-item">
-                  <progress-content :progress='bottomTabList.wind'></progress-content>
+                  <progress-content :skin='skin' :progress='bottomTabList.wind'></progress-content>
                 </div>
               </el-tab-pane>
               <el-tab-pane class="tab-pane-box-pro" label="能见度监测" name="能见度监测">
@@ -228,7 +228,7 @@
                   能见度监测
                 </div> -->
                <div class="pro-item">
-                  <progress-content :progress='bottomTabList.visibility'></progress-content>
+                  <progress-content :skin='skin' :progress='bottomTabList.visibility'></progress-content>
                 </div>
               </el-tab-pane>
             </el-tabs>
@@ -400,6 +400,14 @@ import mapBox from './../components/map-box';
       }
     },
     watch:{
+      bottomTab(val){
+        if(val == '7天趋势预报'){
+          this.chartResult = !this.chartResult
+          setTimeout(() => {
+          this.chartResult = !this.chartResult
+          }, 300);
+        }
+      },
       radio1(){
         this.componentKey += 1;
       },
@@ -433,6 +441,10 @@ import mapBox from './../components/map-box';
     },
     methods:{
       skinClick(){
+        this.chartResult = !this.chartResult
+        setTimeout(() => {
+        this.chartResult = !this.chartResult
+        }, 300);
         this.skin = !this.skin
       },
       handleChange(val) {
