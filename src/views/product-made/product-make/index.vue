@@ -1,11 +1,6 @@
 <template>
   <div class="product-made-home product-made-make">
-    <!-- {{lastItemClicked}} -->
-    <!-- {{productTabList}} -->
-    <!-- {{parentList}} -->
 <!-- 宽mainWidth：{{mainWidth}}，中isDirection：{{isDirection}}，导isEditAlive：{{isEditAlive}}，右isRight：{{isRight}}，右刷isEditAlive：{{isEditAlive}}，中刷isRouterAlive：{{isRouterAlive}}， -->
-    <!-- {{tabsList}} -->
-    <!-- {{leftData}} -->
     <div class="wrap-box">
       <div class="left-box" v-if="isNav">
         <div class="hidden-nav" @click="hiddenNav()">
@@ -114,8 +109,11 @@
           </div>
         </div>
       </div>-->
+      <div class="link-iframe main" v-if="linkIframe">
+        <iframe :src="linkIframe" frameborder="0"></iframe>
+      </div>
 
-      <div class="main">
+      <div class="main" v-else>
         <!-- 中间路由 -->
         <div class="center-box item-wrap" ref="mainDom" v-if='isDirection' :style="isRight? ``:'width: calc(100% - 18px);'">
           <div class="nested" v-if="mainWidth" :style="mainWidth? `width:${mainWidth}px`:''">
@@ -245,6 +243,7 @@
                         <el-button size="mini" @click="syncTime(productTabList[index])">同步预约时间</el-button>
                       </div>
                       <div class="buts">
+                        <!-- <el-button type="success" size="mini" @click="getTemps(productTabList[index])">模板内容</el-button> -->
                         <el-button type="success" size="mini" @click="getLasts(productTabList[index],index)">最新保存</el-button>
                         <el-button type="success" size="mini" @click="onAllSave(productTabList[index],index,function(){})">全部保存</el-button>
                         <el-button type="primary" size="mini" @click="onAllConsult(productTabList[index],index,'fast')">全部保存并发布</el-button>
@@ -253,9 +252,10 @@
                         <el-button type="primary" size="mini" @click="goProduct(productTabList[index])">查看发布结果</el-button>
                        </div>
                       </div>
-                    <div v-if="productTabList[index].type == 'word' || productTabList[index].type == 'excel'" class="iframe-content-box">
-                      <page-office :url="productTabList[index].filePath" ref="iframe" id="products"></page-office>
-                    </div>
+                      <div v-if="productTabList[index].type == 'word' || productTabList[index].type == 'excel'" class="iframe-content-box">
+                        <page-office v-if="isPageOffices" :url='"http://10.137.4.30:8089/PageOfficeService/main/openProductFile.action?reLabel=1&templateId=" + productTabList[index].templateId' ref="iframe" id="products"></page-office>
+                        <!-- <page-office :url="productTabList[index].filePath" ref="iframe" id="products"></page-office> -->
+                      </div>
                     <div v-else class="form-txt items">
                       <el-input
                         id="mytextareas"
@@ -331,6 +331,7 @@
                         </el-form-item>
                       </div>
                       <div class="buts">
+                        <el-button type="success" v-if="showBut" size="mini" @click="getTemp(productMade,false,function(){})">模板内容</el-button>
                         <el-button type="success" size="mini" @click="getLast(productMade,false,function(){})">最新保存</el-button>
                         <el-button type="success" size="mini" @click="onSave(productMade,false,function(){})">保存</el-button>
                         <el-button type="primary" size="mini" @click="onConsult(productMade,false,'fast')">保存并快速发布</el-button>
@@ -416,6 +417,7 @@
           </div>
         </div>
       </div>
+      
     </div>
 
       <!-- 提示语编辑弹窗 -->
@@ -580,7 +582,8 @@ import {
   requestProductTvTextByCode,
   requestProductDoFinish,
   requestProductReference,
-  requestProductMakeHistoryList
+  requestProductMakeHistoryList,
+  requestProductTemplateContent
 } from "@/remote/";
 import PageOffice from "@/components/page-office/";
 import CTransfer from '@/components/c-transfer/index.vue'
@@ -599,6 +602,8 @@ export default {
   },
   data() {
     return {
+      linkIframe:null,
+      isPageOffices:true,//多产品TAB切换时 刷新page-office
       iframePosition:false,//pageoffice 定位隐藏
       contextMenuItem:null,
       // 菜单数据
@@ -748,6 +753,17 @@ export default {
     };
   },
   computed: {
+    showBut(){
+        let butState = false
+        if(JSON.parse(localStorage.getItem('loginInfo',)).roleCodes.length > 0){
+            JSON.parse(localStorage.getItem('loginInfo',)).roleCodes.forEach(item => {
+                if(item == 'loadTemplateContent'){
+                    butState = true
+                }
+            });
+        }
+        return butState
+    },
   classObject: function (data) {
     console.log(data)
     return {
@@ -760,6 +776,12 @@ export default {
   }
 },
   watch: {
+    productTabProductInfoId(){
+      this.isPageOffices = !this.isPageOffices
+      setTimeout(() => {
+      this.isPageOffices = !this.isPageOffices
+      }, 300);
+    },
     childValue(val){
       if(val){
         this.navTab = '制作流程'
@@ -929,6 +951,25 @@ export default {
     })
   },
   methods: {
+    getTemp(data){
+      if(this.lastItemClicked.type == 'txt'){
+        requestProductTemplateContent({templateId:data.templateId}).then((res)=>{
+          this.productMade.content = res.data
+        })
+      }else if(this.lastItemClicked.type == 'word' || this.lastItemClicked.type == "excel"){
+          this.isIframe = !this.isIframe
+          setTimeout(() => {
+            this.isIframe = !this.isIframe
+            this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openProductFile.action?templateId=${data.templateId}&isLoadTodayLast=1`
+          }, 300);
+      }
+    },
+    getTemps(data){
+      console.log(data)
+      // requestProductTemplateContent({templateId:data.templateId}).then((res)=>{
+      //   console.log(res)
+      // })
+    },
     childEvent(data){
       this.onSave(data.item,data.index,data.callback,data.isDos,data.filePath)
     },
@@ -1556,6 +1597,15 @@ if(data.product == 1 && data.productInfoId){
         }
 
         this.productMade.content = res.data[0].content
+
+          if(res.data.length > 0){
+            if(res.data[0].file_type == 'word' || res.data[0].file_type == 'excel'){
+              if(res.data[0].file_path){
+                this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openFileByPath.action?filePath=${res.data[0].file_path}`
+              }
+            }
+          }
+
       })
     },
 
@@ -1874,6 +1924,32 @@ if(data.product == 1 && data.productInfoId){
           console.log('普通发布：item',item)
           console.log('普通发布：index',index)
             _this.activityObj = item //当前项
+
+            if(index === false){ //判断是否配置渠道
+              if(!_this.productMade.channelContent){
+                setTimeout(() => {
+                  // _this.$confirm('未配置渠道和服务用户, 是否前往配置?', '提示', {
+                  //   confirmButtonText: '前往配置',
+                  //   cancelButtonText: '取消',
+                  //   type: 'warning'
+                  // }).then(() => {
+                  //   _this.$router.replace({ name: "product-attribute" });
+                  // })
+                  _this.$message({message: '未配置渠道和服务用户',type: 'warning'});
+                }, 1000);
+                console.log('channelContent',_this.productMade.channelContent)
+                return
+              }
+            }else{
+              if(!_this.productTabList[index].channelContent){
+                setTimeout(() => {
+                  _this.$message({message: '未配置渠道和服务用户',type: 'warning'});
+                }, 1000);
+                console.log('channelContent',_this.productTabList[index].channelContent)
+                return
+              }
+            }
+
             requestProductUserList({
                   orgId: _this.loginInfo.orgId,
                   productInfoId: index === false? _this.lastItemClicked.id:item.productInfoId,
@@ -1953,19 +2029,26 @@ if(data.product == 1 && data.productInfoId){
       // });
     },
     onTreeClickItem(item) {
+      console.log("click-tree-item1", item);
+      if(item.type == 'link'){
+        this.linkIframe = item.link_path
+        return
+      }else{
+        this.linkIframe = null
+      }
 
         this.cityData = null
         this.tvText = null
 
       // this.makeTimeData = null
       this.productTabProductInfoId = null
-      console.log("click-tree-item1", item);
       this.isRouterAlive = false;
       this.$nextTick( () => {//刷新中间理由
         this.isRouterAlive = true;
       })
 
         this.lastItemClicked = item;
+
       if(item.treeType == 'productType'){
         requestProducInfos({
             productTypeId: this.lastItemClicked.id,
@@ -2486,7 +2569,6 @@ if(data.product == 1 && data.productInfoId){
           width: 100%;
           height: calc(100% - 202px);
           margin: 20px 0;
-          
         }
         .iframe-position{
           position: fixed !important;
@@ -2855,6 +2937,12 @@ if(data.product == 1 && data.productInfoId){
     }
   }
 
+  .link-iframe{
+    iframe{
+      width: 100%;
+      height: 100%;
+    }
+  }
 
 }
 .consult {

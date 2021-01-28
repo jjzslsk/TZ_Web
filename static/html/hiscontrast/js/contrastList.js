@@ -8,15 +8,21 @@ layui.use(['laydate', 'layer', 'form', 'table', 'element', 'tree'], function () 
         ,tree = layui.tree;
     var $ = layui.$;
 
+    var dateTime = new Date();
+    dateTime=dateTime.setDate(dateTime.getDate()-1);
+    dateTime=new Date(dateTime);
+    var year = dateTime.getFullYear();
+    var mouth = dateTime.getMonth()+1;
+    var day = dateTime.getDate();
+    var hisYear = (year-2)+" - "+(year-1);
+    $("#yearHis").val(hisYear);
+    $("#current").val(year+"-"+mouth+"-"+day);
     function init_(){
-        var dateTime = new Date();
-        dateTime=dateTime.setDate(dateTime.getDate()-1);
-        dateTime=new Date(dateTime);
         //历史年区间
         laydate.render({
             elem: '#yearHis'
             ,type: 'year'
-            ,value:'2019 - 2020'
+            ,value: hisYear
             ,format: 'yyyy'
             ,range: true
         });
@@ -26,6 +32,8 @@ layui.use(['laydate', 'layer', 'form', 'table', 'element', 'tree'], function () 
             ,value: dateTime
             ,format: 'yyyy-MM-dd'
         });
+        form.render("input");
+
     };
 
     init_();
@@ -312,7 +320,6 @@ layui.use(['laydate', 'layer', 'form', 'table', 'element', 'tree'], function () 
         }
         loaddata();
     });
-
     loaddata();
 
 });

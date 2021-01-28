@@ -4,6 +4,8 @@
       <el-form ref="form" label-width="80px">
         <el-form-item label="时间选择">
           <el-date-picker
+            @click.native="selectClick()"
+            @blur='blurSelect()'
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
             size="small"
@@ -13,7 +15,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="修改记录">
-          <el-select class="record-form" size="small" v-model="options" clearable placeholder="请选择">
+          <el-select class="record-form" size="small" @click.native="selectClick()" @blur='blurSelect()' v-model="options" clearable placeholder="请选择">
             <el-option
               v-for="(item,index) in historyList"
               :key="index"
@@ -23,30 +25,45 @@
           </el-select>
         </el-form-item>
         <el-form-item label="产品状态">
-          <el-select class="" size="small" v-model="state" clearable placeholder="请选择">
+          <el-select class="" size="small" v-model="state" @click.native="selectClick()" @blur='blurSelect()' clearable placeholder="请选择">
             <el-option label="保存记录" value="0">保存记录</el-option>
             <el-option label="发布记录" value="1">发布记录</el-option>
           </el-select>
         </el-form-item>
       </el-form>
     </div>
-    <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="options"></el-input>
+    <el-input v-if="!docPath" type="textarea" :rows="10" placeholder="请输入内容" v-model="options"></el-input>
+    <page-office v-else :class="!linkIframePosition? 'link-iframe-position':'page-office'" :url="docPath" ref="iframe" id="products"></page-office>
   </div>
 </template>
 <script>
+import PageOffice from "@/components/page-office/";
 import {
   requestProductMakeHistoryList
 } from "@/remote/";
 export default {
   props:['viewData','productTabProductInfoId'],
+  components: {
+    PageOffice,
+  },
   data() {
     return {
+      linkIframePosition:true,
+      docPath:null,
       state:"0",
       time:null,
       historyList:null,
       options: null,
       getWidth:null,
     };
+  },
+  methods:{
+    selectClick(){
+      this.linkIframePosition = false
+    },
+    blurSelect(){
+      this.linkIframePosition = true
+    },
   },
   watch: {
     productTabProductInfoId(){
@@ -58,6 +75,11 @@ export default {
       requestProductMakeHistoryList({productInfoId:this.viewData.id,type:this.state,time:this.time}).then(res=>{
         this.historyList = res.data
         this.options = this.historyList[0].content
+        if(this.historyList[0].file_type == 'word' || this.historyList[0].file_type == 'excel'){
+          this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openFileByPath.action?filePath=${this.historyList[0].file_path}`
+        }else{
+          this.docPath = null
+        }
       })
     },
     state(){
@@ -68,6 +90,11 @@ export default {
       requestProductMakeHistoryList({productInfoId:this.viewData.id,type:this.state,time:this.time}).then(res=>{
         this.historyList = res.data
         this.options = this.historyList[0].content
+        if(this.historyList[0].file_type == 'word' || this.historyList[0].file_type == 'excel'){
+          this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openFileByPath.action?filePath=${this.historyList[0].file_path}`
+        }else{
+          this.docPath = null
+        }
       })
     },
     time(){
@@ -78,6 +105,11 @@ export default {
       requestProductMakeHistoryList({productInfoId:this.viewData.id,type:this.state,time:this.time}).then(res=>{
         this.historyList = res.data
         this.options = this.historyList[0].content
+        if(this.historyList[0].file_type == 'word' || this.historyList[0].file_type == 'excel'){
+          this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openFileByPath.action?filePath=${this.historyList[0].file_path}`
+        }else{
+          this.docPath = null
+        }
       })
     },
   },
@@ -92,6 +124,11 @@ export default {
     requestProductMakeHistoryList({productInfoId:this.viewData.id,type:this.state,time:this.time}).then(res=>{
       this.historyList = res.data
       this.options = this.historyList[0].content
+      if(this.historyList[0].file_type == 'word' || this.historyList[0].file_type == 'excel'){
+        this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openFileByPath.action?filePath=${this.historyList[0].file_path}`
+      }else{
+        this.docPath = null
+      }
     })
     
   }
@@ -131,6 +168,20 @@ export default {
       flex: 1;
       height: 100%;
       display: flex !important;
+    }
+    .page-office{
+      width: 100%;
+      height: 100%;
+    }
+    .iframe{
+      position: relative !important;
+    }
+    .link-iframe-position{
+      position: fixed !important;
+      right: 30rem !important;
+      bottom: 30rem !important;
+      width: 0 !important;
+      height: 0 !important;
     }
 }
 </style>

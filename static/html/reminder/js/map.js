@@ -178,11 +178,16 @@ function boundaryStyle(f) {
 
 //加载站点数据
 function loadData() {
+    //var dateTime =$("#dateTime").val();  //$("#dateTime").val();
+    //var hours = "2";
+    //var param = "?tTime="+dateTime+"&hours="+hours;
     $.ajax({
         url: config.ulr.stationDataUrl,
+        //url:main_url + '/ssd-reminder-live-data/gisNHoursStation'+param,
         type: 'get',
         dataType: 'json',
         success: function(res) {
+            debugger;
             if (res) {
                 stationData = res;
                 if (res.stations && res.stations.length > 0) {

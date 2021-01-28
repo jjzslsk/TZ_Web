@@ -114,7 +114,7 @@ html,body{height: 100%;}
 .right #planeHistory .planeHistory{text-align: center;line-height: 22px;color: #666;}
 .right #planeHistory .plane-time-active{color:#419FFF;}
 
-.left #synthesize .synthesize{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;padding: 3px 0px 3px 5px;}
+.left #synthesize .synthesize{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;padding: 3px 0px 3px 5px;width: 240px;}
 .left #temporalSite .temporalSite{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
 .left #soundingSite .soundingSite{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
 .left #sectionSynthesize .sectionSynthesize{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;padding: 3px 0px 3px 5px;}

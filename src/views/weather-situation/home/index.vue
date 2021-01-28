@@ -1,6 +1,10 @@
 <template>
   <div class="weather-situation-page">
-    <div class="skin" @click="skinClick">换肤</div>
+    <!-- <div class="skin" @click="skinClick">换肤</div> -->
+    <div class="link" :style="skin? 'background-color: #0050a2':'background-color: #409eff;'">
+      <a class="title" >常用链接</a>
+      <a class="item" v-for="(i,index) in linkData" :key="index" :href='i.href' :target='i.target'  :style="skin? 'color: #409eff':'color: #fff;'">{{i.name}}</a>
+    </div>
     <div class="wrap-box" :class="skin? 'skinColor':''">
       <div class="left-box">
         <div class="left-top">
@@ -8,6 +12,7 @@
           <el-collapse  v-model="activeNames" @change="handleChange">
           <el-collapse-item name="1">
             <template slot="title">
+              <div class="silk-ribbon" v-if="alarmList"><span class="silk-ribbon2"></span></div>
              <span class="title-content">天气警报</span>
              <span class="more" v-if="!alarmList">无数据</span>
              <!-- <span class="more" v-if="alarmList">{{alarmList.length}}个</span> -->
@@ -32,6 +37,7 @@
           </el-collapse-item>
           <el-collapse-item name="2">
             <template slot="title">
+            <div class="silk-ribbon" v-if="earlyList"><span class="silk-ribbon2"></span></div>
              <span class="title-content">市县预警</span>
              <span class="more" v-if="!earlyList">无数据</span>
              <!-- <span class="more" v-if="earlyList">{{earlyList.length}}个</span> -->
@@ -59,6 +65,7 @@
         </div>
         <div class="left-bottom" :style="{height:`calc(100% - ${collapseDomHeight}px)`}">
           <div class="short-forecast short-forecast-tab tab-wrap short el-tabs--border-card">
+            <div class="silk-ribbon" v-if="earlyList"><span class="silk-ribbon2"></span></div>
             <div class="tab-top">
               <el-tabs v-model="activeName">
                 <el-tab-pane v-for="(item,index) in shortForecas" :label="item.name" :name="item.id" :key="index">
@@ -72,6 +79,7 @@
             </div>
           </div>
           <div class="short-forecast short-forecast-tab tab-wrap rim el-tabs--border-card">
+            <div class="silk-ribbon" v-if="earlyList"><span class="silk-ribbon2"></span></div>
             <div class="tab-top">
               <el-tabs v-model="activeName2">
                 <el-tab-pane v-for="(item,index) in cityByForecasts" :label="item.name" :name="item.id" :key="index">
@@ -111,6 +119,7 @@
           </div>
           <div class="top-right">
             <div class="short-forecast forecast-box el-tabs--border-card">
+              <div class="silk-ribbon" v-if="earlyList"><span class="silk-ribbon2"></span></div>
               <div class="tab-top ">
                 <el-tabs v-model="notice">
                   <el-tab-pane label="通知栏" name="1">
@@ -145,6 +154,7 @@
             </div>
 
             <div class="weather-forecast forecast-box file el-tabs--border-card">
+              <div class="silk-ribbon" v-if="earlyList"><span class="silk-ribbon2"></span></div>
               <div class="title-box">
                 <span class="bold-title">省级决策服务材料</span>
                 <!-- <span class="more">更多+</span> -->
@@ -235,11 +245,12 @@
           </div>
           <div class="bottom-right picture el-tabs--border-card">
             <div class="short-forecast forecast-box">
+              <div class="silk-ribbon" v-if="earlyList"><span class="silk-ribbon2"></span></div>
               <div class="tab-top">
                 <span class="short-title">
                     3天降水图
                   </span>
-                <el-tabs v-model="threeRainfall">
+                <el-tabs v-model="threeRainfall" class="rain-img">
                   <el-tab-pane label="第一天" name="1">
                     <div class="tab-content">
                       <div class="img">
@@ -323,6 +334,10 @@ import mapBox from './../components/map-box';
     },
     data() {
       return {
+        linkData:[
+          {name:'中央台天气业务内网',href:'http://10.1.64.146/npt',target:'_blank'},
+          {name:'省局综合业务网',href:'http://172.21.129.77/index8.html',target:'_blank'},
+        ],
         skin:false,
         collapseDomHeight:null,
         activeNames: [],
@@ -468,6 +483,10 @@ import mapBox from './../components/map-box';
     async requestData(){
         this.chartResult = true
 
+        //608行 方法相同，图片加载 兼容处理
+        this.windowHeight = document.body.clientWidth;
+        this.collapseDomHeight = this.$refs.collapseDom.offsetHeight;  //100
+
                 //底部 降水 风力 能见度
         // requestWarningBottomTabList().then(res=>{
         //   this.bottomTabList = res.data
@@ -601,9 +620,9 @@ import mapBox from './../components/map-box';
         })
 
         
-
         this.windowHeight = document.body.clientWidth;
         this.collapseDomHeight = this.$refs.collapseDom.offsetHeight;  //100
+        
 
       },
       toMore(data){
@@ -668,8 +687,8 @@ import mapBox from './../components/map-box';
     display: flex;
     justify-content: space-between;
     background: #fff;
-    padding:5px 0 5px 0;
-    height: calc(100% - 10px);
+    padding:5px 0 23px 0;
+    height: calc(100% - 28px);
     .left-box{
       height: 100%;
       width: 290px;
@@ -825,6 +844,7 @@ import mapBox from './../components/map-box';
           width: 290px;
           height: 100%;
             .forecast-box{
+              position: relative;
               height: calc(50%-7px);
               background: #fff;
               border:1px solid rgba(221, 221, 221, 1);
@@ -1088,10 +1108,11 @@ import mapBox from './../components/map-box';
       justify-content: space-between;
       border-bottom:1px solid rgba(221, 221, 221, 1);
       .bold-title{
-        font-size:15px;
-        font-family:Microsoft YaHei;
-        font-weight:bold;
-        color:rgba(48,49,51,1);
+        font-size: 15px;
+        font-family: Microsoft YaHei;
+        color: #409eff;
+        font-weight: 400;
+        border-bottom: 2px #409eff solid;
       }
     }
     .border-top{
@@ -1140,6 +1161,25 @@ import mapBox from './../components/map-box';
       color: #fff;
       cursor: pointer;
   }
+  .link{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 15px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #409eff;
+    color: #fff;
+    font-size:12px;
+    a {
+      margin: 0 10px;
+    }
+    .item{
+      cursor:pointer;
+    }
+  }
 
 }
 </style>
@@ -1151,10 +1191,24 @@ import mapBox from './../components/map-box';
       padding:0 5px;
     }
   }
+  .rain-img{
+    .is-active{
+      background-color: #409eff;
+      color: #fff !important;
+    }
+    .el-tabs__active-bar{
+      height: 0;
+    }
+  }
   .el-tabs__item{
     font-size:15px;
     font-family:Microsoft YaHei;
-    color:rgba(48,49,51,1);
+    color: #909399;
+  }
+  .el-tabs__nav{
+    .is-active{
+      color: #409eff;
+    }
   }
   .bottom-left {
     .el-tabs__item {
@@ -1199,6 +1253,11 @@ import mapBox from './../components/map-box';
 
   .right-bottom {
     .monitoring{
+      .el-tabs__nav-scroll{
+        .is-active{
+          border-right: 2px #409eff solid ;
+        }
+      }
       .el-tabs__content {
       height: 280px !important;
       padding: 15px 0 0 0;
@@ -1243,7 +1302,7 @@ import mapBox from './../components/map-box';
       .el-tabs__nav-scroll {
         display: flex;
         justify-content: flex-end;
-        margin-right: 20px;
+        margin-right: 30px;
         .el-tabs__nav{
          #tab-1 {
 
@@ -1256,14 +1315,17 @@ import mapBox from './../components/map-box';
     }
     .short-title {
       position: absolute;
-      top: 12px;
+      height: 40px;
+      line-height: 40px;
+      top: 0px;
       left: 12px;
       font-size: 15px;
       font-family: Microsoft YaHei;
       font-weight: 700;
       color: #303133;
-      display: inline;
+      display: inline-block;
       padding-top:1px;
+      border-bottom:2px #409eff solid;
     }
   }
   .resizeNone{
@@ -1348,7 +1410,7 @@ import mapBox from './../components/map-box';
       color:#fff !important;
     }
     .right-box .right-top .top-right .forecast-box .tab-content .item-text a{
-      color:rgb(110, 126, 216) !important;
+      color:#409eff !important;
     }
     .el-tabs__item{
       color: #fff !important;
@@ -1359,6 +1421,50 @@ import mapBox from './../components/map-box';
     .right-bottom .short-title{
       color: #fff !important;
     }
+    .el-tabs__active-bar{
+      background-color:rgb(255, 187, 0) !important;
+    }
+    .el-tabs__item.is-active {
+        color:rgb(255, 187, 0) !important;
+    }
+    .el-tabs__item{
+      color: #1cc0f6 !important;
+    }
+  }
+  .el-collapse-item{
+    position: relative;
+  }
+  .silk-ribbon2 {
+	display:inline-block;
+	width:16px;
+	padding:5px 0;
+	background:#fd962f;
+	top:-2px;
+	right:7px;
+	position:absolute;
+	text-align:center;
+	/* border-top-left-radius:3px; */
+}
+  .silk-ribbon2:before {
+    /* height:0;
+    width:0;
+    border-bottom:6px solid #8D5A20;
+    border-right:6px solid transparent;
+    right:-6px;
+    top:0; */
+  }
+  .silk-ribbon2:before,.silk-ribbon2:after {
+    content:"";
+    position:absolute;
+  }
+  .silk-ribbon2:after {
+    height:0;
+    width:0;
+    border-left:8px solid #fd962f;
+    border-right:8px solid #fd962f;
+    border-bottom:8px solid transparent;
+    bottom:-8px;
+    left:0;
   }
 }
 /* 宽度小于 xxx 像素则 */
@@ -1440,9 +1546,9 @@ import mapBox from './../components/map-box';
 .weather-situation-page .wrap-box .left-box .left-top .forecast-box{height: 140px;margin-bottom:5px;background: #fff;border:1px solid rgba(221, 221, 221, 1);}
 /* .weather-situation-page .wrap-box .left-box .left-bottom {height: 100%;} */
 .weather-situation-page .wrap-box .left-box .el-collapse-item__content {padding:0}
-.weather-situation-page .wrap-box .left-box .title-content {padding-left: 20px;font-size: 15px;font-family: Microsoft YaHei;color: #303133;}
-.weather-situation-page .wrap-box .left-box .more {padding-left: 140px;font-size:15px;font-family:Microsoft YaHei;color:rgba(144,147,153,1);cursor: pointer;width: 45px;display: inline-block;text-align: right;}
-.weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap {background: #fff;border: 1px solid #ddd;}
+.weather-situation-page .wrap-box .left-box .title-content {margin: 20px;font-size: 16px;font-family: Microsoft YaHei;color: #409eff;font-weight: 400;border-bottom: 2px solid #409eff;}
+.weather-situation-page .wrap-box .left-box .more {padding-left: 120px;font-size:15px;font-family:Microsoft YaHei;color:rgba(144,147,153,1);cursor: pointer;width: 45px;display: inline-block;text-align: right;}
+.weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap {background: #fff;border: 1px solid #ddd;position: relative;}
 .weather-situation-page .wrap-box .left-box .left-bottom .short{margin-bottom: 5px; height: calc(50% - 7px) !important;}
 .weather-situation-page .wrap-box .left-box .left-bottom .rim{height: calc(50% - 2px) !important;}
 .weather-situation-page .wrap-box .left-box .left-bottom .rim .el-tabs__item{padding: 5px;}

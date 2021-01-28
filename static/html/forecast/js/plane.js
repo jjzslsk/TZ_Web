@@ -712,9 +712,9 @@ $(".stamp-but").click(function(){
 //综合分析 移入弹窗
 var tip_index;
 $(".synthesize").hover(function(){
-tips_index = layer.tips($(this).attr('content'),this,{time:0});
+tip_index = layer.tips($(this).attr('content'),this,{time:0});
 },function(){
-    layer.close(tips_index);
+    layer.close(tip_index);
 });
 
 async function planeRightTab (data){

@@ -63,7 +63,7 @@
                                     <el-button size="mini"  type="primary" plain>
                                         <span class="">WORD</span>
                                     </el-button>  -->
-                                    <el-button size="mini"  @click="clickItemTxt(scope.row)" type="primary" plain>
+                                    <el-button size="mini" v-if="scope.row.fileType == 'txt'"  @click="clickItemTxt(scope.row)" type="primary" plain>
                                         <span class="">TXT</span>
                                     </el-button> 
                                 </template>
@@ -73,7 +73,7 @@
                                     <!-- <el-link target="_blank" :href="" :underline="false" style="margin-left:15px">
                                         <el-button size="mini" type="warning">下载</el-button>
                                     </el-link> -->
-                                    <span class="" @click="clickDownload(scope.row)">下载</span>
+                                    <span class="down" @click="clickDownload(scope.row)">下载</span>
                                     <c-button type="del">
                                         <span class="text-danger">失败重发</span>
                                     </c-button>
@@ -347,6 +347,9 @@ export default {
                             .el-table{
                                 overflow: auto;
                                 height: calc(100% - 162px);
+                                .down{
+                                    cursor:pointer;
+                                }
                             }
                         }
                     }

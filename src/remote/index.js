@@ -145,6 +145,9 @@ export const requestProducInfo = generateGetWithEvn(`{{host}}/${url_integration}
 // 产品制作-产品制作-获取产品信息 多个产品查询发布记录：ssd-product-publish/getPublishList?productInfoIds=aa,bb,cc
 export const requestProductInfoIds = generateGetWithEvn(`{{host}}/${url_integration}/ssd-product-publish/getPublishList`);
 
+// 产品制作-产品制作-模板内容 按钮
+export const requestProductTemplateContent= generateGetWithEvn(`{{host}}/${url_integration}/ssd-product-template/loadReplaceTemplateContent`);
+
 // 产品制作-产品制作-右侧保存 单个
 export const requestProducTreleaseSave = generatePostWithEvn(`{{host}}/${url_integration}/ssd-product-publish/doSave`);
 export const requestProducDoQuickPublish = generatePostJSONWithEvn(`{{host}}/${url_integration}/ssd-product-publish/doQuickPublish`);

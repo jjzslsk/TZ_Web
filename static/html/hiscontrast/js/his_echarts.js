@@ -12,6 +12,11 @@ function set_echarts(objMap){
     var his_avgTemp=[];
     var his_rain=[];
     var his_sunny=[];
+    var last_maxTemp=[];
+    var last_minTemp=[];
+    var last_avgTemp=[];
+    var last_rain=[];
+    var last_sunny=[];
     for(var key in objMap){
         var map = objMap[key];
         dateTime.push(map["timeName"]);
@@ -24,11 +29,27 @@ function set_echarts(objMap){
         avgTemp.push(temp_avg);
         rain.push(map["rain_amount"]);
         sunny.push(map["sunshine_amount"]);
+
         his_maxTemp.push(map["his_temp_max"]);
         his_minTemp.push(map["his_temp_min"]);
-        his_avgTemp.push(map["his_temp_average"]);
+        temp_avg = map["his_temp_average"];
+        if(temp_avg != null && temp_avg != "" && temp_avg !="null"){
+            temp_avg = temp_avg.toFixed(2);
+        }
+        his_avgTemp.push(temp_avg);
         his_rain.push(map["his_rain_amount"]);
         his_sunny.push(map["his_sunshine_amount"]);
+
+        last_maxTemp.push(map["last_temp_max"]);
+        last_minTemp.push(map["last_temp_min"]);
+        temp_avg = map["last_temp_average"];
+        if(temp_avg != null && temp_avg != "" && temp_avg !="null"){
+            temp_avg = temp_avg.toFixed(2);
+        }
+        last_avgTemp.push(temp_avg);
+        last_rain.push(map["last_rain_amount"]);
+        last_sunny.push(map["last_sunshine_amount"]);
+
     }
 
 option = {
@@ -51,7 +72,11 @@ option = {
         }
     },
     legend: {
-        data: ['最高温', '历史最高温', '最低温', '历史最低温','平均温','历史平均温','降水', '历史降水','日照','历史日照', ]
+        data: ['最高温','去年最高温', '历史最高温',
+               '最低温','去年最低温', '历史最低温',
+               '平均温','去年平均温', '历史平均温',
+               '累计降水','去年累计降水', '历史累计降水',
+               '累计日照','去年累计日照','历史累计日照' ]
     },
 
     dataZoom: [
@@ -79,86 +104,6 @@ option = {
             data:dateTime
         }
     ],
-    /*yAxis: [
-        {
-            type: 'value',
-            name: '最高温',
-            min: -20,
-            max: 40,
-            position: 'right',
-            axisLine: {
-                lineStyle: {
-                    color: colors[0]
-                }
-            },
-            axisLabel: {
-                formatter: '{value} °C'
-            }
-        },
-        {
-            type: 'value',
-            name: '最低温',
-            min: -20,
-            max: 40,
-            position: 'right',
-            offset: 60,
-            axisLine: {
-                lineStyle: {
-                    color: colors[1]
-                }
-            },
-            axisLabel: {
-                formatter: '{value} °C'
-            }
-        },
-        {
-            type: 'value',
-            name: '平均温',
-            min: -20,
-            max: 40,
-            position: 'right',
-            offset: 120,
-            axisLine: {
-                lineStyle: {
-                    color: colors[2]
-                }
-            },
-            axisLabel: {
-                formatter: '{value} °C'
-            }
-        },
-        {
-            type: 'value',
-            name: '日照',
-            min: 0,
-            max: 24,
-            position: 'right',
-            offset: 180,
-            axisLine: {
-                lineStyle: {
-                    color: colors[3]
-                }
-            },
-            axisLabel: {
-                formatter: '{value} h'
-            }
-        },
-        {
-            type: 'value',
-            name: '降水',
-            min: 0,
-            max: 100,
-            position: 'left',
-            axisLine: {
-                lineStyle: {
-                    color: colors[4]
-                }
-            },
-            axisLabel: {
-                formatter: '{value} ml'
-            }
-        }
-    ],*/
     yAxis: [
         {
             type: 'value',
@@ -218,8 +163,19 @@ option = {
                     }
             },
             yAxisIndex: 0,
-            //data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
             data:maxTemp
+
+        },
+        {
+            name: '去年最高温',
+            type: 'line',
+            itemStyle: {
+                normal: {
+                    color:'#000099'
+                }
+            },
+            yAxisIndex: 0,
+            data:last_maxTemp
 
         },
         {
@@ -231,7 +187,6 @@ option = {
                 }
             },
             yAxisIndex: 0,
-            //data: [10.2, 10.2, 15.2, 30.5, 45.9, 96.9, 95.9, 62.9, 12.9, 40.9, 46.9, 43.9]
             data:his_maxTemp
         },
         {
@@ -243,8 +198,18 @@ option = {
                 }
             },
             yAxisIndex: 0,
-            //data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
             data:minTemp
+        },
+        {
+            name: '去年最低温',
+            type: 'line',
+            itemStyle: {
+                normal: {
+                    color:'#000099'
+                }
+            },
+            yAxisIndex: 0,
+            data:last_minTemp
         },
         {
             name: '历史最低温',
@@ -255,7 +220,6 @@ option = {
                 }
             },
             yAxisIndex: 0,
-            //data: [2.5, 5.8, 8.9, 26.2, 28.2, 70.2, 175.2, 182.2, 48.2, 18.2, 6.2, 2.2]
             data:his_minTemp
         },
         {
@@ -267,8 +231,18 @@ option = {
                 }
             },
             yAxisIndex: 0,
-            //data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
             data:avgTemp
+        },
+        {
+            name: '去年平均温',
+            type: 'line',
+            itemStyle: {
+                normal: {
+                    color:'#FFFF00'
+                }
+            },
+            yAxisIndex: 0,
+            data:last_avgTemp
         },
         {
             name: '历史平均温',
@@ -283,7 +257,7 @@ option = {
             data:his_avgTemp
         },
         {
-            name: '降水',
+            name: '累计降水',
             type: 'bar',
             itemStyle: {
                 normal: {
@@ -291,11 +265,21 @@ option = {
                 }
             },
             yAxisIndex: 1,
-            //data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
             data:rain
         },
         {
-            name: '历史降水',
+            name: '去年累计降水',
+            type: 'bar',
+            itemStyle: {
+                normal: {
+                    color:'#FF9966'
+                }
+            },
+            yAxisIndex: 1,
+            data:last_rain
+        },
+        {
+            name: '历史累计降水',
             type: 'bar',
             itemStyle: {
                 normal: {
@@ -303,11 +287,10 @@ option = {
                 }
             },
             yAxisIndex: 1,
-            //data: [1.0, 1.2, 2.3, 3.5, 5.3, 8.2, 19.3, 18.4, 12.0, 12.5, 11.0, 3.2]
             data:his_rain
         },
         {
-            name: '日照',
+            name: '累计日照',
             type: 'line',
             itemStyle: {
                 normal: {
@@ -315,11 +298,21 @@ option = {
                 }
             },
             yAxisIndex: 2,
-            //data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
             data:sunny
         },
         {
-            name: '历史日照',
+            name: '去年累计日照',
+            type: 'line',
+            itemStyle: {
+                normal: {
+                    color:'#FFFF66'
+                }
+            },
+            yAxisIndex: 2,
+            data:last_sunny
+        },
+        {
+            name: '历史累计日照',
             type: 'line',
             itemStyle: {
                 normal: {
@@ -327,7 +320,6 @@ option = {
                 }
             },
             yAxisIndex: 2,
-            //data: [2.5, 5.8, 8.9, 26.2, 28.2, 70.2, 175.2, 182.2, 48.2, 18.2, 6.2, 2.2]
             data:his_sunny
         }
     ]

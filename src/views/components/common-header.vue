@@ -88,6 +88,7 @@ export default {
   components:{
     CTransfer,
   },
+  inject:['reload'],   //强制刷新当前页面，可选择移除
     name: 'pageHeader',
     props: {
         'menuInfo': Object,
@@ -176,15 +177,28 @@ export default {
   },
   methods: {
     fatherMethod(data){
-      if(data.name == 'saveForm'){
-        this.allocation()
-        requestProductReferenceUpdate(this.allocation()).then(()=>{
-          this.$message({
-            message: '保存成功',
-            type: 'success'
-          });
-        })
-      }else if(data.type == '参考菜单配置'){
+      if(data.name == 'saveForm'){//参考菜单配置
+        this.transfer = false;//穿梭框
+        this.$confirm('菜单保存，页面数据会被刷新, 是否继续?', '提示', {
+          confirmButtonText: '继续',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.allocation()
+          requestProductReferenceUpdate(this.allocation()).then(()=>{
+            this.$message({
+              message: '保存成功',
+              type: 'success'
+            });
+            this.reload(); //强制刷新当前页面，可选择移除
+          })
+          this.transfer = true;
+        }).catch(() => {
+          this.transfer = true;
+        });
+      }
+
+      else if(data.type == '参考菜单配置'){
         this.transfer = true;
       }else{
         this.transfer = false;
