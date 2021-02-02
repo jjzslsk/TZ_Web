@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="css/swiper.min.css"/>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	</head>
+	<body>
+    <div class="page">
+        <!--<div class="header">
+            <div class="logoBox">
+                <img src="image/logo.png" >
+                <span>台州市县综合气象业务一体化平台</span>
+            </div>
+            <ul class="menuBox">
+                <li class="liAc">天气概览</li>
+                <li>综合观测</li>
+                <li>数值预报</li>
+                <li>智能提醒</li>
+                <li>产品制作</li>
+                <li>天气警报</li>
+                <li>台风服务</li>
+                <li>气候平台</li>
+                <li>综合管理</li>
+                <li>信息监控</li>
+                <li>系统管理</li>
+            </ul>
+            <div class="timeUser">
+                <div class="timeBox">
+                    <img src="image/clock.png" >
+                    <span>12:30:36</span>
+                    <br>
+                    <span>1月4日</span>
+                    <span>星期一</span>
+                </div>
+                <div class="userBox">
+                    <img src="image/userIcon.png" >
+                    <br>
+                    <span>台州气象台</span>
+                </div>
+            </div>
+        </div>-->
+        <div class="nullBox"></div>
+
+        <div class="pageCon">  <!-- h911  w1880 -->
+            <div class="conL">
+                <div class="weatherWarning">
+                    <div class="itemBoxTitle itemBoxTitle1">
+                        <div class="itemTitleBox">
+                            <img src="image/titleIcon.png" >
+                            <span>天气预警</span>
+                        </div>
+                        <div class="itemTitleOther" id="WeatherAlertTotal">无数据</div>
+                    </div>
+                    <div class="warningList" id="WeatherAlert">
+                        <div class="noWarning">
+                            <img style="height: 150px;" src="image/noData.png" >
+                        </div>
+                        <!--<div class="warningItem">
+                            <img src="image/warning_icon/寒潮_03.png" >
+                            <div class="warningTxt">
+                                <p>天台县气象局发布寒潮黄色预警</p>
+                                <p>2021-01-01  16:10</p>
+                            </div>
+                        </div>
+                        <div class="warningItem">
+                            <img src="image/warning_icon/寒潮_04.png" >
+                            <div class="warningTxt">
+                                <p>天台县气象局发布寒潮蓝色色预警</p>
+                                <p>2021-01-01  16:10</p>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+
+                <div class="nullBox"></div>
+
+                <div class="cityCountyWarning">
+                    <div class="itemBoxTitle itemBoxTitle2">
+                        <div class="itemTitleBox">
+                            <img src="image/titleIcon.png" >
+                            <span>市县预警</span>
+                        </div>
+                        <div class="itemTitleOther" id="cityCountyEarlyMore">更多(0)</div>
+                    </div>
+                    <div class="warningList" id="cityCountyEarly">
+                        <div class="noWarning">
+                            <img style="height: 150px;" src="image/noData.png" >
+                        </div>
+                        <!-- <div class="warningItem">
+                            <img src="image/warning_icon/寒潮_03.png" >
+                            <div class="warningTxt">
+                                <p>天台县气象局发布寒潮黄色预警</p>
+                                <p>2021-01-01  16:10</p>
+                            </div>
+                        </div>
+                        <div class="warningItem">
+                            <img src="image/warning_icon/寒潮_04.png" >
+                            <div class="warningTxt">
+                                <p>天台县气象局发布寒潮蓝色色预警</p>
+                                <p>2021-01-01  16:10</p>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+
+                <div class="nullBox"></div>
+
+                <div class="warningTxtBox">
+                    <div class="warningTxtBoxTitle warningTxtBoxTitle1">
+                        <span class="spanAc">短临预报</span>
+                        <span>短期预报</span>
+                    </div>
+                    <div class="warningTxtDetail leftTwo">
+                        <div class="warningTxtDetailItem">
+                            <p  id="emporaryWarning">
+                                <!-- 台州气象台2021年1月4日8时发布的未来3小时天气预报；<br>
+                                 椒江多去到阴，局部有零星小雨；路桥多云到阴雨，局部有零星小雨；黄岩多云到阴；临海多云；温岭多云到阴雨，局部有零星小雨；玉环多云到阴雨，局部有零星小雨；天台多云到阴;仙居多云到阴；三门多云到阴，局部有零星小雨。
+                                 <br>沿海海面：北到东北风5-6级阵风7级。-->
+                                暂无数据
+                            </p>
+
+                        </div>
+
+                        <div class="warningTxtDetailItem" style="display: none">
+                            <p id="shortWarning">
+                                <!--ces预报；<br>
+                                11111111111111111111111111111
+                                <br>沿海海面：北到东北风5-6级阵风7级。-->
+                                暂无数据
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nullBox"></div>
+
+                <div class="warningTxtBox warningTxtBox2">
+                    <div class="warningTxtBoxTitle warningTxtBoxTitle2">
+                        <span class="spanAc">十天预报</span>
+                        <span>城市预报</span>
+                        <span>周边城市预报</span>
+                    </div>
+                    <div class="warningTxtDetail leftThree" >
+                        <div class="warningTxtDetailItem">
+                            <p id="tenForecast">
+                                暂无数据
+                            </p>
+                        </div>
+                        <div class="warningTxtDetailItem" style="display: none;">
+                            <p id="cityForecast">
+                                暂无数据
+                            </p>
+                        </div>
+                        <div class="warningTxtDetailItem" style="display: none;">
+                            <p id="aroundCityForecast">
+                                暂无数据
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="conR">  <!-- w1512 -->
+                <div class="conRTop">
+                    <div class="picBox">
+                        <div class="itemBoxTitle itemBoxTitle3">
+                            <div class="itemTitleBox">
+                                <img src="image/titleIcon.png" >
+                                <span>雷达图 云图</span>
+                            </div>
+                        </div>
+                        <div class="picBoxDetail">
+                            <div class="radarPic">
+                                <iframe src="../weatherMap/radar.html" class="inline" style="width:100%;height:100%;" frameborder="0"></iframe>
+
+                            </div>
+                            <div class="cloudPic">
+                                <iframe src="../weatherMap/cloud.html" class="inline" style="width:100%;height:100%;" frameborder="0"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="noticeMaterial">
+                        <div class="noticeBox">
+                            <div class="itemBoxTitle itemBoxTitle4">
+                                <div class="itemTitleBox">
+                                    <img src="image/titleIcon.png" >
+                                    <span>通知栏</span>
+                                </div>
+                            </div>
+                            <div class="swiBox">
+                                <div class="swiper-container swiper-container1" style="height:100%;">
+                                    <div class="swiper-wrapper" style="height:100%;" id="noticeBar">
+                                        暂无数据
+                                        <!--<div class="swiper-slide" style="height:100%;">
+                                            <div class="noticeItem">
+                                                <div class="noticeItemDetail">
+                                                    <i></i>
+                                                    <div class="noticeTxt">
+															<span class="name">
+																<i>中国气象局：</i>
+																<i class="detailTxt">提醒！明日上班两股冷空气“接力”来袭！</i>
+																<i class="time">2021-01-03</i>
+															</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="swiper-slide" style="height:100%;">
+                                            <div class="noticeItem">
+                                                <div class="noticeItemDetail">
+                                                    <i></i>
+                                                    <div class="noticeTxt">
+															<span class="name">
+																<i>中国气象爱好者：新疆下雪，</i>
+																<i class="detailTxt">“小寒寒潮 在酝酿？不管是否达标，漫长寒冷要来了！</i>
+																<i class="time">2021-01-03</i>
+															</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="swiper-slide" style="height:100%;">
+                                            <div class="noticeItem">
+                                                <div class="noticeItemDetail">
+                                                    <i></i>
+                                                    <div class="noticeTxt">
+															<span class="name">
+																<i>中国气象爱好者：新疆下雪，</i>
+																<i class="detailTxt">“小寒寒潮 在酝酿？不管是否达标，漫长寒冷要来了！</i>
+																<i class="time">2021-01-03</i>
+															</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="nullBox nullBox2"></div>
+
+                        <div class="noticeBox">
+                            <div class="itemBoxTitle itemBoxTitle4">
+                                <div class="itemTitleBox">
+                                    <img src="image/titleIcon.png" >
+                                    <span>省级决策服务材料</span>
+                                </div>
+                            </div>
+                            <div class="swiBox swiBox2">
+                                <div class="swiper-container swiper-container2" style="height:100%;">
+                                    <div class="swiper-wrapper" style="height:100%;" id="serviceMaterials">
+                                        暂无数据
+                                        <!--<div class="swiper-slide" style="height:100%;">
+                                            <div class="noticeItem">
+                                                <div class="noticeItemDetail">
+                                                    <i></i>
+                                                    <div class="noticeTxt noticeTxt2">
+                                                        （绍兴）一周天气简报第1期（0101）
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="swiper-slide" style="height:100%;">
+                                            <div class="noticeItem">
+                                                <div class="noticeItemDetail">
+                                                    <i></i>
+                                                    <div class="noticeTxt noticeTxt2">
+                                                        （杭州）《天气周报2021第一期》
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="swiper-slide" style="height:100%;">
+                                            <div class="noticeItem">
+                                                <div class="noticeItemDetail">
+                                                    <i></i>
+                                                    <div class="noticeTxt noticeTxt2">
+                                                        （丽水）丽水报告20123115（受寒潮影...
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="swiper-slide" style="height:100%;">
+                                            <div class="noticeItem">
+                                                <div class="noticeItemDetail">
+                                                    <i></i>
+                                                    <div class="noticeTxt noticeTxt2">
+                                                        （衢州）重要天气情况报告7
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="swiper-slide" style="height:100%;">
+                                            <div class="noticeItem">
+                                                <div class="noticeItemDetail">
+                                                    <i></i>
+                                                    <div class="noticeTxt noticeTxt2">
+                                                        （绍兴）一周天气简报第2期（0102）
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nullBox"></div>
+                <div class="conRBtm">
+                    <div class="monitor">
+                        <div class="monitorBtn">
+                            <span id="sevenForecast"  class="spanAc">七天趋势预报</span>
+                            <span id="rainMonitor">降水监测</span>
+                            <span id="windVMonitor">风力监测</span>
+                            <span id="visMonitor">能见度监测</span>
+                        </div>
+                        <div class="monitorList">
+                            <div class="monitorItem">  <!-- h359 -->
+                                <div class="sectionBox" id="sevenForecastDiv">
+                                    <span class="spanAc" id="sevenDay">日</span>
+                                    <span  id="sevenXun">旬</span>
+                                    <span  id="sevenMonth">月</span>
+                                </div>
+                                <div class="sectionListEcahrt" >
+                                    <div id="sectionItemEcahrt"></div>
+                                </div>
+                            </div>
+                            <div class="monitorItem"  style="display: none">
+                                <div class="sectionListEcahrt">
+                                    <div id="rainEcharts"></div>
+                                </div>
+                            </div>
+                            <div class="monitorItem" style="display: none">
+                                <div class="sectionListEcahrt">
+                                    <div id="windVEcharts"></div>
+                                </div>
+                            </div>
+                            <div class="monitorItem" style="display: none">
+                                <div class="sectionListEcahrt">
+                                    <div id="visEcharts"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="runPic">
+                        <div class="itemBoxTitle itemBoxTitle5">
+                            <div class="itemTitleBox">
+                                <img src="image/titleIcon.png" >
+                                <span>3天降水图</span>
+                            </div>
+                        </div>
+                        <div class="runPicBtn">
+                            <span class="spanAc">第一天</span>
+                            <span>第二天</span>
+                            <span>第三天</span>
+                        </div>
+                        <div style="width: 100%;height: 100%;">
+                            <div class="runPicDetail rainDays" id="rainDaysOne">
+                                <img class="nuData" src="image/noData.png" >
+                            </div>
+                            <div class="runPicDetail" style="display: none" id="rainDaysTwo">
+                                <img class="nuData" src="image/noData.png" >
+                            </div>
+                            <div class="runPicDetail" style="display: none" id="rainDaysThree">
+                                <img class="nuData" src="image/noData.png" >
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+		
+		<script src="js/reset.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../layui/layui.js"></script>
+        <script src="../../layui/layui.all.js"></script>
+		<script src="js/echarts.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../tools/http.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/index_echarts.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/modulelInit.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

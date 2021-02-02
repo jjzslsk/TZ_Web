@@ -64,11 +64,11 @@
       </div>
         </div>
         <div class="left-bottom" :style="{height:`calc(100% - ${collapseDomHeight}px)`}">
-          <div class="short-forecast short-forecast-tab tab-wrap short el-tabs--border-card">
+          <div class="short-forecast short-forecast-tab tab-wrap rim el-tabs--border-card">
             <div class="silk-ribbon" v-if="earlyList"><span class="silk-ribbon2"></span></div>
             <div class="tab-top">
-              <el-tabs v-model="activeName">
-                <el-tab-pane v-for="(item,index) in shortForecas" :label="item.name" :name="item.id" :key="index">
+              <el-tabs v-model="activeName2">
+                <el-tab-pane v-for="(item,index) in cityByForecasts" :label="item.name" :name="item.id" :key="index">
                   <div class="tab-content">
                     <div class="item-text">
                       <el-input class="resizeNone" type="textarea" :readonly='true' v-model="item.content"></el-input>
@@ -78,11 +78,11 @@
               </el-tabs>
             </div>
           </div>
-          <div class="short-forecast short-forecast-tab tab-wrap rim el-tabs--border-card">
+          <div class="short-forecast short-forecast-tab tab-wrap short el-tabs--border-card">
             <div class="silk-ribbon" v-if="earlyList"><span class="silk-ribbon2"></span></div>
             <div class="tab-top">
-              <el-tabs v-model="activeName2">
-                <el-tab-pane v-for="(item,index) in cityByForecasts" :label="item.name" :name="item.id" :key="index">
+              <el-tabs v-model="activeName">
+                <el-tab-pane v-for="(item,index) in shortForecas" :label="item.name" :name="item.id" :key="index">
                   <div class="tab-content">
                     <div class="item-text">
                       <el-input class="resizeNone" type="textarea" :readonly='true' v-model="item.content"></el-input>
@@ -686,7 +686,7 @@ import mapBox from './../components/map-box';
   .wrap-box{
     display: flex;
     justify-content: space-between;
-    background: #fff;
+    background: #ededed;
     padding:5px 0 23px 0;
     height: calc(100% - 28px);
     .left-box{
@@ -1185,6 +1185,13 @@ import mapBox from './../components/map-box';
 </style>
 <style lang='postcss'>
 .weather-situation-page{
+  .left-box{
+    .el-collapse-item__header{
+      background-color: #f3f3f3;
+      border-top: 1px #ddd solid !important;
+      border-right: 1px #ddd solid !important;
+    }
+  }
   .tab-top .el-tabs__nav{
     margin-left: 20px;
  .el-tabs__item.is-top {
@@ -1315,14 +1322,15 @@ import mapBox from './../components/map-box';
     }
     .short-title {
       position: absolute;
+      z-index: 2;
       height: 40px;
       line-height: 40px;
       top: 0px;
       left: 12px;
       font-size: 15px;
       font-family: Microsoft YaHei;
-      font-weight: 700;
-      color: #303133;
+      font-weight: 500;
+      color: #409eff;
       display: inline-block;
       padding-top:1px;
       border-bottom:2px #409eff solid;
@@ -1433,15 +1441,18 @@ import mapBox from './../components/map-box';
   }
   .el-collapse-item{
     position: relative;
+    margin-bottom: 5px;
+    border-bottom: 1px #ddd solid;
   }
   .silk-ribbon2 {
 	display:inline-block;
 	width:16px;
 	padding:5px 0;
 	background:#fd962f;
-	top:-2px;
+	top:-1px;
 	right:7px;
 	position:absolute;
+  z-index: 2;
 	text-align:center;
 	/* border-top-left-radius:3px; */
 }
@@ -1456,6 +1467,7 @@ import mapBox from './../components/map-box';
   .silk-ribbon2:before,.silk-ribbon2:after {
     content:"";
     position:absolute;
+    z-index: 3;
   }
   .silk-ribbon2:after {
     height:0;
@@ -1543,18 +1555,22 @@ import mapBox from './../components/map-box';
 
 /* .weather-situation-page .wrap-box .left-box .forecast-box {margin: 0 !important;} */
 /* .weather-situation-page .wrap-box .left-box .left-top {height: 400px;} */
-.weather-situation-page .wrap-box .left-box .left-top .forecast-box{height: 140px;margin-bottom:5px;background: #fff;border:1px solid rgba(221, 221, 221, 1);}
+.weather-situation-page .wrap-box .left-box .left-top .forecast-box{height: 140px;background: #fff;border-bottom:0;width: calc(100% - 2px);}
 /* .weather-situation-page .wrap-box .left-box .left-bottom {height: 100%;} */
 .weather-situation-page .wrap-box .left-box .el-collapse-item__content {padding:0}
-.weather-situation-page .wrap-box .left-box .title-content {margin: 20px;font-size: 16px;font-family: Microsoft YaHei;color: #409eff;font-weight: 400;border-bottom: 2px solid #409eff;}
+.weather-situation-page .wrap-box .left-box .title-content {margin: 20px 19px;font-size: 16px;font-family: Microsoft YaHei;color: #409eff;font-weight: 400;border-bottom: 2px solid #409eff;}
 .weather-situation-page .wrap-box .left-box .more {padding-left: 120px;font-size:15px;font-family:Microsoft YaHei;color:rgba(144,147,153,1);cursor: pointer;width: 45px;display: inline-block;text-align: right;}
 .weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap {background: #fff;border: 1px solid #ddd;position: relative;}
-.weather-situation-page .wrap-box .left-box .left-bottom .short{margin-bottom: 5px; height: calc(50% - 7px) !important;}
-.weather-situation-page .wrap-box .left-box .left-bottom .rim{height: calc(50% - 2px) !important;}
+.weather-situation-page .wrap-box .left-box .left-bottom .short{height: calc(50% - 2px) !important;}
+.weather-situation-page .wrap-box .left-box .left-bottom .rim{margin-bottom: 5px; height: calc(50% - 7px) !important;}
 .weather-situation-page .wrap-box .left-box .left-bottom .rim .el-tabs__item{padding: 5px;}
 .weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap .tab-top{height: 100%}
 .weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap .tab-top .el-tabs{height:100%}
-.weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap .tab-top .el-tabs .el-tabs__header{height:40px}
+.weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap .tab-top .el-tabs .el-tabs__header{height:40px;background-color: #f3f3f3;}
+
+.weather-situation-page .wrap-box .right-box .top-right .tab-top .el-tabs .el-tabs__header{height:40px;background-color: #f3f3f3;}
+.weather-situation-page .wrap-box .right-box .top-right .title-box{background-color: #f3f3f3;}
+.weather-situation-page .wrap-box .right-box .right-bottom .el-tabs__header{background-color: #f3f3f3;}
 .weather-situation-page {
   .wrap-box{
     .left-box{

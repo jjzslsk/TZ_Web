@@ -32,14 +32,14 @@ async function requestData(){
      await getData(main_url,'/ssd-forecast-element/getElemnetInfo?',param).then(res=>{
          scope = res.data
          selectedScope = scope[3].img_path//初始化
-         formatScope(scope,3)//初始化
+         formatScope(scope,3)//初始化为全国 //范围DOM 单选
      })
 
     //获取模式
     var param = {eleType:'模式',}
     await getData(main_url,'/ssd-forecast-element/getElemnetInfo?',param).then(res=>{
         model = res.data
-        formatModel(model,0)//初始化
+        formatModel(model,0)//初始化为EC //模式 DOM 单选
         modelImgPath = model[0].img_path//初始化
         selectedModel = model[0].ele_name//初始化
     })
@@ -52,7 +52,7 @@ async function requestData(){
         Object.keys(res.data).forEach(key=>{
             upperAirData.push({type:key,content:res.data[key]})
         })
-        formatUpperAir(upperAirData)
+        formatUpperAir(upperAirData) //高空要素DOM
     });
 
     //获取地面要素
@@ -215,8 +215,8 @@ function playImg(){
 
 //  播放/暂停，按钮单选
 $('.yuan').on('click',function(){
-    $('.is-active').removeClass('is-active');
-    $(this).addClass("is-active").siblings().removeClass("is-active");
+    $('.is-active-play').removeClass('is-active-play');
+    $(this).addClass("is-active-play").siblings().removeClass("is-active-play");
     if($(this).attr('code') == "play"){
         layer.msg('播放',{time:1000});
         playState = true

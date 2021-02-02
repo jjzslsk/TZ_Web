@@ -725,7 +725,7 @@ export default {
       docPath: "", // 文档的地址
       searchText: "",
       tabsListValue1: "邮件",
-      tabsListValue: "0",
+      tabsListValue: null,
       tabsList: [], //已拥有的菜单
       editoAllMenu:[],//编辑菜单里的所有菜单
       notMenu:false,// false未配置菜单，turn已配置
@@ -960,7 +960,7 @@ export default {
           this.isIframe = !this.isIframe
           setTimeout(() => {
             this.isIframe = !this.isIframe
-            this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openProductFile.action?templateId=${data.templateId}&isLoadTodayLast=1`
+            this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openProductFile.action?templateId=${data.templateId}&isLoadTodayLast=1&reLabel=1`
           }, 300);
       }
     },
@@ -2168,8 +2168,6 @@ if(data.product == 1 && data.productInfoId){
       //获取所有TAB菜单
       await requestProductReferenceTabsList().then(res => {
         this.tabsList = res.data.list;
-        this.$router.replace({ name: this.tabsList[0].name});
-        this.tabsListValue = '0'
 
         //默认所有菜单编辑
         this.editoAllMenu = res.data.list
@@ -2180,20 +2178,44 @@ if(data.product == 1 && data.productInfoId){
 
       //获取该用户TAB菜单
       requestProductReference().then(res=>{
+        console.log(this.$route ,"----当前页面的url信息----");
         //过滤拥有的菜单
+        var routeInde = 0
+        var routeItem
         if(res.success){
-          this.notMenu = true
-          let menu = []
-          res.data.split(",").forEach(item => {
-            this.tabsList.forEach(element => {
-              if(item == element.content){
-                menu.push(element)
-              }
-            });
-          });
-          this.tabsList = menu
-          this.$router.replace({ name: this.tabsList[0].name});
+            this.notMenu = true
+            let menu = []
 
+            if(res.data !== undefined){//有配置
+                res.data.split(",").forEach(item => {
+                  this.tabsList.forEach(element => {
+                    if(item == element.content){
+                      menu.push(element)
+                    }
+                  });
+                });
+                this.tabsList = menu
+            }else{//无配置
+              if(this.$route.name == 'product-make'){
+                  this.$router.replace({ name: this.tabsList[0].name})
+                  return
+                }
+            }
+            
+              if(this.tabsList.length > 0){
+                routeItem = this.tabsList.find((element,index) => {
+                  routeInde = element.name == this.$route.name? index:0
+                  return element.name == this.$route.name
+                });
+                if(routeItem){
+                  this.$router.replace({ name: routeItem.name})
+                  this.tabsListValue = JSON.stringify(routeInde)
+                }else{
+                  this.$router.replace({ name: this.tabsList[0].name})
+                  this.tabsListValue = JSON.stringify(routeInde)
+                }
+              }
+          
         }else{
           this.notMenu = false
         }

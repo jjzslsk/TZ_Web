@@ -1,7 +1,6 @@
 $(function(){
     lodingDate();
     lodingSelect();
-    selectd();
 });
 //加载时间
 function lodingDate(){
@@ -87,6 +86,7 @@ function lodingSelect() {
                 var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
                 form.render();
             });
+            selectd();
         }, error: function () {
             layer.msg("查询指数等级异常");
         }
@@ -118,7 +118,6 @@ function selectd(){
                     });
                 }
             }
-
         }, error: function () {
             layer.msg("查询异常");
         }

@@ -15,12 +15,12 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="修改记录">
-          <el-select class="record-form" size="small" @click.native="selectClick()" @blur='blurSelect()' v-model="options" clearable placeholder="请选择">
+          <el-select class="record-form" size="small" @click.native="selectClick()" @blur='blurSelect()' v-model="selectOptionsItem" clearable placeholder="请选择">
             <el-option
               v-for="(item,index) in historyList"
-              :key="index"
+              :key="item"
               :label="item.saveTime+'-'+item.creator"
-              :value="item.content"
+              :value="item.code"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -54,6 +54,7 @@ export default {
       time:null,
       historyList:null,
       options: null,
+      selectOptionsItem:null,
       getWidth:null,
     };
   },
@@ -66,6 +67,14 @@ export default {
     },
   },
   watch: {
+    selectOptionsItem(code){
+      this.options = this.historyList[code].content
+      if(this.historyList[code].file_type == 'word' || this.historyList[code].file_type == 'excel'){
+        this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openFileByPath.action?filePath=/${this.historyList[code].file_path}`
+      }else{
+        this.docPath = null
+      }
+    },
     productTabProductInfoId(){
       if(this.viewData.children){
       this.viewData = this.viewData.children.find(element => {
@@ -73,13 +82,24 @@ export default {
         });
       }
       requestProductMakeHistoryList({productInfoId:this.viewData.id,type:this.state,time:this.time}).then(res=>{
-        this.historyList = res.data
-        this.options = this.historyList[0].content
-        if(this.historyList[0].file_type == 'word' || this.historyList[0].file_type == 'excel'){
-          this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openFileByPath.action?filePath=${this.historyList[0].file_path}`
-        }else{
-          this.docPath = null
-        }
+        if(res.data.length > 0){
+            this.historyList = res.data
+            this.historyList.forEach((element,index) => {
+              element.code = index          
+            });
+            this.options = this.historyList[0].content
+            this.selectOptionsItem = 0
+            if(this.historyList[0].file_type == 'word' || this.historyList[0].file_type == 'excel'){
+              this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openFileByPath.action?filePath=/${this.historyList[0].file_path}`
+            }else{
+              this.docPath = null
+            }
+          }else{
+            this.historyList = []
+            this.docPath = null
+            this.selectOptionsItem = null
+          }
+
       })
     },
     state(){
@@ -88,13 +108,24 @@ export default {
         return
       }
       requestProductMakeHistoryList({productInfoId:this.viewData.id,type:this.state,time:this.time}).then(res=>{
-        this.historyList = res.data
-        this.options = this.historyList[0].content
-        if(this.historyList[0].file_type == 'word' || this.historyList[0].file_type == 'excel'){
-          this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openFileByPath.action?filePath=${this.historyList[0].file_path}`
-        }else{
-          this.docPath = null
-        }
+        if(res.data.length > 0){
+            this.historyList = res.data
+            this.historyList.forEach((element,index) => {
+              element.code = index          
+            });
+            this.options = this.historyList[0].content
+            this.selectOptionsItem = 0
+            if(this.historyList[0].file_type == 'word' || this.historyList[0].file_type == 'excel'){
+              this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openFileByPath.action?filePath=/${this.historyList[0].file_path}`
+            }else{
+              this.docPath = null
+            }
+          }else{
+            this.historyList = []
+            this.docPath = null
+            this.selectOptionsItem = null
+          }
+
       })
     },
     time(){
@@ -103,13 +134,24 @@ export default {
         return
       }
       requestProductMakeHistoryList({productInfoId:this.viewData.id,type:this.state,time:this.time}).then(res=>{
-        this.historyList = res.data
-        this.options = this.historyList[0].content
-        if(this.historyList[0].file_type == 'word' || this.historyList[0].file_type == 'excel'){
-          this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openFileByPath.action?filePath=${this.historyList[0].file_path}`
-        }else{
-          this.docPath = null
-        }
+        if(res.data.length > 0){
+            this.historyList = res.data
+            this.historyList.forEach((element,index) => {
+              element.code = index          
+            });
+            this.options = this.historyList[0].content
+            this.selectOptionsItem = 0
+            if(this.historyList[0].file_type == 'word' || this.historyList[0].file_type == 'excel'){
+              this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openFileByPath.action?filePath=/${this.historyList[0].file_path}`
+            }else{
+              this.docPath = null
+            }
+          }else{
+            this.historyList = []
+            this.docPath = null
+            this.selectOptionsItem = null
+          }
+
       })
     },
   },
@@ -123,9 +165,13 @@ export default {
     this.getWidth = this.$refs.getwidth.offsetWidth
     requestProductMakeHistoryList({productInfoId:this.viewData.id,type:this.state,time:this.time}).then(res=>{
       this.historyList = res.data
+      this.historyList.forEach((element,index) => {
+        element.code = index        
+      });
       this.options = this.historyList[0].content
+      this.selectOptionsItem = 0
       if(this.historyList[0].file_type == 'word' || this.historyList[0].file_type == 'excel'){
-        this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openFileByPath.action?filePath=${this.historyList[0].file_path}`
+        this.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openFileByPath.action?filePath=/${this.historyList[0].file_path}`
       }else{
         this.docPath = null
       }
