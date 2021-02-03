@@ -104,7 +104,7 @@ export default {
         }
         setTimeout(() => {
           this.cycleFn();
-        }, 120000);
+        }, 300000);
       });
     },
     //循环查询制作通知开关 true 开， false 关
@@ -128,7 +128,7 @@ export default {
       } else {
         this.notice(true);
       }
-    },120000);
+    },300000);
   },
 };
 </script>

@@ -17,6 +17,17 @@ layui.use([ 'layer', 'table','element','laydate','form'], function() {
                 var html_="";
                 var obj = res.data;
                 if(obj != null && obj != ""){
+                    //添加样式
+                    $("#tqyjDiv").addClass("warningShow");
+                    $('.warningShow').find('.warningList').show()
+                    $('.warningShow').css({'background':'url(image/boxItem2.png) no-repeat'})
+                    if($('.warningShow').length == 1){
+                        $('.forecast').css('height','calc(75% - 0.23rem)')
+                    }else if($('.warningShow').length == 2){
+                        $('.forecast').css('height','52%')
+                    }else{
+                        $('.forecast').css('height','calc(98% - 0.46rem)')
+                    }
                     for(var i = 0;i<obj.length;i++){
                         html_+="<div class='warningItem'>";
                         html_+="<img src='../early/image/"+obj[i].code+"_0"+obj[i].level+".png' >";
@@ -48,6 +59,17 @@ layui.use([ 'layer', 'table','element','laydate','form'], function() {
                 var html_="";
                 var obj = res.data;
                 if(obj != null && obj != ""){
+                    //添加样式
+                    $("#sxyjDiv").addClass("warningShow");
+                    $('.warningShow').find('.warningList').show()
+                    $('.warningShow').css({'background':'url(image/boxItem2.png) no-repeat'})
+                    if($('.warningShow').length == 1){
+                        $('.forecast').css('height','calc(75% - 0.23rem)')
+                    }else if($('.warningShow').length == 2){
+                        $('.forecast').css('height','52%')
+                    }else{
+                        $('.forecast').css('height','calc(98% - 0.46rem)')
+                    }
                     for(var i = 0;i<obj.length;i++){
                         html_+="<div class='warningItem'>";
                         html_+="<img src='../early/image/"+obj[i].code+"_0"+obj[i].level+".png' >";
@@ -63,7 +85,11 @@ layui.use([ 'layer', 'table','element','laydate','form'], function() {
                     }
                     var total = obj.length;
                     $("#cityCountyEarly").html(html_);
-                    $("#cityCountyEarlyMore").html("更多("+total+")");
+                    if(total>2){
+                        $("#cityCountyEarlyMore").html("<a href='/#/weather-warning/trace/alarm' target='_blank'>更多("+total+")</a>");
+                    }else{
+                        $("#cityCountyEarlyMore").html("");
+                    }
                 }
             },
             error: function (result) {
@@ -83,10 +109,11 @@ layui.use([ 'layer', 'table','element','laydate','form'], function() {
                 if(res.code == 0){
                     var obj = res.data;
                     if(obj.content != null  && obj.content !=""){
-                        html_+=obj.content;
+                       // html_+=obj.content;
+                        $("#emporaryWarning").val(obj.content);
                     }
                 }
-                $("#emporaryWarning").html(html_);
+                //$("#emporaryWarning").html(html_);
             },
             error: function (result) {
                 layer.msg("获取短临预报数据异常");
@@ -104,10 +131,11 @@ layui.use([ 'layer', 'table','element','laydate','form'], function() {
                 if(res.code == 0){
                     var obj = res.data;
                     if(obj.content != null && obj.content !=""){
-                        html_+=obj.content;
+                        //html_+=obj.content;
+                        $("#shortWarning").val(obj.content);
                     }
                 }
-                $("#shortWarning").html(html_);
+                //$("#shortWarning").html(html_);
             },
             error: function (result) {
                 layer.msg("获取短期预报异常");
@@ -124,18 +152,50 @@ layui.use([ 'layer', 'table','element','laydate','form'], function() {
             success: function (res) {
                 var html_= "";
                 if(res.code == 0){
+
                     var obj = res.data;
                     if(obj.content != null && obj.content !=""){
-                        html_+=obj.content;
+                        /*var content = JSON.parse(obj.channel_content);
+                        html_+=obj.content;*/
+                        $("#tenForecast").val(obj.content);
+                    }else{
+                        $("#tenForecast").val("暂无数据");
                     }
                 }
-                $("#tenForecast").html(html_);
+                //$("#tenForecast").html(html_);
             },
             error: function (result) {
-                layer.msg("获取短期预报异常");
+                layer.msg("获取十天预报异常");
             }
         });
     };
+
+//海洋预报
+    function oceanForecast(){
+        $.ajax({
+            url: main_url +'/ssd-product-publish/getLatestPublish?productCode=hyyb',
+            type:'GET',
+            dataType: 'json',
+            success: function (res) {
+                var html_= "";
+                if(res.code == 0){
+                    var obj = res.data;
+                    if(obj.content != null && obj.content !=""){
+                        //html_+=obj.content;
+                        $("#oceanForecast").val(obj.content);
+                    }
+                }
+                //$("#oceanForecast").html(html_);
+            },
+            error: function (result) {
+                layer.msg("获取海洋预报异常");
+            }
+        });
+    };
+
+
+
+
 //城市预报
     function cityForecast(){
         $.ajax({
@@ -147,10 +207,11 @@ layui.use([ 'layer', 'table','element','laydate','form'], function() {
                 if(res.code == 0){
                     var obj = res.data;
                     if(obj.content != null && obj.content !=""){
-                        html_+=obj.content;
+                        //html_+=obj.content;
+                        $("#cityForecast").val(obj.content);
                     }
                 }
-                $("#cityForecast").html(html_);
+                //$("#cityForecast").html(html_);
             },
             error: function (result) {
                 layer.msg("获取城市预报异常");
@@ -168,10 +229,11 @@ layui.use([ 'layer', 'table','element','laydate','form'], function() {
                 if(res.code == 0){
                     var obj = res.data;
                     if(obj.content != null && obj.content !=""){
-                        html_+=obj.content;
+                        //html_+=obj.content;
+                        $("#aroundCityForecast").val(obj.content);
                     }
                 }
-                $("#aroundCityForecast").html(html_);
+                //$("#aroundCityForecast").html(html_);
             },
             error: function (result) {
                 layer.msg("获取周边城市预报异常");
@@ -257,15 +319,18 @@ layui.use([ 'layer', 'table','element','laydate','form'], function() {
             success: function (res) {
                 var obj = res.data;
                 if(obj != null && obj != "" ){
-                    $("#rainDaysOne").html(" <img class='nuData' src='"+obj.day1+"' >");
-                    $("#rainDaysTwo").html(" <img class='nuData' src='"+obj.day2+"' >");
-                    $("#rainDaysThree").html(" <img class='nuData' src='"+obj.day3+"' >");
+
+                    $("#rainDaysOne").html(" <img  src='"+obj.day1+"' >");
+                    $("#rainDaysTwo").html(" <img  src='"+obj.day2+"' >");
+                    $("#rainDaysThree").html(" <img  src='"+obj.day3+"' >");
                 }
             },
             error: function (result) {
                 layer.msg("获取三天降水图异常");
             }
         });
+
+
     };
 
     /**
@@ -375,7 +440,7 @@ layui.use([ 'layer', 'table','element','laydate','form'], function() {
     });
 
     $("#sevenForecastDiv").find('span').on('click',function () {
-        var id = $(this).id;
+        var id = $(this)[0].id;
         var type = "day";
         if(id == "sevenDay"){
             type = "day";
@@ -388,12 +453,35 @@ layui.use([ 'layer', 'table','element','laydate','form'], function() {
     });
 
 
+
+    $('.itemTitleOtherClick').on('click',function(){
+        if($(this).parent().attr('class').split('warningShow').length == 1){
+            $(this).parent().addClass('warningShow')
+            $(this).parent().css({'height':'23%','background':'url(image/boxItem2.png) no-repeat'})
+            $(this).siblings('.warningList').show()
+        }else{
+            $(this).parent().removeClass('warningShow')
+            $(this).parent().css({'height':'0.23rem','background':'url(image/boxItem1.png) no-repeat'})
+            $(this).siblings('.warningList').hide()
+        }
+
+        if($('.warningShow').length == 1){
+            $('.forecast').css('height','calc(75% - 0.23rem)')
+        }else if($('.warningShow').length == 2){
+            $('.forecast').css('height','52%')
+        }else{
+            $('.forecast').css('height','calc(98% - 0.46rem)')
+        }
+    })
+
+
     //加载
     WeatherAlert();
     cityCountyEarly();
     emporaryWarning();
     shortWarning();
     tenForecast();
+    oceanForecast();
     cityForecast();
     aroundCityForecast();
     noticeBar();

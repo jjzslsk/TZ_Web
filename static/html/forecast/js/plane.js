@@ -45,7 +45,6 @@ async function requestData(){
     })
     
     //获取高空要素
-    // var param = {forecastEle:'EC',}
     var param = {forecastEle:model[0].ele_name}
     await getData(main_url,'/ssd-forecast-element/getHighEle?',param).then(res=>{
         upperAirData = []
@@ -59,16 +58,16 @@ async function requestData(){
     var param = {eleType:'地面',model:model[0].ele_name}
     await getData(main_url,'/ssd-forecast-element/getElemnetInfo?',param).then(res=>{
         groundData = res.data
-        formatGround(groundData)
-        factorPath = groundData[0].img_path
-        eleHeight = groundData[0].ele_height
+        formatGround(groundData,false)
     })
 
     //获取综合分析
     var param = {eleType:'综合',model:model[0].ele_name}
     await getData(main_url,'/ssd-forecast-element/getElemnetInfo?',param).then(res=>{
         mixtureData = res.data
-        formatMixture(mixtureData)
+        factorPath = mixtureData[0].img_path
+        eleHeight = mixtureData[0].ele_height
+        formatMixture(mixtureData,0)
     })
 
     //初始化第一张图片
@@ -277,29 +276,31 @@ async function resetModel(){
     //切换到指定Tab项
     planeTabActive.tabChange('01')
 
-    if(selectedModel == 'OCF' || selectedModel == '智能网格'){ //OCF 智能网格 默认选中台州
-        selectedScope = scope[0].img_path
-        formatScope(scope,0)
-    }
-
     //获取地面要素
     var param = {eleType:'地面',model:selectedModel}
     await getData(main_url,'/ssd-forecast-element/getElemnetInfo?',param).then(res=>{
         groundData = res.data
-        formatGround(groundData)
+        formatGround(groundData,true)
         factorPath = groundData[0].img_path
         eleHeight = groundData[0].ele_height
         fnDate()
     })
-    //获取高空要素
-    var param = {forecastEle:selectedModel,}
-    await getData(main_url,'/ssd-forecast-element/getHighEle?',param).then(res=>{
-        upperAirData = []
-        Object.keys(res.data).forEach(key=>{
-            upperAirData.push({type:key,content:res.data[key]})
-        })
-        formatUpperAir(upperAirData)
-    })
+
+    if(selectedModel == 'OCF' || selectedModel == '智能网格'){ //OCF 智能网格 默认选中台州
+        selectedScope = scope[0].img_path
+        formatScope(scope,0)
+
+        // OCF 智能网格   没有综合 和高空
+        formatUpperAir([])//高空
+        formatMixture([])//综合
+        $(".factor-box").hide();//高空
+        $(".analyze-wrap").hide();//综合
+        return
+    }else{
+        $(".factor-box").show();
+        $(".analyze-wrap").show();
+    }
+
     //获取综合分析
     var param = {eleType:'综合',model:selectedModel}
     await getData(main_url,'/ssd-forecast-element/getElemnetInfo?',param).then(res=>{
@@ -325,9 +326,17 @@ async function resetModel(){
         }
 
     })
-
-
     
+    //获取高空要素
+    var param = {forecastEle:selectedModel,}
+    await getData(main_url,'/ssd-forecast-element/getHighEle?',param).then(res=>{
+        upperAirData = []
+        Object.keys(res.data).forEach(key=>{
+            upperAirData.push({type:key,content:res.data[key]})
+        })
+        formatUpperAir(upperAirData)
+    })
+
     
 }
 
@@ -357,10 +366,10 @@ $('#cityArr').on('click','.cityArr',function(){
 });
 
 //平面图-左侧-地面DOM 单选
-function formatGround(dataList = []){
+function formatGround(dataList = [],opt = false){ //opt true现在第一个， false 不选中
     let groundFactor = [];
     if(dataList.length == 0){
-        groundFactor.push(`<div class="button-item groundFactor" style='text-align: center;display: flex;justify-content: center;align-items: center;'>暂无数据</div>`)
+        groundFactor.push(`<div class="button-item " style='text-align: center;display: flex;justify-content: center;align-items: center;'>暂无数据</div>`)
         $("#groundFactor").html(groundFactor);
         $('.main-view').hide()
         formatDate([]).then(res=>{})//渲染预报时间选择
@@ -370,10 +379,10 @@ function formatGround(dataList = []){
         $('.main-view').show()
     }
     $.each(dataList, function(index, obj) {
-        index == 0? groundFactor.push(
-            `<div code='${obj.img_path}' class="button-item groundFactor ground-factor-active" img_path='${obj.img_path}' style="cursor:pointer">${obj.ele_name}</div>`):
+        (index == 0 && opt)? groundFactor.push(
+            `<div code='${obj.img_path}' class="button-item groundFactor ground-factor-active" ele_height='${obj.ele_height}' img_path='${obj.img_path}' style="cursor:pointer">${obj.ele_name}</div>`):
         groundFactor.push(
-            `<div code='${obj.img_path}' class="button-item groundFactor" img_path='${obj.img_path}' style="cursor:pointer">${obj.ele_name}</div>`)
+            `<div code='${obj.img_path}' class="button-item groundFactor" ele_height='${obj.ele_height}' img_path='${obj.img_path}' style="cursor:pointer">${obj.ele_name}</div>`)
     });
     $("#groundFactor").html(groundFactor);
 }
@@ -392,6 +401,7 @@ $('#groundFactor').on('click','.groundFactor',function(){
      //切换到指定Tab项
      planeTabActive.tabChange('01')
 
+     eleHeight = $(this).attr('ele_height')
      factorPath = $(this).attr('img_path')
      fnDate()
 });
@@ -470,26 +480,6 @@ const synthesizeData = [
     {content: '500hPa高度场+200hPa散度+500hPa风场3',code: 'long'},
     {content: '500hPa高度场+200hPa散度+500hPa风场4',code: 'long'},
     {content: '500hPa高度场+200hPa散度+500hPa风场5',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场6',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
-    {content: '500hPa高度场+200hPa散度+500hPa风场7',code: 'long'},
 ]
 const synthesize = [];
 $.each(dataList, function(index, obj) {

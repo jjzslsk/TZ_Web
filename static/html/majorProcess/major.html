@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	</head>
+	<body>
+		<div class="page">
+			<!--<div class="header">
+				<div class="logoBox">
+					<img src="image/logo.png" >
+					<span>台州市县综合气象业务一体化平台</span>
+				</div>
+				<ul class="menuBox">
+					<li class="liAc">天气概览</li>
+					<li>综合观测</li>
+					<li>数值预报</li>
+					<li>智能提醒</li>
+					<li>产品制作</li>
+					<li>天气警报</li>
+					<li>台风服务</li>
+					<li>气候平台</li>
+					<li>综合管理</li>
+					<li>信息监控</li>
+					<li>系统管理</li>
+				</ul>
+				<div class="timeUser">
+					<div class="timeBox">
+						<img src="image/clock.png" >
+						<span>12:30:36</span>
+						<br>
+						<span>1月4日</span>
+						<span>星期一</span>
+					</div>
+					<div class="userBox">
+						<img src="image/userIcon.png" >
+						<br>
+						<span>台州气象台</span>
+					</div>
+				</div>
+			</div>-->
+			<div class="nullBox"></div>
+			<div class="pageCon">   <!-- h914  w1880 -->
+				<div class="checkBox">
+					<div class="selectBox">
+						<span>区县选择：</span>
+						<select name="">
+							<option value="台州市">台州市</option>
+						</select>
+					</div>
+					<div class="menuBox2">
+						<div class="menu2Item"  id="tftq">
+							<img src="image/menuIcon1.png" >
+							<img src="image/menuIcon1Ac.png" >
+							<span>突发天气</span>
+						</div>
+						<div class="menu2Item menu2ItemAc">
+							<img src="image/menuIcon2.png" >
+							<img src="image/menuIcon2Ac.png" >
+							<span>重大过程</span>
+						</div>
+						<div class="menu2Item"  id="ycsj">
+							<img src="image/menuIcon3.png" >
+							<img src="image/menuIcon3Ac.png" >
+							<span>异常事件</span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="pageDetail">  <!-- h844 -->
+					<div class="pageDetailItem">
+						<div class="xunDataQuery">
+							<div class="nullBox nullBox2"></div>
+							<div class="titleBox">
+								<div class="titleBoxCon">
+									<img src="image/titleIcon.png" >
+									<span>旬数据查询</span>
+								</div>
+								<div class="btn btn1">
+									<span class="spanAc">温度</span>
+									<span>降水</span>
+								</div>
+							</div>
+							<div class="echartBox">
+								<div id="xunEchart"></div>
+							</div>
+						</div>
+						
+						<div class="pageConter">
+							<div class="dayDataQuery">
+								<div class="dayDataTitle">
+									<img src="image/titleIcon.png" >
+									<span>日数据查询</span>
+								</div>
+								<div id="dayDataQueryEchart"></div>
+							</div>
+							<div class="nullBox nullBox2"></div>
+							<div class="pageCenterBtm">
+								<div class="mapBox">
+									<div id="mapEchart"></div>
+								</div>
+								<div class="eventShaft">
+									<div class="dayDataTitle eventShaftTitle">
+										<img src="image/titleIcon.png" >
+										<span>告警、预报数据事件轴</span>
+									</div>
+									<div class="eventShaftDetail">   <!-- h473 -->
+										<div class="yearItem">
+											<div class="timeLineIcon">
+												<img src="image/timeLineIcon.png" >
+											</div>
+											<span>2021年</span>
+										</div>
+										<ul class="timeLine">   <!-- h419 -->
+											<li>
+												<span class="time">01.21 18:13</span>
+												<div class="circle">
+													<div class="circleIcon"></div>
+												</div>
+												<span class="eventTxt">最低气温将在5小时内达到寒潮警报</span>
+											</li>
+											<li>
+												<span class="time">01.21 18:13</span>
+												<div class="circle">
+													<div class="circleIcon"></div>
+												</div>
+												<span class="eventTxt">最低气温将在5小时内达到寒潮警报</span>
+											</li>
+											<li>
+												<span class="time">01.21 18:13</span>
+												<div class="circle">
+													<div class="circleIcon"></div>
+												</div>
+												<span class="eventTxt">最低气温将在5小时内达到寒潮警报</span>
+											</li>
+											<li class="overdue succ">
+												<span class="time">01.21 18:13</span>
+												<div class="circle">
+													<div class="circleIcon"></div>
+												</div>
+												<span class="eventTxt">最低气温将在5小时内达到寒潮警报</span>
+											</li>
+											<li class="overdue failure">
+												<span class="time">01.21 18:13</span>
+												<div class="circle">
+													<div class="circleIcon"></div>
+												</div>
+												<span class="eventTxt">最低气温将在5小时内达到寒潮警报</span>
+											</li>
+											<li class="overdue">
+												<span class="time">01.21 18:13</span>
+												<div class="circle">
+													<div class="circleIcon"></div>
+												</div>
+												<span class="eventTxt">最低气温将在5小时内达到寒潮警报</span>
+											</li>
+											<li class="overdue timeItem">
+												<span class="time"></span>
+												<div class="circle">
+													<div class="circleIcon"></div>
+												</div>
+												<span class="eventTxt">2020年12月</span>
+											</li>
+											<li class="overdue">
+												<span class="time">01.21 18:13</span>
+												<div class="circle">
+													<div class="circleIcon"></div>
+												</div>
+												<span class="eventTxt">最低气温将在5小时内达到寒潮警报</span>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="monthDataQuery">
+							<div class="nullBox nullBox2"></div>
+							<div class="titleBox">
+								<div class="titleBoxCon">
+									<img src="image/titleIcon.png" >
+									<span>月数据查询</span>
+								</div>
+								<div class="btn btn2">
+									<span class="spanAc">温度</span>
+									<span>降水</span>
+								</div>
+							</div>
+							<div class="echartBox">
+								<div id="monthEchart"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script src="js/reset.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/echarts.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

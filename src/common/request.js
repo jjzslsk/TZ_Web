@@ -155,6 +155,31 @@ const checkStatus = response => {
     }
 }
 
+function timingLogin(config){
+   return new Promise((resolve, reject) => {
+    const indexKey = window.location.href.indexOf("/#/")
+    let cut = window.location.href.substring(indexKey)
+    let url1 = '/#/situation-page?key=%2Fsituation-page'
+    function timingLoginFn() {
+        if (`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`  == '07:50:00') {
+            alert("登录超时，请重新登录！")
+            sessionStorage.clear()
+            window.location.href="/";
+            reject('reject')
+            return
+        }else{
+            resolve('resolve')
+        }
+    }
+
+        if(config.url == '/integration/system/ssd-sys-user/login' || cut == url1){
+            resolve('resolve')
+        }else{
+            timingLoginFn()
+        }
+    });
+}
+
 
 function overtime10(config){
     return new Promise((resolve, reject) => {
@@ -218,9 +243,10 @@ function overtime04(config){
 const generateRequest = config => async (param, {
     target
 } = {}) => {
+    let loginTiming = await timingLogin(config)
     let over10 = await overtime10(config)
     let over04 = await overtime04(config)
-    if(over10 == 'reject'|| over04 == 'reject') return
+    if(over10 == 'reject'|| over04 == 'reject' || loginTiming == 'reject') return
 
     const loginInfo = JSON.parse(localStorage.getItem('loginInfo',))
     let data

@@ -7,13 +7,18 @@ layui.use(['laydate', 'layer', 'form', 'table', 'element', 'tree'], function () 
         , element = layui.element //元素操作
         ,tree = layui.tree;
     var $ = layui.$;
-
     var dateTime = new Date();
     dateTime=dateTime.setDate(dateTime.getDate()-1);
     dateTime=new Date(dateTime);
     var year = dateTime.getFullYear();
     var mouth = dateTime.getMonth()+1;
+    if(mouth.toString().length=1){
+        mouth = "0"+mouth;
+    }
     var day = dateTime.getDate();
+    if(day.toString().length=1){
+        day = "0"+day;
+    }
     var hisYear = (year-2)+" - "+(year-1);
     $("#yearHis").val(hisYear);
     $("#current").val(year+"-"+mouth+"-"+day);
@@ -238,14 +243,21 @@ layui.use(['laydate', 'layer', 'form', 'table', 'element', 'tree'], function () 
             ,{field: 'temp_average', title: '平均气温(°C)',templet:function(d){
 
                     var avg= d.temp_average;
-                    if(avg != null && avg != "" && avg !="null"){
+                    if(avg != null && avg.toString.length>0 && avg !="null"){
                         return avg.toFixed(2);
                     }else{
                         return "";
                     }
 
                 }}
-            ,{field: 'rain_amount', title: '降水(ml)', sort: true}
+            ,{field: 'rain_amount', title: '降水(ml)', templet:function(d){
+                    var rain= d.rain_amount;
+                    if(rain != null && rain.toString.length>0  && rain !="null"){
+                        return rain.toFixed(1);
+                    }else{
+                        return "";
+                    }
+                }}
             ,{field: 'sunshine_amount', title: '日照(h)'}
         ]]
     });

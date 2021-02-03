@@ -1,11 +1,18 @@
 <template>
   <div class="weather-situation-page">
     <!-- <div class="skin" @click="skinClick">换肤</div> -->
-    <div class="link" :style="skin? 'background-color: #0050a2':'background-color: #409eff;'">
+    <!-- <div class="link" :style="skin? 'background-color: #0050a2':'background-color: #409eff;'">
+      <a class="title" >常用链接</a>
+      <a class="item" v-for="(i,index) in linkData" :key="index" :href='i.href' :target='i.target'  :style="skin? 'color: #409eff':'color: #fff;'">{{i.name}}</a>
+    </div> -->
+    <div class="link" :style="nightMode? 'background-color: #0050a2':'background-color: #409eff;'">
       <a class="title" >常用链接</a>
       <a class="item" v-for="(i,index) in linkData" :key="index" :href='i.href' :target='i.target'  :style="skin? 'color: #409eff':'color: #fff;'">{{i.name}}</a>
     </div>
-    <div class="wrap-box" :class="skin? 'skinColor':''">
+    <div class="wrap-box wrap-box-nigh" v-if="nightMode">
+      <iframe class="night-iframe" src="http://10.137.4.30/static/html/main/index.html" frameborder="0"></iframe>
+    </div>
+    <div class="wrap-box" v-else :class="skin? 'skinColor':''">
       <div class="left-box">
         <div class="left-top">
           <div ref="collapseDom">
@@ -28,7 +35,7 @@
                     </div>
                   </div>
                 </el-tooltip>
-                <div class="count" @click="toMore('天气警报')">更多({{alarmList.length}})</div>
+                <div class="count" v-if="alarmList.length > 2" @click="toMore('天气警报')">更多({{alarmList.length}})</div>
               </div>
               <div class="content-wrap-box" v-if="!alarmList">
                 <img class="content-warning-img" src="../../../assets/img/yujing/warning-001.png" alt="" srcset="">
@@ -53,7 +60,7 @@
                 </div>
               </div>
             </el-tooltip>
-            <div class="count"  @click="toMore('市县预警')">更多({{earlyList.length}})</div>
+            <div class="count" v-if="earlyList.length > 2"  @click="toMore('市县预警')">更多({{earlyList.length}})</div>
           </div>
           <div class="content-wrap-box" v-if="!earlyList">
             <img class="content-warning-img" src="../../../assets/img/yujing/warning-002.png" alt="" srcset="">
@@ -64,20 +71,7 @@
       </div>
         </div>
         <div class="left-bottom" :style="{height:`calc(100% - ${collapseDomHeight}px)`}">
-          <div class="short-forecast short-forecast-tab tab-wrap rim el-tabs--border-card">
-            <div class="silk-ribbon" v-if="earlyList"><span class="silk-ribbon2"></span></div>
-            <div class="tab-top">
-              <el-tabs v-model="activeName2">
-                <el-tab-pane v-for="(item,index) in cityByForecasts" :label="item.name" :name="item.id" :key="index">
-                  <div class="tab-content">
-                    <div class="item-text">
-                      <el-input class="resizeNone" type="textarea" :readonly='true' v-model="item.content"></el-input>
-                  </div>
-                  </div>
-                </el-tab-pane>
-              </el-tabs>
-            </div>
-          </div>
+
           <div class="short-forecast short-forecast-tab tab-wrap short el-tabs--border-card">
             <div class="silk-ribbon" v-if="earlyList"><span class="silk-ribbon2"></span></div>
             <div class="tab-top">
@@ -92,6 +86,22 @@
               </el-tabs>
             </div>
           </div>
+
+          <div class="short-forecast short-forecast-tab tab-wrap rim el-tabs--border-card">
+            <div class="silk-ribbon" v-if="earlyList"><span class="silk-ribbon2"></span></div>
+            <div class="tab-top">
+              <el-tabs v-model="activeName2">
+                <el-tab-pane v-for="(item,index) in cityByForecasts" :label="item.name" :name="item.id" :key="index">
+                  <div class="tab-content">
+                    <div class="item-text">
+                      <el-input class="resizeNone" type="textarea" :readonly='true' v-model="item.content"></el-input>
+                  </div>
+                  </div>
+                </el-tab-pane>
+              </el-tabs>
+            </div>
+          </div>
+
         </div>
 
 
@@ -296,6 +306,7 @@ import {
     requestWarningShort,
     requestWarningemporary,
     requestWarningForecast,
+    requestWarningOcean,
     requestWarningCity,
     requestWarningAroundCity,
     requestWarningObj,
@@ -325,6 +336,7 @@ import echarts from 'echarts';
 import mapBox from './../components/map-box';
   export default {
     mixins: [common, witchCommonList, withCommonLeftTree],
+    props:['clickLogo'],
     components: {
         chartResult,
         chartBar,
@@ -334,6 +346,7 @@ import mapBox from './../components/map-box';
     },
     data() {
       return {
+        nightMode:false,
         linkData:[
           {name:'中央台天气业务内网',href:'http://10.1.64.146/npt',target:'_blank'},
           {name:'省局综合业务网',href:'http://172.21.129.77/index8.html',target:'_blank'},
@@ -393,12 +406,17 @@ import mapBox from './../components/map-box';
             id:'2',
             name:'短期预报',
             content:'暂无数据'
-          }
+          },
+          {
+            id:'3',
+            name:'十天预报',
+            content:'暂无数据'
+          },
         ],
         cityByForecasts:[
           {
             id:'1',
-            name:'十天预报',
+            name:'海洋预报',
             content:'暂无数据'
           },
           {
@@ -415,6 +433,9 @@ import mapBox from './../components/map-box';
       }
     },
     watch:{
+      clickLogo(val){
+        this.nightMode = !this.nightMode
+      },
       bottomTab(val){
         if(val == '7天趋势预报'){
           this.chartResult = !this.chartResult
@@ -456,11 +477,12 @@ import mapBox from './../components/map-box';
     },
     methods:{
       skinClick(){
-        this.chartResult = !this.chartResult
-        setTimeout(() => {
-        this.chartResult = !this.chartResult
-        }, 300);
-        this.skin = !this.skin
+        // this.chartResult = !this.chartResult
+        // setTimeout(() => {
+        // this.chartResult = !this.chartResult
+        // }, 300);
+        // this.skin = !this.skin
+        this.nightMode = !this.nightMode
       },
       handleChange(val) {
         setTimeout(() => {
@@ -593,19 +615,25 @@ import mapBox from './../components/map-box';
           this.earlyList = res.data
         })
         
-        //左侧 短期 预报
-        requestWarningShort().then(res=>{
-          let resData = res.data
-          JSON.stringify(resData) == "{}"? this.shortForecas[0].content = '暂无数据':this.shortForecas[1].content = resData.content
-        })
         //左侧 短临 预报
         requestWarningemporary().then(res=>{
             let resData = res.data
           JSON.stringify(resData) == "{}"? this.shortForecas[0].content = '暂无数据':this.shortForecas[0].content = resData.content
         })
+        //左侧 短期 预报
+        requestWarningShort().then(res=>{
+          let resData = res.data
+          JSON.stringify(resData) == "{}"? this.shortForecas[0].content = '暂无数据':this.shortForecas[1].content = resData.content
+        })
         //左侧 十天预报
         requestWarningForecast().then(res=>{
           let resData = res.data
+          JSON.stringify(resData) == "{}"? this.cityByForecasts[0].content = '暂无数据':this.shortForecas[2].content = resData.content
+        })
+
+        //左侧 海洋预报
+        requestWarningOcean().then(res=>{
+            let resData = res.data
           JSON.stringify(resData) == "{}"? this.cityByForecasts[0].content = '暂无数据':this.cityByForecasts[0].content = resData.content
         })
         //左侧 城市预报
@@ -750,16 +778,20 @@ import mapBox from './../components/map-box';
               font-size:14px;
               font-family:Microsoft YaHei;
               color:rgba(245,108,108,1);
-              white-space: nowrap;
-              text-overflow: ellipsis;
+              line-height:18px;
+              text-overflow: -o-ellipsis-lastline;
               overflow: hidden;
-              word-break: break-all;
-              margin-bottom:10px;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              line-clamp: 2;
+              -webkit-box-orient: vertical;
             }
             .title-606266{
               color: #606266;
             }
             .time{
+              line-height: 12px;
               font-size:13px;
               font-family:Microsoft YaHei;
               color:rgba(144,147,153,1);
@@ -1262,7 +1294,7 @@ import mapBox from './../components/map-box';
     .monitoring{
       .el-tabs__nav-scroll{
         .is-active{
-          border-right: 2px #409eff solid ;
+          border-right: 2px #409eff solid !important;
         }
       }
       .el-tabs__content {
@@ -1441,7 +1473,7 @@ import mapBox from './../components/map-box';
   }
   .el-collapse-item{
     position: relative;
-    margin-bottom: 5px;
+    margin-bottom: 5px !important;
     border-bottom: 1px #ddd solid;
   }
   .silk-ribbon2 {
@@ -1550,6 +1582,19 @@ import mapBox from './../components/map-box';
       /* height: 200px !important; */
     }
 }
+.weather-situation-page {
+  .wrap-box-nigh{
+    padding: 0 0 0px 0!important;
+    height: calc(100% - 15px)!important;
+    .night-iframe{
+      width: 100%;
+      height: 100%;
+    }
+  }
+} 
+
+
+
 .weather-situation-page .wrap-box .right-box .top-right .el-tabs__header {height: 40px !important;margin: 0;}
 .weather-situation-page .wrap-box .right-box .top-right .el-tabs__content {height: calc(100% - 40px) !important;overflow: auto;}
 
@@ -1561,8 +1606,8 @@ import mapBox from './../components/map-box';
 .weather-situation-page .wrap-box .left-box .title-content {margin: 20px 19px;font-size: 16px;font-family: Microsoft YaHei;color: #409eff;font-weight: 400;border-bottom: 2px solid #409eff;}
 .weather-situation-page .wrap-box .left-box .more {padding-left: 120px;font-size:15px;font-family:Microsoft YaHei;color:rgba(144,147,153,1);cursor: pointer;width: 45px;display: inline-block;text-align: right;}
 .weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap {background: #fff;border: 1px solid #ddd;position: relative;}
-.weather-situation-page .wrap-box .left-box .left-bottom .short{height: calc(50% - 2px) !important;}
-.weather-situation-page .wrap-box .left-box .left-bottom .rim{margin-bottom: 5px; height: calc(50% - 7px) !important;}
+.weather-situation-page .wrap-box .left-box .left-bottom .short{margin-bottom: 5px;height: calc(50% - 7px) !important;}
+.weather-situation-page .wrap-box .left-box .left-bottom .rim{height: calc(50% - 2px) !important;}
 .weather-situation-page .wrap-box .left-box .left-bottom .rim .el-tabs__item{padding: 5px;}
 .weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap .tab-top{height: 100%}
 .weather-situation-page .wrap-box .left-box .left-bottom .tab-wrap .tab-top .el-tabs{height:100%}

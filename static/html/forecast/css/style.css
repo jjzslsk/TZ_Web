@@ -146,7 +146,7 @@ html,body{height: 100%;}
 .forecast .content .charts-sounding-img{display: flex;justify-content: center;align-items: center;margin-top: 40px;}
 .forecast .content .charts-sounding-img img{width: 90%;}
 
-#groundFactor {width: 266px;}
+#groundFactor {width: 246px;}
 #groundFactor .button-item {display: inline-block;padding: 0 4px;margin: 5px 4px;}
 #previewBox {position: relative;height: 100%;width: 100%;}
 #previewBox i {font-size: 22px;color: #fff;}

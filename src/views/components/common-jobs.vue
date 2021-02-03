@@ -17,7 +17,8 @@
 <script>
 import {
   requestProductInfoJobs,
-  requestMyUserUpdateDutyJob
+  requestMyUserUpdateDutyJob,
+  requestUserJob
 } from "@/remote/";
 export default {
     props: ['data'],
@@ -26,7 +27,6 @@ export default {
         dialogVisible: false,
         resource: null,
         jobs:null,
-        userJob:null,
         loginInfo:null,
       };
     },
@@ -56,8 +56,6 @@ export default {
     },
     mounted() {
         this.loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
-        this.userJob = JSON.parse(localStorage.getItem('userJob'))
-        this.resource = this.userJob.length > 0 ? this.userJob[0].id:null
         // 获取岗位
         requestProductInfoJobs({orgId:this.loginInfo.orgId}).then(res=>{
             this.jobs = res.data.list
@@ -65,6 +63,11 @@ export default {
                 this.dialogVisible = true
             }
         })
+        //获取当前用户岗位
+        requestUserJob().then((res)=>{
+            this.resource = res.data.job ? res.data.job:null
+        })
+        
     },
 }
 </script>

@@ -23,11 +23,15 @@ function set_echarts(objMap){
         maxTemp.push(map["temp_max"]);
         minTemp.push(map["temp_min"]);
         var temp_avg = map["temp_average"];
-        if(temp_avg != null && temp_avg != "" && temp_avg !="null"){
+        if(temp_avg != null && temp_avg.toString().length>0 && temp_avg !="null"){
             temp_avg = temp_avg.toFixed(2);
         }
         avgTemp.push(temp_avg);
-        rain.push(map["rain_amount"]);
+        var rain_sum = map["rain_amount"];
+        if(rain_sum != null && rain_sum.toString().length>0 && rain_sum !="null"){
+            rain_sum = rain_sum.toFixed(1);
+        }
+        rain.push(rain_sum);
         sunny.push(map["sunshine_amount"]);
 
         his_maxTemp.push(map["his_temp_max"]);
@@ -37,7 +41,11 @@ function set_echarts(objMap){
             temp_avg = temp_avg.toFixed(2);
         }
         his_avgTemp.push(temp_avg);
-        his_rain.push(map["his_rain_amount"]);
+        var his_rain_sum = map["his_rain_amount"];
+        if(his_rain_sum != null && his_rain_sum.toString().length>0 && his_rain_sum !="null"){
+            his_rain_sum = his_rain_sum.toFixed(1);
+        }
+        his_rain.push(his_rain_sum);
         his_sunny.push(map["his_sunshine_amount"]);
 
         last_maxTemp.push(map["last_temp_max"]);
@@ -47,7 +55,11 @@ function set_echarts(objMap){
             temp_avg = temp_avg.toFixed(2);
         }
         last_avgTemp.push(temp_avg);
-        last_rain.push(map["last_rain_amount"]);
+        var last_rain_sum = map["last_rain_amount"];
+        if(last_rain_sum != null && last_rain_sum.toString().length>0 && last_rain_sum !="null"){
+            last_rain_sum = last_rain_sum.toFixed(1);
+        }
+        last_rain.push(last_rain_sum);
         last_sunny.push(map["last_sunshine_amount"]);
 
     }

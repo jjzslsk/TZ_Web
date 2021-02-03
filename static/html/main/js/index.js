@@ -2,6 +2,10 @@
 $(function(){
 
     var mySwiper = new Swiper('.swiper-container1', {
+        navigation: {
+            nextEl: '.swiper-button-next1',  //左右按钮
+            prevEl: '.swiper-button-prev1',
+        },
         direction: 'vertical',
         simulateTouch: false,//禁止鼠标模拟  手机可以滑动
         allowTouchMove: false,//手机也不能滑动
@@ -19,7 +23,11 @@ $(function(){
         observeParents: true,//修改swiper的父元素时，自动初始化swiper
     });
 
-    var mySwiper = new Swiper('.swiper-container2', {
+    var mySwiper2 = new Swiper('.swiper-container2', {
+        navigation: {
+            nextEl: '.swiper-button-next2',  //左右按钮
+            prevEl: '.swiper-button-prev2',
+        },
         direction: 'vertical',
         simulateTouch: false,//禁止鼠标模拟  手机可以滑动
         allowTouchMove: false,//手机也不能滑动
@@ -36,6 +44,24 @@ $(function(){
 
         observeParents: true,//修改swiper的父元素时，自动初始化swiper
     });
+
+// 鼠标移入停止自动滚动
+    $('.noticeBox1').mouseenter(function() {
+        mySwiper.autoplay.stop();
+    })
+    // 鼠标移出开始自动滚动
+    $('.noticeBox1').mouseleave(function() {
+        mySwiper.autoplay.start();
+    })
+
+    // 鼠标移入停止自动滚动
+    $('.noticeBox2').mouseenter(function() {
+        mySwiper2.autoplay.stop();
+    })
+    // 鼠标移出开始自动滚动
+    $('.noticeBox2').mouseleave(function() {
+        mySwiper2.autoplay.start();
+    })
 
 
 

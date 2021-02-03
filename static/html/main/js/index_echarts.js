@@ -15,6 +15,7 @@ function sevenForecast_Echarts(res){
     var windData = [];
     var days = [];
     var weatherIcon = [];
+    var weatherData = [];
     for(var i = 0 ; i<res.data.length;i++){
         var obj = res.data[i];
         days.push(obj.dayDate.substring(1,2)+"日");
@@ -24,12 +25,10 @@ function sevenForecast_Echarts(res){
         rainData.push(obj.rainHeight);
         weatherIcon.push(obj.skyIcon);
     }
-    /*for(var i = 0; i < maxTemp.length; i++){
-        weatherIcon.push(max+10);
-    }*/
-    ///weatherIcon=[0,1,2,3,4,5,6];
-    var yMax = Math.max(rainData) * 5;
-
+    for(var i = 0; i < maxTemp.length; i++){
+        weatherData.push(max+10);
+    }
+    var yMax = Math.max(...rainData) * 5;
     var option = {
         grid: {
             top: '15%',
@@ -74,8 +73,8 @@ function sevenForecast_Echarts(res){
         }],
         yAxis: [{
             type: 'value',
-            min: max,
-            max: min,
+            min: min-5,
+            max: max+10,
             axisLine:{
                 show: false
             },
@@ -176,14 +175,14 @@ function sevenForecast_Echarts(res){
             }
         },{
             yAxisIndex: 0,
-            data: weatherIcon,
+            data: weatherData,
             type: 'line',
             lineStyle:{
                 width: 0
             },
             smooth: true,
-            symbol: function (obj) {
-               return 'image:../../../images/weather/'+obj+'.png'
+            symbol: function (obj,index) {
+               return 'image://../../images/weather/'+weatherIcon[index.dataIndex]+'.png'
             },
             symbolSize: [24,23],
         },{
@@ -275,9 +274,6 @@ function rainMonitorEcharts(rainData){
                     }
                 },
                 data: [{
-                    value:rainData.countStationNum - rainData.rainStationNum,//rainData.rainStationNum,
-                    itemStyle: placeHolderStyle,
-                }, {
                     value: rainData.rainStationNum,
                     itemStyle: {
                         normal: {
@@ -303,6 +299,9 @@ function rainMonitorEcharts(rainData){
                             },
                         }
                     }
+                },{
+                    value:rainData.countStationNum - rainData.rainStationNum,//rainData.rainStationNum,
+                    itemStyle: placeHolderStyle,
                 }
                 ]
             },
@@ -624,9 +623,6 @@ function windVMonitorEcharts(windVData){
                     }
                 },
                 data: [{
-                    value:windVData.countStationNum11 - windVData.windStationNum11,
-                    itemStyle: placeHolderStyle,
-                }, {
                     value: windVData.windStationNum11,
                     itemStyle: {
                         normal: {
@@ -652,6 +648,9 @@ function windVMonitorEcharts(windVData){
                             },
                         }
                     }
+                },{
+                    value:windVData.countStationNum11 - windVData.windStationNum11,
+                    itemStyle: placeHolderStyle,
                 }
                 ]
             },
@@ -705,10 +704,7 @@ function windVMonitorEcharts(windVData){
                         position: 'center'
                     }
                 },
-                data: [{
-                    value: windVData.countStationNum9 - windVData.windStationNum9,
-                    itemStyle: placeHolderStyle,
-                }, {
+                data: [ {
                     value: windVData.windStationNum9,
                     itemStyle: {
                         normal: {
@@ -734,7 +730,10 @@ function windVMonitorEcharts(windVData){
                         }
                     }
                 },
-
+                    {
+                        value: windVData.countStationNum9 - windVData.windStationNum9,
+                        itemStyle: placeHolderStyle,
+                    }
                 ]
             },
             //第3个图表
@@ -799,7 +798,7 @@ function windVMonitorEcharts(windVData){
                     label: {
                         normal: {
                             /*formatter: '日最大降雨量\n{styA|暂无数据}',*/
-                            formatter: '{styA|'+windVData.hourWindv+'/s}\n今日小时最大雨强\n'+windVData.hourStationName,/*'今日小时最大雨强\n{styA|暂无数据}',*/
+                            formatter: '{styA|'+windVData.hourWindv+'/s}\n小时级大风\n'+windVData.hourStationName,/*'今日小时最大雨强\n{styA|暂无数据}',*/
                             position: 'center',
                             show: true,
                             textStyle: {
@@ -880,7 +879,7 @@ function windVMonitorEcharts(windVData){
                     },
                     label: {
                         normal: {
-                            formatter: '{styA|'+windVData.dayWindv+'/s}\n今日小时最大雨强\n'+windVData.dayStationName,/*'今日小时最大雨强\n{styA|暂无数据}',*/
+                            formatter: '{styA|'+windVData.dayWindv+'/s}\n日级大风\n'+windVData.dayStationName,/*'今日小时最大雨强\n{styA|暂无数据}',*/
                             position: 'center',
                             show: true,
                             textStyle: {
@@ -971,9 +970,6 @@ function visMonitorEcharts(visData){
                     }
                 },
                 data: [{
-                    value:visData.countStationNum2 - visData.visibStationNum2,
-                    itemStyle: placeHolderStyle,
-                }, {
                     value: visData.windStationNum2,
                     itemStyle: {
                         normal: {
@@ -999,6 +995,9 @@ function visMonitorEcharts(visData){
                             },
                         }
                     }
+                },{
+                    value:visData.countStationNum2 - visData.visibStationNum2,
+                    itemStyle: placeHolderStyle,
                 }
                 ]
             },
@@ -1053,9 +1052,6 @@ function visMonitorEcharts(visData){
                     }
                 },
                 data: [{
-                    value: visData.countStationNum5 - visData.visibStationNum5,
-                    itemStyle: placeHolderStyle,
-                }, {
                     value: visData.windStationNum9,
                     itemStyle: {
                         normal: {
@@ -1080,8 +1076,10 @@ function visMonitorEcharts(visData){
                             },
                         }
                     }
-                },
-
+                },{
+                        value: visData.countStationNum5 - visData.visibStationNum5,
+                        itemStyle: placeHolderStyle,
+                    }
                 ]
             },
             //第3个图表

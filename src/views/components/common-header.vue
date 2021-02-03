@@ -20,8 +20,8 @@
  <el-menu background-color="#0050a2" router
   text-color="#CCE1FE"
   active-text-color="#fff" v-if="ssdMenuDemo" class="el-menu-demo el-menu-tz menu-main-box" mode="horizontal" @select="handleSelect">
-    <div class="logo">
-      <img src="../../assets/img/logo.png" class="">
+    <div class="logo" @click="clickLogo">
+      <img src="../../assets/img/logo.png">
       <span>台州市县综合气象业务一体化平台</span></div>
     <template v-for="item in menuInfo">
       <el-menu-item :key="item.id" @click="menuItemClick(item)" v-if='!item.children' :index="item.path">{{item.name}}</el-menu-item>
@@ -176,6 +176,9 @@ export default {
     }
   },
   methods: {
+    clickLogo(){
+      this.$emit('clickLogo', 'clickLogo')
+    },
     fatherMethod(data){
       if(data.name == 'saveForm'){//参考菜单配置
         this.transfer = false;//穿梭框
@@ -531,9 +534,11 @@ export default {
     left: 0px;
     display: flex;
     align-items: center;
+    cursor:pointer;
     > img {
     float: left;
     height: 44px;
+    cursor:pointer;
   }
   }
 

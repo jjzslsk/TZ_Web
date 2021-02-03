@@ -87,8 +87,11 @@ export const requestLogin = generatePostWithEvn(`{{host}}/${url_system}/ssd-sys-
 // export const requestLogin = generatePostWithEvn(dataStaticBase + 'login.json');
 // export const requestLogin = generatePostWithEvn(commonSuccess);
 
-// 获取当前用户岗位信息
+// 获取当前用户岗位信息1
 export const requestMyUserJob = generateGetWithEvnToken(`{{host}}/${url_integration}/ssd-business-duty/getUserJob`);
+
+// 获取当前用户岗位信息2
+export const requestUserJob = generateGetWithEvnToken(`{{host}}/${url_integration}/ssd-business-duty/getCheckByUserId`);
 
 // 岗位 修改
 export const requestMyUserUpdateDutyJob = generateGetWithEvn(`{{host}}/${url_integration}/ssd-business-job/updateDutyJob`);
@@ -1403,6 +1406,8 @@ export const requestWarningShort = generateGetWithEvn(`{{host}}/${url_integratio
 export const requestWarningemporary = generateGetWithEvn(`{{host}}/${url_integration}/ssd-product-publish/getLatestPublish?productCode=dlyb`);
 //左侧 十天预报
 export const requestWarningForecast = generateGetWithEvn(`{{host}}/${url_integration}/ssd-product-publish/getLatestPublish?productCode=sttq`);
+//左侧 海洋预报
+export const requestWarningOcean = generateGetWithEvn(`{{host}}/${url_integration}/ssd-product-publish/getLatestPublish?productCode=hyyb`);
 //左侧 城市预报
 export const requestWarningCity = generateGetWithEvn(`{{host}}/${url_integration}/ssd-product-publish/getLatestPublish?productCode=csybqxw`);
 //左侧 周边城市预报

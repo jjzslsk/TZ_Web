@@ -46,8 +46,8 @@
 
         <div class="pageCon">  <!-- h911  w1880 -->
             <div class="conL">
-                <div class="weatherWarning">
-                    <div class="itemBoxTitle itemBoxTitle1">
+                <div id="tqyjDiv" class="weatherWarning">
+                    <div class="itemBoxTitle itemBoxTitle1 itemTitleOtherClick">
                         <div class="itemTitleBox">
                             <img src="image/titleIcon.png" >
                             <span>天气预警</span>
@@ -77,90 +77,84 @@
 
                 <div class="nullBox"></div>
 
-                <div class="cityCountyWarning">
-                    <div class="itemBoxTitle itemBoxTitle2">
+                <div id="sxyjDiv" class="cityCountyWarning">
+                    <div class="itemBoxTitle itemBoxTitle2 itemTitleOtherClick">
                         <div class="itemTitleBox">
                             <img src="image/titleIcon.png" >
                             <span>市县预警</span>
                         </div>
-                        <div class="itemTitleOther" id="cityCountyEarlyMore">更多(0)</div>
+                        <div class="itemTitleOther " id="cityCountyEarlyMore">无数据</div>
                     </div>
                     <div class="warningList" id="cityCountyEarly">
                         <div class="noWarning">
                             <img style="height: 150px;" src="image/noData.png" >
                         </div>
-                        <!-- <div class="warningItem">
-                            <img src="image/warning_icon/寒潮_03.png" >
-                            <div class="warningTxt">
-                                <p>天台县气象局发布寒潮黄色预警</p>
-                                <p>2021-01-01  16:10</p>
-                            </div>
-                        </div>
-                        <div class="warningItem">
-                            <img src="image/warning_icon/寒潮_04.png" >
-                            <div class="warningTxt">
-                                <p>天台县气象局发布寒潮蓝色色预警</p>
-                                <p>2021-01-01  16:10</p>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
 
                 <div class="nullBox"></div>
-
+                <div class="forecast">
                 <div class="warningTxtBox">
                     <div class="warningTxtBoxTitle warningTxtBoxTitle1">
                         <span class="spanAc">短临预报</span>
                         <span>短期预报</span>
+                        <span>十天预报</span>
                     </div>
                     <div class="warningTxtDetail leftTwo">
                         <div class="warningTxtDetailItem">
-                            <p  id="emporaryWarning">
-                                <!-- 台州气象台2021年1月4日8时发布的未来3小时天气预报；<br>
-                                 椒江多去到阴，局部有零星小雨；路桥多云到阴雨，局部有零星小雨；黄岩多云到阴；临海多云；温岭多云到阴雨，局部有零星小雨；玉环多云到阴雨，局部有零星小雨；天台多云到阴;仙居多云到阴；三门多云到阴，局部有零星小雨。
-                                 <br>沿海海面：北到东北风5-6级阵风7级。-->
+                            <!--<p  id="emporaryWarning">
                                 暂无数据
-                            </p>
+                            </p>-->
+                            <textarea id="emporaryWarning"  rows="" cols="" readonly>暂无数据</textarea>
 
                         </div>
 
                         <div class="warningTxtDetailItem" style="display: none">
-                            <p id="shortWarning">
-                                <!--ces预报；<br>
-                                11111111111111111111111111111
-                                <br>沿海海面：北到东北风5-6级阵风7级。-->
+                            <!--<p id="shortWarning">
                                 暂无数据
-                            </p>
+                            </p>-->
+                            <textarea id="shortWarning"  rows="" cols="" readonly>暂无数据</textarea>
+
+                        </div>
+                        <div class="warningTxtDetailItem" style="display: none">
+                            <!--<p id="tenForecast">
+                                暂无数据
+                            </p>-->
+                           <textarea id="tenForecast"  rows="" cols="" readonly>暂无数据</textarea>
 
                         </div>
                     </div>
                 </div>
 
-                <div class="nullBox"></div>
+                <div class="nullBox nullBox3"></div>
 
                 <div class="warningTxtBox warningTxtBox2">
                     <div class="warningTxtBoxTitle warningTxtBoxTitle2">
-                        <span class="spanAc">十天预报</span>
+                        <span class="spanAc">海洋预报</span>
                         <span>城市预报</span>
                         <span>周边城市预报</span>
                     </div>
                     <div class="warningTxtDetail leftThree" >
                         <div class="warningTxtDetailItem">
-                            <p id="tenForecast">
+                           <!-- <p id="oceanForecast">
                                 暂无数据
-                            </p>
+                            </p>-->
+                            <textarea id="oceanForecast"  rows="" cols="" readonly>暂无数据</textarea>
                         </div>
                         <div class="warningTxtDetailItem" style="display: none;">
-                            <p id="cityForecast">
+                            <!--<p id="cityForecast">
                                 暂无数据
-                            </p>
+                            </p>-->
+                            <textarea id="cityForecast"  rows="" cols="" readonly>暂无数据</textarea>
                         </div>
                         <div class="warningTxtDetailItem" style="display: none;">
-                            <p id="aroundCityForecast">
+                            <!--<p id="aroundCityForecast">
                                 暂无数据
-                            </p>
+                            </p>-->
+                            <textarea id="aroundCityForecast"  rows="" cols="" readonly>暂无数据</textarea>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
 
@@ -184,7 +178,7 @@
                         </div>
                     </div>
                     <div class="noticeMaterial">
-                        <div class="noticeBox">
+                        <div class="noticeBox noticeBox1">
                             <div class="itemBoxTitle itemBoxTitle4">
                                 <div class="itemTitleBox">
                                     <img src="image/titleIcon.png" >
@@ -195,56 +189,17 @@
                                 <div class="swiper-container swiper-container1" style="height:100%;">
                                     <div class="swiper-wrapper" style="height:100%;" id="noticeBar">
                                         暂无数据
-                                        <!--<div class="swiper-slide" style="height:100%;">
-                                            <div class="noticeItem">
-                                                <div class="noticeItemDetail">
-                                                    <i></i>
-                                                    <div class="noticeTxt">
-															<span class="name">
-																<i>中国气象局：</i>
-																<i class="detailTxt">提醒！明日上班两股冷空气“接力”来袭！</i>
-																<i class="time">2021-01-03</i>
-															</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide" style="height:100%;">
-                                            <div class="noticeItem">
-                                                <div class="noticeItemDetail">
-                                                    <i></i>
-                                                    <div class="noticeTxt">
-															<span class="name">
-																<i>中国气象爱好者：新疆下雪，</i>
-																<i class="detailTxt">“小寒寒潮 在酝酿？不管是否达标，漫长寒冷要来了！</i>
-																<i class="time">2021-01-03</i>
-															</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide" style="height:100%;">
-                                            <div class="noticeItem">
-                                                <div class="noticeItemDetail">
-                                                    <i></i>
-                                                    <div class="noticeTxt">
-															<span class="name">
-																<i>中国气象爱好者：新疆下雪，</i>
-																<i class="detailTxt">“小寒寒潮 在酝酿？不管是否达标，漫长寒冷要来了！</i>
-																<i class="time">2021-01-03</i>
-															</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>-->
+
                                     </div>
                                 </div>
+                                <div class="swiper-button-prev swiper-button-prev1">上一条</div>
+                                <div class="swiper-button-next swiper-button-next1">下一条</div>
                             </div>
                         </div>
 
                         <div class="nullBox nullBox2"></div>
 
-                        <div class="noticeBox">
+                        <div class="noticeBox noticeBox2">
                             <div class="itemBoxTitle itemBoxTitle4">
                                 <div class="itemTitleBox">
                                     <img src="image/titleIcon.png" >
@@ -255,58 +210,11 @@
                                 <div class="swiper-container swiper-container2" style="height:100%;">
                                     <div class="swiper-wrapper" style="height:100%;" id="serviceMaterials">
                                         暂无数据
-                                        <!--<div class="swiper-slide" style="height:100%;">
-                                            <div class="noticeItem">
-                                                <div class="noticeItemDetail">
-                                                    <i></i>
-                                                    <div class="noticeTxt noticeTxt2">
-                                                        （绍兴）一周天气简报第1期（0101）
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide" style="height:100%;">
-                                            <div class="noticeItem">
-                                                <div class="noticeItemDetail">
-                                                    <i></i>
-                                                    <div class="noticeTxt noticeTxt2">
-                                                        （杭州）《天气周报2021第一期》
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide" style="height:100%;">
-                                            <div class="noticeItem">
-                                                <div class="noticeItemDetail">
-                                                    <i></i>
-                                                    <div class="noticeTxt noticeTxt2">
-                                                        （丽水）丽水报告20123115（受寒潮影...
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide" style="height:100%;">
-                                            <div class="noticeItem">
-                                                <div class="noticeItemDetail">
-                                                    <i></i>
-                                                    <div class="noticeTxt noticeTxt2">
-                                                        （衢州）重要天气情况报告7
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide" style="height:100%;">
-                                            <div class="noticeItem">
-                                                <div class="noticeItemDetail">
-                                                    <i></i>
-                                                    <div class="noticeTxt noticeTxt2">
-                                                        （绍兴）一周天气简报第2期（0102）
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>-->
+
                                     </div>
                                 </div>
+                                <div class="swiper-button-prev swiper-button-prev2">上一条</div>
+                                <div class="swiper-button-next swiper-button-next2">下一条</div>
                             </div>
                         </div>
                     </div>

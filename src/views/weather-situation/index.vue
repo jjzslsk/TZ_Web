@@ -1,8 +1,8 @@
 <template>
   <el-container v-if="menuInfo">
-    <page-header :menuInfo='menuInfo' v-on:childByValue="childByValue" v-on:itemValue="itemValue" v-on:itemPath="itemPath"></page-header>
+    <page-header v-on:clickLogo='clickLogo' :menuInfo='menuInfo' v-on:childByValue="childByValue" v-on:itemValue="itemValue" v-on:itemPath="itemPath"></page-header>
     <el-main>
-      <router-view></router-view>
+      <router-view :clickLogo='eventLogo'></router-view>
     </el-main>
      <popup-music></popup-music>
   </el-container>
@@ -17,7 +17,8 @@ export default {
   name: "Admin",
   data() {
     return {
-      menuInfo:null
+      menuInfo:null,
+      eventLogo:false,
     }
   },
   components: {pageHeader,popupMusic},
@@ -52,6 +53,9 @@ export default {
       });
   },
   methods:{
+    clickLogo(){
+      this.eventLogo = !this.eventLogo
+    },
     init(_list){
       let vm = this
       function menuForma(_list){

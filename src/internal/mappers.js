@@ -32,6 +32,7 @@ export const weatherWarningTypeGBName = {
     "11B09": "高温",
     "11B56": "低温",
     "11B77": "森林火险",
+    "11B25": "森林火险",
     "11B37": "无类型"
 };
 
