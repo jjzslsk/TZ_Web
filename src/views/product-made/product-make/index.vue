@@ -194,7 +194,8 @@
                         </div>
                   <div class="item-input">
                     <el-form-item label="数据来源">
-                      <span class="title">{{productTabList[index].source? productTabList[index].source:"无"}}</span>
+                      <span class="title" v-if="productTabList[index].source" v-html="productTabList[index].source"></span>
+                      <span class="title" v-else>无</span>
                     </el-form-item>
                     <el-form-item label="数据时间">
                       <span class="title">{{productTabList[index].dateTime}}</span>
@@ -285,7 +286,8 @@
                   </div>
                   <div class="item-input">
                     <el-form-item label="数据来源">
-                      <span class="title">{{productMade.source? productMade.source:"无"}}</span>
+                      <span class="title" v-if="productMade.source" v-html="productMade.source"></span>
+                      <span class="title" v-else>无</span>
                     </el-form-item>
                     <el-form-item label="数据时间">
                       <span class="title">{{productMade.dateTime}}</span>

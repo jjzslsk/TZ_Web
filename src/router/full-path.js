@@ -21,13 +21,12 @@ export default [{
             path: '/situation-page',
             name: 'situation-page',
             component: () => import('../views/welcome/situation-page.vue')
-        },
-        // {
-        //     path: '/forecastPage',
-        //     name: 'forecastPage',
-        //     component: () => import('../views/welcome/forecastPage.vue')
-        // },
+        }
     ]
+},{
+    name: "welcome-trace",
+    path: '/welcome-trace/:type',
+    component: () => import('../views/welcome/trace-page.vue'),
 }, {
     path: '/admin',
     redirect: '/admin/menu',

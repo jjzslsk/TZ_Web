@@ -160,6 +160,7 @@ function timingLogin(config){
     const indexKey = window.location.href.indexOf("/#/")
     let cut = window.location.href.substring(indexKey)
     let url1 = '/#/situation-page?key=%2Fsituation-page'
+    let url2 = '/#/welcome-trace/alarm'
     function timingLoginFn() {
         if (`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`  == '07:50:00') {
             alert("登录超时，请重新登录！")
@@ -172,7 +173,7 @@ function timingLogin(config){
         }
     }
 
-        if(config.url == '/integration/system/ssd-sys-user/login' || cut == url1){
+        if(config.url == '/integration/system/ssd-sys-user/login' || cut.indexOf(url1) != -1  || cut.indexOf(url2) != -1){
             resolve('resolve')
         }else{
             timingLoginFn()
@@ -186,6 +187,7 @@ function overtime10(config){
         const indexKey = window.location.href.indexOf("/#/")
         let cut = window.location.href.substring(indexKey)
         let url1 = '/#/situation-page?key=%2Fsituation-page'
+        let url2 = '/#/welcome-trace/alarm'
         //10小时超时登录 （分钟 60*1000）（小时 60*60*1000）（天 24*60*60*1000）
         function checkTimeout10() {
             let timeOut = 10 * 60*60*1000  //设置超时时间: 10小时
@@ -202,7 +204,7 @@ function overtime10(config){
                 resolve('resolve')
             }
         }
-        if(config.url == '/integration/system/ssd-sys-user/login' || cut == url1){
+        if(config.url == '/integration/system/ssd-sys-user/login' || cut.indexOf(url1) != -1  || cut.indexOf(url2) != -1){
             resolve('resolve')
         }else{
             checkTimeout10()
@@ -215,6 +217,7 @@ function overtime04(config){
         const indexKey = window.location.href.indexOf("/#/")
         let cut = window.location.href.substring(indexKey)
         let url1 = '/#/situation-page?key=%2Fsituation-page'
+        let url2 = '/#/welcome-trace/alarm'
         //4小时超时登录 （分钟 60*1000）（小时 60*60*1000）（天 24*60*60*1000）
         function checkTimeout04() {
             let timeOut = 4 * 60*60*1000  //设置超时时间: 10小时
@@ -231,7 +234,7 @@ function overtime04(config){
                 resolve('resolve')
             }
         }
-        if(config.url == '/integration/system/ssd-sys-user/login' || cut == url1){
+        if(config.url == '/integration/system/ssd-sys-user/login' || cut.indexOf(url1) != -1  || cut.indexOf(url2) != -1){
             resolve('resolve')
         }else{
             checkTimeout04()

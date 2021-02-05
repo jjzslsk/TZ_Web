@@ -2,11 +2,11 @@
   <div class="content product-images-page">
     <div class="but">
       <!-- <el-button type="primary" size="small" @click="onAlert('onAlert')">编辑</el-button> -->
-      <el-checkbox v-model="form.checkbox" label="同步" border size="mini"></el-checkbox>
-      <el-button-group>
+      <!-- <el-checkbox v-model="form.checkbox" label="同步" border size="mini"></el-checkbox> -->
+      <!-- <el-button-group>
         <el-button icon="el-icon-refresh" size="mini"></el-button>
         <el-button icon="el-icon-full-screen" @click="dialogTableVisibleFull = true" size="mini"></el-button>
-      </el-button-group>
+      </el-button-group> -->
     </div>
     <div class="img-box">
       <el-row :gutter="2">

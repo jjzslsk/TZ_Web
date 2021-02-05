@@ -45,14 +45,31 @@
         </div>
       </el-scrollbar>
     </div>
+      <div class="right_panel_text" v-if="isTextBox">
+      <div class="header">
+        <div class="title-text">文字资料配置</div>
+        <!-- <div @click="cancel('right')" class="cancelChoose">取消</div> -->
+      </div>
+        <el-checkbox-group class="checkbox-group-warp" v-model="checkList">
+          <el-checkbox :label="item.name" v-for="(item,index) in textList" :key='index'></el-checkbox>
+          <!-- <el-checkbox label="复选框 A"></el-checkbox> -->
+        </el-checkbox-group>
+    </div>
+
   </div>  
 </template>
 <script>
+import {
+    requestProductMakeTextList,
+} from "@/remote/";
 export default {
   data() {
     return {
       left: '',
-      right: ''
+      right: '',
+      textList:null,
+      isTextBox:false,
+      checkList: ['全省短期预报','短期预报']
     }
   },
   computed: {
@@ -69,9 +86,19 @@ export default {
         con = (this.right || this.right === 0) && (this.right !== this.rightData.length - 1) || (this.left || this.left === 0) && (this.left !== this.leftData.length - 1)
       }
       return con;
-    }
+    },
   },
   props: ['leftData', 'rightData', 'titles', 'sortType'],
+  mounted() {
+    requestProductMakeTextList().then(res=>{
+      this.textList = res.data
+    })
+  },
+  watch:{
+    right(val){
+      this.rightData[val].name == '文字资料' ? this.isTextBox=true:this.isTextBox=false
+    },
+  },
   methods: {
     // 穿梭的回调
     transferData(type) {
@@ -194,6 +221,19 @@ export default {
       text-align: left;
     }
   }
+  .right_panel_text {
+    border-radius: 4px;
+    width: 25%;
+    height: 310px;
+    float: left;
+    margin-left: 5%;
+    border: 1px solid #DCDFE6;
+    .content-box{
+      padding: 0 15px;
+      text-align: left;
+      
+    }
+  }
   .packaged_transfer_checkbox{
     .el-radio{
       display: block;
@@ -205,6 +245,17 @@ export default {
     }
     .el-radio.id-checked{
       color: #409EFF;
+    }
+  }
+}
+</style>
+<style lang="postcss">
+.packaged_transfer{
+  .checkbox-group-warp{
+    padding: 0 15px !important;
+    display:block;
+    .el-checkbox{
+      padding: 4px 0;
     }
   }
 }

@@ -654,6 +654,12 @@ import mapBox from './../components/map-box';
 
       },
       toMore(data){
+        //预览模式
+        if(this.$route.query.key == '/situation-page'){
+          routeData = this.$router.resolve({path:'/welcome-trace/alarm'})
+          window.open(routeData.href, '_blank');
+          return
+        }
         //当前页面打开
         // if(data == '天气警报'){this.$router.push({path:'/weather-warning/trace/warning'})}
         // if(data == '市县预警'){this.$router.push({path:'/weather-warning/trace/alarm'})}
