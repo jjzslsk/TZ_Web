@@ -72,6 +72,7 @@ export default {
     /* flex: 1; */
     /* background:#eee; */
     position:absolute;
+    width: calc(100% - 40px);
     top: 60px;
     left: 0;
     bottom:5px;
@@ -79,6 +80,7 @@ export default {
     padding: 0 20px 0 20px;
     div{
       overflow: auto;
+      width: 100%;
     }
   }
 }

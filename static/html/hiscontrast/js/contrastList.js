@@ -250,7 +250,7 @@ layui.use(['laydate', 'layer', 'form', 'table', 'element', 'tree'], function () 
                     }
 
                 }}
-            ,{field: 'rain_amount', title: '降水(ml)', templet:function(d){
+            ,{field: 'rain_amount', title: '降水(mm)', templet:function(d){
                     var rain= d.rain_amount;
                     if(rain != null && rain.toString.length>0  && rain !="null"){
                         return rain.toFixed(1);

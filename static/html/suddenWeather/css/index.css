@@ -175,7 +175,7 @@
 .warningMonitorTypeCon>li>.Level0{
     background: url(../image/noWarning.png) no-repeat;
     background-size: 100%;
-    background-position: center center;
+    background-position: 0 96.5%;
 }
 .warningMonitorTypeCon>li>.Level1{
 	background: url(../image/warnginIcon_blue.png) no-repeat;
@@ -285,6 +285,7 @@
 	background: url(../image/mapCircle.png) no-repeat;
 	/* background: url(../image/mapCircle1.png) no-repeat; */
 	background-size: contain;
+	z-index: 999;
 	background-position:50% 50%;
 }
 #map{

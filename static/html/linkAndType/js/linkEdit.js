@@ -23,8 +23,37 @@ layui.use([ 'layer', 'table','element','laydate','form','upload'], function() {
             }
         }
     });
-
-
+    //监控下拉框改变事件
+    form.on('select(defaultimg)', function(data){
+        if (data.value == "0") {
+            $("#selectim").show();
+            $("#imgss").hide();
+            $("#msg").hide();
+        } else {//上传图片
+            $("#selectim").hide();
+            $("#imgss").show();
+            $("#msg").show();
+            $("#img").val("");
+            $("#imgs").hide();
+        }
+    });
+    form.on('select(selectimg)', function(data){
+        var va = data.value
+        $.ajax({
+            type: 'get',
+            async: false,
+            url: main_url + '/ssd-linkType/getImgUrl',
+            data: {},// loginInfo.loginAreaId
+            dataType: 'json',
+            success: function (data) {
+                var path = data.path
+                $("#imgs").attr("src", path + "/" + va + "-a.png");
+                $("#img").val(path + "/" + va + "-a.png")
+            }, error: function () {
+                layer.msg("查询异常");
+            }
+        })
+    });
     //监听提交
     form.on('submit(save)', function(data){
         $.ajax({
@@ -128,7 +157,15 @@ function child(id) {
             $("#typeid").val(datas.typeid);
             $("#imgs").val(datas.img);
             $("#description").val(datas.description);
-            $("#link").val(datas.link);
+            let link=datas.link;
+            if(link.indexOf("http")>=0){
+                $("#hhtpType").val("https");
+                $("#link").val(datas.link.substring(8,datas.link.length));
+            }else{
+                $("#hhtpType").val("http");
+                $("#link").val(datas.link.substring(7,datas.link.length));
+            }
+
             var exp1=datas.exp1;
             var a=document.getElementsByName("exp1")
             for (var i=0;i<a.length;i++){
@@ -142,11 +179,6 @@ function child(id) {
             if(datas.img!="" && datas.img !=null){
                 $("#uplode").show();
             }
-
-
-
-
-
             setTimeout(function () {
                 layui.use('form', function(){
                     var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
@@ -159,6 +191,25 @@ function child(id) {
         }
     })
 }
+
+function jzym() {
+    var fileName = $("#selectimg").val();
+    $.ajax({
+        type: 'get',
+        async: false,
+        url: main_url + '/ssd-linkType/getImgUrl',
+        data: {},// loginInfo.loginAreaId
+        dataType: 'json',
+        success: function (data) {
+            var path = data.path
+            $("#imgs").attr("src", path + "" + fileName + "-a.png");
+            $("#img").val(path + "" + fileName + "-a.png")
+        }, error: function () {
+            layer.msg("查询异常");
+        }
+    })
+}
+
 function selectloding(){
     $.ajax({
         type: 'get',
@@ -183,4 +234,3 @@ function selectloding(){
         }
     })
 }
-

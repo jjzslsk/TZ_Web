@@ -4,7 +4,6 @@ layui.use([ 'layer', 'table','element','laydate','form','upload'], function() {
     var form = layui.form;
     var element = layui.element;
     var upload = layui.upload;
-
     upload.render({
         elem: '#test3'
         ,url: main_url +'/ssd-linkType/upload?type=1'
@@ -18,6 +17,37 @@ layui.use([ 'layer', 'table','element','laydate','form','upload'], function() {
                 $("#imgurl").val(res.path)
             }
         }
+    });
+    //监控下拉框改变事件
+    form.on('select(defaultimg)', function(data){
+        if (data.value == "0") {
+            $("#selectim").show();
+            $("#imgss").hide();
+            $("#msg").hide();
+        } else {//上传图片
+            $("#selectim").hide();
+            $("#imgss").show();
+            $("#msg").show();
+            $("#imgurl").val("");
+            $("#imgurls").hide();
+        }
+    });
+    form.on('select(selectimg)', function(data){
+        var va = data.value
+        $.ajax({
+            type: 'get',
+            async: false,
+            url: main_url + '/ssd-linkType/getImgUrl',
+            data: {},// loginInfo.loginAreaId
+            dataType: 'json',
+            success: function (data) {
+                var path = data.path
+                $("#imgurls").attr("src", path + "" + va + "-a.png");
+                $("#imgurl").val(path + "" + va + "-a.png")
+            }, error: function () {
+                layer.msg("查询异常");
+            }
+        })
     });
     //监听提交
     form.on('submit(save)', function(data){
@@ -109,8 +139,6 @@ layui.use([ 'layer', 'table','element','laydate','form','upload'], function() {
 });
 
 function child(id) {
-
-
     $.ajax({
         type: 'get',
         async: false,
@@ -138,3 +166,20 @@ function child(id) {
 }
 
 
+function jzym() {
+    var fileName = $("#selectimg").val();
+    $.ajax({
+        type: 'get',
+        async: false,
+        url: main_url + '/ssd-linkType/getImgUrl',
+        data: {},// loginInfo.loginAreaId
+        dataType: 'json',
+        success: function (data) {
+            var path = data.path
+            $("#imgurls").attr("src", path + "" + fileName + "-a.png");
+            $("#imgurl").val(path + "" + fileName + "-a.png")
+        }, error: function () {
+            layer.msg("查询异常");
+        }
+    })
+}

@@ -70,6 +70,10 @@ layui.use([ 'layer', 'table','element','laydate','form'], function(){
                     area: ['470px','470px'],
                     btn: ['保存', '取消'],
                     content:'../linkAndType/linkTypeEdit.html' ,
+                    success: function(layero, index){
+                        var iframe = window['layui-layer-iframe'+index];
+                        iframe.jzym();
+                    },
                     yes: function(index,layero){
                         // 获取iframe层的body
                         var body = layer.getChildFrame('body', index);

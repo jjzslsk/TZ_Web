@@ -67,8 +67,11 @@
                                     </template>
                                 </el-table-column>
                                 <el-table-column prop label="发布类型" width="100px">
-                                    <template slot-scope="scope">
+                                    <!-- <template slot-scope="scope">
                                         {{({'A':"首发",'Z':"解除"}[scope.row.issueLetter]||"继续发布")}}
+                                    </template> -->
+                                    <template slot-scope="scope">
+                                        {{({'0':"首发",'1':"继续",'2':"变更",'3':"解除"}[scope.row.type]||"继续发布")}}
                                     </template>
                                 </el-table-column>
                             </template>

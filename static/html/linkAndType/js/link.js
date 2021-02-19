@@ -23,7 +23,7 @@ layui.use([ 'layer', 'table','element','laydate','form'], function(){
 //            {type: 'checkbox', fixed: 'left'}
             {field: 'linkname', title: '链接名称',align:'center'}
             ,{field: 'typename', title: '链接分类',align:'center' }
-            ,{field: 'img', title: '链接地址',align:'center'  }
+            ,{field: 'link', title: '链接地址',align:'center'  }
             ,{fixed: 'right',  title: '操作', align:'center', toolbar: '#barList',width:250}
         ]]
         ,data:[]
@@ -48,9 +48,13 @@ layui.use([ 'layer', 'table','element','laydate','form'], function(){
                 layer.open({
                     title:"链接添加",
                     type: 2,
-                    area: ['550px','700px'],
+                    area: ['550px','790px'],
                     btn: ['保存', '取消'],
                     content:'../linkAndType/linkEdit.html' ,
+                    success: function(layero, index){
+                        var iframe = window['layui-layer-iframe'+index];
+                        iframe.jzym();
+                    },
                     yes: function(index,layero){
                         // 获取iframe层的body
                         var body = layer.getChildFrame('body', index);
@@ -88,7 +92,7 @@ layui.use([ 'layer', 'table','element','laydate','form'], function(){
             layer.open({
                 title:"友情链接更新",
                 type: 2,
-                area: ['550px','740px'],
+                area: ['550px','790px'],
                 btn: ['修改', '取消'],
                 content:'../linkAndType/linkEdit.html ',
                 success: function(layero, index){

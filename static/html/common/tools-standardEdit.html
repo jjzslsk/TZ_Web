@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>业务规范</title>
+    <style>
+        body{margin: 10px;}
+        .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
+        .span-red{
+            margin: 5px;
+            color:red;
+        }
+        .layui-unselect{
+            width: 180px;
+        }
+    </style>
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="../../layui/select/formSelects-v4.css">
+
+</head>
+<body>
+<div class="layui-container">
+    <form id="form1" class="layui-form" style="margin-top: 3%">
+        <input id="id" name="id" type="hidden" value="" />
+
+        <div class="layui-form-item" hidden>
+            <div class="layui-input-block">
+                <button id="permissionSubmit" class="layui-btn" lay-submit lay-filter="save">
+                    保存
+                </button>
+                <button id="updateSubmit" class="layui-btn" lay-submit lay-filter="update">
+                    修改
+                </button>
+                <input type="text" id="taskId" name="taskId" value=""   autocomplete="off" class="layui-input">
+                <input type="text" id="type" name="type" value=""   autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 第一行 -->
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <div class="layui-form-item"> <div class="layui-inline">
+                    <label class="layui-form-label"><span class="span-red">*</span>名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="name" name="name" value="" lay-verify="required"  placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label"><span class="span-red">*</span>排序</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="show_order" name="show_order" value="" lay-verify="required"  placeholder="请输入" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">说明</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="content" name="content" value=""   placeholder="请输入" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">文件</label>
+                        <div class="layui-input-block"  id="uplode">
+                            <input type="text" id="file_path" name="file_path" value="" hidden>
+                            <input type="text" id="servce_path" name="servce_path" value="" hidden>
+                            <input type="text" id="file_pathName" name="file_pathName" value=""    autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn" id="test2"><i class="layui-icon"></i>上传文件</button>
+                        </div>
+                        <div class="layui-input-block">
+                            <span class="span-red">支持word,excel,pdf,ppt,txt文档和png或jpg格式图片</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="js/tools-standardEdit.js"></script>
+</html>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>工具栏</title>
   <link rel="stylesheet" href="../../layui/css/layui.css"  media="all">
-	<style type="text/css"> 
+	<style type="text/css">
 		.head-ul >li {
 			/* border: 1px solid #eee; */
     		border-bottom: 0px;
@@ -33,7 +33,7 @@
    <!-- <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
 	  <legend>工具栏</legend>
 	</fieldset> -->
- 
+
 	<div class="layui-tab layui-tab-brief" >
 	  <ul class="layui-tab-title head-ul">
 	    <li class="layui-this">业务规范</li>
@@ -211,10 +211,10 @@
         </div>
 	    </div>
 	  </div>
-	</div> 
+	</div>
 </body>
 <script type="text/html" id="operate">
-    <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="show" name="show" id="{{d.id}}" data-url="{{d.filePath}}" data-filename="{{d.name}}" >预览</a>
+    <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="show" name="show" id="{{d.id}}" data-url="{{d.filePath}}" data-msg="{{d.servce_path}}" data-filename="{{d.name}}" >预览</a>
     <a class="layui-btn layui-btn-sm" lay-event="download" name="download" id="{{d.id}}_down" data-url="{{d.filePath}}" data-filename="{{d.name}}" >下载</a>
 </script>
 <script type="text/javascript" src="../../tools/jquery-3.5.1.js" charset="utf-8"></script>
@@ -228,7 +228,7 @@ layui.use(['element','table','form'], function(){
   table = layui.table,
   form = layui.form;
   element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
-  
+
   table.render({
     elem: '#busspec'
     ,url: main_url + '/tools/business'
@@ -256,7 +256,7 @@ layui.use(['element','table','form'], function(){
         bindOnclick();
     }
   });
-  
+
   table.render({
     elem: '#telphone'
     ,url: main_url + '/tools/phone'
@@ -279,7 +279,7 @@ layui.use(['element','table','form'], function(){
 		};
 	}
   });
-  
+
   table.render({
     elem: '#netlink'
     ,url: main_url + '/tools/netlink'
@@ -337,7 +337,7 @@ form.on('submit(formDemo1)', async function(data){
 
   //当前Tab的所在下标
   element.on('tab(demo)', function (data) {
-    // console.log(data.index); 
+    // console.log(data.index);
     tabIndex = data.index
   });
 
@@ -375,7 +375,7 @@ form.on('submit(formDemo1)', async function(data){
     });
 
   }
-  
+
 
     //获取高度
   async function refreshEleHeigh (_model,_factor,key){
@@ -431,7 +431,7 @@ async function requestData(){
     // eleHeight = await getData(main_url,'/ssd-forecast-model/getElementByModelAndname?',{model:model[0].ele_name,ele_name:factor[0].ele_name}).then(res=>{return res.data});
 
         //获取高度 方法
-  async function _refreshEleHeigh (_model,_factor,key,heightPath){ 
+  async function _refreshEleHeigh (_model,_factor,key,heightPath){
     eleHeight = await getData(main_url,'/ssd-forecast-model/getElementByModelAndname?',{model:_model,ele_name:_factor}).then(res=>{return res.data});
     eleHeightDom = []
     $.each(eleHeight,function(_index,item){
@@ -534,7 +534,7 @@ requestData().then(()=>{
     //   eleHeightDom.push(`<input type="radio" lay-filter=${"eleHeightRadio" + index} name=${"eleHeight" + index} value=${item.ele_height} title=${item.ele_height}>`)
     // })
     // $("#eleHeightCheckbox" + index).html(eleHeightDom)
-    
+
     }
 
     userInfoConfig? form.val("scoreRuleForm", { // class="layui-form" 所在元素属性 lay-filter="" 对应的值
@@ -558,8 +558,8 @@ requestData().then(()=>{
       "factor3": userInfoConfig[3].factor3,
       "eleHeight3": userInfoConfig[3].eleHeight3,
     }):''
-    
-    
+
+
 
     form.render()
   })
@@ -585,8 +585,9 @@ function bindOnclick(){
         var id = this.id;
         var url = this.getAttribute("data-url");
         var title = this.getAttribute("data-filename");
+        var servce_path = this.getAttribute("data-msg");
         if(event == 'show'){
-            if (url.indexOf('.pdf') != -1) {
+            if (url.indexOf('.pdf') != -1 || url.indexOf('.txt') != -1 || url.indexOf('.png') != -1 || url.indexOf('.jpg') != -1) {
           	  layer.open({
                     type: 2,
                     title: title,
@@ -595,9 +596,10 @@ function bindOnclick(){
                     maxmin: true, //开启最大化最小化按钮
                     area: ['1200px', '800px'],
                     scrollbar: true,
-                    content: main_url + '/' + url//注意，如果str是object，那么需要字符拼接。
+                    content:servce_path//注意，如果str是object，那么需要字符拼接。
                 });
-            } else if (url.indexOf('.doc') != -1 || url.indexOf('.docx') != -1) {
+            } else if (url.indexOf('.doc') != -1 || url.indexOf('.docx') != -1 || url.indexOf('.xls') != -1|| url.indexOf('.xlsl') != -1
+                || url.indexOf('.ppt') != -1 || url.indexOf('.pptx') != -1 ) {
             	 layer.open({
                      type: 2,
                      title: title,
@@ -606,11 +608,13 @@ function bindOnclick(){
                      maxmin: true, //开启最大化最小化按钮
                      area: ['1200px', '800px'],
                      scrollbar: true,
-                     content: main_url + "/tools/preview?filepath="+url+"&filename="+title
+                     content: "http://10.137.4.30:8089/PageOfficeService/main/openFileByPath?filePath="+url
+
+
                  });
             }
         }else if(event == 'download'){
-        	 window.open(main_url + "/tools/download?filepath="+url+"&filename="+title,"_self");//下载文件url
+        	 window.open(main_url + "/tools/download?filepath="+url+"&filename="+title);//下载文件url
         }
     });
 }

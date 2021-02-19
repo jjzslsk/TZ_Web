@@ -163,7 +163,7 @@ function timingLogin(config){
     let url2 = '/#/welcome-trace/alarm'
     function timingLoginFn() {
         if (`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`  == '07:50:00') {
-            alert("登录超时，请重新登录！")
+            alert("登录超时，请重新登录！ 0750")
             sessionStorage.clear()
             window.location.href="/";
             reject('reject')
@@ -196,7 +196,7 @@ function overtime10(config){
             // console.log(currentTime - lastTime);
             // console.log(timeOut);
             if (currentTime - lastTime > timeOut) {
-                alert("登录超时，请重新登录！")
+                alert("登录超时，请重新登录！100")
                 sessionStorage.clear()
                 window.location.href="/";
                 reject('reject')
@@ -224,7 +224,7 @@ function overtime04(config){
             let currentTime = new Date().getTime()//更新当前时间
             let lastTime = localStorage.getItem("lastTime04");//登录时间
             if (currentTime - lastTime > timeOut) {
-                alert("登录超时，请重新登录！")
+                alert("登录超时，请重新登录！004")
                 sessionStorage.clear()
                 window.location.href="/";
                 reject('reject')

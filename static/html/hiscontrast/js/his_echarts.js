@@ -145,7 +145,7 @@ option = {
                 }
             },
             axisLabel: {
-                formatter: '{value} ml'
+                formatter: '{value} mm'
             }
         },
         {

@@ -65,9 +65,14 @@
             <div class="layui-col-xs12">
                 <div class="layui-form-item">
                     <div class="layui-inline">
+                        <label class="layui-form-label">链接类型</label>
+                        <div class="layui-input-block">
+                            <select  style="width: 70px;" id="hhtpType" name="hhtpType"><option value="http" selected>http</option><option value="https">https</option></select>
+                        </div>
+                        <br>
                         <label class="layui-form-label"><span class="span-red">*</span>链接地址</label>
                         <div class="layui-input-block">
-                            <textarea style="width:114%;height: 70px" id="link" name="link"></textarea>
+                        <textarea style="width:114%;height: 70px" id="link" name="link" lay-verify="required"></textarea>
                         </div>
                     </div>
                 </div>
@@ -98,7 +103,7 @@
                 <div class="layui-form-item"> <div class="layui-inline">
                     <label class="layui-form-label">备注</label>
                     <div class="layui-input-block">
-                        <textarea  style="width:114%;height: 70px" id="description" name="description"></textarea>
+                        <textarea  style="width:131%;height: 70px" id="description" name="description"></textarea>
                     </div>
                 </div>
 
@@ -110,14 +115,38 @@
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label">类型图标</label>
-                        <div class="layui-input-block" hidden id="uplode">
+                        <div class="layui-input-block"  id="uplode">
                             <input type="text" id="img" name="img"  hidden >
                             <img src="" id="imgs" name="imgs" style="width: 70px;height: 70px;">
                         </div>
-                        <div class="layui-input-block">
-                            <button type="button" class="layui-btn" id="test3"><i class="layui-icon"></i>上传文件</button>
+                        <div class="layui-input-block" id="select">
+                          <select id="defaultimg"   lay-filter="defaultimg">
+                              <option value="0">选择图片</option>
+                              <option value="1">上传图片</option>
+                          </select>
                         </div>
-                        <div class="layui-input-block">
+                        <br>
+
+                        <div class="layui-input-block" id="selectim">
+                            <select id="selectimg" lay-filter="selectimg">
+                                <option value="首页" selected>首页</option>
+                                <option value="GIS应用">GIS应用</option>
+                                <option value="乡镇延伸">乡镇延伸</option>
+                                <option value="反馈评估">反馈评估</option>
+                                <option value="大数据存储">大数据存储</option>
+                                <option value="工作信息">工作信息</option>
+                                <option value="渠道管理">渠道管理</option>
+                                <option value="系统管理">系统管理</option>
+                                <option value="运营监控">运营监控</option>
+                                <option value="预警发布">预警发布</option>
+                                <option value="预警管理">预警管理</option>
+                            </select>
+                        </div>
+
+                        <div class="layui-input-block" hidden id="imgss">
+                            <button type="button" class="layui-btn" id="test3">上传图片</button>
+                        </div>
+                        <div class="layui-input-block" hidden id="msg">
                             <span class="span-red">请上传59x59像素,格式为png或jpg的图片</span>
                         </div>
                     </div>

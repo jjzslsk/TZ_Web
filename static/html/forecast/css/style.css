@@ -63,7 +63,7 @@ html,body{height: 100%;}
 .main .content .page-but{display: flex;justify-content: center;padding: 10px 0 0 0;position: relative;height: 50px;}
 .main .content .page-but .but-active{background-color: #409EFF;color: #fff;}
 .main .content .page-but .but-right{position: absolute;right:20px;height: 50px;display: flex;align-items: center;}
-.main .content .page-but .but-right .but-txt{font-size: 14px;color: #909399;padding: 5px 10px;margin: 0 10px;border-radius: 100px;border: #999999 1px solid;min-width: 30px;text-align: center;}
+.main .content .page-but .but-right .but-txt{font-size: 14px;color: #909399;padding: 5px 10px;margin: 0 10px;border-radius: 100px;border: #999999 1px solid;min-width: 30px;text-align: center;cursor: pointer;}
 .main .content .content-map {display: flex;justify-content: center;text-align: center;height: calc(100% - 60px);}
 .main .content .content-map .browse .title{display: flex;justify-content: center;font-size: 16px;padding: 15px 0 0 0;}
 .main .content .content-map .browse .content{font-size: 16px;padding: 15px 0;}

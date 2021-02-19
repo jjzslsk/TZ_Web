@@ -742,3 +742,6 @@ async function requestPlaneRightHistory (){
 
     })
 }
+
+$('#imgDow').on('click',function(){
+})

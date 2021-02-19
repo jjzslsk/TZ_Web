@@ -125,6 +125,34 @@ layui.use([ 'layer', 'table','element','laydate','form'], function() {
         return false;
     });
 
+    $("#channelName").on("click",function(){
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.open({
+                title:"服务用户选择",
+                type: 2,
+                scrollbar: false,//  滚动条 禁止
+                area: ['300px', '400px'],
+                btn: ['保存', '取消'],
+                content:'../alarmServer/serviceUserTree.html',
+                success: function(layero, index){
+                    var iframe = window['layui-layer-iframe'+index];
+                    var taskId = $("#taskId").val();
+                    if(taskId==null||taskId==''||taskId==undefined||taskId=='null'){
+                        taskId='-999';
+                    }
+                    iframe.initTree(taskId);
+                },
+                yes: function(index,layero){
+                    // 获取iframe层的body
+                    var body = layer.getChildFrame('body', index);
+                    // 找到隐藏的提交按钮模拟点击提交
+                    body.find('#permissionSubmit').click();
+                }
+            });
+        });
+    });
+
     /*var delJsonKey = function (dom) {
         $("#"+dom).remove();
     };*/
@@ -145,6 +173,7 @@ function child(id) {
             $("#dataType").val(datas.dataType);
             $("#state").val(datas.state);
             $("#taskRuleTxt").val(datas.taskRule);
+            $("#channelName").val(datas.channelName);
             parsingJso(datas.taskRule);
             $("#remarks").val(datas.describe);
             layui.use('form', function() {
