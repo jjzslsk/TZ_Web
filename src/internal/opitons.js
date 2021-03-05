@@ -80,6 +80,21 @@ export const warningLevel = [
     }
 ];
 
+export const warningState = [
+    {
+        value: undefined,
+        label: '全部'
+    },
+    {
+        value: '6',
+        label: '生效'
+    },
+    {
+        value: "7",
+        label: "失效"
+    }
+];
+
 export const organiseType = [
     {
         value: "1",

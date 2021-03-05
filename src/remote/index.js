@@ -211,8 +211,10 @@ export const requestProductConfigImagesList = generateGetWithEvn(`{{host}}/${url
 // 产品制作 参考资料 图片资料 图片
 // export const requestProductMakeImagesList = generateGetWithEvn(dataStaticBase + 'getECImgDataList.json');
 export const requestProductMakeImagesList = generateGetWithEvn(`{{host}}/${url_integration}/ssd-reminder-warn/getECImgDataList`);
-// 产品制作 参考资料 文字资料
+// 产品制作 参考资料 文字资料 已拥有
 export const requestProductMakeTextList = generateGetWithEvn(`{{host}}/${url_integration}/ssd-data-constant/getReferDataByType?dataCodeType=TextForecast`);
+// 产品制作 参考资料 文字资料 所有
+export const requestProductMakeReferDataByType = generateGetWithEvn(`{{host}}/${url_integration}/ssd-data-constant/getQueryReferDataByType?dataCodeType=TextForecast`);
 // 产品制作 参考资料 会商通知 
 export const requestProductMakeMessageList = generateGetWithEvn(`{{host}}/${url_integration}/ssd-data-constant/getReferData?dataCode=quansheng_hs`);
 // 产品制作 参考资料 浙江warms
@@ -1208,6 +1210,10 @@ export const requestDialogFormDutyPostItemInput = payload => {
     return node.id ? generatePostJSONWithEvn(`{{host}}/${url_integration}/ssd-business-job-task/updateSsdBusinessJobTask`)(node) : generatePostJSONWithEvn(`{{host}}/${url_integration}/ssd-business-job-task/addSsdBusinessJobTask`)(node)
 };
 
+// 岗位流程配置弹窗 选择产品 查询时次
+// export const requestDutyPostTime = generateGet(dataStaticBase + 'getInfoTime.json');
+export const requestDutyPostTime = generateGetWithEvn(`{{host}}/${url_integration}/ssd-business-job-task/getInfoTime`);
+// 
 // 值班流程配置
 // 获取值班流程配置列表
 export const requestDutySchedulingList = generateGetWithEvn(`{{host}}/${url_integration}/ssd-business-duty-task/getSsdBusinessDutyTaskList`);

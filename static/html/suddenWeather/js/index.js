@@ -66,7 +66,7 @@ function getTimes(){
                                 var longitude = value[k].longitude;
                                 var latitude = value[k].latitude;
                                 var areaName = value[k].areaName;
-                                var mark = value[k].mark;
+                                var mark = value[k].describe;
                                 labelData.push({'name': areaName,'mark':mark,"areaCode":areaCode,"alarmTime":alarmTime});
                                 var valueArr = new Array();
                                 valueArr.push(longitude);

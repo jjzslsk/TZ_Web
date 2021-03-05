@@ -33,7 +33,7 @@
       </el-form>
     </div>
     <el-input v-if="!docPath" type="textarea" :rows="10" placeholder="请输入内容" v-model="options"></el-input>
-    <page-office v-else :class="!linkIframePosition? 'link-iframe-position':'page-office'" :url="docPath" ref="iframe" id="products"></page-office>
+    <page-office v-else :class="!linkIframePosition || iframePosition? 'link-iframe-position':'page-office'" :url="docPath" ref="iframe" id="products"></page-office>
   </div>
 </template>
 <script>
@@ -42,7 +42,7 @@ import {
   requestProductMakeHistoryList
 } from "@/remote/";
 export default {
-  props:['viewData','productTabProductInfoId'],
+  props:['viewData','productTabProductInfoId','iframePosition'],
   components: {
     PageOffice,
   },

@@ -146,7 +146,7 @@
               >
               </el-tab-pane>
             </el-tabs>
-            <router-view class="router-wrap" v-if="isRouterAlive" v-on:dialogEmit="dialogEmit" @emitPhraes='clickPhraes' :viewData='lastItemClicked' :productTabProductInfoId='productTabProductInfoId'></router-view>
+            <router-view class="router-wrap" v-if="isRouterAlive" v-on:dialogEmit="dialogEmit" @emitPhraes='clickPhraes' :viewData='lastItemClicked' :productTabProductInfoId='productTabProductInfoId' :iframePosition = iframePosition></router-view>
           </template>
           <div class="direction-icon-r" @click="directionRight()"  v-if="isRight">
           <i class="el-icon-arrow-left"></i>
@@ -604,6 +604,7 @@ export default {
   },
   data() {
     return {
+      timelineClickData:null,
       linkIframe:null,
       isPageOffices:true,//多产品TAB切换时 刷新page-office
       iframePosition:false,//pageoffice 定位隐藏
@@ -882,7 +883,8 @@ export default {
           })
           requestProducInfo({
           productInfoId: this.lastItemClicked.id,
-          isReload: false
+          makeTime: this.timelineClickData.makeTime,
+          isReload: true
           }).then(res => {
             if(typeof(res.data)=="object"){
               this.productTabList = null;
@@ -1320,10 +1322,11 @@ export default {
     },
     emitPhraes(){},
     timelineClick(data){
+      this.timelineClickData = data
 if(data.product == 1 && data.productInfoId){
         this.treeDataList.forEach(item=>{
             if(item.id === data.productInfoId){
-              this.onTreeClickItem(item)
+              this.onTreeClickItem(item,true)
             }
           })
       // }else if(data.product == 2 && data.productInfoId == null || data.productInfoId == ''){
@@ -1373,7 +1376,7 @@ if(data.product == 1 && data.productInfoId){
                 console.log('单个')
                 requestProducInfo({
                   productInfoId: this.lastItemClicked.id,
-                  isReload: false,
+                  isReload: true,
                   makeTime:makeItem.makeTime
                   }).then(res => {
                         if(typeof(res.data)=="object"){
@@ -1397,7 +1400,7 @@ if(data.product == 1 && data.productInfoId){
                 console.log('多个')
                 requestProducInfo({
                     productInfoId: tabItem.productInfoId,
-                    isReload: false,
+                    isReload: true,
                     makeTime:makeItem.makeTime
                     }).then(res => {
                           if(typeof(res.data)=="object"){
@@ -2020,7 +2023,7 @@ if(data.product == 1 && data.productInfoId){
       // this.$router.replace({ name: tab.$attrs.item.name });
       // requestProducInfo({
       //   productInfoId: this.lastItemClicked.id,
-      //   isReload: false
+      //   isReload: true
       // }).then(res => {
       //   this.productMade = null;
       //   this.productMade = {
@@ -2030,7 +2033,7 @@ if(data.product == 1 && data.productInfoId){
       //   console.log(this.productMade);
       // });
     },
-    onTreeClickItem(item) {
+    onTreeClickItem(item,isPro = false) {
       console.log("click-tree-item1", item);
       if(item.type == 'link'){
         this.linkIframe = item.link_path
@@ -2093,7 +2096,8 @@ if(data.product == 1 && data.productInfoId){
       }else if(item.treeType == 'product'){
       requestProducInfo({
           productInfoId: this.lastItemClicked.id,
-          isReload: false
+          makeTime: isPro? this.timelineClickData.makeTime:null,
+          isReload: true
           }).then(res => {
             if(typeof(res.data)=="object"){
               this.productTabList = null;

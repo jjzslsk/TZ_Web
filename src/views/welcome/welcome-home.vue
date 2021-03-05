@@ -11,7 +11,11 @@
     >
     <div class="logo" @click="clickLogo">
       <img src="../../assets/img/logo.png">
-      <span>台州市县综合气象业务一体化平台</span></div>
+      <div class="title">
+        <div class="major">台州市县综合气象业务一体化平台</div>
+        <div class="explain">Taizhou Meteorological Service Integration Platform</div>
+      </div>
+      </div>
       <el-menu-item index="/login" path="/welcome-login">
         <i class="el-icon-s-home"></i>
         <span slot="title"></span>
@@ -104,7 +108,7 @@ export default {
     .logo {
     outline: 0;
     padding-left: 1em;
-    line-height: 61px;
+    height: 61px;
     font-size: 24px;
     font-family: Microsoft YaHei;
     font-weight: bold;
@@ -119,6 +123,12 @@ export default {
     height: 44px;
     cursor:pointer;
   }
+    .title{
+    .explain{
+          font-size: 12px;
+          font-weight: 400;
+        }
+      }
     }
     .night-wrap{
       width: 100%;

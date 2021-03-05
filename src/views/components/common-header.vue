@@ -22,7 +22,11 @@
   active-text-color="#fff" v-if="ssdMenuDemo" class="el-menu-demo el-menu-tz menu-main-box" mode="horizontal" @select="handleSelect">
     <div class="logo" @click="clickLogo">
       <img src="../../assets/img/logo.png">
-      <span>台州市县综合气象业务一体化平台</span></div>
+      <div class="title">
+        <div class="major">台州市县综合气象业务一体化平台</div>
+        <div class="explain">Taizhou Meteorological Service Integration Platform</div>
+      </div>
+      </div>
     <template v-for="item in menuInfo">
       <el-menu-item :key="item.id" @click="menuItemClick(item)" v-if='!item.children' :index="item.path">{{item.name}}</el-menu-item>
       <el-submenu v-if='item.children && sysMenu' :index="item.id" :key="item.id">
@@ -57,7 +61,7 @@
       <!-- </div> -->
 
         <div class="transfer-box" v-if="transfer && tabsList">
-          <c-transfer class="c-transfer" :leftData="leftData" :rightData="rightData" :titles="['未拥有', '已拥有']" @transfer="handleTransfer" @handleSort="handleSort">
+          <c-transfer class="c-transfer" @checkList="checkList" :leftData="leftData" :rightData="rightData" :titles="['未拥有', '已拥有']" @transfer="handleTransfer" @handleSort="handleSort">
           </c-transfer>
           <el-switch
             v-model="selected"
@@ -121,6 +125,7 @@ export default {
       },
       widthAside: widthAsideNomal,
       activeIndex:"",
+      checkboxData:null,
     };
   },
   watch: {
@@ -176,6 +181,10 @@ export default {
     }
   },
   methods: {
+    checkList(data){
+      this.checkboxData = data
+      console.log(this.checkboxData)
+    },
     clickLogo(){
       this.$emit('clickLogo', 'clickLogo')
     },
@@ -251,7 +260,9 @@ export default {
       this.rightData.forEach(element => {
         menu.push(element.content)
       });
-      return {reference:menu.toString(),selected:this.selected? 0:1}
+      // return {reference:menu.toString(),selected:this.selected? 0:1,txtData:this.checkboxData.toString()}
+      console.log(this.checkboxData.toString())
+      return {reference:menu.toString(),selected:this.selected? 0:1,txtData:`${this.checkboxData.toString()}`}
     },
     editTab(){
       this.visibleDialogEditTab = true
@@ -525,7 +536,7 @@ export default {
 .logo {
     outline: 0;
     padding-left: 1em;
-    line-height: 90px;
+    /* line-height: 90px; */
     font-size: 24px;
     font-family: Microsoft YaHei;
     font-weight: bold;
@@ -539,6 +550,15 @@ export default {
     float: left;
     height: 44px;
     cursor:pointer;
+  }
+  .title{
+    .major{
+
+    }
+    .explain{
+      font-size: 12px;
+      font-weight: 400;
+    }
   }
   }
 

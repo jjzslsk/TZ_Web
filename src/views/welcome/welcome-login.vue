@@ -5,7 +5,10 @@
         <div class="img">
           <img src="../../assets/img/logo1.png" alt="" srcset="" />
         </div>
-        <div class="title">台州市气象业务一体化平台</div>
+        <div>
+          <div class="title">台州市气象业务一体化平台</div>
+          <div class="account">Taizhou Meteorological Service Integration Platform</div>
+        </div>
       </div>
       <div class="abstract">
         <div class="title">简介</div>
@@ -362,6 +365,9 @@ export default {
         border-left: 3px solid #19b7fe;
         padding-left: 12px;
       }
+      .account{
+        padding-left: 12px;
+      }
       .content {
         font-weight: bold;
         p {
@@ -431,9 +437,15 @@ export default {
         font-size: 3.5rem;
         font-weight: bold;
       }
+      .account{
+        padding-left: 10px;
+        padding-top: 10px;
+        font-weight: 600;
+        font-size: 20px;
+      }
     }
     .abstract {
-      padding-left: 4rem;
+      padding-left: calc(122px + 4rem);
       padding-top: 2rem;
       .title {
         font-weight: bold;

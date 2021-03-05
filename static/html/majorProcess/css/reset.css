@@ -1,6 +1,6 @@
 article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, figure, section, legend, textarea, p, blockquote, th, td, input, select, textarea, button { margin: 0; padding: 0 }
-body{font-family:"Microsoft Yahei",Arial,Helvetica,sans-serif;background-color: #fff;color:#424242;margin: 0 auto; font-size: 12px;}
+body{font-family:"Microsoft Yahei",Arial,Helvetica,sans-serif;background-color: #fff;color:#424242;margin: 0 auto; font-size: 100%;}
 table{border-collapse:collapse;border-spacing:0}
 ul,ol,dd,dt,dl{list-style-type:none;}
 a{color:#333;text-decoration: none;-webkit-touch-callout: none;-webkit-user-select: none;}

@@ -40,11 +40,11 @@ html,body{height: 100%;}
 .left .layui-tab .layui-tab-content .but-row .is-active{}
 .left .layui-tab .layui-tab-content .but-row .button-item{margin: 4px;padding: 0 3px;min-width: 60px;text-align: center;}
 
-.right .layui-tab {margin: 0;}
-.right .layui-tab .layui-tab-content .time .layui-colla-content{height: 360px;overflow: auto;}
-.right .layui-tab .layui-tab-content .time .layui-colla-content li{text-align: center;}
+.right .layui-tab {margin: 0;height: 100%;}
+.right .layui-tab .layui-tab-content .layui-colla-content{height: calc(100% - 42px);overflow: auto;padding: 0;}
+.right .layui-tab .layui-tab-content .layui-colla-content li{text-align: center;padding: 0 10px;}
 .right .layui-tab .layui-tab-content .but-row{margin: 6px 0;display: flex;flex-wrap: wrap;}
-.right .layui-tab .layui-tab-content .but-row .button-item{margin: 4px;min-width: 20%;text-align: center;}
+.right .layui-tab .layui-tab-content .but-row .button-item{margin: 4px;min-width: 25%;text-align: center;}
 
 .main .tools{display: flex;height: 41px;width: 100%;line-height: 41px;border-bottom: 1px solid #e6e6e6;word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .main .tools .li-plane {display: flex;overflow: hidden;}
@@ -96,7 +96,20 @@ html,body{height: 100%;}
 .left .temporal .controls .layui-input {height: auto;}
 
 .left .sounding .controls .layui-input {height: auto;}
+/* .right #forecastFrequency {}
+.right #forecastFrequency li{} */
+.right .layui-tab-item {height: 100%;}
+.right .layui-tab-item ul{height: 100%;overflow: auto;}
+.right .layui-tab-item .layui-collapse{height: 100%;}
+.right .layui-tab-item .layui-collapse .time-select{height: 450px;}
+.right .layui-tab-item .layui-collapse .time-select .time{height: calc(100% - 116px);}
+.right .layui-tab-item .layui-collapse .time-select .date{}
+.right .layui-tab-item .layui-collapse .img-list{height: calc(100% - 450px);}
+.right .layui-tab-item .layui-collapse .img-list .layui-colla-item{height: 100%;}
 
+.right .layui-tab-content {height: calc(100% - 61px);}
+.right .interval {}
+.right .frequency-item {height: calc(100% - 62px);overflow: auto;}
 .right #forecastTime .forecast-time-active{color:#419FFF;}
 .right #forecastAfter .after-time-active{color: cornsilk;background-color: #1E9FFF;border-radius: 100px}
 .right #forecastFrequency .frequency-time-active{color:#419FFF;}
@@ -110,7 +123,7 @@ html,body{height: 100%;}
 .tools #cityArr .city-time-active{color: cornsilk;background-color: #1E9FFF;border-radius: 100px;height: 10px;display: flex;justify-content: center;align-items: center;}
 .tools #agingArr .aging-time-active{color: cornsilk;background-color: #1E9FFF;border-radius: 100px;height: 10px;display: flex;justify-content: center;align-items: center;}
 
-.right #planeHistory {height: 600px;overflow: auto;}
+.right #planeHistory {overflow: auto;}
 .right #planeHistory .planeHistory{text-align: center;line-height: 22px;color: #666;}
 .right #planeHistory .plane-time-active{color:#419FFF;}
 

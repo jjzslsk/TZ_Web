@@ -1,5 +1,4 @@
 //平面图 js
-
 window.onload = function(){
     requestData()
 }
@@ -23,7 +22,11 @@ let dataHour = '';//间隔选中
 let factorPath;//选中要素ImgPadth
 let mixturePath;//选中综合ImgPadth
 let obtainImgList = [];//获取到的图片
+let obtainImgListObj;//获取到的图片对象
 let rightTabIndex; //右侧TAB下标 0 实时查询， 1 历史查询
+let theDomImg;//当前显示的图片Dom
+let theImg;//当前显示的图片src
+let tabButIndex = 0;//选中观看模式按钮
 
 //初始化获取数据
 async function requestData(){
@@ -98,10 +101,16 @@ async function fnDate(){
                 $('.main-view').show()
                 forecastDate = res.data[0]? res.data[0].elePath:null //初始化选择时间第一个
                 formatDate(res.data).then(res=>{})//渲染预报时间选择
-                return res.data
             }
         })
         await requestIntervalTime()
+    }else{
+        stampsNum = 0 //清空邮票记步
+        obtainImgList = []
+        obtainImgListObj = []
+        applyPreviewImg([]) //渲染图片
+        drawingStamps() //渲染邮票模式
+        forecastFrequencyList([]).then(res=>{}) //渲染图片列表
     }
 }
 
@@ -109,7 +118,14 @@ async function fnDate(){
 function requestIntervalTime(){
     return new Promise((resolve, reject) => {
         if(!forecastDate){ //无预报时间选择
-            getGfterData([]).then(res=>{}) //渲染时间间隔
+            getGfterData([]).then(res=>{
+                    stampsNum = 0 //清空邮票记步
+                    obtainImgList = []
+                    obtainImgListObj = []
+                    applyPreviewImg([]) //渲染图片
+                    drawingStamps() //渲染邮票模式
+            }) //渲染时间间隔
+            forecastFrequencyList([]).then(res=>{}) //渲染图片列表
         }else{
             //获取时间间隔 根据 模式+要素+时间选择
             let intervalDate = {
@@ -138,50 +154,59 @@ function requestIntervalTime(){
 }
 
 //获取图片
-function obtainImg (callbacks){
-    let param = {
+let ImgParam 
+function obtainImg (callbacks,past = false){//past 是否为 历史查询
+    ImgParam = {
         pattern:modelImgPath,//模式选中路径
         ele:forecastDate,//选中预报时间
         range:selectedScope,//范围选中
-        dataHour:dataHour,//间隔选中
+        dataHour: past? null:dataHour,//间隔选中,   历史查询不需要传dataHour
         high:eleHeight,//高度
     }
-    getData(main_url,'/ssd-forecast-element/getData?',param).then(res=>{
-        obtainImgList = res.data
+    obtainImgList = []
+    obtainImgListObj = []
+    getData(main_url,'/ssd-forecast-element/getTimeData?',ImgParam).then(res=>{
+        obtainImgListObj = res.data
+        res.data.forEach(element => {
+            obtainImgList.push(element.filePath)
+        });
         callbacks()
+
+        if(past) return
+        forecastFrequencyList(obtainImgListObj).then(res=>{}) //渲染图片列表
     })
 }
 
 //渲染图片
 let obtainList = [];
-function applyPreviewImg (){
+function applyPreviewImg (arrList = obtainImgList){
     present = 0 //当前下标，显示第一张
     obtainList = [];
-    if(obtainImgList.length == 0){
+    if(arrList.length == 0){
         layer.msg('暂无数据',{time:700});
         $('.main-view').hide()
     }
     else{
-        $.each(obtainImgList, function(index, obj) {obtainList.push(`<img src=${obj} alt="" srcset="" style="cursor:pointer;" index=${index} onclick="previewMax(this)">`)});
+        $.each(arrList, function(index, obj) {obtainList.push(`<img src=${obj} alt="" srcset="" style="cursor:pointer;" index=${index} onclick="previewMax(this)">`)});
     }
-    if(obtainImgList.length > 1){
+    if(arrList.length > 1){
         $('.main-view').show()
     }
-    $("#previewImg").html(obtainList[0]);
+    theDomImg = obtainList[0]
+    $("#previewImg").html(theDomImg);
 }
 
-let present = 0 //当前下标
-let isImages    //当前显示图片
+let present = 0 //当前下标  //theDomImg 当前显示图片
 //平面图 浏览切换
     $('.switch-but').click(function(){
        if($(this).attr('code') == "right" && present < obtainList.length - 1){
         present += 1;
-        isImages = obtainList[present];
-        $("#previewImg").html(isImages);
+        theDomImg = obtainList[present];
+        $("#previewImg").html(theDomImg);
        }else if($(this).attr('code') == "left" && present !== 0){
         present -= 1;
-        isImages = obtainList[present];
-        $("#previewImg").html(isImages);
+        theDomImg = obtainList[present];
+        $("#previewImg").html(theDomImg);
       } else {
         layer.msg('最后一张了',{time:700});
       }
@@ -196,15 +221,15 @@ function playImg(){
     }
     if(obtainList.length == present){
         present = 0
-        isImages = obtainList[present];
-        $("#previewImg").html(isImages);
+        theDomImg = obtainList[present];
+        $("#previewImg").html(theDomImg);
         present += 1;
         setTimeout(() => {
             playImg()
         }, playSpeed);
     }else{
-        isImages = obtainList[present];
-        $("#previewImg").html(isImages);
+        theDomImg = obtainList[present];
+        $("#previewImg").html(theDomImg);
         present += 1;
         setTimeout(() => {
             playImg()
@@ -245,6 +270,32 @@ function previewMax(obj){
 
 }
 
+$(document).on("mousewheel DOMMouseScroll", ".layui-layer-phimg", function (e) {
+    var delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) || // chrome & ie
+        (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1)); // firefox
+    var imagep = $(".layui-layer-phimg").parent().parent();
+    var image = $(".layui-layer-phimg").parent();
+    var h = image.height();
+    var w = image.width();
+    if (delta > 0) {
+        if (h < (window.innerHeight)) {
+            h = h * 1.05;
+            w = w * 1.05;
+        }
+    } else if (delta < 0) {
+        if (h > 100) {
+            h = h * 0.95;
+            w = w * 0.95;
+        }
+    }
+    imagep.css("top", (window.innerHeight - h) / 2);
+    imagep.css("left", (window.innerWidth - w) / 2);
+    image.height(h);
+    image.width(w);
+    imagep.height(h);
+    imagep.width(w);
+});
+
 //模式 DOM 单选
 function formatModel(dataList,_index = 0){
     let str = "";
@@ -281,8 +332,13 @@ async function resetModel(){
     await getData(main_url,'/ssd-forecast-element/getElemnetInfo?',param).then(res=>{
         groundData = res.data
         formatGround(groundData,true)
-        factorPath = groundData[0].img_path
-        eleHeight = groundData[0].ele_height
+        if(groundData.length > 0){
+            factorPath = groundData[0].img_path
+            eleHeight = groundData[0].ele_height
+        }else{
+            factorPath = null
+            eleHeight = null
+        }
         fnDate()
     })
 
@@ -541,7 +597,7 @@ function formatDate (date = []){
     return new Promise((resolve, reject) => {
         let forecastTime = [];
         if(date.length == 0){
-            forecastTime.push(`<li class='forecastTime'>暂无数据</li>`)
+            forecastTime.push(`<li>暂无数据</li>`)
             $('.main-view').hide()
         }else{
             $.each(date, function(index, obj) {
@@ -564,9 +620,13 @@ $('#forecastTime').on('click','.forecastTime',function(){
 //平面图-实时查询-预报间隔 （单选）
 function getGfterData (afterData){
     return new Promise((resolve, reject) => {
+        afterData = [
+            {name:'0-72h',code:'72'},
+            {name:'76-240h',code:'76'}
+        ]
         const forecastAfter = [];
         if(afterData.length == 0){
-            forecastAfter.push(`<div class='forecastAfter'>暂无数据</div>`)
+            forecastAfter.push(`<div style="padding-left:37%;">暂无数据</div>`)
             $('.main-view').hide()
         }else{
             $.each(afterData, function(index, obj) {
@@ -592,22 +652,44 @@ $('#forecastAfter').on('click','.forecastAfter',function(){
     })
 });
 
-//平面图-实时查询-预报时次 （单选）
-const frequencyData = [
-    {name: '2020-01-08',type: 'long'},
-    {name: '2020-01-07',type: 'cute'},
-    {name: '2020-01-06',type: 'cold'},
-    {name: '2020-01-05',type: 'smile'},
-]
-forecastFrequency = [];
-$.each(frequencyData, function(index, obj) {
-    index == 0? forecastFrequency.push(`<li class='forecastFrequency frequency-time-active' style="cursor:pointer">${obj.name}</li>`):
-    forecastFrequency.push(`<li class='forecastFrequency' style="cursor:pointer;">${obj.name}</li>`)
-});
-$("#forecastFrequency").html(forecastFrequency);
+//平面图-实时查询-图片列表 （单选）
+function forecastFrequencyList(dataList = []){
+    return new Promise((resolve, reject) => {
+        let forecastFrequency = []
+        if(dataList.length > 0){
+            $.each(dataList, function(index, obj) {
+                index == 0? forecastFrequency.push(`<li name=${obj.filename} filePath=${JSON.stringify(obj.filePath)} class='forecastFrequency frequency-time-active' style="cursor:pointer">${obj.filename}</li>`):
+                forecastFrequency.push(`<li name=${obj.filename} filePath=${JSON.stringify(obj.filePath)} class='forecastFrequency' style="cursor:pointer;">${obj.filename}</li>`)
+            });
+            //tips层
+            $(function(){
+                var tips;
+                $('.forecastFrequency').on({
+                    mouseenter:function(){
+                        var that = this;
+                        tips =layer.tips(`<span style='color:#000;'>${$(this).attr("name")}</span>`,that,{tips:[2,'#fff'],time:0,area: 'auto',maxWidth:500});
+                    },
+                    mouseleave:function(){
+                        layer.close(tips);
+                    }
+                });
+            })
+        }else{
+            forecastFrequency.push(`<li>暂无数据</li>`)
+        }
+        
+        $("#forecastFrequency").html(forecastFrequency);
+        resolve()
+    });
+}
 $('#forecastFrequency').on('click','.forecastFrequency',function(){
     $(this).parents('#forecastFrequency').find('.forecastFrequency').removeClass('frequency-time-active');
     $(this).addClass('frequency-time-active');
+    obtainImgList = []
+    obtainImgList.push($(this).attr("filePath"))
+        stampsNum = 0 //清空邮票记步
+        applyPreviewImg() //渲染图片
+        drawingStamps() //渲染邮票模式
 });
 
     //观看模式
@@ -619,6 +701,7 @@ $("#click_browse").click(function(){
     $("#click_stamps").removeClass('but-active')
     $(".isBrowse").removeClass('isModel')
     $(".isStamps").addClass('isModel')
+    tabButIndex = 0
 });
 
 $("#click_stamps").click(function(){
@@ -628,6 +711,7 @@ $("#click_stamps").click(function(){
     $("#click_stamps").addClass('but-active')
     $(".isBrowse").addClass('isModel')
     $(".isStamps").removeClass('isModel')
+    tabButIndex = 1
     drawingStamps()
 });
 
@@ -720,7 +804,7 @@ async function requestPlaneRightHistory (){
         ele:factorPath,//要素
         showAll:1
     }
-    //获取范围
+    //获取 历史查询-列表
     await getData(main_url,'/ssd-forecast-element/getDataTime?',param).then(res=>{
         const planeHistoryArr = res.data
         planeHistory = [];
@@ -729,19 +813,35 @@ async function requestPlaneRightHistory (){
             planeHistory.push(`<li code=${obj.elePath} class='planeHistory' style="cursor:pointer;">${obj.hours}</li>`)
         });
         $("#planeHistory").html(planeHistory);
-        $('#planeHistory').on('click','.planeHistory',function(){
-            $(this).parents('#planeHistory').find('.planeHistory').removeClass('plane-time-active');
-            $(this).addClass('plane-time-active');
-            forecastDate = $(this).attr('code')
-            obtainImg(function(){ //获取图片
-                stampsNum = 0 //清空邮票记步
-                applyPreviewImg() //渲染图片
-                drawingStamps() //渲染邮票模式
-            })
-        });
+
+        forecastDate = planeHistoryArr[0].elePath //默认第一张
+        obtainImg(function(){ //获取图片
+            stampsNum = 0 //清空邮票记步
+            applyPreviewImg() //渲染图片
+            drawingStamps() //渲染邮票模式
+        },true)
 
     })
 }
+$('#planeHistory').on('click','.planeHistory',function(){
+    $(this).parents('#planeHistory').find('.planeHistory').removeClass('plane-time-active');
+    $(this).addClass('plane-time-active');
+    forecastDate = $(this).attr('code')
+    obtainImg(function(){ //获取图片
+        stampsNum = 0 //清空邮票记步
+        applyPreviewImg() //渲染图片
+        drawingStamps() //渲染邮票模式
+    },true)
+});
 
-$('#imgDow').on('click',function(){
+//单张图片下载
+$('#imgDow').on('click',function(src,name){
+    if(tabButIndex == 0){
+        var _url = `http://10.137.4.30:6001/integration/main/ssd-forecast-element/downloadImg?src=${$('div[id=previewImg] img').attr("src")}` 
+        window.open(_url)
+    }else if(tabButIndex == 1){
+        let param = `pattern=${ImgParam.pattern}&ele=${ImgParam.ele}&range=${ImgParam.range}&high=${ImgParam.high}&dataHour=${ImgParam.dataHour}`
+        var _url = `http://10.137.4.30:6001/integration/main/ssd-forecast-element/downloadImg?${param}` 
+        window.open(_url)
+    }
 })

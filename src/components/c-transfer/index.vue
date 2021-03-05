@@ -51,8 +51,7 @@
         <!-- <div @click="cancel('right')" class="cancelChoose">取消</div> -->
       </div>
         <el-checkbox-group class="checkbox-group-warp" v-model="checkList">
-          <el-checkbox :label="item.name" v-for="(item,index) in textList" :key='index'></el-checkbox>
-          <!-- <el-checkbox label="复选框 A"></el-checkbox> -->
+          <el-checkbox :label="item.code" v-for="(item) in textList" :key='item.code'>{{item.name}}</el-checkbox>
         </el-checkbox-group>
     </div>
 
@@ -61,6 +60,7 @@
 <script>
 import {
     requestProductMakeTextList,
+    requestProductMakeReferDataByType
 } from "@/remote/";
 export default {
   data() {
@@ -69,7 +69,7 @@ export default {
       right: '',
       textList:null,
       isTextBox:false,
-      checkList: ['全省短期预报','短期预报']
+      checkList: []
     }
   },
   computed: {
@@ -90,11 +90,19 @@ export default {
   },
   props: ['leftData', 'rightData', 'titles', 'sortType'],
   mounted() {
-    requestProductMakeTextList().then(res=>{
+    requestProductMakeReferDataByType().then(res=>{
       this.textList = res.data
+    })
+    requestProductMakeTextList().then(res=>{
+      res.data.forEach(element => {
+        this.checkList.push(element.code)
+      });
     })
   },
   watch:{
+    checkList(){
+      this.$emit('checkList',this.checkList)
+    },
     right(val){
       this.rightData[val].name == '文字资料' ? this.isTextBox=true:this.isTextBox=false
     },

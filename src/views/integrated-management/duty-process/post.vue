@@ -1,19 +1,11 @@
 <template>
 <div class="duty-process-wrap">
-    <!-- <div class="actions actions-main"> -->
     <div class="actions">
-        <div>
-            <!-- <span>是否启用自定义流程：</span>
-            <c-switch v-model="query.XXXPROP_DUTY_POST_CUSTOM"></c-switch> -->
-        </div>
         <c-button type="add" @click="inputItem({})">新增</c-button>
     </div>
     <div class="block-main">
         <div class="left-tree">
             <el-tree :data="dataTree" :props="defaultProps" @node-click="handleNodeClick" default-expand-all></el-tree>
-            <!-- <c-tree :data='dataTree'></c-tree> -->
-            <!-- <c-tree remote="requestTreeChildrenOfAreaNode" :show-checkbox="true" :default-checked-keys="['leaf3']" @click-item="onTreeClickItemAuth"></c-tree> -->
-            <!-- <common-left-tree title="机构信息1" :isHeader='false' :data='dataTree'  @click-item="onTreeClickItem"></common-left-tree> -->
         </div>
         <div class="list">
             <page-table ref="table" :height="'40'" remote="requestDutyPostList" :formatPayload="formatPayload" :hidePagination="true">
@@ -22,8 +14,6 @@
                 <el-table-column prop="showOrder" label="执行顺序" width="80px" />
                 <el-table-column prop="startTime" label="任务开始时间" width="120px" />
                 <el-table-column prop="endTime" label="任务结束时间" width="120px" />
-                <!-- <el-table-column prop="remind" label="是否提醒" width="80px"/>
-                <el-table-column prop="product" label="是否为产品" width="100px"/> -->
                 <el-table-column label="是否提醒">
                     <template slot-scope="{row}">
                         {{({'true':'√','false':'X'})[row.remind]}}
@@ -34,16 +24,6 @@
                         {{({'0':'X','1':'√','2':'X'})[row.product]}}
                     </template>
                 </el-table-column>
-                <!-- <el-table-column label="是否提醒" width="80px">
-                    <template slot-scope="scope">
-                        <c-switch v-model="scope.row.remind" @change="monitorSwitch(scope.row)"></c-switch>
-                    </template>
-                </el-table-column>
-                <el-table-column label="是否为产品" width="100px">
-                    <template slot-scope="scope">
-                        <c-switch v-model="scope.row.product" @change="monitorSwitch(scope.row)"></c-switch>
-                    </template>
-                </el-table-column> -->
                 <el-table-column prop="productInfoName" label="关联产品" />
                 <el-table-column prop="remark" label="任务说明"/>
                 <el-table-column prop label="操作" width="150px">
@@ -58,11 +38,6 @@
         </div>
     </div>
     <dialog-form @success="submitSuccess" title="岗位流程配置" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItemFn()" :confirmDisabled="!this.formItem.name||!this.formItem.jobId" remote="requestDialogFormDutyPostItemInput" v-if="formItem">
-        <!-- {{formItem}}
-        <br>
-        {{checkItemOptions}}
-        <br>
-        {{checkedItems}} -->
         <template>
             <el-dialog class="popover-box" :modal='false' :visible.sync="visible">
                 <el-popover
@@ -110,11 +85,6 @@
                         <el-radio-button label="XXXLABEL_DUTY_POST_day">日</el-radio-button>
                         <el-radio-button label="XXXLABEL_DUTY_POST_week">周</el-radio-button>
                     </el-radio-group>
-                    <!-- <span v-if="formItem.XXXPROP_DUTY_POST_X3=='XXXLABEL_DUTY_POST_day'">时间类型：</span>
-                    <el-radio-group v-model="formItem.remindType" v-if="formItem.XXXPROP_DUTY_POST_X3=='XXXLABEL_DUTY_POST_day'">
-                        <el-radio label="1">阳历</el-radio>
-                        <el-radio label="0">农历</el-radio>
-                    </el-radio-group> -->
                     <span>时间类型：</span>
                     <el-radio-group v-model="formItem.remindType">
                         <el-radio label="1">阳历</el-radio>
@@ -122,7 +92,6 @@
                     </el-radio-group>
                 </div>
                 <div>
-                    <!-- {{checkedItems}} -->
                     <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                     <div style="margin: 15px 0;"></div>
                     <el-checkbox-group v-model="checkedItems">
@@ -130,14 +99,16 @@
                     </el-checkbox-group>
                 </div>
             </div>
-            <!-- <el-form-item label="是否为产品" label-width="120px">
-                <c-switch v-model="formItem.product"></c-switch>
-            </el-form-item> -->
 
             <el-form-item label="产品/地址" label-width="120px">
                 <el-radio v-model="formItem.product" label="0">非产品</el-radio>
                 <el-radio v-model="formItem.product" label="1">产品</el-radio>
                 <el-radio v-model="formItem.product" label="2">其他任务地址</el-radio>
+
+                <span v-if="dutyTime.length > 0 && formItem.productInfoName && formItem.product == '1'">选择时次：<el-select v-model="formItem.makeTime" @change="change()" placeholder="请选择">
+                    <el-option v-for="(item,index) in dutyTime" :label="item.time" :value="item.time" :key="index"></el-option>
+                    </el-select>
+                </span>
             </el-form-item>
 
             <el-form-item label="产品选择" label-width="120px" v-if="formItem.product == '1'">
@@ -159,7 +130,8 @@ import {
     requestTreeChildrenOfDutyPostNode,
     requestProductInfoTpyeTreeList,
     requestDialogFormDutyPostItemInput,
-    requestDutyPostList
+    requestDutyPostList,
+    requestDutyPostTime
 } from "@/remote/";
 import {
     mapActions,mapGetters
@@ -173,6 +145,7 @@ export default {
     mixins: [common, witchCommonList, withCommonLeftTree],
     data() {
         return {
+            dutyTime:[],
             visible: false,
             formItem:{
                 XXXPROP_DUTY_POST_X3:'',
@@ -271,18 +244,6 @@ export default {
         },
         checkItemOptions() {
             return this.formItem ? ({
-                // 'XXXLABEL_DUTY_POST_month': (new Array(12)).fill('').map((e, i) => ({
-                //     name: `${i+1}月`,
-                //     value: `${i+1}`
-                // })),
-                // 'XXXLABEL_DUTY_POST_day': (new Array(31)).fill('').map((e, i) => ({
-                //     name: `${i+1}`,
-                //     value: `${i+1}`
-                // })),
-                // 'XXXLABEL_DUTY_POST_week': (new Array(7)).fill('').map((e, i) => ({
-                //     name: `${i+1}`,
-                //     value: `${i+1}`
-                // })),
                 'XXXLABEL_DUTY_POST_month': this.MonthData,
                 'XXXLABEL_DUTY_POST_week': this.WeekData,
                 'XXXLABEL_DUTY_POST_day': this.DayData
@@ -509,13 +470,34 @@ export default {
         },
         setSelectedNode(data){
             console.log(data)
+            this.formItem.makeTime = null
+            requestDutyPostTime({infoId:data.id}).then(res=>{
+                if(res.data.list.length > 0){
+                    this.dutyTime = res.data.list
+                    this.formItem.makeTime = this.dutyTime[0].time
+                }else{
+                    this.dutyTime = []
+                }
+            })
             this.$refs.tree.setCheckedNodes([data])
             this.formItem.productInfoId = data.id
             this.formItem.productInfoName = data.label
             this.formItem.product_attr = data.treeType == 'product' ? 'info':'type'
         },
+        change(){
+        this.$forceUpdate()
+        },
         handleNodeClickPop(data) {
             console.log(data)
+            this.formItem.makeTime = null
+            requestDutyPostTime({infoId:data.id}).then(res=>{
+                if(res.data.list.length > 0){
+                    this.dutyTime = res.data.list
+                    this.formItem.makeTime = this.dutyTime[0].time
+                }else{
+                    this.dutyTime = []
+                }
+            })
             // if(data.treeType == 'product'){
                 this.$refs.tree.setCheckedNodes([data])
                 this.formItem.productInfoId = data.id
@@ -559,6 +541,16 @@ export default {
             });
         },
         getFormItemByInputItem(item = {}) {
+            if(item.productInfoId){
+                requestDutyPostTime({infoId:item.productInfoId}).then(res=>{
+                    if(res.data.list.length > 0){
+                        this.dutyTime = res.data.list
+                        this.formItem.makeTime = item.make_time
+                    }else{
+                        this.dutyTime = []
+                    }
+                })
+            }
             console.log('item:',item)
             const {
                 checkedItems,

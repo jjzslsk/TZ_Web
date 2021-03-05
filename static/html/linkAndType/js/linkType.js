@@ -23,25 +23,6 @@ layui.use([ 'layer', 'table','element','laydate','form'], function(){
 //            {type: 'checkbox', fixed: 'left'}
             {field: 'zizeng', title: '序号',align:'center',templet:'#orderNumber'}
             ,{field: 'typename', title: '类型名称',align:'center'}
-            ,{field: 'exp1', title: '底图颜色',align:'center',templet:function(d){
-                    if(d.exp1 == 'purpleColor'){
-                        return '紫色';
-                    }else if(d.exp1 == 'blueColor'){
-                        return '蓝色';
-                    }else if(d.exp1 == 'lakeBlueColor'){
-                        return '湖蓝色';
-                    }else if(d.exp1 == 'greenColor'){
-                        return '绿色';
-                    }else if(d.exp1 == 'darkGreenColor'){
-                        return '墨绿色';
-                    }else if(d.exp1 == 'redColor'){
-                        return '红色';
-                    }else if(d.exp1 == 'yellowColor'){
-                        return '橙色';
-                    }else{
-                        return '';
-                    }
-                } }
             ,{field: 'sort', title: '顺序',align:'center'  }
             ,{fixed: 'right',  title: '操作', align:'center', toolbar: '#barList',width:250}
         ]]

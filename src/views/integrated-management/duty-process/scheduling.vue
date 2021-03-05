@@ -1,20 +1,11 @@
 <template>
 <div class="duty-process-wrap">
-    <!-- <div class="actions actions-main"> -->
     <div class="actions">
-        <!-- <div>
-            <span>是否启用自定义流程：</span>
-            <c-switch v-model="query.XXXPROP_DUTY_SCHEDULING_CUSTOM"></c-switch>
-            <span class="desc">*红色表示在默认流程上添加的流程，或时间的变更</span>
-        </div> -->
         <c-button type="add" @click="inputItem({})">新增</c-button>
     </div>
     <div class="block-main">
         <div class="left-tree">
             <el-tree :data="dataTree" :props="defaultProps" @node-click="handleNodeClick" default-expand-all></el-tree>
-            <!-- <c-tree :data='dataTree'></c-tree> -->
-            <!-- <c-tree remote="requestTreeChildrenOfAreaNode" :show-checkbox="true" :default-checked-keys="['leaf3']" @click-item="onTreeClickItemAuth"></c-tree> -->
-            <!-- <common-left-tree title="机构信息1" :isHeader='false' :data='dataTree'  @click-item="onTreeClickItem"></common-left-tree> -->
         </div>
         <div class="list">
             <page-table ref="table" :height="'40'" remote="requestDutySchedulingList" :formatPayload="formatPayload" :row-class-name="rowClassName" :hidePagination="true">
@@ -34,23 +25,8 @@
                         {{({'true':'√','false':'X'})[row.product]}}
                     </template>
                 </el-table-column>
-                <!-- <el-table-column label="是否提醒" width="80px">
-                    <template slot-scope="scope">
-                        <c-switch v-model="scope.row.remind" @change="monitorSwitch(scope.row)"></c-switch>
-                    </template>
-                </el-table-column>
-                <el-table-column label="是否为产品" width="80px">
-                    <template slot-scope="scope">
-                        <c-switch v-model="scope.row.product" @change="monitorSwitch(scope.row)"></c-switch>
-                    </template>
-                </el-table-column> -->
                 <el-table-column prop="productInfoName" label="关联产品" />
                 <el-table-column prop="remark" label="任务说明" />
-                <!-- <el-table-column label="是否完成" width="80px">
-                    <template slot-scope="scope">
-                        <c-switch v-model="scope.row.finish"></c-switch>
-                    </template>
-                </el-table-column> -->
                 <el-table-column label="是否完成" width="80px">
                     <template slot-scope="scope">
                         {{scope.row.finish == '1' ?'√':'X'}}
@@ -68,7 +44,6 @@
         </div>
     </div>
     <dialog-form @success="submitSuccess" title="值班流程配置" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItemFn()" :confirmDisabled="!formItem.name" remote="requestDialogFormDutySchedulingItemInput" v-if="formItem">
-        <!-- <template v-slot:default="{ form }"> -->
         <template>
             <el-dialog class="popover-box" :modal='false' :visible.sync="visible">
                 <el-popover
@@ -80,7 +55,6 @@
                 </el-popover>
             </el-dialog>
 
-        <!-- {{formItem}} -->
             <el-form-item label="任务来源" label-width="120px">
                 <el-select v-model="formItem.source" placeholder="请选择">
                     <el-option label="岗位" value="0"></el-option>
@@ -123,7 +97,11 @@
                 <el-radio v-model="formItem.product" label="0">非产品</el-radio>
                 <el-radio v-model="formItem.product" label="1">产品</el-radio>
                 <el-radio v-model="formItem.product" label="2">其他任务地址</el-radio>
-                <!-- <c-switch v-model="formItem.product"></c-switch> -->
+
+                <span v-if="dutyTime.length > 0 && formItem.productInfoName && formItem.product == '1'">选择时次：<el-select v-model="formItem.makeTime" @change="change()" placeholder="请选择">
+                    <el-option v-for="(item,index) in dutyTime" :label="item.time" :value="item.time" :key="index"></el-option>
+                    </el-select>
+                </span>
             </el-form-item>
 
             <el-form-item label="产品选择" label-width="120px" v-if="formItem.product == '1'">
@@ -133,25 +111,6 @@
             <el-form-item label="其他任务地址" label-width="120px" v-if="formItem.product == '2'">
                <el-input v-model="formItem.other" placeholder="请以http://或者https:// 格式开头"></el-input>
             </el-form-item>
-
-            <!-- <el-form-item label="产品选择" label-width="120px" v-if="formItem.product">
-               <el-input v-if="!formItem.productInfoId" v-model="productInfoNameItem" @click.native="inputEvent" autocomplete="off"></el-input>
-                <template v-else v-for="item in treeDataList">
-                    <el-input v-if="item.id == formItem.productInfoId ? true : false" :key="item.id" v-model="productInfoNameItem" @click.native="inputEvent" autocomplete="off"></el-input>
-                </template>
-            </el-form-item> -->
-
-            <!-- <el-form-item label="产品选择" label-width="120px" v-if="formItem.product">
-            <el-select v-model="formItem.productInfoId" placeholder="请选择">
-              <el-option
-                v-for="item in treeDataList"
-                :label="item.label"
-                :value="item.id"
-                :key="item.id"
-              ></el-option>
-            </el-select>     -->
-                <!-- <el-cascader v-model="formItem.productInfoId" :options="optionsOfCascaderFormInput"></el-cascader> -->
-            <!-- </el-form-item> -->
             <el-form-item label="是否完成" label-width="120px">
                 <c-switch v-model="formItem.finish"></c-switch>
             </el-form-item>
@@ -167,7 +126,8 @@ import {
     requestTreeChildrenOfDutyPostNode,
     requestDutySchedulingListDelItem,
     requestDialogFormDutySchedulingItemInput,
-    requestDutyScheduling
+    requestDutyScheduling,
+    requestDutyPostTime
 } from "@/remote/";
 import {
     common,
@@ -178,6 +138,7 @@ export default {
     mixins: [common, witchCommonList, withCommonLeftTree],
     data() {
         return {
+            dutyTime:[],
             visible: false,
             postList:null,
             treeDataList:null,
@@ -235,10 +196,6 @@ export default {
         visibleDialogFormItem(data){
             //初始化弹窗
             this.formItem.remindType == '1' ? this.formItem.remindType = '1' : this.formItem.remindType = '0'
-            if(!data){
-
-
-            }
         }
     },
     mounted() {
@@ -298,13 +255,34 @@ export default {
         },
         setSelectedNode(data){
             console.log(data)
+            this.formItem.makeTime = null
+            requestDutyPostTime({infoId:data.id}).then(res=>{
+                if(res.data.list.length > 0){
+                    this.dutyTime = res.data.list
+                    this.formItem.makeTime = this.dutyTime[0].time
+                }else{
+                    this.dutyTime = []
+                }
+            })
             this.$refs.tree.setCheckedNodes([data])
             this.formItem.productInfoId = data.id
             this.formItem.productInfoName = data.label
             this.formItem.product_attr = data.treeType == 'product' ? 'info':'type'
         },
+        change(){
+        this.$forceUpdate()
+        },
         handleNodeClickPop(data) {
-                console.log(data)
+            console.log(data)
+            this.formItem.makeTime = null
+            requestDutyPostTime({infoId:data.id}).then(res=>{
+                if(res.data.list.length > 0){
+                    this.dutyTime = res.data.list
+                    this.formItem.makeTime = this.dutyTime[0].time
+                }else{
+                    this.dutyTime = []
+                }
+            })
             // if(data.treeType == 'product'){
                 this.$refs.tree.setCheckedNodes([data])
                 this.formItem.productInfoId = data.id
@@ -337,10 +315,6 @@ export default {
 
             requestProductInfoTpyeTreeList().then(res =>{
                 this.treeDataList = res.data.list;
-
-                //普通列表
-                // this.treeDataList = [];
-                // this.treeOfList(res.data.list);
             })
         },
         treeOfList(tree) {
@@ -364,6 +338,7 @@ export default {
             }
         },
         getFormItemByInputItem(item = {}) {
+            
             if(item.startTime&&item.endTime){
                 this.formItemTimeRange = [item.startTime, item.endTime];
             }else{
@@ -391,6 +366,18 @@ export default {
                             productInfoName: res.data.product_info_name,
                             remindType: res.data.remind_type,
                         }
+
+                        if(this.formItem.productInfoId){
+                            requestDutyPostTime({infoId:item.productInfoId}).then(res=>{
+                                if(res.data.list.length > 0){
+                                    this.dutyTime = res.data.list
+                                    this.formItem.makeTime = item.make_time
+                                }else{
+                                    this.dutyTime = []
+                                }
+                            })
+                        }
+                        
                     })
             }else{
                 return {
@@ -399,8 +386,6 @@ export default {
                         product:'2',
                 }
             }
-
-            // this.formItemTimeRange = [item.XXXPROP_DUTY_SCHEDULING_2, item.XXXPROP_DUTY_SCHEDULING_3];
 
         },
 

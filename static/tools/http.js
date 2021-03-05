@@ -120,6 +120,31 @@ class EasyHttp {
     });
   }
 
+  postFileDownload (actionUrl, param, funRecall, errFunRecall) {
+    var loading = layer.load(0, {
+        shade: false,
+        time: 2*1000
+    });
+    var url = actionUrl;
+    $.ajax({
+      url: url,
+      type:'POST',
+      timeout: ajaxTimeout,
+      data: param,
+      dataType: 'json',
+      contentType: "application/json; charset=utf-8",
+      responseType:'arraybuffer',
+      success: function (res) {
+        layer.close(loading);
+        funRecall(res)
+      },
+      error: function (result) {
+        layer.close(loading);
+        errFunRecall(result)
+      }
+    });
+  }
+
   delete (actionUrl, param, funRecall, errFunRecall) {
     var loading = layer.load(0, {
         shade: false,

@@ -1,6 +1,6 @@
 @font-face {
 	font-family: 'a';
-	src: url('../font/时尚中黑简体.ttf');
+	src: url('../font/tttt.ttf');
 }
 .page{
 	position: fixed;
@@ -63,8 +63,14 @@
 .timeUser{
 	margin-right: 1%;
 	width: 11%;
+	height: 100%;
 	display: flex;
+	align-items: center;
 	justify-content: space-between;
+}
+.timeBox,.userBox{
+	height: 50%;
+	font-size: 0;
 }
 .timeBox>img,.timeBox>span,.timeBox,.userBox{
 	display: inline-block;
@@ -89,13 +95,12 @@
 	height: 1%;
 }
 .pageCon{
-	width: 98%;
-	height: 88.73%;
-	margin: 0 auto;
+	width: 100%;
+	height: 92%;
 }
 .checkBox{
 	width: 53.93%;
-	height: 7.65%;
+	height: 6.8%;
 	margin: 0 auto;
 	display: flex;
 }
@@ -130,7 +135,7 @@
 }
 .menu2Item{
 	width: 29.15%;
-	height: 48.57%;
+	height: 50%;
 	background: url(../image/menuBg.png) no-repeat;
 	background-size: 100% 100%;
 	display: flex;
@@ -179,11 +184,16 @@
 }
 .pageDetail{
 	width: 100%;
-	height: 92.35%;
+	height: 93.2%;
 }
 .pageDetailItem{
-	width: 100%;
-	height: 100%;
+	width: 98%;
+	height: 95%;
+	margin: 0 auto;
+	display: none;
+}
+.pageDetailItem:nth-of-type(2){
+	display: block;
 }
 .xunDataQuery,.monthDataQuery{
 	float: left;
@@ -196,6 +206,9 @@
 .nullBox2{
 	height: 1.7%;
 }
+.nullBox3{
+	height: 3%;
+}
 .titleBox{
 	position: relative;
 	height: 5.5%;
@@ -203,6 +216,9 @@
 }
 .titleBoxCon{
 	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
 }
 .titleBoxCon>img{
 	width: 5.91%;
@@ -426,4 +442,193 @@
 #mapEchart{
 	width: 100%;
 	height: 100%;
+}
+
+
+.abnormal{
+	width: 100%;
+	height: 100%;
+}
+.abnormalCon{
+	width: 97%;
+	height: 100%;
+	padding: 0 1.5%;
+	overflow: auto;
+}
+.abnormalConTop{
+	width: 100%;
+	/* height: 96.85%; */
+	height: 57.35%;
+	background: url(../image/YCitemBoxBg1.png) no-repeat;
+	background-size: 100% 100%;
+}
+.placeTime{
+	width: 92.7%;
+	height: 9%;
+	margin: 0 3.65%;
+	display: flex;
+	align-items: center;
+}
+.placeName{
+	height: 50%;
+	margin-right: 5%;
+}
+.placeName>span{
+	position: relative;
+	padding: 0 0.085rem;
+	height: 100%;
+	float: left;
+	display: flex;
+	align-items: center;
+	font-size: 0.0723rem;
+	color: #83E0FF;
+	background: #045B9C;
+	border-radius: 0.05rem;
+	margin-right: 0.0835rem;
+	cursor: pointer;
+}
+.placeName>span:hover{
+	background: #1484d7;
+}
+.placeName>span:last-of-type{
+	margin-right: 0;
+}
+.placeName>span>i{
+	display: none;
+}
+.placeName>.spanAc>i{
+	position: absolute;
+	right: 0;
+	top: -9px;
+	display: block;
+	padding: 1px 5px 3px;
+	line-height: 1em;
+	font-size: 12px;
+	color: #FFFFFF;
+	background: #FF4802;
+	border-radius: 50%;
+}
+.selectBox2>span{
+	font-size: 0.0835rem;
+}
+.selectBox>input{
+	height: 42.85%;
+	width: 186px;
+	border: 1px solid #043478;
+	border-radius: 3px;
+	background: rgba(0,0,0,0);
+	color: #FFFFFF;
+	font-size: 0.0835rem;
+	text-align: center;
+}
+.abnormalPicBox{
+	width: 94.5%;
+	height: 88.5%;
+	margin: 0 auto;
+}
+.abnormalPicBoxItemBox{
+	width: 100%;
+	height: 100%;
+}
+.abnormalPicBoxItem{
+	float: left;
+	width: 49%;
+	height: 100%;
+	margin-right: 1%;
+	border: 1px solid #00A0E9;
+	box-sizing: border-box;
+}
+.abnormalPicBoxItem:last-of-type{
+	margin-right: 0;
+}
+.abnormalPicBoxLTitle{
+	height: 7%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.abnormalPicBoxLTitle>span{
+	width: 40%;
+	height: 9.5%;
+	background: url(../image/titleBg.png) no-repeat;
+	background-size: 100% 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.abnormalPicBoxLTitle>span>i{
+	font-size: 0.09rem;
+	color: #1CC0F6;
+}
+.abnormalPicBoxLCon{
+	position: relative;
+	width: 88.7%;
+	height: 90%;
+	margin: 0 auto;
+}
+.picItem{
+	width: 100%;
+	height: 100%;
+}
+.picItem>img{
+	width: 100%;
+	height: 100%;
+}
+.liveBtn{
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: rgba(2, 19, 54, 0.9);
+	width: 46.5%;
+	height: 10%;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+.liveBtn>span{
+	width: 23.79%;
+	height: 53.7%;
+	background: url(../image/btn.png) no-repeat;
+	background-size: 100% 100%;
+	cursor: pointer;
+	color: #CBF9FF;
+	font-size: 0.0723rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.liveBtn>span:hover{
+	background: url(../image/btnAc.png) no-repeat;
+	background-size: 100% 100%;
+	color: #FFA633;
+}
+.liveBtn>.spanAc{
+	background: url(../image/btnAc.png) no-repeat;
+	background-size: 100% 100%;
+	color: #FFA633;
+}
+.abnormalConBtm{
+	width: 100%;
+	/* height: 59%; */
+	height: 40.64%;
+	background: url(../image/YCitemBoxBg2.png) no-repeat;
+	background-size: 100% 100%;
+}
+.runTempTime{
+	width: 100%;
+	height: 9%;
+	display: flex;
+	align-items: flex-end;
+}
+.runTempTime>.selectBox{
+	height: 62.5%;
+	margin-left: 2.6%;
+}
+.runTempTime>.selectBox>input{
+	height: 100%;
+}
+#runTemp{
+	width: 100%;
+	height: 91%;
 }

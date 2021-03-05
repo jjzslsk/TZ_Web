@@ -25,6 +25,8 @@
                                     <c-select v-model="query.code" mapper="weatherWarningTypeGBName" allText="全部" placeholder="请选择"></c-select>
                                     <span class="title">等级</span>
                                     <c-select v-model="query.level" options="warningLevel" placeholder="请选择"></c-select>
+                                    <span class="title">发布状态</span>
+                                    <c-select v-model="query.status" options="warningState" placeholder="请选择"></c-select>
                                     <span class="title">发布时间</span>
                                     <!-- <el-date-picker v-model="query.issueLetter" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm">
                                     </el-date-picker> -->
@@ -77,6 +79,11 @@
                             </template>
                             <el-table-column :prop="isWarning?'alarmContent':'content'" label="预警内容" class-name="text-eclipse" show-overflow-tooltip/>
                             <el-table-column prop="publishTime" label="发布时间" width="180px" />
+                            <el-table-column prop="status" label="发布状态" width="77px">
+                                <template slot-scope="scope">
+                                        {{({'0':"",'6':"有效",'7':"无效"}[scope.row.status]||"")}}
+                                </template>
+                            </el-table-column>
                             <el-table-column prop="publishOrg" label="发布单位" width="350px" />
                             <el-table-column prop label="操作" width="120px">
                                 <template slot-scope="scope">

@@ -1,4 +1,3 @@
-
 $(function () {
     selectloding();
 })
@@ -140,8 +139,6 @@ layui.use([ 'layer', 'table','element','laydate','form','upload'], function() {
         });
         return false;
     });
-
-
 });
 function child(id) {
      $.ajax({
@@ -210,7 +207,7 @@ function jzym() {
     })
 }
 
-function selectloding(){
+    function selectloding(){
     $.ajax({
         type: 'get',
         async:false,
@@ -221,7 +218,7 @@ function selectloding(){
             let datas=data.data
             $("#typeid").empty();
             var html='';
-            for (var i=0;i<datas.length;i++){true
+            for (var i=0;i<datas.length;i++){
                 html+='  <option value="'+datas[i].keyid+'">'+datas[i].typename+'</option>';
             }
             layui.use('form', function () {

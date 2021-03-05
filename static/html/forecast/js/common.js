@@ -5,10 +5,13 @@ function getData(url,port,param){
     return new Promise((resolve, reject) => {http.get(url + port, urlEncode(param),function (res) {resolve(res)},function (err) {layer.msg('错误', {icon: 5});reject(err)},)});
 }
 function postJson(url,port,param){
-    return new Promise((resolve, reject) => {http.postJson(url + port, urlEncode(param),function (res) {resolve(res)},function (err) {layer.msg('错误', {icon: 5});reject(err)},)});
+    return new Promise((resolve, reject) => {http.postJson(url + port, param,function (res) {resolve(res)},function (err) {layer.msg('错误', {icon: 5});reject(err)},)});
 }
 function postForm(url,port,param){
     return new Promise((resolve, reject) => {http.postForm(url + port, urlEncode(param),function (res) {resolve(res)},function (err) {layer.msg('错误', {icon: 5});reject(err)},)});
+}
+function postFileDownload(url,port,param){
+    return new Promise((resolve, reject) => {http.postJson(url + port, param,function (res) {resolve(res)},function (err) {layer.msg('错误', {icon: 5});reject(err)},)});
 }
 function delData(url,port,param){
     return new Promise((resolve, reject) => {http.delData(url + port, urlEncode(param),function (res) {resolve(res)},function (err) {layer.msg('错误', {icon: 5});reject(err)},)});

@@ -207,7 +207,7 @@ export default {
                 this.$message.warning('请选择用户组');
                 return
             }
-            requestServiceUserDowTem({typeId:this.lastItemClicked.id}).tehn((res)=>{
+            requestServiceUserDowTem({typeId:this.lastItemClicked.id}).then((res)=>{
 
             })
         },

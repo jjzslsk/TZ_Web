@@ -212,6 +212,7 @@
 	    </div>
 	  </div>
 	</div>
+
 </body>
 <script type="text/html" id="operate">
     <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="show" name="show" id="{{d.id}}" data-url="{{d.filePath}}" data-msg="{{d.servce_path}}" data-filename="{{d.name}}" >预览</a>
@@ -287,7 +288,7 @@ layui.use(['element','table','form'], function(){
     ,cols: [[
     	 {field:'id', title: '序号', sort: true,type: 'numbers',width:80}
         ,{field:'name', title: '名称'} //width 支持：数字、百分比和不填写。你还可以通过 minWidth 参数局部定义当前单元格的最小宽度，layui 2.2.1 新增
-        ,{field:'content', title: '地址'}
+        ,{field:'filePath', title: '地址'}
         ,{field:'updateTime', title: '更新日期'}
     ]],
     page:true,//开启分页
@@ -586,11 +587,14 @@ function bindOnclick(){
         var url = this.getAttribute("data-url");
         var title = this.getAttribute("data-filename");
         var servce_path = this.getAttribute("data-msg");
+
+        var html='';
         if(event == 'show'){
             if (url.indexOf('.pdf') != -1 || url.indexOf('.txt') != -1 || url.indexOf('.png') != -1 || url.indexOf('.jpg') != -1) {
-          	  layer.open({
+                layer.open({
                     type: 2,
                     title: title,
+                    id:"lmg",
                     shadeClose: false,
                     shade:[0.8, '#393D49'],
                     maxmin: true, //开启最大化最小化按钮
@@ -600,17 +604,18 @@ function bindOnclick(){
                 });
             } else if (url.indexOf('.doc') != -1 || url.indexOf('.docx') != -1 || url.indexOf('.xls') != -1|| url.indexOf('.xlsl') != -1
                 || url.indexOf('.ppt') != -1 || url.indexOf('.pptx') != -1 ) {
-            	 layer.open({
+
+            	layer.open({
                      type: 2,
                      title: title,
                      shadeClose: false,
+                     id:"office",
                      shade:[0.8, '#393D49'],
                      maxmin: true, //开启最大化最小化按钮
                      area: ['1200px', '800px'],
                      scrollbar: true,
-                     content: "http://10.137.4.30:8089/PageOfficeService/main/openFileByPath?filePath="+url
-
-
+                    //content:"http://localhost:8080//oneweb_war_exploded/main/openFileByPath?filePath="+url
+                    content: "http://10.137.4.30:8089/PageOfficeService/main/openFileByPath?filePath="+url
                  });
             }
         }else if(event == 'download'){
