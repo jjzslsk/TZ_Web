@@ -173,7 +173,7 @@ function timingLogin(config){
         }
     }
 
-        if(config.url == '/integration/system/ssd-sys-user/login' || cut.indexOf(url1) != -1  || cut.indexOf(url2) != -1){
+        if(config.url == '/integration/system/ssd-sys-user/login' || config.url == '/integration/system/ssd-sys-user/logout' || cut.indexOf(url1) != -1  || cut.indexOf(url2) != -1){
             resolve('resolve')
         }else{
             timingLoginFn()
@@ -196,7 +196,7 @@ function overtime10(config){
             // console.log(currentTime - lastTime);
             // console.log(timeOut);
             if (currentTime - lastTime > timeOut) {
-                alert("登录超时，请重新登录！100")
+                alert("登录超时，请重新登录！010")
                 sessionStorage.clear()
                 window.location.href="/";
                 reject('reject')
@@ -204,7 +204,7 @@ function overtime10(config){
                 resolve('resolve')
             }
         }
-        if(config.url == '/integration/system/ssd-sys-user/login' || cut.indexOf(url1) != -1  || cut.indexOf(url2) != -1){
+        if(config.url == '/integration/system/ssd-sys-user/login' || config.url == '/integration/system/ssd-sys-user/logout' || cut.indexOf(url1) != -1  || cut.indexOf(url2) != -1){
             resolve('resolve')
         }else{
             checkTimeout10()
@@ -234,7 +234,7 @@ function overtime04(config){
                 resolve('resolve')
             }
         }
-        if(config.url == '/integration/system/ssd-sys-user/login' || cut.indexOf(url1) != -1  || cut.indexOf(url2) != -1){
+        if(config.url == '/integration/system/ssd-sys-user/login' || config.url == '/integration/system/ssd-sys-user/logout' || cut.indexOf(url1) != -1  || cut.indexOf(url2) != -1){
             resolve('resolve')
         }else{
             checkTimeout04()
@@ -246,10 +246,11 @@ function overtime04(config){
 const generateRequest = config => async (param, {
     target
 } = {}) => {
-    let loginTiming = await timingLogin(config)
+    // let loginTiming = await timingLogin(config)
     let over10 = await overtime10(config)
     let over04 = await overtime04(config)
-    if(over10 == 'reject'|| over04 == 'reject' || loginTiming == 'reject') return
+    // if(over10 == 'reject'|| over04 == 'reject' || loginTiming == 'reject') return
+    if(over10 == 'reject'|| over04 == 'reject') return
 
     const loginInfo = JSON.parse(localStorage.getItem('loginInfo',))
     let data

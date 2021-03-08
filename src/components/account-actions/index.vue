@@ -1,20 +1,14 @@
 <template>
 <div class="actions">
-    <!-- <el-button type="text" icon="iconfont iconxiugaimima">{{accountName}}</el-button> -->
     <auth-block info="SYSTEM_ROOT" activity="system">
         <el-button type="text" icon="iconfont iconxitongguanli" key="system" v-show="$route.params.activityId != 'system'" @click="$router.push({name:'activity-list',params: { activityId: 'system' }})">系统管理</el-button>
     </auth-block>
     <auth-block info="ACTIVITY_LIST2">
         <el-button type="text" icon="iconfont iconxitongguanli" @click="$router.push({name:'activity-list'})">测试无权限</el-button>
     </auth-block>
-    <!-- <el-button type="text" icon="iconfont iconxitongguanli" key="activities" v-show="$route.name != 'welcome'" @click="$router.push({name:'welcome'})">选择活动</el-button> -->
-    <!-- <auth-block info="CHANGE_PASSWORD">
-        <el-button type="text" icon="iconfont iconmima1" @click="onClickChangePass">修改密码</el-button>
-    </auth-block> -->
-    <!-- <el-button type="text" class="menu-tools" icon="iconfont el-icon-s-unfold" @click="isTools"></el-button> -->
+
     <i class="el-icon-user-solid menu-pass icon-clock" @click="isTools"></i>
     <el-tooltip class="item" effect="light" :content="clockState? '打卡完毕':'点击打卡?'" placement="top">
-      <!-- <div class="timeline-event" @click.stop="timelineEvent(activity)"></div> -->
       <el-button type="text" class="menu-pass" :class="clockState? 'success-clock':''" @click="signClick">
           {{accountName}}
       </el-button>
@@ -216,15 +210,11 @@ export default {
 <style scoped>
 .actions {
     outline: 0;
-    /* width: 329px; */
     height: 32px;
-    /* background: rgba(1, 65, 172, 0.35); */
     border-radius: 16px;
     position: absolute;
     top: 27px;
     right: 20px;
-    /* padding-left: 15px;
-    padding-right: 15px; */
     display: flex;
     
     .success-clock{
@@ -299,9 +289,7 @@ export default {
     }
 }
 .dialog-box .el-dialog__header{
-    /* background: #02376d; */
     .el-dialog__title{
-        /* color: #fff; */
     }
     .el-dialog__close {
         /* color: #fff; */
@@ -311,7 +299,6 @@ export default {
     display: flex;
     justify-content: center;
     padding: 0 0 20px 0;
-    /* background: #02376d; */
 }
 .dialog-box .dialog-iframe-tools {
     min-width: 900px;

@@ -142,18 +142,7 @@ export default {
       formEmergency: null
     };
   },
-  // computed: {
-  //     visibleDialogFormNight: {
-  //         set(val) {
-  //             if (!val) {
-  //                 this.formNight = null;
-  //             }
-  //         },
-  //         get() {
-  //             return this.formNight != null;
-  //         }
-  //     }
-  // },
+
   watch: {
     "$route.query": {
             handler: function() {
@@ -215,44 +204,7 @@ export default {
     this.query.orgId = this.loginInfo.orgId;
 
     setTimeout(() => {
-    //   this.dates = [
-    //     {
-    //       date: "1",
-    //       week: "日",
-    //       isRest: true,
-    //       value: "XXXPROP_OVERTIME_D_1"
-    //     },
-    //     {
-    //       date: "2",
-    //       week: "一",
-    //       isRest: false,
-    //       value: "XXXPROP_OVERTIME_D_2"
-    //     },
-    //     {
-    //       date: "3",
-    //       week: "一",
-    //       isRest: true,
-    //       value: "XXXPROP_OVERTIME_D_3"
-    //     },
-    //     {
-    //       date: "4",
-    //       week: "一",
-    //       isRest: false,
-    //       value: "XXXPROP_OVERTIME_D_4"
-    //     },
-    //     {
-    //       date: "2",
-    //       week: "一",
-    //       isRest: true,
-    //       value: "XXXPROP_OVERTIME_D_5"
-    //     },
-    //     {
-    //       date: "2",
-    //       week: "一",
-    //       isRest: true,
-    //       value: "XXXPROP_OVERTIME_D_6"
-    //     }
-    //   ];
+
     }, 1000);
 
     this.requestData()

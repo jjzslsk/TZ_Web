@@ -84,16 +84,7 @@
             </div>
           </div>
         </div>
-        <!-- <div v-else class="content-box">
-          <div class="weather-forecast-box"> 
-            <div class="forecast-title">天气预报</div>
-            <div class="line-thick"></div>
-            <div class="line-thin"></div>
-            <div class="forecast-text">
-              <div v-for="(item,index) in forecastList" :key="index" class="item-list">{{item.text}}</div>
-            </div>
-          </div>
-        </div> -->
+
       </div>
 
       <div class="right-box">
@@ -106,24 +97,7 @@
           </div>
           <div class="tab" v-else>
             <el-tabs v-if="lastItemClicked" v-model="tabsListValue" type="card" @tab-click="handleClick">
-              <!-- <el-tab-pane :key="item.name"
-              v-for="(item,index) in tabsList"
-              :label="item.name"
-              :name="item.name">
-              <el-tree
-              :data="item.children"
-              show-checkbox
-              default-expand-all
-              node-key="id"
-              ref="trees"
-              highlight-current
-              @check-change="handleCheckChange"
-              :props="defaultProps">
-              <span slot-scope="{data}">
-                <span @click="copy($event,data)" class="copyBtn" :data-clipboard-text="copyData">{{data.name}}</span>
-              </span>
-              </el-tree>
-              </el-tab-pane> -->
+
               <el-tab-pane :key="item.code"
               v-for="(item,index) in tabListData"
               :label="item.sourceName"

@@ -14,11 +14,7 @@
                                 <el-input v-model="query.name" clearable placeholder="请输入名称"></el-input>
                                 <span class="title">搜索编码：</span>
                                 <el-input v-model="query.type" clearable placeholder="请输入编码"></el-input>
-                                <!-- <span class="title">行政级别：</span>
-                                <el-select v-model="query.XXXPROP_AREA_name" clearable placeholder="请选择">
-                                    <el-option label="地级市" value="city"></el-option>
-                                    <el-option label="区/县" value="county"></el-option>
-                                </el-select> -->
+
                                 <c-button type="search" @click="search()">搜索</c-button>
                                 <c-button type="add" @click="inputItem({})">添加</c-button>
                             </div>
@@ -42,7 +38,6 @@
         </el-main>
     </el-container>
     <dialog-form title="数据源" @success="submitSuccess" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.type" remote="requestDialogFormProductSourceInput" v-if="formItem">
-        <!-- <template v-slot:default="{ form }"> -->
         <template>
             <el-form-item label="数据源名称" label-width="120px">
                 <el-input v-model="formItem.name" autocomplete="off"></el-input>

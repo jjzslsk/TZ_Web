@@ -13,26 +13,14 @@
                             <div class="actions" slot="actions">
                                 <span class="title">搜索名称：</span>
                                 <el-input v-model="query.name" placeholder="请输入标识"></el-input>
-                                <!-- <span class="title">机构级别：</span>
-                                <el-select v-model="query.queryCode" clearable placeholder="请选择">
-                                    <el-option label="根级" value="0"></el-option>
-                                    <el-option label="一级" value="1"></el-option>
-                                    <el-option label="二级" value="2"></el-option>
-                                    <el-option label="三级" value="3"></el-option>
-                                    <el-option label="四级" value="4"></el-option>
-                                </el-select> -->
+
                                 <c-button type="search" @click="search()">搜索</c-button>
                                 <c-button type="add" @click="inputItem({})">添加</c-button>
                             </div>
                             <el-table-column prop="" label="序列" width="80px" type="index"></el-table-column>
                             <el-table-column prop="code" label="编号" />
                             <el-table-column prop="name" label="名称" />
-                            <!-- <el-table-column prop="showOrder" label="显示顺序" /> -->
-                            <!-- <el-table-column label="机构级别">
-                                <template slot-scope="{row}">
-                                    {{({'0':'根级','1':'第一级','2':'第二级','3':'第三级','4':'第四级'})[row.queryCode]}}
-                                </template>
-                            </el-table-column> -->
+
                             <el-table-column prop label="操作" width="200px">
                                 <template slot-scope="scope">
                                     <el-button type="text" size="small" @click="inputItem(scope.row)">编辑</el-button>
@@ -48,7 +36,6 @@
         </el-main>
     </el-container>
     <dialog-form @success="submitSuccess" title="机构" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.name" remote="requestDialogFormOrganItemInput" v-if="formItem">
-        <!-- <template v-slot:default="{ form }"> -->
         <template>
             <el-form-item label="上级机构" label-width="120px">
                 <el-select v-model="formItem.parentId" placeholder="请选择">
@@ -61,18 +48,7 @@
             <el-form-item label="名称" label-width="120px">
                 <el-input v-model="formItem.name" autocomplete="off"></el-input>
             </el-form-item>
-            <!-- <el-form-item label="显示顺序" label-width="120px">
-                <el-input v-model="formItem.showOrder" autocomplete="off"></el-input>
-            </el-form-item> -->
-            <!-- <el-form-item label="机构级别" label-width="120px">
-                <el-select v-model="formItem.queryCode" placeholder="请选择">
-                    <el-option label="根级" value="0"></el-option>
-                    <el-option label="一级" value="1"></el-option>
-                    <el-option label="二级" value="2"></el-option>
-                    <el-option label="三级" value="3"></el-option>
-                    <el-option label="四级" value="4"></el-option>
-                </el-select>
-            </el-form-item> -->
+
             <el-form-item label="所属地区" label-width="120px">
                 <el-select v-model="formItem.areaId" placeholder="请选择">
                     <el-option :label="item.label" v-for="item in areaList" :key="item.id" :value="item.id"></el-option>
@@ -163,11 +139,8 @@ export default {
                 "parentId": item.parentId,
                 "areaId": item.areaId,
                 "areaName": item.areaName,
-                // "queryCode": item.queryCode,
                 "remark": item.remark, 
-                // "showOrder": item.showOrder, 
             } : {
-                // "XXXPROP_ORGAN_id": "",
                 "code": "",
                 "name": "",
                 "parentId": "",
@@ -175,11 +148,7 @@ export default {
                 "areaName": "",
                 // "queryCode": "",
                 "remark": "",
-                // "showOrder": "", 
-                // "queryCode": lastItemClicked && (lastItemClicked.queryCode || 0) + 1 + "",
-                // "XXXPROP_ORGAN_5": lastKeyItemClicked,
-                // lastItemClicked,
-                // ...item
+
             }
                 
         },

@@ -248,26 +248,7 @@ export default {
       }
       this.$router.push({ path: "/welcome-home", query: info });
     },
-    // onSubmit() {
-    //     // debugger;
-    //     const vm = this;
-    //     // console.log('vm.form', vm.form);
-    //     requestLogin(vm.form).then(res => {
-    //         // res.data
-    //         return this.gotAccountInfo({name:res.data[0].userName});
-    //     }).then(res => {
-    //         const rf = vm.$route.query.rf;
-    //         if (rf) {
-    //             vm.$router.push({
-    //                 'path': decodeURIComponent(rf)
-    //             });
-    //         } else {
-    //             vm.$router.push({
-    //                 'name': 'welcome'
-    //             });
-    //         }
-    //     })
-    // },
+
 
     async onSubmit() {
       const vm = this;
@@ -282,18 +263,7 @@ export default {
           localStorage.setItem("loginData", JSON.stringify(res.data));
           this.loginData = JSON.parse(localStorage.getItem("loginData"));
         }
-        // const rf = vm.$route.query.rf;
-        // console.log('rf::',rf)
 
-        // if (rf) {
-        //     vm.$router.push({
-        //         'path': decodeURIComponent(rf)
-        //     });
-        // } else {
-        //     vm.$router.push({
-        //         'name': 'welcome'
-        //     });
-        // }
         return res
       });
 
@@ -431,7 +401,6 @@ export default {
       }
       .title {
         display: flex;
-        justify-content: center;
         align-items: center;
         padding-left: 10px;
         font-size: 3.5rem;
@@ -578,10 +547,7 @@ export default {
               }
             }
           }
-          /* .:nth-child(1) {
-            background: url(../../assets/img/welcome/item-bg.png) no-repeat;
-            background-size: 100% 100%;
-          }*/
+
         }
         .headline-l,
         .headline-r {

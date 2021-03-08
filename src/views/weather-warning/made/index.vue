@@ -131,11 +131,7 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="8">
-                                <!-- <el-form-item label="签发人" v-if="isWarning">
-                                    <el-select v-model="form.XXX_PROP_WARNING_ORGANIZE_USERID" placeholder="请选择">
-                                        <el-option v-for="item in userList" :label="item.name" :value="item.id" :key="item.id"></el-option>
-                                    </el-select>
-                                </el-form-item> -->
+
                                 <el-form-item label="签发人" v-if="isWarning">
                                     <el-select v-model="form.checkUser" placeholder="请选择">
                                         <el-option v-for="item in userList" :label="item.name" :value="item.name" :key="item.id"></el-option>
@@ -395,27 +391,7 @@ export default {
             alarms: [],
             areas: null,
             formDialog: {},
-            // tabsList1: [{
-            //         name: "邮件",
-            //         id: "01",
-            //         title: "邮件"
-            //     },
-            //     {
-            //         name: "传真",
-            //         id: "02",
-            //         title: "传真"
-            //     },
-            //     {
-            //         name: "大喇叭",
-            //         id: "03",
-            //         title: "大喇叭"
-            //     },
-            //     {
-            //         name: "微博",
-            //         id: "04",
-            //         title: "微博"
-            //     }
-            // ],
+
             tabsListValue1: "FAX",
             defaultProps: {
                 children: "children",
@@ -490,16 +466,7 @@ export default {
                 })
             }
         },
-        // types: {
-        //     handler(
-        //         val
-        //     ) {
-        //         if (val) {
-        //             this.form.XXX_PROP_WARNING_TYPE = val.map(e => e.items.filter(e => e.selected).map(e => e.desc).join("和")).filter(e => e).join("和")
-        //         }
-        //     },
-        //     deep: true
-        // }
+
         warningTypesLeft(val, old) {
             if (val != old) {
                 let str = val.replace("和","、")　
@@ -513,13 +480,7 @@ export default {
                 this.form.XXX_PROP_WARNING_ORGANIZE = val;
                 this.form.XXX_PROP_WARNING_ORGANIZE_NAME = val;
 
-                // requestOrganList().then(res =>{
-                //     this.organList = res.data.list
-                //     this.organList.forEach(i=>{
-                //         if(i.id==val){this.form.orgName = i.name}
-                //     })
-                // console.log(this.form.orgName)
-                // })
+
             },
             immediate: true
         },
@@ -561,10 +522,7 @@ export default {
         })
         requestAllUserList({orgId:this.loginInfo.orgId}).then(res =>{
             this.userList = res.data.list
-            // this.organList.unshift({
-            //     name:'顶级',
-            //     id:'0'
-            // })
+
         })
 
       //获取发布渠道
@@ -602,22 +560,6 @@ export default {
         });
 
         this.areas = JSON.parse(JSON.stringify(this.areasOptions));
-
-        // const ents = Object.entries(this.weatherWarningTypeMapper);
-        // const typesOfAlarm = [
-        //     ...ents.slice(0, 2),
-        //     ...ents.slice(3, 5),
-        //     ...ents.slice(6, 7),
-        //     ...ents.slice(8, 10),
-        //     ...ents.slice(11, 14),
-        // ].map(([label, code]) => ({
-        //     label,
-        //     "items": ([1, 2, 3, 4]).map(e => ({
-        //         imageType: code,
-        //         imageColor: e
-        //     }))
-        // }));
-        // this.typesOfAlarm = typesOfAlarm;
         requestSelectorListAlarm().then(res => {
             this.typesOfAlarm = res.data.list.map(line => {
                 line.items = line.items.map(e => ({
@@ -630,7 +572,6 @@ export default {
                 return line
             })
         });
-        // this.channels = JSON.parse(JSON.stringify(this.channelsOptions));
     },
     beforeRouteUpdate(to, from, next) {
         this.dataReadHead = null;
@@ -681,25 +622,6 @@ export default {
         },
         publish() {
             let publishChannels = []
-            // this.channelsSelected.forEach(i=>{
-            //     publishChannels.push(i.value)
-            // })
-            // requestProductUserList({orgId:this.loginInfo.orgId,channelCodes:publishChannels.toString()}).then(res => {
-            //     this.tabTree = res.data;
-            //     function changeName(tree) {
-            //         tree.map(item => {
-            //             item.label = item.name
-            //             item.value = item.channel
-            //             item.code = item.channel
-            //             item.selected = true
-            //             if (item.children) {
-            //                 changeName(item.children)
-            //             }
-            //         })
-            //     }
-            //     changeName(this.tabTree)
-            // });
-
             const {
                 channelsSelected,
                 dataReadHeadSync,

@@ -1,6 +1,5 @@
 <template>
 <div class="">
-    <!-- {{info.children}} -->
     <el-cascader :key="key" v-model="valueCascader" :options="info.children" @expand-change="handleAreaChange" :props="propsCascader"></el-cascader>
 </div>
 </template>

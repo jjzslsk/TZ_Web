@@ -68,10 +68,8 @@
         </template>
     </dialog-form>
     <dialog-form title="产品标签" @success="submitSuccess" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.name" remote="requestDialogFormProductLabelItemInput" v-if="formItem">
-        <!-- <template v-slot:default="{ form }"> -->
         <template>
             <el-form-item label="标签分类" label-width="120px">
-                <!-- <el-input v-model="formItem.labelTypeId" autocomplete="off"></el-input> -->
                 <el-select v-model="formItem.labelTypeId" placeholder="请选择">
                     <el-option v-for="item in treeDataList" :label="item.label" :value="item.id" :key='item.id'></el-option>
                 </el-select>
@@ -88,23 +86,7 @@
             <el-form-item label="描述" label-width="120px">
                 <el-input v-model="formItem.description" autocomplete="off"></el-input>
             </el-form-item>
-            <!-- <el-form-item label="行政级别" label-width="120px">
-                <el-select v-model="formItem.XXXPROP_AREA_3" placeholder="请选择">
-                    <el-option label="地级市" value="city"></el-option>
-                    <el-option label="区/县" value="county"></el-option>
-                </el-select>
-            </el-form-item> -->
-            <!-- <el-form-item label="上级地区" label-width="120px" v-if="lastItemClicked">
-                <el-input v-model="lastItemClicked.label" autocomplete="off" readOnly></el-input>
-            </el-form-item> -->
-            <!-- <el-form-item label="上级地区" label-width="120px">
-                <el-input v-model="formItem.XXXPROP_AREA_4" autocomplete="off" readOnly></el-input>
-            </el-form-item> -->
-            <!-- <el-form-item label="上级地区" label-width="120px">
-                <el-select v-model="formItem.XXXPROP_AREA_4" placeholder="请选择">
-                    <el-option label="浙江省" value="330000"></el-option>
-                </el-select>
-            </el-form-item> -->
+
         </template>
     </dialog-form>
 </div>
@@ -131,8 +113,7 @@ export default {
             treeDataList:[],
             loginInfo:null,
             query: {
-                // XXXPROP_AREA_id: "",
-                // XXXPROP_AREA_name: ""
+
             }
         };
     },
@@ -184,14 +165,6 @@ export default {
             }else{
                 const lastKeyItemClicked = lastItemClicked && lastItemClicked.id;
             // return {
-            //     "XXXPROP_AREA_id": "",
-            //     "XXXPROP_AREA_1": "",
-            //     "XXXPROP_AREA_2": "",
-            //     "XXXPROP_AREA_3": "",
-            //     "XXXPROP_AREA_4": lastKeyItemClicked,
-            //     "XXXPROP_AREA_5": "",
-            //     "XXXPROP_AREA_6": "",
-            //     lastItemClicked,
             //     ...item 
             // };
             return item ? item : {

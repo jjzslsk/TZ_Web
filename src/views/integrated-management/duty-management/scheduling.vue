@@ -8,7 +8,6 @@
                 </div>
                     <div class="content-list">
                         <page-table ref="table" :key="tableKey" remote="requestSchedulingList" :formatPayload="formatPayload" :hidePagination="true" :row-class-name="tableRowClassName">
-                        <!-- <page-table ref="table" :formatPayload="formatPayload" :row-class-name="tableRowClassName"> -->
                             <div class="actions" slot="actions">
                                 <span class="title">选择月份</span>
                                 <el-date-picker :clearable='false' :disabled="editCol" v-model="query.monthTime" format="yyyy-MM" value-format="yyyy-MM" type="month" placeholder="选择月"></el-date-picker>
@@ -32,13 +31,9 @@
                             </div>
                             <el-table-column prop="dutyDate" label="日期" width="60px"></el-table-column>
                             <el-table-column prop="weekDate" label="星期" width="60px"/>
-                            <!-- <template v-for="item in userList" :key="index"> -->
-                            <!-- <el-table-column v-for="(item,index) in userList" :prop="item.dutyDate" :label="item.userName" :key="index"> name == '台州气象台'? 'right':''
-                            </el-table-column> -->
-                            <!-- </template> -->
+
 
                             <el-table-column v-for="({name,id},index) in persons" :prop="name" :label="name" :key="index">
-                            <!-- <el-table-column v-for="({name,id},index) in persons" :prop="name" :label="name" :key="index" :fixed="tableFixed(name,id)"> -->
                                 <template slot-scope="scope" >
                                     <div class="col-box" :class="editCol == true && scope.row.currentDate.split('-').join('') >= serviceDay.split('-').join('') ? 'col-box-bg':''" @click="tableColumClick(scope.row[id],scope)">
                                     <div v-if="name !== '首席'">
@@ -59,13 +54,7 @@
                                         </span>
                                     </div>
                                     </div>
-                                    <!-- <el-select v-model="scope.row[id]" @change="changeTelescopic(index,scope.row[id],scope.row,name,id)" placeholder="请选择" v-if="scope.row[id] && editCol" :class="`scheduling-${scope.row[id]}`"> -->
-                                    <!-- <el-select v-model="scope.row[id]" @change="changeTelescopic(index,scope.row[id],scope.row,name,id)" placeholder="请选择" v-show="editCol && name !== '首席'" :class="`scheduling-${scope.row[id]}`">
-                                        <el-option v-for="{name,id} in postList" :label="name" :value="id" :key="id"></el-option>
-                                    </el-select>
-                                    <el-select v-model="scope.row[id]" @change="changeTelescopic(index,scope.row[id],scope.row,name,id)" placeholder="请选择" v-show="editCol && name == '首席'" :class="`scheduling-${scope.row[id]}`">
-                                        <el-option v-for="{name,id} in postUserList" :label="name" :value="id" :key="id"></el-option>
-                                    </el-select> -->
+
                                 </template>
                             </el-table-column>
                         </page-table>
@@ -304,17 +293,7 @@ export default {
         submitEdit(){
             this.editCol=!this.editCol
             if(!this.editCol && this.selectData.length > 0){
-                // let params
-                // this.selectData.forEach(i=>{
-                //    if(i.userId == 'bf5df19b976d4381bb1a2f841ab544a7'){
-                //         i.userIdItem = i.userId
-                //         i.jobIdItem = i.jobId
-                //         i.userId = i.jobIdItem
-                //         i.jobId = 'bf5df19b976d4381bb1a2f841ab544a7'
-                //         delete i.userIdItem
-                //         delete i.jobIdItem
-                //    }
-                // })
+
                  requestSchedulingUpdate({orgId:this.loginInfo.orgId,month:this.query.monthTime,list:this.selectData}).then(res =>{
                      if(res.success){
                         this.requestData()
@@ -441,39 +420,6 @@ export default {
 .scheduling {
     height: 100%;
 
-    /* 自适应高度 */
-        /* .el-main {
-        .el-card{
-            height: calc(100% - 2px);
-            position: relative;
-            .el-card__header {
-                height: 55px;
-            }
-            .el-card__body {
-                height: calc(100% - 95px);
-                .content-list{
-                    height: 100%;
-                    .list-table{
-                        height: 100%;
-                    }
-                    height: 100%;
-                    .actions{
-                        height: 56px;
-                        }
-                    .el-table{
-                        height: calc(100% - 72px);
-                        .el-table__header-wrapper {
-                            height: 34px;
-                        }
-                        .el-table__body-wrapper {
-                            overflow-y: auto;
-                            height:calc(100% - 34px);
-                        }
-                    }
-                }
-            }
-        }
-} */
     /* 自适应高度end------------------- */
     .title-remark{
         color:red;

@@ -87,17 +87,7 @@
                   <p :class="data.isSelected ? 'is-selected' : ''" @mouseover="allcalendar(data.day,$event)" @mouseout="dutyTablePopEvl()">
                     {{ data.day.split('-').slice(2).join('-') }} {{ data.isSelected ? '' : ''}}
                   </p>
-                  <!-- <div v-for="(item,index) in calendarData" :key="index" >
-                    <div v-if="(item.month).indexOf(data.day.split('-').slice(1)[0])!=-1">
-                      <div v-if="(item.date).indexOf(data.day.split('-').slice(2).join('-'))!=-1">
-                            <div class="item" effect="dark" :content="item.userName" placement="right">
-                                <div class="name-style">{{item.userName}}</div>
-                            </div>
-                        </div>
-                      <div v-else></div>
-                    </div>
-                    <div v-else></div>
-                  </div> -->
+
                   <div v-for="(item,index) in calendarData" :key="index" @mouseover="allcalendar(data.day,$event)" @mouseout="dutyTablePopEvl()">
                    <div v-if="(item.month).indexOf(data.day.split('-').slice(1)[0])!=-1">
                      <div v-if="(item.date).indexOf(data.day.split('-').slice(2).join('-'))!=-1">
@@ -186,7 +176,6 @@
             </el-radio-group>
         <div class="block">
           <el-timeline v-if="activities.length > 0">
-            <!-- <el-tooltip v-for="(activity, index) in activities" :key="index" placement="top" effect="light" content="编辑产品?"> -->
             <el-timeline-item
               style='cursor:pointer'
               v-for="(activity, index) in activities"
@@ -199,30 +188,14 @@
               :timestamp="activity.timestamp"
               :class="activity.range=='早晨'? 'el-timeline-item-red':'' || activity.range=='上午'? 'el-timeline-item-green':'' || activity.range=='下午'? 'el-timeline-item-blue':'' || activity.range=='夜间'? 'el-timeline-item-yellow':''" 
               >
-              <!-- <el-tooltip class="item" effect="light" content="操作为完成?" placement="top">
-                <div class="timeline-event" @click.stop="timelineEvent(activity)"></div>
-              </el-tooltip> -->
-              <!-- <div class="activity-content" @mouseover="mouseOver(index)" @mouseleave="mouseLeave(index)"> -->
+
                 <span>{{activity.content}}</span>
               <span class="timeFrame" :style="activity._zcIndex == 1? `top:${activity._zc*56/2}px`:''" v-if="activity._zcIndex == 1">{{activity.range}}</span>
               <span class="timeFrame" :style="activity._swIndex == 1? `top:${activity._sw*56/2}px`:''" v-if="activity._swIndex == 1">{{activity.range}}</span>
               <span class="timeFrame" :style="activity._xwIndex == 1? `top:${activity._xw*56/2}px`:''" v-if="activity._xwIndex == 1">{{activity.range}}</span>
               <span class="timeFrame" :style="activity._yjIndex == 1? `top:${activity._yj*56/2}px`:''" v-if="activity._yjIndex == 1">{{activity.range}}</span>
-                <!-- <span class="edit"><i class="el-icon-edit-outline activity-edit" v-show="seen&&index==current" :class="activityColor"></i></span> -->
-              <!-- </div> -->
-              <!-- <el-popover
-                v-if="activityItem.id == activity.id"
-                placement="top"
-                width="60"
-                v-model="visible">
-                <p>确定完成吗？</p>
-                <div style="text-align: right; margin: 0">
-                  <el-button size="mini" type="text" @click.stop="visible = false">取消</el-button>
-                  <el-button type="primary" size="mini" @click.stop='popoverClick(activity.id)'>确定</el-button>
-                </div>
-              </el-popover> -->
+
             </el-timeline-item>
-            <!-- </el-tooltip> -->
           </el-timeline>
           <div class="text" v-else>
             暂无记录
@@ -232,7 +205,6 @@
     </div>
     <!-- 交接班弹窗 -->
         <dialog-form @success="submitSuccess" title="交接班" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.content||!formItem.title||!formItem.time" remote="requestIntegratedHoneHistoryAdd" v-if="formItem">
-        <!-- <template v-slot:default="{ form }"> -->
         <template>
             <el-form-item label="交接类型" label-width="120px">
                 <el-select v-model="formItem.title" placeholder="请选择">
@@ -441,40 +413,6 @@ import {
           }
         ],
         activities: [
-        //   {
-        //   content: '短时临近预报修改',
-        //   timestamp: '2018-04-12 20:46',
-        //   size: 'large',
-        //   type: 'primary',
-        //   icon: 'el-icon-check',
-        //   color:"#409EFF"
-        //   }, {
-        //     content: '周边城市预报',
-        //     timestamp: '2018-04-03 20:46',
-        //     color: '#67C241',
-        //     icon:"el-icon-bell"
-        //   }, {
-        //     content: '周边城市报文',
-        //     timestamp: '2018-04-03 20:46',
-        //     size: 'large'
-        //   }, {
-        //     content: '城市预报气象网',
-        //     timestamp: '2018-04-03 20:46'
-        //   }, {
-        //     content: '周边城市报文',
-        //     timestamp: '2018-04-03 20:46',
-        //     size: 'large'
-        //   }, {
-        //     content: '城市预报气象网',
-        //     timestamp: '2018-04-03 20:46'
-        //   }, {
-        //     content: '周边城市报文',
-        //     timestamp: '2018-04-03 20:46',
-        //     size: 'large'
-        //   }, {
-        //     content: '查看智能网格预报业务平台',
-        //     timestamp: '2018-04-03 20:46'
-        // }
         ],
         recordPop:false,
         dutyTablePop:false,
@@ -745,11 +683,9 @@ import {
               '.el-calendar__button-group .el-button-group>button:nth-child(2)');
           prevBtn.addEventListener('click', () => {
             requestIntegratedHoneDutyList({orgId:vm.loginInfo.orgId}).then(res => {
-              // this.presentMonth = res.data[0].month
               this.calendarData = res.data
             })
-              // console.log(res.data[0].month);
-              // console.log(this.valueDate.getMonth());
+
           })
       })
 

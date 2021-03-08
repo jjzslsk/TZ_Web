@@ -249,7 +249,6 @@ export default {
                 'XXXLABEL_DUTY_POST_day': this.DayData
             })[this.formItem.XXXPROP_DUTY_POST_X3] : []
 
-            // return this.formItem ? (this.dateArr)[this.formItem.XXXPROP_DUTY_POST_X3] : []
         },
         checkedCount() {
             const checkedItems = this.checkedItems || [];
@@ -303,17 +302,6 @@ export default {
                     formItem,
                 } = this;
             this.periodType = val
-            // if(this.formItem.id){
-            //     if (val == 'XXXLABEL_DUTY_POST_day') {
-            //     this.checkedItems = this.formItem.remindDay? this.formItem.remindDay : null 
-            // }
-            // if (val == 'XXXLABEL_DUTY_POST_month') {
-            //     this.checkedItems = this.formItem.remindMonth? this.formItem.remindMonth : null 
-            // }
-            // if (val == 'XXXLABEL_DUTY_POST_week') {
-            //     this.checkedItems = this.formItem.remindWeek? this.formItem.remindWeek : null 
-            // }
-            // }
 
             if(this.formItem.id){
                 this.checkedItems = []
@@ -379,7 +367,6 @@ export default {
                 formItem
             } = this;
             if(val.length !==  null && this.periodType == 'XXXLABEL_DUTY_POST_day' ){
-                // if(val.length ==  null || val.length == 0)return
                 formItem.remindDay = val
             }
             if(val.length !==  null && this.periodType == 'XXXLABEL_DUTY_POST_month'){
@@ -396,13 +383,6 @@ export default {
             if(this.formItem.id && this.periodType == 'XXXLABEL_DUTY_POST_day'){
                 // this.checkedItems = ['1','2']
             }
-            // if(this.formItem.id && this.periodType == 'XXXLABEL_DUTY_POST_month'){
-            //     this.checkedItems = this.formItem.remindMonth? this.formItem.remindMonth : null 
-            // }
-            // if(this.formItem.id && this.periodType == 'XXXLABEL_DUTY_POST_week'){
-            //     this.checkedItems = this.formItem.remindWeek? this.formItem.remindWeek : null 
-            // }
-
             if(!data){
                 this.checkedItems = []
                 this.periodType = ''

@@ -39,18 +39,6 @@
               <span class="timeFrame" :style="activity._xwIndex == 1? `top:${activity._xw*56/2}px`:''" v-if="activity._xwIndex == 1">{{activity.range}}</span>
               <span class="timeFrame" :style="activity._yjIndex == 1? `top:${activity._yj*56/2}px`:''" v-if="activity._yjIndex == 1">{{activity.range}}</span>
               <vue-context-menu :contextMenuData="contextMenuData" @finish="finish(activity)"></vue-context-menu>
-              <!-- <div class="timeline-event" @click.stop="timelineEvent(activity)"></div> -->
-              <!-- <el-popover
-                v-if="activityItem.id == activity.id"
-                placement="top"
-                width="60"
-                v-model="visible">
-                <p>确定完成吗？</p>
-                <div style="text-align: right; margin: 0">
-                  <el-button size="mini" type="text" @click.stop="visible = false">取消</el-button>
-                  <el-button type="primary" size="mini" @click.stop='popoverClick(activity.id)'>确定</el-button>
-                </div>
-              </el-popover> -->
               </el-timeline-item>
               </div>
             </el-timeline>
@@ -71,44 +59,12 @@
               <div slot="head-search" class="head-search">
                 <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="searchText"></el-input>
               </div>
-              <!-- <div slot="append" class="">
-              <div>
-              <span class="title">分类操作：</span><common-left-tree-actions @success="submitSuccess" :lastItemClicked="lastItemClicked" @append="onTreeAppend" @edit="onTreeEdit" @delete="onTreeDelete('requestProductClassTreeDel')"></common-left-tree-actions>
-              </div>
-              <div>
-              <span class="title">产品操作：</span><common-left-tree-actions @success="submitSuccess" :lastItemClicked="lastItemClicked" @append="onTreeAppendMinor" @edit="onTreeEditMinor" @delete="onTreeDeleteMinor('requestProductClassTreeDelMinor')"></common-left-tree-actions>
-              </div>
-              </div>-->
+
             </common-left-tree>
           </el-tab-pane>
         </el-tabs>
       </div>
-      <!-- <div class="left-box">
-        <div class="top-title">
-          <div class="text">产品导航</div>
-        </div>
-        <div class="content-box">
-            <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="searchText"></el-input>
-            <div class="tree-box">
-              <el-tree ref="tree" :data="treeData" @node-click="handleNodeClick" default-expand-all :filter-node-method="filterNode"></el-tree>
-            </div>
-        </div>
-        <div class="tool-box">
-          <div class="line-interval"></div>
-          <div class="classify-tool">
-            <span class="title">分类操作</span>
-            <div class="icon-box">
-            </div>
-          </div>
-          <div class="classify-tool product-tool">
-            <span class="title">产品操作</span>
-            <div class="icon-box">
-              <i class="iconfont bianji"></i>
-              <i class="iconfont shanchu"></i>
-            </div>
-          </div>
-        </div>
-      </div>-->
+
       <div class="link-iframe main" v-if="linkIframe">
         <iframe :src="linkIframe" frameborder="0"></iframe>
       </div>
@@ -119,23 +75,9 @@
           <div class="nested" v-if="mainWidth" :style="mainWidth? `width:${mainWidth}px`:''">
           <div class="top-title no-border">
             <div class="text">参考资料
-              <!-- <span class="link" style="cursor:pointer" @click="inputItem()">显示编辑</span> -->
               </div>
-            <!-- <el-button type="primary" size="small" @click="saveModule()">保存模板</el-button> -->
           </div>
-          <!-- <div v-if="isIframe" class="iframe-content-box">
-            <page-office :url="docPath" id="products"></page-office>
-          </div>
-          <div v-else class="content-box">
-            <div class="weather-forecast-box">
-              <div class="forecast-title">天气预报</div>
-              <div class="line-thick"></div>
-              <div class="line-thin"></div>
-              <div class="forecast-text">
-                <div v-for="(item,index) in forecastList" :key="index" class="item-list">{{item.text}}</div>
-              </div>
-            </div>
-          </div>-->
+
           <template>
             <el-tabs v-model="tabsListValue" @tab-click="handleClick">
               <el-tab-pane
@@ -182,14 +124,7 @@
                           </el-form-item>
                         </div>
                         <div class="item-input">
-                          <!-- <el-form-item label="制作期号">
-                            <el-input
-                              type="number"
-                              v-model="productTabList[index].issue"
-                              @click.native="handleInput"
-                              placeholder="请输入期号"
-                            ></el-input>
-                          </el-form-item> -->
+
 
                         </div>
                   <div class="item-input">
@@ -212,20 +147,6 @@
                             ></el-input>
                           </el-form-item>
 
-
-                            <!-- <el-checkbox class="select-time" v-model="productTabList[index].reserve" size="small" label="预约发布" border></el-checkbox>
-                            <el-time-select
-                              class="select-time"
-                              style="width:100px;"
-                              size="small"
-                              :disabled="productTabList[index].reserve? false:true"
-                              v-model="productTabList[index].reserveTime"
-                              :picker-options="{start: '08:30',step: '00:15',end: '18:30'}"
-                              placeholder="时间"
-                            ></el-time-select> -->
-                        <!-- <el-button type="success" size="mini" @click="onSave(productTabList[index],index,function(){})">保存</el-button>
-                        <el-button type="primary" size="mini" @click="onConsult(productTabList[index],index,'fast')">快速发布</el-button>
-                        <el-button type="primary" size="mini" @click="onConsult(productTabList[index],index,'')">发布</el-button> -->
                     </div>
                     <div class="edit-but">
                       <div class="time-box">
@@ -255,7 +176,6 @@
                       </div>
                       <div v-if="productTabList[index].type == 'word' || productTabList[index].type == 'excel'" class="iframe-content-box">
                         <page-office v-if="isPageOffices" :url='"http://10.137.4.30:8089/PageOfficeService/main/openProductFile.action?reLabel=1&templateId=" + productTabList[index].templateId' ref="iframe" id="products"></page-office>
-                        <!-- <page-office :url="productTabList[index].filePath" ref="iframe" id="products"></page-office> -->
                       </div>
                     <div v-else class="form-txt items">
                       <el-input
@@ -294,14 +214,6 @@
                     </el-form-item>
                   </div>
                   <div class="item-input form-item-input">
-                    <!-- <el-form-item label="制作期号">
-                      <el-input
-                        type="number"
-                        v-model="productMade.issue"
-                        @click.native="handleInput"
-                        placeholder="请输入期号"
-                      ></el-input>
-                    </el-form-item> -->
                     <el-form-item label="产品名称">
                       <el-input
                         class="file-name-input"
@@ -341,18 +253,7 @@
                         <el-button type="primary" size="mini" @click="goProduct(productMade)">查看发布结果</el-button>
                       </div>
                   </div>
-                      <!-- <el-checkbox class="select-time" v-model="productMade.reserve" size="small" label="预约发布" border></el-checkbox>
-                      <el-time-select
-                        class="select-time"
-                        style="width:100px;"
-                        size="small"
-                        :disabled="productMade.reserve? false:true"
-                        v-model="productMade.reserveTime"
-                        :picker-options="{start: '08:30',step: '00:15',end: '18:30'}"
-                        placeholder="时间"
-                      ></el-time-select> -->
 
-                  <!-- </el-row> -->
 
               <div v-if="isIframe" :class="!iframePosition? 'iframe-content-box':'iframe-position'">
                 <page-office :url="docPath" ref="iframe" id="products" @childEvent="childEvent"></page-office>
@@ -496,30 +397,14 @@
                       <div class="top">
                         <div class="select-all">发布内容</div>
                       </div>
-                      <!-- {{formConsult}} -->
                       <div class="consult-list">
-                        <!-- <el-input type="textarea" :rows="20" placeholder="请输入内容" v-model="formConsult['content'+item.channel]"></el-input> -->
                         <el-input
                           type="textarea"
                           :rows="20"
                           placeholder="请输入内容"
                           v-model="contentTabRoot[item.channel]"
                         ></el-input>
-                        <!-- <template>
-                          <el-table :data="tableData" style="width: 100%">
-                            <el-table-column prop="name" label="素材名称" width="180"></el-table-column>
-                            <el-table-column prop="material" label="素材编号" width="180"></el-table-column>
-                            <el-table-column prop="type" label="素材类型"></el-table-column>
-                            <el-table-column prop="num" label="显示顺序" width="100"></el-table-column>
-                            <el-table-column fixed="right" label="操作" width="100">
-                              <template slot-scope="scope">
-                                <i class="el-icon-bottom"></i>
-                                <i class="el-icon-top"></i>
-                                <i class="el-icon-delete"></i>
-                              </template>
-                            </el-table-column>
-                          </el-table>
-                        </template>-->
+
                       </div>
                     </div>
                   </el-col>
@@ -667,49 +552,7 @@ export default {
       alertTextarea: null,
       alertList: null,
       productMade: {},
-      activities: [
-        // {
-        //   content: "短时临近预报修改",
-        //   timestamp: "2018-04-12 20:46",
-        //   size: "large",
-        //   type: "primary",
-        //   icon: "el-icon-check",
-        //   color: "#409EFF"
-        // },
-        // {
-        //   content: "周边城市预报",
-        //   timestamp: "2018-04-03 20:46",
-        //   color: "#67C241",
-        //   icon: "el-icon-bell"
-        // },
-        // {
-        //   content: "周边城市报文",
-        //   timestamp: "2018-04-03 20:46",
-        //   size: "large"
-        // },
-        // {
-        //   content: "城市预报气象网",
-        //   timestamp: "2018-04-03 20:46"
-        // },
-        // {
-        //   content: "周边城市报文",
-        //   timestamp: "2018-04-03 20:46",
-        //   size: "large"
-        // },
-        // {
-        //   content: "城市预报气象网",
-        //   timestamp: "2018-04-03 20:46"
-        // },
-        // {
-        //   content: "周边城市报文",
-        //   timestamp: "2018-04-03 20:46",
-        //   size: "large"
-        // },
-        // {
-        //   content: "查看智能网格预报业务平台",
-        //   timestamp: "2018-04-03 20:46"
-        // }
-      ],
+      activities: [],
       defaultProps: {
         children: "children",
         label: "name"
@@ -795,7 +638,6 @@ export default {
           });
           this.timelineClick(param)
         })
-        // this.optionsValue = this.optionsTypeValue.id
         // 发布流程信息 刷新
         // requestProductTaskList({ userId: this.loginInfo.id, jobId: this.optionsTypeValue.id }).then(
         //   res => {
@@ -920,15 +762,6 @@ export default {
         }
       }
     },
-    // "productMade.reserve": function(val) {
-    //   if (!val) {
-    //     this.productMade.reserveTime = null;
-    //   } else {
-    //     // this.productMade.reserveTime = this.lastItemClicked.reserveTime
-    //   }
-    // }
-
-
 
   },
   mounted() {
@@ -943,8 +776,7 @@ export default {
         this.navTab = '制作流程'
         console.log('routeObj:',this.routeObj)
       }
-    // this.$router.replace({ name: "product-make-images" });
-    // this.$router.replace({ name: this.tabsList[0].name});
+
 
     //获取 tab 类型数据
     this.resTab().then((res)=>{
@@ -970,9 +802,6 @@ export default {
     },
     getTemps(data){
       console.log(data)
-      // requestProductTemplateContent({templateId:data.templateId}).then((res)=>{
-      //   console.log(res)
-      // })
     },
     childEvent(data){
       this.onSave(data.item,data.index,data.callback,data.isDos,data.filePath)
@@ -1031,7 +860,6 @@ export default {
         event.preventDefault()
         var x = event.clientX
         var y = event.clientY
-        // Get the current location
       this.contextMenuData.axis = {
         x, y
       }
@@ -1046,7 +874,6 @@ export default {
             }
           );
         })
-        // this.$message.warning("非产品，无法编辑")
     },
 
     //时间校验 
@@ -1139,8 +966,6 @@ export default {
         return len;
     },
     suggestInput(data) {
-      console.log(data)
-      // :maxlength='productMade.wordtype == 0 ? productMade.limitnumber * 2 : productMade.limitnumber'
       if (
         !this.lastItemClicked
       ) {
@@ -1385,14 +1210,6 @@ if(data.product == 1 && data.productInfoId){
                         this.productMade = {
                           ...res.data,
                         }
-                        // this.productMade.makeTime = res.data.makeTime
-                        // res.data.makeTimes.forEach(i=>{
-                        //   if(i.makeMode == 2){
-                        //     this.productMade.makeTime = i.makeTime
-                        //   }
-                        // })
-
-
                         this.makeTimes = res.data.makeTimes
                       }
                 });
@@ -1406,13 +1223,17 @@ if(data.product == 1 && data.productInfoId){
                           if(typeof(res.data)=="object"){
                           this.productMade = {};
                           this.productTabList.map((item,index)=>{//修改下标为tabIndex的对象
+                          if(item.productInfoId == res.data.productInfoId){
                             tabIndex == index ? (this.productTabList[index].makeTime = res.data.makeTime) : (this.productTabList[index].makeTime = this.productTabList[index].makeTime)
-                            // tabIndex == index ? (this.productTabList[index].content = makeItem.content) : (this.productTabList[index].content = this.productTabList[index].content)
                             tabIndex == index ? (this.productTabList[index].content = res.data.content) : (this.productTabList[index].content = this.productTabList[index].content)
                             tabIndex == index ? (this.productTabList[index].fileName = res.data.fileName) : (this.productTabList[index].fileName = this.productTabList[index].fileName)
                             tabIndex == index ? (this.productTabList[index].makeTimes = res.data.makeTimes) : (this.productTabList[index].makeTimes = this.productTabList[index].makeTimes)
+                            tabIndex == index ? (this.productTabList[index].dateTime = res.data.dateTime) : (this.productTabList[index].dateTime = this.productTabList[index].dateTime)
+                            tabIndex == index ? (this.productTabList[index].filePath = res.data.filePath) : (this.productTabList[index].filePath = this.productTabList[index].filePath)
+                            tabIndex == index ? (this.productTabList[index].source = res.data.source) : (this.productTabList[index].source = this.productTabList[index].source)
+                          }
+                            
                           })
-                          // this.makeTimeData = makeItem.makeTime //????????????????????????
                         }
                         this.productTabList[tabIndex].timeIndex = makeIndex //多产品 多制作时次下标 修改
                   });
@@ -1476,13 +1297,6 @@ if(data.product == 1 && data.productInfoId){
       })
       }, 300);
 
-
-      // this.isDirection = false
-      // this.isDirection = true
-      // this.isRouterAlive = false;
-      // this.$nextTick( () => {//刷新中间理由
-      //   this.isRouterAlive = true;
-      // })
     },
     handleClickTab(tab, event) {
       console.log(tab, event);
@@ -1496,23 +1310,11 @@ if(data.product == 1 && data.productInfoId){
     },
     handleInput(data) {
       console.log(data)
-      // if(!this.productMade){
-      //     this.$message.error("请选择需要编辑的产品");
-      // }
     },
     focusEvent(data){
       // console.log(data)
     },
     function3() {
-      // if (
-        // !this.lastItemClicked ||
-        // !this.productMade.fileName ||
-        // !this.productMade.issue ||
-      //   !this.productMade.content
-      // ) {
-      //   this.$message.error("选择产品，并填写完整信息!");
-      //   return;
-      // }
         this.formConsultData(this.saveProducId);
     },
     formConsultData(id) {
@@ -1600,9 +1402,7 @@ if(data.product == 1 && data.productInfoId){
         }else{
             this.productMade.content = res.data[0].content = res.data[0].content
         }
-
         this.productMade.content = res.data[0].content
-
           if(res.data.length > 0){
             if(res.data[0].file_type == 'word' || res.data[0].file_type == 'excel'){
               if(res.data[0].file_path){
@@ -1695,8 +1495,6 @@ if(data.product == 1 && data.productInfoId){
       });
     },
 
-
-
     async onAllConsult(item,index,fast){
       let _this = this
       var _productTabList = _this.productTabList
@@ -1773,18 +1571,13 @@ if(data.product == 1 && data.productInfoId){
         //提交
         let param = {
           orgId: this.loginInfo.orgId,
-          // id: item.id,
           productInfoId: index === false? this.lastItemClicked.id:item.productInfoId,
           productInfoName: index === false? this.lastItemClicked.label:item.name,
           issue: item.issue,
-          // reserve: item.reserve ? "1" : "0",
-          // reserveTime: item.reserveTime,
-          // reserveTime: '0',
           createUser: this.loginInfo.name,
           content: item.content,
           fileName: item.fileName,
           makeTime: item.makeTime,
-          // timingDate: item.timingDate,
           filePath: filePath,
         };
         requestProducTreleaseSave(param).then(res => {
@@ -1830,14 +1623,10 @@ if(data.product == 1 && data.productInfoId){
           productInfoId: index === false? this.lastItemClicked.id:item.productInfoId,
           productInfoName: index === false? this.lastItemClicked.label:item.name,
           issue: item.issue,
-          // reserve: item.reserve ? "1" : "0",
-          // reserveTime: item.reserveTime,
-          // reserveTime: '0',
           createUser: this.loginInfo.name,
           content: item.content,
           fileName: item.fileName,
           makeTime: item.makeTime,
-          // timingDate: item.timingDate,
           filePath: filePath,
         };
         requestProducTreleaseSave(param).then(res => {
@@ -1881,9 +1670,6 @@ if(data.product == 1 && data.productInfoId){
       let _this = this
       if (
         !this.lastItemClicked
-        // !item.fileName ||
-        // !item.issue ||
-        //  || !item.content
       ) {
         this.$message.error("选择产品，并填写完整信息!");
         return;
@@ -1933,13 +1719,6 @@ if(data.product == 1 && data.productInfoId){
             if(index === false){ //判断是否配置渠道
               if(!_this.productMade.channelContent){
                 setTimeout(() => {
-                  // _this.$confirm('未配置渠道和服务用户, 是否前往配置?', '提示', {
-                  //   confirmButtonText: '前往配置',
-                  //   cancelButtonText: '取消',
-                  //   type: 'warning'
-                  // }).then(() => {
-                  //   _this.$router.replace({ name: "product-attribute" });
-                  // })
                   _this.$message({message: '未配置渠道和服务用户',type: 'warning'});
                 }, 1000);
                 console.log('channelContent',_this.productMade.channelContent)
@@ -2019,19 +1798,6 @@ if(data.product == 1 && data.productInfoId){
           },
     handleTabClick(tab, event) {
       console.log(tab, event);
-      // console.log("id:",tab.$vnode.key)
-      // this.$router.replace({ name: tab.$attrs.item.name });
-      // requestProducInfo({
-      //   productInfoId: this.lastItemClicked.id,
-      //   isReload: true
-      // }).then(res => {
-      //   this.productMade = null;
-      //   this.productMade = {
-      //     ...res.data,
-      //     id: res.data.id
-      //   };
-      //   console.log(this.productMade);
-      // });
     },
     onTreeClickItem(item,isPro = false) {
       console.log("click-tree-item1", item);
@@ -2083,12 +1849,6 @@ if(data.product == 1 && data.productInfoId){
                 this.productTabProductInfoId = this.productTabList[0].productInfoId
                 this.productTabList.forEach((element,_index)=>{
                     element.type = this.parentList[_index].type
-                    // element.makeTimes.forEach(data=>{
-                    //   if(data.makeMode == 2){
-                    //     element.makeTime = data.makeTime
-                    //   }else{
-                    //   }
-                    // })
                   })
 
             })
@@ -2106,12 +1866,6 @@ if(data.product == 1 && data.productInfoId){
                 ...res.data,
               }
               this.makeTimes = res.data.makeTimes
-              // this.makeTimes.forEach(i=>{
-              //   if(i.makeMode == 2){
-              //     this.productMade.makeTime = i.makeTime
-              //   }
-              // })
-
               console.log('productMade:',this.productMade);
             }
             this.handleNodeClick(item,res.data.templateId)
@@ -2165,11 +1919,6 @@ if(data.product == 1 && data.productInfoId){
       const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
       this.loginInfo = loginInfo;
       this.userJob = JSON.parse(localStorage.getItem('userJob'))
-      // requestProductClassTreeList().then(res => {
-      //   this.treeData = res.data.list;
-      //   this.treeDataList = [];
-      //   this.treeOfList(res.data.list);
-      // });
 
       //获取所有TAB菜单
       await requestProductReferenceTabsList().then(res => {
@@ -2264,8 +2013,6 @@ if(data.product == 1 && data.productInfoId){
       if (data.type == 'word' || data.type == 'excel') {
         vm.isIframe = true;
         vm.docPath = `http://10.137.4.30:8089/PageOfficeService/main/openProductFile.action?templateId=${_templateId}&reLabel=1`;
-        // vm.docPath = `http://222.216.5.171:8891/gxims//railway/showWordForecastMonth.action?productId=20200228164618013583871`;
-        //vm.docPath = `http://10.137.4.30:6001/integration/main/ssd-page-office/productPreview?productInfoId=`+data.id;
       } else {
         vm.isIframe = false;
       }
@@ -2281,16 +2028,11 @@ if(data.product == 1 && data.productInfoId){
       const lastKeyItemClicked = lastItemClicked && lastItemClicked.id;
       console.log(lastItemClicked);
       return {
-        // "XXXPROP_ORGAN_id": "",
         remark: "123",
         pid: "",
         name: "",
         sort: "",
         orgId: ""
-        // "XXXPROP_ORGAN_4": lastItemClicked && (lastItemClicked.XXXPROP_ORGAN_4 || 0) + 1 + "",
-        // "XXXPROP_ORGAN_5": lastKeyItemClicked,
-        // lastItemClicked,
-        // ...item
       };
     },
     getFormItemLeftByInputItem(item) {
@@ -2335,7 +2077,6 @@ if(data.product == 1 && data.productInfoId){
       const { lastItemClicked } = this;
       const lastKeyItemClicked = lastItemClicked && lastItemClicked.id;
       return {
-        // "XXXPROP_ORGAN_id": "",
         XXXPROP_ORGAN_1: "",
         XXXPROP_ORGAN_2: "",
         XXXPROP_ORGAN_3: "",

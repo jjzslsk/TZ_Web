@@ -9,12 +9,6 @@
         <div class="info">风速：{{data.windSpeed|weatherVal('m/s')}}</div>
         <div class="info">风向：{{data.windSpeed && data.windDirectionShow|weatherVal('')}}</div>
 
-        <!-- <div class="info">温度：{{data.temperature}}℃</div>
-        <div class="info">气压：{{data.airPressure}}Pa</div>
-        <div class="info">能见度：{{data.visibility}}m</div>
-        <div class="info">相对湿度：{{data.relativeHumidity}}%</div>
-        <div class="info">风速：{{data.windSpeed}}m/s</div>
-        <div class="info">风向：{{data.windDirectionShow}}</div> -->
     </div>
 </div>
 </template>

@@ -1,12 +1,6 @@
 <template>
     <div>
-        <!-- <button @click="iframeClick1()">发送</button>
-        <br>
-        <button @click="iframeClick2()">接收</button> -->
-        <!-- <iframe :src="officeurl" frameborder="0" class="iframe" ref="iframeId"></iframe> -->
         <iframe ref="iframe" :src="officeurl" class="iframe"></iframe>
-        <!-- <iframe ref="iframe" src="http://192.168.5.106:8080/publishMessage/toSaveWord2" class="iframe"></iframe> -->
-        <!-- <iframe ref="iframe" src="http://10.137.4.30:8888/basin/main/openProductFile.action?templateId=be42a586f9ea46daae073232908df04d" class="iframe"></iframe> -->
     </div>
 </template>
 
@@ -49,7 +43,6 @@ export default {
             const data = event.data
             switch (data.cmd) {
             case 'returnFormJson':
-                // alert(JSON.stringify(data))
                 // 业务逻辑
                 break
             case 'returnHeight':
@@ -58,7 +51,6 @@ export default {
                     this.$message({ message: '保存文件失败', type: 'warning'});
                     return
                 }
-                // this.param.item.filePath = data.params.data
                 this.param.isDos = true
                 this.param.filePath = data.params.data
                 this.$emit(

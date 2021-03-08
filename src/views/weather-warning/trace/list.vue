@@ -1,6 +1,5 @@
 <template>
 <div class="page-wrapper" :key="type">
-    <!-- {{formItem}} -->
     <el-container>
         <el-main>
             <el-card class="box-card" shadow="never">
@@ -13,7 +12,6 @@
                             <div class="actions" slot="actions">
                                 <template v-if="isWarning">
                                     <span class="title">预警类型</span>
-                                    <!-- <c-select v-model="query.alarmCode" options="warningType" placeholder="请选择"></c-select> -->
                                     <c-select v-model="query.alarmCode" remote="requestWeatherTypeOptions" allText="全部" placeholder="请选择"></c-select>
                                     <span class="title">起止时间</span>
                                     <el-date-picker v-model="query.publishTime" type="datetimerange" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
@@ -21,15 +19,12 @@
                                 </template>
                                 <template v-else>
                                     <span class="title">预警类型</span>
-                                    <!-- <c-select v-model="query.code" options="warningType" placeholder="请选择"></c-select> -->
                                     <c-select v-model="query.code" mapper="weatherWarningTypeGBName" allText="全部" placeholder="请选择"></c-select>
                                     <span class="title">等级</span>
                                     <c-select v-model="query.level" options="warningLevel" placeholder="请选择"></c-select>
                                     <span class="title">发布状态</span>
                                     <c-select v-model="query.status" options="warningState" placeholder="请选择"></c-select>
                                     <span class="title">发布时间</span>
-                                    <!-- <el-date-picker v-model="query.issueLetter" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm">
-                                    </el-date-picker> -->
                                     <el-date-picker v-model="query.publishTime" type="datetimerange" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
                                     </el-date-picker>
                                 </template>
@@ -69,9 +64,6 @@
                                     </template>
                                 </el-table-column>
                                 <el-table-column prop label="发布类型" width="100px">
-                                    <!-- <template slot-scope="scope">
-                                        {{({'A':"首发",'Z':"解除"}[scope.row.issueLetter]||"继续发布")}}
-                                    </template> -->
                                     <template slot-scope="scope">
                                         {{({'0':"首发",'1':"继续",'2':"变更",'3':"解除"}[scope.row.type]||"继续发布")}}
                                     </template>

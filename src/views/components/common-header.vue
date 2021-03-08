@@ -1,21 +1,5 @@
 <template>
-  <!-- <el-header class="main-header" height="90px" :style="{'background': 'rgba(0, 87, 156, 1)'}"> -->
-    <!-- <div class="logo">1系统管理3</div> -->
-    <!-- <img :src="menuInfo.logo" class="logo" alt=""> -->
-    <!-- <img :src="menuInfo.after" alt=""> -->
-    <!-- <el-menu class="menu top" mode="horizontal" :default-active="activeIndex" router>
-      <template v-for="(item,index) in menuInfo.menu">
-        <el-menu-item class="item" :key="index" :index="item.index" style="padding-left: 0px;">
-          <template class="item" slot="title">
-            <i :class="item.icon" v-if="item.icon"></i>
-            {{item.title}}
-          </template>
-        </el-menu-item>
-      </template>
-    </el-menu>
-    <c-clock class="clock"></c-clock>
-    <account-actions></account-actions> -->
-  <!-- </el-header> -->
+
 
  <el-menu background-color="#0050a2" router
   text-color="#CCE1FE"
@@ -35,30 +19,11 @@
       </el-submenu>
     </template>
 
-      <!-- <el-menu-item index="1">处理中心</el-menu-item>
 
-      <el-submenu index="2">
-        <template slot="title">我的工作台</template>
-        <el-menu-item index="2-1">选项1</el-menu-item>
-        <el-menu-item index="2-2">选项2</el-menu-item>
-        <el-menu-item index="2-3">选项3</el-menu-item>
-        <el-submenu index="2-4">
-          <template slot="title">选项4</template>
-          <el-menu-item index="2-4-1">选项1</el-menu-item>
-          <el-menu-item index="2-4-2">选项2</el-menu-item>
-          <el-menu-item index="2-4-3">选项3</el-menu-item>
-        </el-submenu>
-      </el-submenu> -->
-
-      <!-- <account-actions></account-actions> -->
-      <!-- <div> -->
         <c-clock class="clock"></c-clock>
-        <!-- <div class="but-icon"> -->
-          <!-- <i class="el-icon-user-solid"></i>
-          <i class="el-icon-right" @click="logout"></i> -->
+
           <account-actions v-if="sysMenu" @fatherMethod="fatherMethod"></account-actions>
-        <!-- </div> -->
-      <!-- </div> -->
+
 
         <div class="transfer-box" v-if="transfer && tabsList">
           <c-transfer class="c-transfer" @checkList="checkList" :leftData="leftData" :rightData="rightData" :titles="['未拥有', '已拥有']" @transfer="handleTransfer" @handleSort="handleSort">
@@ -431,7 +396,6 @@ export default {
   },
   computed: {
     // menuList() {
-      // console.log('headerMenu::',JSON.parse(localStorage.getItem('headerMenu')))
       // return  JSON.parse(localStorage.getItem('headerMenu'))
     // },
     activityId() {
@@ -514,19 +478,7 @@ export default {
     right: 108px;
     display: inline-block;
   }
-  /* .but-icon {
-    height: 60px;
-    line-height: 60px;
-    position: absolute;
-    top: 0;
-    right: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    color: #fff;
-    width: 77px;
-    font-size: 24px;
-  } */
+
   .el-menu {
     display: flex;
     align-items: center;

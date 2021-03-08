@@ -23,13 +23,6 @@
                             <el-table-column label="日期" width="60px">
                                 <el-table-column prop="range" label="星期" width="60px" />
                             </el-table-column>
-                            <!-- <el-table-column v-for="({date,week,value},index) in dates" :label="date" :key="index"> -->
-                                <!-- <table-col :prop="value" :label="week" :edit="editCol"></table-col> -->
-                                <!-- <table-col :prop="date" :label="week" :edit="editCol" @inputValue="inputValue"></table-col>
-                            </el-table-column> -->
-                                <!-- <el-table-column v-for="({date,week,value},index) in dates" :label="date" :key="index">
-                                    <table-col v-if="options && dates" :prop="date" :options='options' :label="week" :edit="editCol" @selectValue="selectValue" @inputValue="inputValue"></table-col>
-                                </el-table-column> -->
 
                                 <el-table-column v-for="({date,week,value},index) in dates" :label="date" :key="index">
                                     <template>
@@ -92,20 +85,6 @@ export default {
             colDate:null,
             fileList:[],
             options:[
-                // {label:'出勤“/”',value:'/'},
-                // {label:'值班“Z”',value:'Z'},
-                // {label:'补休“一1”',value:'一1'},
-                // {label:'班休“一2”',value:'一2'},
-                // {label:'调休“一3”',value:'一3'},
-                // {label:'公差“Δ”',value:'Δ'},
-                // {label:'事假“＄”',value:'＄'},
-                // {label:'迟到“L”',value:'L'},
-                // {label:'早退“E”',value:'E'},
-                // {label:'年休假“*”',value:'*'},
-                // {label:'事假“＄”',value:'＄'},
-                // {label:'病假“⊕”',value:'⊕'},
-                // {label:'旷工“〇”',value:'〇'},
-
                 {label:'/',value:'/'},
                 {label:'Z',value:'Z'},
                 {label:'一1',value:'一1'},
@@ -272,21 +251,15 @@ export default {
                 return
             }else{
                 arrData.map((item,index)=>{
-                              if(item.user_id == data.user_id && data.range == '上午' && item.range == '上午' &&  item.range !== '下午'){
-                                //   this.selectData.splice(index, 1);
-                                    this.selectData.push(data)
-                                    // alert('同id，不同时段',data.user_id)
-                                    return
+                    if(item.user_id == data.user_id && data.range == '上午' && item.range == '上午' &&  item.range !== '下午'){
+                        this.selectData.push(data)
+                        return
                       }else if(item.user_id == data.user_id && data.range == '下午' && item.range !== '上午' &&  item.range == '下午'){
-                                //   this.selectData.splice(index, 1);
                           this.selectData.push(data)
                           return
-                        //   alert('同id，不同时段',data.user_id)
                       }else if(item.user_id !== data.user_id){
-                                //  this.selectData.splice(index, 1);
                           this.selectData.push(data)
                           return
-                        //   alert('同id，不同时段',data.user_id)
                       }else if(item.user_id == data.user_id && item.range == '上午' &&  item.range == '下午'){
                         this.selectData.splice(index, 1);
                         this.selectData.push(data)
@@ -296,7 +269,6 @@ export default {
              arrData.forEach((item,index) =>{
                 if(item.user_id !== data.user_id){
                     this.selectData.push(data)
-                    // alert('不同id',data.user_id)
                     return
                 }
              })

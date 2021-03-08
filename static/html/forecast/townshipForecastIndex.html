@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<form id="myForm" class="layui-form" style="width: 100%">
+        <div>
+            <input type="hidden" id="areaId" name="areaId"/>
+            <input type="hidden" id="loginUserId" name="loginUserId"/>
+            <table class="layui-table" >
+                <colgroup>
+                    <col width="10%">
+                    <col width="50%">
+                    <col width="20%">
+                    <col width="20%">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>地区</th>
+                    <th>天气</th>
+                    <th>最低温</th>
+                    <th>最高温</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>城区</td>
+                    <td><input type="text" name="chengqu_weather" id="weather" lay-verify="title" autocomplete="off" placeholder="请输入天气" class="layui-input"></td>
+                    <td><input type="text" name="chengqu_minTemp" lay-verify="title" autocomplete="off" placeholder="最低温" class="layui-input minTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'chengqu_minTemp')"> <span id="chengqu_minTemp" style="width: 100px;color: red;"></span></td>
+                    <td><input type="text" name="chengqu_maxTemp" lay-verify="title" autocomplete="off" placeholder="最高温" class="layui-input maxTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'chengqu_maxTemp')"> <span id="chengqu_maxTemp" style="width: 100px;color: red;"></span></td>
+                </tr>
+                <tr>
+                    <td>平桥</td>
+                    <td><input type="text" name="pingqiao_weather" lay-verify="title" autocomplete="off" placeholder="请输入天气" class="layui-input weather"></td>
+                    <td><input type="text" name="pingqiao_minTemp" lay-verify="title" autocomplete="off" placeholder="最低温" class="layui-input" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'pingqiao_minTemp')"><span id="pingqiao_minTemp" style="width: 100px;color: red;"></span></td>
+                    <td><input type="text" name="pingqiao_maxTemp" lay-verify="title" autocomplete="off" placeholder="最高温" class="layui-input" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'pingqiao_maxTemp')"><span id="pingqiao_maxTemp" style="width: 100px;color: red;"></span></td>
+                </tr>
+                <tr>
+                    <td>白鹤</td>
+                    <td><input type="text" name="baihe_weather" lay-verify="title" autocomplete="off" placeholder="请输入天气" class="layui-input weather"></td>
+                    <td><input type="text" name="baihe_minTemp" lay-verify="title" autocomplete="off" placeholder="最低温" class="layui-input minTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'baihe_minTemp')"><span id="baihe_minTemp" style="width: 100px;color: red;"></span></td>
+                    <td><input type="text" name="baihe_maxTemp" lay-verify="title" autocomplete="off" placeholder="最高温" class="layui-input maxTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'baihe_maxTemp')"><span id="baihe_maxTemp" style="width: 100px;color: red;"></span></td>
+                </tr>
+                <tr>
+                    <td>街头</td>
+                    <td><input type="text" name="jietou_weather" lay-verify="title" autocomplete="off" placeholder="请输入天气" class="layui-input weather"></td>
+                    <td><input type="text" name="jietou_minTemp" lay-verify="title" autocomplete="off" placeholder="最低温" class="layui-input minTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'jietou_minTemp')"><span id="jietou_minTemp" style="width: 100px;color: red;"></span></td>
+                    <td><input type="text" name="jietou_maxTemp" lay-verify="title" autocomplete="off" placeholder="最高温" class="layui-input maxTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'jietou_maxTemp')"><span id="jietou_maxTemp" style="width: 100px;color: red;"></span></td>
+                </tr>
+                <tr>
+                    <td>坦头</td>
+                    <td><input type="text" name="tantou_weather" lay-verify="title" autocomplete="off" placeholder="请输入天气" class="layui-input weather"></td>
+                    <td><input type="text" name="tantou_minTemp" lay-verify="title" autocomplete="off" placeholder="最低温" class="layui-input minTemp"style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'tantou_minTemp')"><span id="tantou_minTemp" style="width: 100px;color: red;"></span></td>
+                    <td><input type="text" name="tantou_maxTemp" lay-verify="title" autocomplete="off" placeholder="最高温" class="layui-input maxTemp"style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'tantou_maxTemp')"><span id="tantou_maxTemp" style="width: 100px;color: red;"></span></td>
+                </tr>
+                <tr>
+                    <td>三合</td>
+                    <td><input type="text" name="sanhe_weather" lay-verify="title" autocomplete="off" placeholder="请输入天气" class="layui-input weather"></td>
+                    <td><input type="text" name="sanhe_minTemp" lay-verify="title" autocomplete="off" placeholder="最低温" class="layui-input minTemp"style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'sanhe_minTemp')"><span id="sanhe_minTemp" style="width: 100px;color: red;"></span></td>
+                    <td><input type="text" name="sanhe_maxTemp" lay-verify="title" autocomplete="off" placeholder="最高温" class="layui-input maxTemp"style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'sanhe_maxTemp')"><span id="sanhe_maxTemp" style="width: 100px;color: red;"></span></td>
+                </tr>
+                <tr>
+                    <td>洪畴</td>
+                    <td><input type="text" name="hongchou_weather" lay-verify="title" autocomplete="off" placeholder="请输入天气" class="layui-input weather"></td>
+                    <td><input type="text" name="hongchou_minTemp" lay-verify="title" autocomplete="off" placeholder="最低温" class="layui-input minTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'hongchou_minTemp')"><span id="hongchou_minTemp" style="width: 100px;color: red;"></span></td>
+                    <td><input type="text" name="hongchou_maxTemp" lay-verify="title" autocomplete="off" placeholder="最高温" class="layui-input maxTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'hongchou_maxTemp')"><span id="hongchou_maxTemp" style="width: 100px;color: red;"></span></td>
+                </tr>
+                <tr>
+                    <td>石梁</td>
+                    <td><input type="text" name="shiliang_weather" lay-verify="title" autocomplete="off" placeholder="请输入天气" class="layui-input weather"></td>
+                    <td><input type="text" name="shiliang_minTemp" lay-verify="title" autocomplete="off" placeholder="最低温" class="layui-input minTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'shiliang_minTemp')"><span id="shiliang_minTemp" style="width: 100px;color: red;"></span></td>
+                    <td><input type="text" name="shiliang_maxTemp" lay-verify="title" autocomplete="off" placeholder="最高温" class="layui-input maxTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'shiliang_maxTemp')"><span id="shiliang_maxTemp" style="width: 100px;color: red;"></span></td>
+                </tr>
+                <tr>
+                    <td>泳溪</td>
+                    <td><input type="text" name="yongxi_weather" lay-verify="title" autocomplete="off" placeholder="请输入天气" class="layui-input weather"></td>
+                    <td><input type="text" name="yongxi_minTemp" lay-verify="title" autocomplete="off" placeholder="最低温" class="layui-input minTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'yongxi_minTemp')"><span id="yongxi_minTemp" style="width: 100px;color: red;"></span></td>
+                    <td><input type="text" name="yongxi_maxTemp" lay-verify="title" autocomplete="off" placeholder="最高温" class="layui-input maxTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'yongxi_maxTemp')"><span id="yongxi_maxTemp" style="width: 100px;color: red;"></span></td>
+                </tr>
+                <tr>
+                    <td>南屏</td>
+                    <td><input type="text" name="nanping_weather" lay-verify="title" autocomplete="off" placeholder="请输入天气" class="layui-input weather"></td>
+                    <td><input type="text" name="nanping_minTemp" lay-verify="title" autocomplete="off" placeholder="最低温" class="layui-input minTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'nanping_minTemp')"><span id="nanping_minTemp" style="width: 100px;color: red;"></span></td>
+                    <td><input type="text" name="nanping_maxTemp" lay-verify="title" autocomplete="off" placeholder="最高温" class="layui-input maxTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'nanping_maxTemp')"><span id="nanping_maxTemp" style="width: 100px;color: red;"></span></td>
+                </tr>
+                <tr>
+                    <td>雷峰</td>
+                    <td><input type="text" name="leifeng_weather" lay-verify="title" autocomplete="off" placeholder="请输入天气" class="layui-input weather"></td>
+                    <td><input type="text" name="leifeng_minTemp" lay-verify="title" autocomplete="off" placeholder="最低温" class="layui-input minTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'leifeng_minTemp')"><span id="leifeng_minTemp" style="width: 100px;color: red;"></span></td>
+                    <td><input type="text" name="leifeng_maxTemp" lay-verify="title" autocomplete="off" placeholder="最高温" class="layui-input maxTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'leifeng_maxTemp')"><span id="leifeng_maxTemp" style="width: 100px;color: red;"></span></td>
+                </tr>
+                <tr>
+                    <td>三州</td>
+                    <td><input type="text" name="sanzhou_weather" lay-verify="title" autocomplete="off" placeholder="请输入天气" class="layui-input weather"></td>
+                    <td><input type="text" name="sanzhou_minTemp" lay-verify="title" autocomplete="off" placeholder="最低温" class="layui-input minTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'sanzhou_minTemp')"><span id="sanzhou_minTemp" style="width: 100px;color: red;"></span></td>
+                    <td><input type="text" name="sanzhou_maxTemp" lay-verify="title" autocomplete="off" placeholder="最高温" class="layui-input maxTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'sanzhou_maxTemp')"><span id="sanzhou_maxTemp" style="width: 100px;color: red;"></span></td>
+                </tr>
+                <tr>
+                    <td>龙溪</td>
+                    <td><input type="text" name="longxi_weather" lay-verify="title" autocomplete="off" placeholder="请输入天气" class="layui-input weather"></td>
+                    <td><input type="text" name="longxi_minTemp" lay-verify="title" autocomplete="off" placeholder="最低温" class="layui-input minTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'longxi_minTemp')"><span id="longxi_minTemp" style="width: 100px;color: red;"></span></td>
+                    <td><input type="text" name="longxi_maxTemp" lay-verify="title" autocomplete="off" placeholder="最高温" class="layui-input maxTemp" style="width: 200px;display: inline-block;" onblur="clearNoNum(this,'longxi_maxTemp')"><span id="longxi_maxTemp" style="width: 100px;color: red;"></span></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="layui-form-item" style="text-align: center">
+                <button  class="layui-btn"  id="save">保 存</button>
+        </div>
+</form>
+<script src="../../tools/jquery-3.5.1.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="js/township.js"></script>
+<script>
+
+</script>
+</html>

@@ -217,17 +217,7 @@
             <i class="el-icon-arrow-right"></i>
           </div>
         </div>
-        <!-- <div class="img-list">
-          <div
-            class="list-item"
-            :class="[present == index ? 'activeClass' : '', '']"
-            @click="clickImg(index)"
-            v-for="(item,index) in imagesList"
-            :key="index"
-          >
-            <img :src="item.imgPath" alt srcset />
-          </div>
-        </div> -->
+
       </div>
     </el-dialog>
 
@@ -417,13 +407,7 @@ export default {
   mounted() {
     requestProductConfigImagesList().then((res)=>{
       requestProductMakeImagesList({model:res.data[0].model0,range:res.data[0].scope0,ele:res.data[0].factor0,height:res.data[0].eleHeight0}).then((res) => {
-        // this.imagesItems = res.data
 
-        // this.imagesList = this.imagesItems[0]
-        // this.isImages = this.imagesList[this.present];
-
-        // this.imagesList1 = this.imagesItems[1]
-        // this.isImages1 = this.imagesList1[this.present1];
 
         this.imagesList = res.data
         this.isImages = this.imagesList.length > 0? this.imagesList[this.present]:null;

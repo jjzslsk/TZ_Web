@@ -197,14 +197,11 @@
         <div class="top-title">
           <div class="text">产品属性</div>
         </div>
-        <!-- {{InfoForm}}: -->
         <div class="content-box" v-if="editState">
           <el-form label-width="80px">
             <div class="form-item">
               <div class="item-title">产品信息</div>
-              <!-- {{lastItemClicked}} -->
 
-              <!-- templateIds{{templateIds}} -->
               <div class="item-content">
                 <el-form-item label="产品标识">
                   <el-input size="small" v-model="InfoForm.code" disabled=""></el-input>
@@ -219,9 +216,7 @@
               </div>
               <div class="item-title">设置</div>
               <div class="item-content">
-                <!-- <el-form-item label=" 文件名称">
-                  <el-input v-model="InfoForm.fileName"></el-input>
-                </el-form-item> -->
+
                 <el-form-item label=" 数据来源">
                   <el-input size="small" v-model="InfoForm.dataSource"></el-input>
                 </el-form-item>
@@ -244,100 +239,7 @@
                     <el-switch v-model="InfoForm.subscribePublish" active-text="开" inactive-text="关"></el-switch>
                     <el-time-picker placeholder="预约时间" size="mini" format="HH:mm" value-format="HH:mm" v-model="InfoForm.subscribeTime"></el-time-picker>
                 </el-form-item>
-                <!-- <el-form-item label="制作提醒">
-                  <el-col :span="4">
-                    <el-switch v-model="InfoForm.remindMake"></el-switch>
-                  </el-col>
-                  <el-col :span="18"></el-col>
-                </el-form-item> -->
-                <!-- <el-form-item label="制作时间">
-                  <template>
-                    <el-tabs v-model="timeTab" type="border-card" @tab-click="handleClick">
-                      <el-tab-pane label="月" name="first">
-                        <template>
-                          <el-checkbox
-                            :indeterminate="isIndeterminateRuleMonth"
-                            v-model="checkAllMonth"
-                            @change="handleCheckAllChangeMonth"
-                          >全选</el-checkbox>
-                          <div style="margin: 0px 0 0 0;"></div>
-                          <el-checkbox-group
-                            v-model="InfoForm.ruleMonth"
-                            @change="handleCheckedProductChangeMonth"
-                          >
-                            <el-checkbox v-for="item in attTimeMonth" :label="item" :key="item">{{item}}</el-checkbox>
-                          </el-checkbox-group>
-                        </template>
-                      </el-tab-pane>
-                      <el-tab-pane label="周" name="third">
-                        <template>
-                          <el-checkbox
-                            :indeterminate="isIndeterminateWeek"
-                            v-model="checkAllWeek"
-                            @change="handleCheckAllChangeWeek"
-                            :disabled="ruleDisabledWeek"
-                          >全选</el-checkbox>
-                          <div style="margin: 0px 0 0 0;"></div>
-                          <el-checkbox-group
-                            v-model="InfoForm.ruleWeek"
-                            @change="handleCheckedProductChangeWeek"
-                          >
-                            <el-checkbox v-for="item in attTimeWeek" :disabled="ruleDisabledWeek" :label="item" :key="item">{{item}}</el-checkbox>
-                          </el-checkbox-group>
-                        </template>
-                      </el-tab-pane>
-                      <el-tab-pane label="日" name="second">
-                        <template>
-                          <el-checkbox
-                            :indeterminate="isIndeterminateRuleDay"
-                            v-model="checkAllDay"
-                            @change="handleCheckAllChangeDay"
-                            :disabled="ruleDisabledDay"
-                          >全选</el-checkbox>
-                          <div style="margin: 0px 0 0 0;"></div>
-                          <el-checkbox-group
-                            v-model="InfoForm.ruleDay"
-                            @change="handleCheckedProductChangeDay"
-                          >
-                            <el-checkbox v-for="item in attTimeDay" :disabled="ruleDisabledDay" :label="item" :key="item">{{item}}</el-checkbox>
-                          </el-checkbox-group>
-                        </template>
-                      </el-tab-pane>
-                      <el-tab-pane label="时" name="fourth">
-                        <template>
-                          <el-checkbox
-                            :indeterminate="isIndeterminateRuleTime"
-                            v-model="checkAllTime"
-                            @change="handleCheckAllChangeTime"
-                          >全选</el-checkbox>
-                          <div style="margin: 0px 0 0 0;"></div>
-                          <el-checkbox-group
-                            v-model="InfoForm.ruleTime"
-                            @change="handleCheckedProductChangeTime"
-                          >
-                            <el-checkbox v-for="item in attTimeTime" :label="item" :key="item">{{item}}</el-checkbox>
-                          </el-checkbox-group>
-                        </template>
-                      </el-tab-pane>
-                      <el-tab-pane label="分" name="fourth1">
-                        <template>
-                          <el-checkbox
-                            :indeterminate="isIndeterminateRuleMinute"
-                            v-model="checkAllMinute"
-                            @change="handleCheckAllChangeMinute"
-                          >全选</el-checkbox>
-                          <div style="margin: 0px 0 0 0;"></div>
-                          <el-checkbox-group
-                            v-model="InfoForm.ruleMinute"
-                            @change="handleCheckedProductChangeMinute"
-                          >
-                            <el-checkbox v-for="item in attTimeMinute" :label="item" :key="item">{{item}}</el-checkbox>
-                          </el-checkbox-group>
-                        </template>
-                      </el-tab-pane>
-                    </el-tabs>
-                  </template>
-                </el-form-item> -->
+
                   <el-divider></el-divider>
                   <div class="footer">
                     <el-button type="primary" size="small" @click="save()">保存</el-button>
@@ -815,18 +717,7 @@ export default {
       return {list:labelCodes}
     },
     employTemplate(){
-      // if (this.editState == false || this.templateIds == null) {
-      //     this.$message.warning("请选择产品和对应绑定的模块！");
-      //     return;
-      // }else {
-        // requestProductInfoSave({id:this.lastItemClicked.id,templateId:this.templateIds}).then(res=>{
-        //   this.$message.success(res.message);
-        //     this.InfoForm = {}
-        //     this.lastItemClicked = {}
-        //     this.templateIds = null
-        // })
-      // }
-      // this.InfoForm.templateId = this.templateIds
+
 
         if(!this.modelList.length > 0) {
           this.$message.warning("请添加规则");
@@ -843,34 +734,14 @@ export default {
           this.$message.warning("请添加延迟时间");
           return
         }
-        // if(!isTemplateId){
-        //   this.$message.warning("请选择模板");
-        //   return
-        // }
+
          else{
           requestProductMakeTimesSave({productInfoId:this.lastItemClicked.id,list:this.modelList}).then(res=>{
             this.$message.success(res.message);
-              // this.InfoForm = {}
-              // this.lastItemClicked = {}
-              // this.templateIds = null
+
           })
         }
-      
-      // let promiseFn = new Promise(function(resolve,reject){
-      //           this.modelList.forEach(item=>{
-      //             if(!item.delayMinute.length > 0){
-      //               this.$message.warning("请添加延迟时间");
-      //               resolve();
-      //             }
-      //           })
-      //     })
-      //     promiseFn.then(i=>{
-            
-      //     },error=>{
-      //         console.log(error);
-      //     }).
-      
-        
+
     },
     butClick(item){
       console.log(item)
@@ -926,21 +797,6 @@ export default {
         this.formTabTree = this.getFormItemUserBoundInputItem();
         this.visibleDialogTree = true;
         console.log('绑定', this.formTabTree)
-
-        // requestProductInfoTreeItem({id:this.lastItemClicked.id}).then(res=>{
-        //   this.InfoForm = {
-        //   publishChannel:res.data.list[0].publishChannel == null ? []:res.data.list[0].publishChannel,
-        //   }
-
-          // this.InfoForm.publishChannel.forEach(i=>{
-          //   this.wayTpye.forEach(item =>{
-          //     if(i == item.id){
-          //       this.tabsList.push(item)
-          //     }
-          //   })
-          // })
-
-        // })
 
         let publishChannels = []
         this.InfoForm.publishChannel.forEach(i=>{ //过滤拥有的渠道
@@ -998,9 +854,6 @@ export default {
       },
     onConsult() {
         this.$message.warning("功能开发中！");
-        // this.formConsult = true;
-        // this.visibleDialogConsult = true;
-        // console.log('新增1')
     },
     handleCheckAllChangeMonth(val) {
       this.InfoForm.ruleMonth = val ? itemOptionsMonth : [];
@@ -1292,18 +1145,12 @@ export default {
       });
       const { lastItemClicked } = this;
       const lastKeyItemClicked = lastItemClicked && lastItemClicked.id;
-      console.log(lastItemClicked);
       return {
-        // "XXXPROP_ORGAN_id": "",
         remark: "123",
         pid: "",
         name: "",
         sort: "",
         orgId: ""
-        // "XXXPROP_ORGAN_4": lastItemClicked && (lastItemClicked.XXXPROP_ORGAN_4 || 0) + 1 + "",
-        // "XXXPROP_ORGAN_5": lastKeyItemClicked,
-        // lastItemClicked,
-        // ...item
       };
     },
 
@@ -1317,8 +1164,6 @@ export default {
 
     getFormItemLeftByInputItem(item) {
       const { lastItemClicked } = this;
-      console.log("lastItemClicked:", lastItemClicked);
-      console.log("item:", item);
       return item
         ? {
             id: item.id,
@@ -1466,9 +1311,7 @@ export default {
         padding: 0 20px;
         font-size: 14px;
         .checkbox-box {
-          /* display: flex;
-              flex-wrap:wrap;
-              align-content:flex-start; */
+
           .el-checkbox {
             margin: 5px 5px !important;
           }
@@ -1715,13 +1558,7 @@ export default {
       }
     }
 
-    //卡片无滚动条
-    /* .right-bottom-form {
-      height: calc(100%-210px);
-      overflow-x: hidden;
-      overflow-y: scroll;
-    }
-    .right-bottom-form::-webkit-scrollbar { display: none;} */
+
 
     //卡片有滚动条
     .right-bottom-form::-webkit-scrollbar { display: none;}

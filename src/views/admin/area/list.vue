@@ -15,14 +15,7 @@
                                 <el-input v-model="query.code" placeholder="请输入名称"></el-input>
                                 <span class="title">搜索名称：</span>
                                 <el-input v-model="query.name" placeholder="请输入标识"></el-input>
-                                <!-- <span class="title">行政级别：</span>
-                                <el-select v-model="query.queryCode" clearable placeholder="请选择">
-                                    <el-option label="省级" value="1"></el-option>
-                                    <el-option label="地级市" value="2"></el-option>
-                                    <el-option label="区" value="3"></el-option>
-                                    <el-option label="县" value="4"></el-option>
-                                    <el-option label="街道" value="5"></el-option>
-                                </el-select> -->
+
                                 <c-button type="search" @click="search()">搜索</c-button>
                                 <c-button type="add" @click="inputItem({})">添加</c-button>
                             </div>
@@ -31,17 +24,7 @@
                             <el-table-column prop="code" label="编码" />
                             <el-table-column prop="name" label="名称" />
                             <el-table-column prop="parentName" label="上级地区" />
-                            <!-- <el-table-column label="地区级别">
-                                <template slot-scope="{row}">
-                                    {{({'1':'省级','2':'地级市','3':'区','4':'县','5':'街道'})[row.queryCode]}}
-                                </template>
-                            </el-table-column> -->
-                            <!-- <el-table-column prop="XXXPROP_AREA_4" label="上级地区" /> -->
-                            <!-- <el-table-column label="上级地区">
-                                <template slot-scope="{row}">
-                                    {{({'330000':'浙江省'})[row.parentName]}}
-                                </template>
-                            </el-table-column> -->
+
                             <el-table-column prop label="操作" width="200px">
                                 <template slot-scope="scope">
                                     <el-button type="text" size="small" @click="inputItem(scope.row)">编辑</el-button>
@@ -59,12 +42,7 @@
     <dialog-form @success="submitSuccess" title="地区" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.name" remote="requestDialogFormAreaItemInput" v-if="formItem">
         <!-- <template v-slot:default="{ form }"> -->
         <template>
-            <!-- <el-form-item label="上级地区" label-width="120px" v-if="lastItemClicked">
-                <el-input v-model="lastItemClicked.label" autocomplete="off" readOnly></el-input>
-            </el-form-item> -->
-            <!-- <el-form-item label="上级地区" label-width="120px">
-                <el-input v-model="formItem.XXXPROP_AREA_4" autocomplete="off" readOnly></el-input>
-            </el-form-item> -->
+
             <el-form-item label="上级地区" label-width="120px">
                 <el-select v-model="formItem.parentId" placeholder="请选择">
                     <el-option :label="item.label" v-for="item in areaList" :key="item.id" :value="item.id"></el-option>
@@ -76,15 +54,7 @@
             <el-form-item label="地区名称" label-width="120px">
                 <el-input v-model="formItem.name" autocomplete="off"></el-input>
             </el-form-item>
-            <!-- <el-form-item label="行政级别" label-width="120px">
-                <el-select v-model="formItem.queryCode" placeholder="请选择">
-                    <el-option label="省级" value="1"></el-option>
-                    <el-option label="地级市" value="2"></el-option>
-                    <el-option label="区" value="3"></el-option>
-                    <el-option label="县" value="4"></el-option>
-                    <el-option label="街道" value="5"></el-option>
-                </el-select>
-            </el-form-item> -->
+
             <el-form-item label="描述" label-width="120px">
                 <el-input v-model="formItem.remark" autocomplete="off" type="textarea" :autosize="{ minRows: 2, maxRows: 6}"></el-input>
             </el-form-item>
@@ -110,8 +80,7 @@ export default {
             areaData:[],
             areaList:[],
             query: {
-                // XXXPROP_AREA_id: "",
-                // XXXPROP_AREA_name: ""
+
             }
         };
     },
@@ -122,9 +91,7 @@ export default {
     },
     mounted(){
         this.requestData()
-            // console.log('index:',index)
-            // console.log('currentPage:',this.currentPage)
-            // console.log('pageSize:',this.pageSize)
+
     },
     methods: {
         //初始化页面数据
@@ -161,17 +128,12 @@ export default {
             console.log(item)
             console.log(lastItemClicked)
             return item ? { 
-                // "XXXPROP_AREA_id": "",
                 "bodyCode": item.bodyCode,
                 "id": item.id,
-                // "queryCode": item.queryCode,
                 "code": item.code,
                 "name": item.name,
-                // "XXXPROP_AREA_4": lastKeyItemClicked,
                 "parentId": item.parentId,
                 "remark": item.remark
-                // lastItemClicked,
-                // ...item
             }:{"bodyCode": '',"code": '',"name": '',"parentId": '',"remark": ''}
         },
     }

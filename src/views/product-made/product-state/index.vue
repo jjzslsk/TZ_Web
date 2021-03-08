@@ -20,26 +20,13 @@
                                 <span class="title">制作人：</span>
                                 <el-input v-model="query.createUser" clearable placeholder="请输入制作人"></el-input>
                                 <span class="title">发布时间：</span>
-                                <!-- <el-time-select
-                                    v-model="query.publishTime"
-                                    :picker-options="{
-                                        start: '08:30',
-                                        step: '00:15',
-                                        end: '18:30'
-                                    }"
-                                    placeholder="选择时间">
-                                </el-time-select> -->
+
                                 <el-date-picker v-model="query.time" type="daterange" format="yyyy-MM-dd" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
                                 </el-date-picker>
-                                <!-- <span class="title">行政级别：</span>
-                                <el-select v-model="query.XXXPROP_AREA_name" clearable placeholder="请选择">
-                                    <el-option label="地级市" value="city"></el-option>
-                                    <el-option label="区/县" value="county"></el-option>
-                                </el-select> -->
+
                                 <span class="title">内容：</span>
                                 <el-input v-model="query.content" clearable placeholder="请输入名称"></el-input>
                                 <c-button type="search" @click="search()">搜索</c-button>
-                                <!-- <c-button type="add" @click="onTreeAppend({})">添加</c-button> -->
                             </div>
                             <el-table-column prop="" label="序列" width="60px" type="index"></el-table-column>
                             <el-table-column prop="productInfoName" label="产品名称" width="200px"/>
@@ -47,7 +34,6 @@
                             <el-table-column prop="createTime" label="制作时间"/>
                             <el-table-column prop="publishUser" label="发布人" width="120px"/>
                             <el-table-column prop="publishTime" label="发布时间"/>
-                            <!-- <el-table-column prop="XXXPROP_AREA_5" label="发布监控" /> -->
                             <el-table-column prop label="发布监控" width="100px">
                                 <template slot-scope="scope">
                                     <el-button size="mini"  type="primary" plain @click="clickItem(scope.row)">
@@ -105,54 +91,9 @@
     </c-dialog>
      <dialog-form title="产品标签导航" :visible.sync="visibleDialogFormLeftTree" :getPayload="()=>formLeftTree" :confirmDisabled="!formLeftTree.label||formLeftTree.label.legend==0||formLeftTree.parentId===undefined" remote="requestDialogFormDictTypeInput1"
       v-if="formLeftTree">
-        <!-- <template>
-            <el-form-item label="分类名称" label-width="120px">
-                <el-input v-model="formLeftTree.label" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="分类编码" label-width="120px">
-                <el-input v-model="formLeftTree.XXXPROPDICTTYPE_1" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="上级类型" label-width="120px">
-                <el-select v-model="formLeftTree.parentId" placeholder="请选择">
-                    <el-option label="数据字典" :value="null"></el-option>
-                    <el-option label="叶子结点1" value="leaf1"></el-option>
-                    <el-option label="叶子结点2" value="leaf2"></el-option>
-                    <el-option labels="可展开类目1" value="zone1"></el-option>
-                    <el-option label="可展开类目2" value="zone2"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="排序" label-width="120px">
-                <el-input v-model="formLeftTree.XXXPROPDICTTYPE_2" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="描述" label-width="120px">
-                <el-input v-model="formLeftTree.XXXPROPDICTTYPE_3" autocomplete="off" type="textarea" :autosize="{ minRows: 2, maxRows: 6}"></el-input>
-            </el-form-item>
-        </template> -->
+
     </dialog-form>
-    <!-- <dialog-form title="地区" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.XXXPROP_AREA_1" remote="requestDialogFormAreaItemInput" v-if="formItem">
-        <template>
-            <el-form-item label="地区名称" label-width="120px">
-                <el-input v-model="formItem.XXXPROP_AREA_1" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="地区编码" label-width="120px">
-                <el-input v-model="formItem.XXXPROP_AREA_2" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="行政级别" label-width="120px">
-                <el-select v-model="formItem.XXXPROP_AREA_3" placeholder="请选择">
-                    <el-option label="地级市" value="city"></el-option>
-                    <el-option label="区/县" value="county"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="上级地区" label-width="120px">
-                <el-select v-model="formItem.XXXPROP_AREA_4" placeholder="请选择">
-                    <el-option label="浙江省" value="330000"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="描述" label-width="120px">
-                <el-input v-model="formItem.XXXPROP_AREA_6" autocomplete="off" type="textarea" :autosize="{ minRows: 2, maxRows: 6}"></el-input>
-            </el-form-item>
-        </template>
-    </dialog-form> -->
+
     <c-dialog title="状态监控" :visible.sync="visibleDialogFormItem" :primary-text="null" :secondary-text="'关闭'" width="80%">
         <div class="monitoring-box">
             <trace-main :data="formItem" v-if="visibleDialogFormItem"></trace-main>
@@ -185,8 +126,7 @@ export default {
             searchText:null,
             treeData:[],
             query: {
-                // XXXPROP_AREA_id: "",
-                // XXXPROP_AREA_name: ""
+
                 publishUser:null
             }
         };
@@ -226,7 +166,6 @@ export default {
         requesProductMadeDown(param).then(res=>{
             this.$message.success("下载完成");
         })
-        // window.location.href= `http://192.168.5.105:6002/ssd/product/ssd-file-operate/download?fileName=${data.fileName}&filePath=${data.filePath}`
     },
     clickItem(data){
         if(data.publish == 0){
@@ -248,13 +187,10 @@ export default {
             } = this;
             const lastKeyItemClicked = lastItemClicked && lastItemClicked.id;
             return {
-                // "XXXPROP_AREA_id": "",
                 "productInfoName": "",
                 "createTime": "",
                 "publishTime": "",
-                // "XXXPROP_AREA_4": lastKeyItemClicked,
                 "publishUser": '',
-                // "XXXPROP_AREA_5": "",
                 "XXXPROP_AREA_6": "",
                 lastItemClicked,
                 ...item
@@ -264,11 +200,7 @@ export default {
             const {
                 lastItemClicked
             } = this;
-            // return item ? item : {
-            //     label: "",
-            //     parentId: lastItemClicked.id,
-            //     parent: lastItemClicked
-            // };
+
             return {111:123}
         },
     }

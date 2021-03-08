@@ -1,6 +1,5 @@
 <template>
 <div class="selects">
-    <!-- //yyyymmddhhmmss -->
     <el-date-picker class="date" v-model="dataDate" type="date" value-format="yyyyMMdd000000" size="mini" placeholder=""></el-date-picker>
     <el-select class="select-time" v-model="dataTime" size="mini" placeholder="">
         <el-option v-for="item in optionsTime" :key="item.value" :label="item.label" :value="item.value">
@@ -45,31 +44,6 @@ export default {
             })
         }
         vm.optionsTime = optionsTime;
-        // [{
-        //     "label": "2:00",
-        //     "value": 2
-        // }, {
-        //     "label": "5:00",
-        //     "value": 5
-        // }, {
-        //     "label": "8:00",
-        //     "value": 8
-        // }, {
-        //     "label": "11:00",
-        //     "value": 11
-        // }, {
-        //     "label": "14:00",
-        //     "value": 14
-        // }, {
-        //     "label": "17:00",
-        //     "value": 17
-        // }, {
-        //     "label": "20:00",
-        //     "value": 20
-        // }, {
-        //     "label": "23:00",
-        //     "value": 23
-        // }];
         const hourNow = moment().hour();
         // vm.dataTime = Math.ceil((hourNow - timeStart) / timeStep) * timeStep + timeStart;
         if (!noDefault) {

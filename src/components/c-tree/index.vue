@@ -1,25 +1,8 @@
 <template>
 <div>
-    <!-- {{keyCurrentNode}}当前选中的节点,<br>
-    {{keysExpandedDefault}}默认展开的节点的 key 的数组, -->
     <el-tree v-if="data" :data="data" class="c-tree" ref="tree" node-key="id" :current-node-key="keyCurrentNode" highlight-current :default-expanded-keys="keysExpandedDefault" :show-checkbox="showCheckbox"
       :default-expand-all="defaultExpandAll" :default-checked-keys="defaultCheckedKeys" :props="propsTree" @node-click="handleNodeClick" :filter-node-method="filterNodeMethod">
-        <!--
-        空间不够
-        <span class="custom-tree-node" slot-scope="{ node, data }">
-            <span>{{ node.label }}</span>
-            <span>
-                <el-button type="text" size="mini" @click.stop="() => $emit('append',data)">
-                    增补
-                </el-button>
-                <el-button type="text" size="mini" @click.stop="() => $emit('edit',data)">
-                    编辑
-                </el-button>
-                <el-button type="text" size="mini" @click.stop="() => $emit('delete',data)">
-                    删除
-                </el-button>
-            </span>
-        </span> -->
+
     </el-tree>
 
     <el-tree v-else class="c-tree" ref="tree" :data="dataInner" node-key="id" :current-node-key="keyCurrentNode" highlight-current :default-expanded-keys="keysExpandedDefault" :show-checkbox="showCheckbox" :default-expand-all="false"

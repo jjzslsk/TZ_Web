@@ -1,6 +1,5 @@
 <template>
 <div class="page-wrapper admin-dict">
-    <!-- {{formItem}} -->
     <el-container>
         <common-left-tree :isHeader='true' @success="submitSuccess" title="字典类型" :data="treeData" @click-item="onTreeClickItem" class="left-tree">
             <common-left-tree-actions @success="submitSuccess" slot="append" :lastItemClicked="lastItemClicked" @append="onTreeAppend" @edit="onTreeEdit" @delete="onTreeDeleteMinor('requestDictListDelType')"></common-left-tree-actions>
@@ -44,7 +43,6 @@
     </el-container>
     <dialog-form @success="submitSuccess" title="字典类型" :visible.sync="visibleDialogFormLeftTree" :getPayload="()=>formLeftTree" :confirmDisabled="!formLeftTree.name||formLeftTree.name.legend==0||formLeftTree.parentId===undefined" remote="requestDialogFormDictTypeInput"
       v-if="formLeftTree">
-        <!-- <template v-slot:default="{ form }"> -->
         <template>
             <el-form-item label="分类名称" label-width="120px">
                 <el-input v-model="formLeftTree.name" autocomplete="off"></el-input>
@@ -61,10 +59,7 @@
             <el-form-item label="上级类型" label-width="120px">
                 <el-select v-model="formLeftTree.parentId" placeholder="请选择">
                     <el-option v-for="item in treeDataList" :label="item.label" :value="item.id" :key='item.id'></el-option>
-                    <!-- <el-option label="叶子结点1" value="leaf1"></el-option>
-                    <el-option label="叶子结点2" value="leaf2"></el-option>
-                    <el-option labels="可展开类目1" value="zone1"></el-option>
-                    <el-option label="可展开类目2" value="zone2"></el-option> -->
+
                 </el-select>
             </el-form-item>
             <el-form-item label="显示顺序" label-width="120px">
@@ -76,7 +71,6 @@
         </template>
     </dialog-form>
     <dialog-form @success="submitSuccess" title="字典条目" :visible.sync="visibleDialogFormItem" :getPayload="()=>formItem" :confirmDisabled="!formItem.code" remote="requestDialogFormDictItemInput" v-if="formItem">
-        <!-- <template v-slot:default="{ form }"> -->
         <template>
             <el-form-item label="编码名称" label-width="120px">
                 <el-input v-model="formItem.code" autocomplete="off"></el-input>
@@ -117,19 +111,13 @@ export default {
     mixins: [common, witchCommonList, withCommonLeftTree],
     data() {
         return {
-            // fileObj:{
-            //     file:null,
-            //     fileName:'',
-            //     monthTime:'',
-            //     orgId:'',
-            // },
+
             treeData:[],
             treeDataList:[],
             dictionaryType:null,
             dictionaryTypeName:null,
             query: {
-                // search_sign: "",
-                // XXXPROPDICT_name: ""
+
             }
         };
     },
@@ -198,8 +186,7 @@ export default {
                 if(item.dictionaryTypeName && item.dictionaryTypeId){this.dictionaryType = item.dictionaryTypeId,this.dictionaryTypeName = item.dictionaryTypeName;}
                 else{this.dictionaryType = '',this.dictionaryTypeName = ''}
             }else{this.dictionaryType = '',this.dictionaryTypeName = ''}
-            // if(item){this.dictionaryType = item.dictionaryTypeId}
-            // if(lastIdItemClicked){this.dictionaryType = item.dictionaryTypeId}
+
             return item ? {
                 "id": item.id,
                 "code": item.code,
@@ -209,13 +196,11 @@ export default {
                 "dictionaryTypeName": item.dictionaryTypeName,
                 "searchSign": item.searchSign,
                 "description": item.description,
-                // ...item
             }:{
                 "code": "",
                 "name": "",
                 "showOrder": "",
-                // "dictionaryTypeId": lastIdItemClicked ? lastIdItemClicked : '',
-                // "dictionaryTypeName": lastNameItemClicked ? lastNameItemClicked : '',
+
                 "dictionaryTypeId": '',
                 "dictionaryTypeName": '',
                 "searchSign": "",

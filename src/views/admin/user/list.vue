@@ -22,7 +22,6 @@
                                 <el-select v-model="query.orgId" clearable placeholder="请选择">
                                     <el-option v-for="item in organList" :label="item.name" :value="item.id" :key="item.id"></el-option>
                                 </el-select>
-                                <!-- <el-input v-model="query.orgId" placeholder=""></el-input> -->
                                 <c-button type="search" @click="search()">搜索</c-button>
                                 <c-button type="add" @click="inputItem({})">添加</c-button>
                             </div>
@@ -33,11 +32,7 @@
                             <el-table-column prop="forecaster" label="用户编号" width="160px" />
                             <el-table-column prop="orgName" label="所属机构" />
                             <el-table-column prop="areaName" label="所属地区" />
-                            <!-- <el-table-column label="所属机构" width="180px" >
-                                <template slot-scope="{row}">
-                                    {{({'TZ':'台州市气象局','HY':'黄岩区气象局'})[row.XXXPROP_USER_4]}}
-                                </template>
-                            </el-table-column> -->
+
                             <el-table-column prop="roleNames" label="所属角色" />
                             <el-table-column prop label="操作" width="200px">
                                 <template slot-scope="scope">
@@ -55,7 +50,6 @@
     </el-container>
     <dialog-form title="用户" :visible.sync="visibleDialogFormItem" :getPayload="()=>formVerify()" :confirmDisabled="!formItem.uid || !formItem.name || !formItem.password" remote="requestDialogFormUserItemInput"
          v-if="formItem" @success="submitSuccess">
-        <!-- <template v-slot:default="{ form }"> -->
         <template>
             <el-form-item label="姓名" label-width="120px">
                 <el-input v-model="formItem.name" autocomplete="off"></el-input>
@@ -72,9 +66,7 @@
                     <el-option label="女" value="女"></el-option>
                 </el-select>
             </el-form-item>
-            <!-- <el-form-item label="头像地址" label-width="120px">
-                <el-input v-model="formItem.headPortrait" autocomplete="off" type="textarea" :autosize="{ minRows: 2, maxRows: 6}"></el-input>
-            </el-form-item> -->
+
             <el-form-item label="预报员编号" label-width="120px">
                 <el-input v-model="formItem.forecaster" autocomplete="off"></el-input>
             </el-form-item>
@@ -88,11 +80,7 @@
                     <el-option v-for="item in organList" :label="item.name" :value="item.id" :key="item.id"></el-option>
                 </el-select>
             </el-form-item>
-            <!-- <el-form-item label="所属角色" label-width="120px">
-                <el-select v-model="formItem.roleId" placeholder="请选择">
-                    <el-option v-for="item in roleList" :label="item.name" :value="item.id" :key="item.id"></el-option>
-                </el-select>
-            </el-form-item> -->
+
             <el-form-item label="手机" label-width="120px">
                 <el-input v-model="formItem.phone" autocomplete="off"></el-input>
             </el-form-item>
@@ -127,8 +115,7 @@ export default {
     data() {
         return {
             query: {
-                // XXXPROP_USER_id: "",
-                // XXXPROP_USER_name: ""
+
             },
             organList:'',
             areaData:'',
@@ -147,12 +134,7 @@ export default {
         this.treeOfList(res.data)
         console.log(this.areaData)
         })
-        // requestRoleListItem({
-        //     }).then(res => {
-        //         if(res.success){
-        //             this.roleList = res.data.list
-        //         }
-        //     });
+
     },
     computed: {
         actionOfListDelItem() {
@@ -199,7 +181,6 @@ export default {
             console.log('item:',item)
             console.log('lastItemClicked:',lastItemClicked)
             return {
-                // "XXXPROP_USER_id": "",
                 "id": item.id,
                 "uid": item.uid,
                 "name": item.name,
@@ -211,9 +192,7 @@ export default {
                 "address": item.address,
                 "areaId":item.areaId,
                 "orgId": item.orgId,
-                // "headPortrait": item.headPortrait,
                 "forecaster": item.forecaster,
-                // "XXXPROP_USER_4": lastKeyItemClicked,
                 // ...item
             };
         },
