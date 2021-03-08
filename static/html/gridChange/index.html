@@ -1,230 +1,275 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-		<link rel="stylesheet" type="text/css" href="css/reset.css"/>
-		<link rel="stylesheet" type="text/css" href="css/index.css"/>
-		<link rel="stylesheet" type="text/css" href="js/v4.2.0/ol.css"/>
-	</head>
-	<body>
-		<div class="page">
-			<div class="queryBox">
-				<div class="boxTitle">
-					<span>数据搜索</span>
-				</div>
-				<div class="queryCon">
-					<div class="nullBox nullBox2"></div>
-					<div class="itemTitle">
-						<img src="image/itemTitleIcon.png" >
-						<span>数据类型</span>
-					</div>
-					<div class="nullBox nullBox1"></div>
-					<div class="radioBox">
-						<div class="radio">
-							<div class="in_radio">
-								<span class="radioBtn"></span>
-							</div>
-							<span>预报数据</span>
-						</div>
-						<div class="radio">
-							<div class="in_radio">
-								<span class="radioBtn"></span>
-							</div>
-							<span>订正后数据</span>
-						</div>
-					</div>
-					<div class="nullBox"></div>
-					<div class="itemTitle">
-						<img src="image/itemTitleIcon.png" >
-						<span>预报模式</span>
-					</div>
-					<div class="nullBox nullBox1"></div>
-					<div class="radioBox radioBox2">
-						<div class="radio">
-							<div class="in_radio">
-								<span class="radioBtn"></span>
-							</div>
-							<span>EC</span>
-						</div>
-						<div class="radio">
-							<div class="in_radio">
-								<span class="radioBtn"></span>
-							</div>
-							<span>IGRID</span>
-						</div>
-						<div class="radio">
-							<div class="in_radio">
-								<span class="radioBtn"></span>
-							</div>
-							<span>OCF</span>
-						</div>
-					</div>
-					<div class="nullBox"></div>
-					<div class="itemTitle">
-						<img src="image/itemTitleIcon.png" >
-						<span>数据时间</span>
-					</div>
-					<div class="nullBox nullBox1"></div>
-					<div class="selectTime">
-						<input type="text" name="" id="" value="" />
-						<span>年</span>
-						<input type="text" name="" id="" value="" />
-						<span>月</span>
-						<input type="text" name="" id="" value="" />
-						<span>日</span>
-					</div>
-					
-					<div class="nullBox"></div>
-					<div class="itemTitle">
-						<img src="image/itemTitleIcon.png" >
-						<span>数据时刻</span>
-					</div>
-					<div class="nullBox nullBox1"></div>
-					<div class="radioBox radioBox2">
-						<div class="radio">
-							<div class="in_radio">
-								<span class="radioBtn"></span>
-							</div>
-							<span>08</span>
-						</div>
-						<div class="radio">
-							<div class="in_radio">
-								<span class="radioBtn"></span>
-							</div>
-							<span>20</span>
-						</div>
-						<div class="radio">
-							<div class="in_radio">
-								<span class="radioBtn"></span>
-							</div>
-							<span>其他</span>
-						</div>
-					</div>
-					<div class="nullBox"></div>
-					<div class="itemTitle">
-						<img src="image/itemTitleIcon.png" >
-						<span>数据要素</span>
-					</div>
-					<div class="nullBox nullBox1"></div>
-					<div class="radioBox">
-						<div class="radio">
-							<div class="in_radio">
-								<span class="radioBtn"></span>
-							</div>
-							<span>6小时最高温</span>
-						</div>
-						<div class="radio">
-							<div class="in_radio">
-								<span class="radioBtn"></span>
-							</div>
-							<span>6小时最低温</span>
-						</div>
-						<div class="radio">
-							<div class="in_radio">
-								<span class="radioBtn"></span>
-							</div>
-							<span>6小时降水</span>
-						</div>
-					</div>
-					<div class="nullBox"></div>
-					<div class="itemTitle">
-						<img src="image/itemTitleIcon.png" >
-						<span>数据列表</span>
-					</div>
-					<div class="nullBox nullBox1"></div>
-					<ul class="listBox">
-						<li>202002191144</li>
-						<li>202002191144</li>
-						<li>202002191144</li>
-						<li>202002191144</li>
-						<li>202002191144</li>
-						<li>202002191144</li>
-						<li>202002191144</li>
-						<li>202002191144</li>
-						<li>202002191144</li>
-						<li>202002191144</li>
-					</ul>
-					<div class="nullBox"></div>
-					<div class="itemTitle">
-						<img src="image/itemTitleIcon.png" >
-						<span>出图设置</span>
-					</div>
-					<div class="btnBox">
-						<span class="spanAc">全国</span>
-						<span>华东</span>
-						<span>浙江</span>
-						<span>台州</span>
-					</div>
-				</div>
-			</div>
-			<div class="toolPop" _v-4829327c="" _v-d0856de4="">
-				<div class="e-items" _v-4829327c="">
-					<ul _v-4829327c="">
-						<li _v-4829327c="">
-							<div _v-4829327c="" class="circle" title="画圆" type="Circle"></div>
-						</li>
-						<li _v-4829327c="">
-							<div _v-4829327c="" class="box" title="画矩形" type="Box"></div>
-						</li>
-						<li _v-4829327c="">
-							<div _v-4829327c="" title="画任意面" class="s-freePolygon" type="Polygon"></div>
-						</li>
-						<li _v-4829327c="">
-							<div _v-4829327c="" class="undo" title="撤销"></div>
-						</li>
-						<li _v-4829327c="">
-							<div _v-4829327c="" class="delete" title="删除"></div>
-						</li>
-					</ul>
-				</div>
-		
-				<!-- <div class="circle-box" _v-af352110="">
-					<ul _v-af352110="">
-						<li _v-af352110=""> <input class="form-radio" name="radius" type="radio" _v-af352110="" value="自定义" checked="" id="0"> <label _v-af352110="" for="0">自定义</label> </li>
-						<li _v-af352110=""> <input class="form-radio" name="radius" type="radio" _v-af352110="" value="100" id="1"> <label _v-af352110="" for="1">100公里</label> </li>
-						<li _v-af352110=""> <input class="form-radio" name="radius" type="radio" _v-af352110="" value="300" id="2"> <label _v-af352110="" for="2">300公里</label> </li>
-						<li _v-af352110=""> <input class="form-radio" name="radius" type="radio" _v-af352110="" value="500" id="3"> <label _v-af352110="" for="3">500公里</label> </li>
-					</ul>
-				</div> -->
-			</div>
-			<div id="pop_draw" title="绘制提示信息" class="tooltip">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="css/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="js/v4.2.0/ol.css"/>
+</head>
 
-			</div>
-			<div id="changeValue" style="display: none;">
-				<h3 class="changeValueTitle">修改数值</h3>
-				<input class="changeValueInput" id="gridValue" type="text" value=""/>
-				<span class="changeValue1" onclick="changeGridValue()">确定</span><span onclick="closeChangeGridValue()" class="changeValue2">关闭</span>
-			</div>
-			<div class="mapBox" id="map"></div>
-		</div>
-		
-		<script src="js/reset.js" type="text/javascript" charset="utf-8"></script>
-		<script src="js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="js/v4.2.0/ol.js"></script>
-		<script src="js/lib/common.js"></script>
-		<script src="js/lib/gisCommon.js"></script>
-		<script src="js/lib/ssd.min.js"></script>
-		<script src="js/lib/TDT.js"></script>
-		<script src="./js/drawPolygenAnalysis.js"></script>
-		<script src="js/config.js"></script>
-		<script src="js/grid.js"></script>
-		<script src="js/index.js"></script>
-		<script type="text/javascript">
-			$('.radio').find('span').on('click',function(){
-				if($(this).index() == 0){
-					$(this).addClass('span_active').parents('.radio').siblings().find('.radioBtn').removeClass('span_active')
-				}else{
-					$(this).siblings().find('.radioBtn').addClass('span_active').parents('.radio').siblings().find('.radioBtn').removeClass('span_active')
-				}
-			})
-			
-			$('.listBox').find('li').on('click',function(){
-				$(this).addClass('liAc').siblings().removeClass('liAc')
-			})
-			$('.btnBox').find('span').on('click',function(){
-				$(this).addClass('spanAc').siblings().removeClass('spanAc')
-			})
-		</script>
-	</body>
+<body>
+<div class="page">
+    <div class="queryBox">
+        <div class="boxTitle">
+            <span>数据搜索</span>
+        </div>
+        <div class="queryCon">
+            <div class="nullBox nullBox2"></div>
+            <div class="itemTitle">
+                <img src="image/itemTitleIcon.png" >
+                <span>数据类型</span>
+            </div>
+            <div class="nullBox nullBox1"></div>
+            <div class="radioBox radioBox1">
+                <div class="radio">
+                    <input type="radio" name="revision" value="0"  checked>
+                    <span>预报数据</span>
+                </div>
+                <div class="radio">
+                    <input type="radio" name="revision" value="1">
+                    <span>订正后数据</span>
+                </div>
+            </div>
+            <div class="nullBox"></div>
+            <div class="itemTitle">
+                <img src="image/itemTitleIcon.png" >
+                <span>预报模式</span>
+            </div>
+            <div class="nullBox nullBox1"></div>
+            <div class="radioBox radioBox2">
+
+            </div>
+            <div class="nullBox"></div>
+            <div class="itemTitle">
+                <img src="image/itemTitleIcon.png" >
+                <span>数据时间</span>
+            </div>
+            <div class="nullBox nullBox1"></div>
+            <div class="selectTime">
+                <input type="text"   id="year" style="width: 90%" class="layui-input" readonly />
+                <input type="text"   id="range" style="display: none" />
+                <input type="text"   id="path" style="display: none" />
+            </div>
+
+            <div class="nullBox"></div>
+            <div class="itemTitle">
+                <img src="image/itemTitleIcon.png" >
+                <span>数据时刻</span>
+            </div>
+            <div class="nullBox nullBox1"></div>
+            <div class="radioBox radioBox3">
+                <div class="radio">
+                    <input type="radio"   name="dataHour" value="08" checked><span>08</span>
+                </div>
+                <div class="radio">
+                    <input type="radio" name="dataHour" value="20" ><span>20</span>
+                </div>
+
+            </div>
+            <div class="nullBox"></div>
+            <div class="itemTitle">
+                <img src="image/itemTitleIcon.png" >
+                <span>数据要素</span>
+            </div>
+            <div class="nullBox nullBox1"></div>
+            <div class="radioBox radioBox4">
+            </div>
+            <div class="nullBox"></div>
+            <div class="itemTitle">
+                <img src="image/itemTitleIcon.png" >
+                <span>数据列表</span>
+                <div class="btnBox" style="margin-left: 5%; width: 58%">
+                    <span  onclick="chuTu()">订正数据</span>
+                </div>
+            </div>
+            <div class="nullBox nullBox1"></div>
+            <ul class="listBox" id="fileName">
+            </ul>
+
+            <div class="nullBox"></div>
+            <div class="itemTitle">
+                <img src="image/itemTitleIcon.png" >
+                <span>出图设置</span>
+                <div class="btnBox" style="margin-left: 5%; width: 40%">
+                <span  onclick="chuTu()">出图</span>
+                </div>
+            </div>
+            <div class="btnBox btnBoxs">
+                <span  class="spanAc" >全国</span>
+                <span>浙江</span>
+                <span>台州</span>
+            </div>
+            <div class="itemTitle">
+                <img src="image/itemTitleIcon.png" >
+                <span>出图类型</span>
+            </div>
+            <div class="nullBox nullBox1"></div>
+            <div class="radioBox ">
+                <div class="radio">
+                    <input type="radio"   name="figure_type" value="色斑图" checked><span>色斑图</span>
+                </div>
+                <div class="radio">
+                    <input type="radio" name="figure_type" value="等值线" ><span>等值线</span>
+                </div>
+            </div>
+
+            <div class="itemTitle">
+                <img src="image/itemTitleIcon.png" >
+                <span>网格线</span>
+            </div>
+            <div class="nullBox nullBox1"></div>
+            <div class="radioBox ">
+                <div class="radio">
+                    <input type="radio"   name="showgridline" value="0" checked><span>不显示</span>
+                </div>
+                <div class="radio">
+                    <input type="radio" name="showgridline" value="1" ><span>显示</span>
+                </div>
+            </div>
+            <div class="itemTitle">
+                <img src="image/itemTitleIcon.png" >
+                <span>区域内边界</span>
+            </div>
+            <div class="nullBox nullBox1"></div>
+            <div class="radioBox ">
+                <div class="radio">
+                    <input type="radio"   name="showinarea" value="0" checked><span>不显示</span>
+                </div>
+                <div class="radio">
+                    <input type="radio" name="showinarea" value="1" ><span>显示</span>
+                </div>
+            </div>
+
+            <div class="itemTitle">
+                <img src="image/itemTitleIcon.png" >
+                <span>周边边界</span>
+            </div>
+            <div class="nullBox nullBox1"></div>
+            <div class="radioBox ">
+                <div class="radio">
+                    <input type="radio"   name="shownearbyboundary" value="0" checked><span>不显示</span>
+                </div>
+                <div class="radio">
+                    <input type="radio" name="shownearbyboundary" value="1" ><span>显示</span>
+                </div>
+            </div>
+
+            <div class="itemTitle">
+                <img src="image/itemTitleIcon.png" >
+                <span>城市名称</span>
+            </div>
+            <div class="nullBox nullBox1"></div>
+            <div class="radioBox ">
+                <div class="radio">
+                    <input type="radio"   name="showcityname" value="0" checked><span>不显示</span>
+                </div>
+                <div class="radio">
+                    <input type="radio" name="showcityname" value="1" ><span>显示</span>
+                </div>
+            </div>
+
+            <div class="itemTitle">
+                <img src="image/itemTitleIcon.png" >
+                <span>数值</span>
+            </div>
+            <div class="nullBox nullBox1"></div>
+            <div class="radioBox ">
+                <div class="radio">
+                    <input type="radio"   name="showval" value="0" checked><span>不显示</span>
+                </div>
+                <div class="radio">
+                    <input type="radio" name="showval" value="1" ><span>显示</span>
+                </div>
+            </div>
+
+            <div class="itemTitle">
+                <img src="image/itemTitleIcon.png" >
+                <span>色斑区域内</span>
+            </div>
+            <div class="nullBox nullBox1"></div>
+            <div class="radioBox ">
+                <div class="radio">
+                    <input type="radio"   name="showoutsidearea" value="0" checked><span>全部</span>
+                </div>
+                <div class="radio">
+                    <input type="radio" name="showoutsidearea" value="1" ><span>区域内</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="toolPop" _v-4829327c="" _v-d0856de4="">
+        <div class="e-items" _v-4829327c="">
+            <ul _v-4829327c="">
+                <li _v-4829327c="">
+                    <div _v-4829327c="" class="circle" title="画圆" type="Circle"></div>
+                </li>
+                <li _v-4829327c="">
+                    <div _v-4829327c="" class="box" title="画矩形" type="Box"></div>
+                </li>
+                <li _v-4829327c="">
+                    <div _v-4829327c="" title="画任意面" class="s-freePolygon" type="Polygon"></div>
+                </li>
+                <li _v-4829327c="">
+                    <div _v-4829327c="" class="undo" title="撤销"></div>
+                </li>
+                <li _v-4829327c="">
+                    <div _v-4829327c="" class="delete" title="删除"></div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- <div class="circle-box" _v-af352110="">
+            <ul _v-af352110="">
+                <li _v-af352110=""> <input class="form-radio" name="radius" type="radio" _v-af352110="" value="自定义" checked="" id="0"> <label _v-af352110="" for="0">自定义</label> </li>
+                <li _v-af352110=""> <input class="form-radio" name="radius" type="radio" _v-af352110="" value="100" id="1"> <label _v-af352110="" for="1">100公里</label> </li>
+                <li _v-af352110=""> <input class="form-radio" name="radius" type="radio" _v-af352110="" value="300" id="2"> <label _v-af352110="" for="2">300公里</label> </li>
+                <li _v-af352110=""> <input class="form-radio" name="radius" type="radio" _v-af352110="" value="500" id="3"> <label _v-af352110="" for="3">500公里</label> </li>
+            </ul>
+        </div> -->
+    </div>
+    <div id="pop_draw" title="绘制提示信息" class="tooltip">
+
+    </div>
+    <div id="changeValue" style="display: none;">
+        <h3 class="changeValueTitle">修改数值</h3>
+        <input class="changeValueInput" id="gridValue" type="text" value=""/>
+        <span class="changeValue1" onclick="changeGridValue()">确定</span><span onclick="closeChangeGridValue()" class="changeValue2">关闭</span>
+    </div>
+    <div class="mapBox" id="map"></div>
+</div>
+
+<script src="js/reset.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/v4.2.0/ol.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="js/lib/common.js"></script>
+<script src="js/lib/gisCommon.js"></script>
+<script src="js/lib/ssd.min.js"></script>
+<script src="js/lib/TDT.js"></script>
+<script src="./js/drawPolygenAnalysis.js"></script>
+<script src="js/config.js"></script>
+<script src="../../tools/http.js"></script>
+<script src="js/grid.js"></script>
+<script src="js/index.js"></script>
+<script type="text/javascript">
+    $('.radio').find('span').on('click',function(){
+        if($(this).index() == 0){
+            $(this).addClass('span_active').parents('.radio').siblings().find('.radioBtn').removeClass('span_active')
+        }else{
+            $(this).siblings().find('.radioBtn').addClass('span_active').parents('.radio').siblings().find('.radioBtn').removeClass('span_active')
+        }
+    })
+
+    $('.listBox').find('li').on('click',function(){
+        $(this).addClass('liAc').siblings().removeClass('liAc')
+    })
+    $('.btnBox').find('span').on('click',function(){
+        $(this).addClass('spanAc').siblings().removeClass('spanAc')
+    })
+</script>
+</body>
 </html>

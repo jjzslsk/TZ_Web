@@ -1,0 +1,258 @@
+body{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0);
+	/*文字不能选中*/
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+}
+.LevelCon{
+	width: 100%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: rgba(0,55,100,0.9);
+	color: #FFFFFF;
+	font-size: 16px;
+}
+.LevelCon>img{
+	position: absolute;
+	right: 15px;
+	top: 10px;
+	width: 15px;
+	cursor: pointer;
+}
+.Level{
+	width: 99%;
+	height: calc(100% - 56px);
+	margin: 30px auto 10px;
+	border-top: 1px solid #dadada;
+}
+.Level>li{
+	border-bottom: 1px solid #dadada;
+	height: 30px;
+	overflow: hidden;
+	box-sizing: border-box;
+	margin-top: 5px;
+}
+.twoLevelBox{
+	height: 30px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	cursor: pointer;
+	background: #096f9a;
+}
+.twoLevelBox>span{
+	margin-left: 1%;
+}
+.twoLevelBox>img{
+	margin-right: 2.5%;
+	width: 12px;
+	transform: rotate(-90deg);
+}
+.plan{
+	width: 100%;
+}
+.plan>span{
+	display: inline-block;
+	vertical-align: middle;
+}
+.plan>span:first-of-type{
+	width: 26%;
+	text-align: left;
+	margin-left: 1%;
+}
+.plan>span:last-of-type{
+	padding: 3px 15px;
+	color: #FFFFFF;
+	background: #409eff;
+	border-radius: 10px;
+	cursor: pointer;
+}
+.plan>span:last-of-type:hover{
+	background: #1573ff;
+}
+.planTask{
+	height: 20px;
+	display: flex;
+	align-items: center;
+	position: relative;
+	margin: 5px 0;
+}
+.planTask>i{
+	position: absolute;
+	left: 3%;
+	top: -1px;
+	display: inline-block;
+	background: rgba(0,55,100,0);
+	width: 100px;
+	text-align: center;
+	font-size: 16px;
+}
+.threeLevel{
+	height: calc(100% - 30px);
+}
+.planTask:before{
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 10px;
+	width: 3%;
+	height: 1px;
+	background: #dadada;
+}
+.planTask:after{
+	content: '';
+	position: absolute;
+	right: 0;
+	top: 10px;
+	width: calc(97% - 100px);
+	height: 1px;
+	background: #dadada;
+}
+/*.planTask>span{*/
+/*	display: block;*/
+/*	width: 100%;*/
+/*	height: 1px;*/
+/*	background: #dadada;*/
+/*}*/
+.tabBox{
+	width: 100%;
+}
+.tabBtnBox{
+	position: relative;
+	width: 85%;
+	margin: 0 auto;
+}
+.tabBtnBoxCon{
+	width: 100%;
+	overflow: hidden;
+}
+.tabBtnBox>img{
+	width: 20px;
+	top: 50%;
+	margin-top: -10px;
+	cursor: pointer;
+}
+.tabBtnBox>.prev{
+	position: absolute;
+	right: 102%;
+}
+.tabBtnBox>.next{
+	position: absolute;
+	left: 102%;
+}
+.tabBtn{
+	position: relative;
+	width: 100%;
+	font-size: 0;
+}
+.tabBtn>span{
+	display: inline-block;
+	margin: 0 15px 8px 0;
+	cursor: pointer;
+	font-size: 16px;
+}
+.tabBtn>.spanAc{
+	color: #7bbcff;
+}
+.line{
+	position: relative;
+	width: 100%;
+	height: 2px;
+	background: #DADADA;
+}
+.line>i{
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: inline-block;
+	height: 100%;
+	background: #7bbcff;
+}
+.tabList{
+	width: 100%;
+}
+.tabItem{
+	width: 100%;
+	height: 100%;
+	display: none;
+	overflow: auto;
+}
+.tabItem:first-of-type{
+	display: block;
+}
+
+.warningEventTitle{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background: #096F9A;
+	padding: 5px 12px;
+}
+.warningEventTitleName>span {
+	vertical-align: middle;
+	font-size: 16px;
+	color: #BBF0FF;
+	margin-left: 5px;
+}
+
+.itemConTxtLevelthree{
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+}
+.itemConTxtLevelthree>li{
+	width: 83%;
+	margin: 0 auto;
+	padding: 5px 0;
+}
+.itemConTxtLevelthree>li>div:first-of-type>span{
+	color: #BBF0FF;
+	font-size: 16px;
+}
+.itemConTxtLevelthree>li>div:last-of-type>span{
+	color: #ffffff;
+	font-size: 14px;
+	margin:5px 10px
+}
+.rightCircle {
+	display: inline-block;
+	transform: scale(0.75);
+	opacity: 0;
+	position: relative;
+	border: 1px solid red;
+	background: red;
+	color: #ffffff;
+	font-size: 10px;
+	left: 0;
+	top: -10px;
+	line-height: 12px;
+	text-align: center;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-webkit-border-radius: 50%;
+}
+.itemConTxtLevelthree>li>div:last-of-type>span.active .rightCircle{
+	opacity: 1;
+}
+.informationType >li.active .rightCircle{
+	opacity: 1;
+}
+.itemConTxtLevelthree>li span{
+	display: inline-block;
+	margin-right: 8px;
+	line-height: 24px;
+	cursor: pointer;
+}
+
+.tabBtn>span:last-of-type{
+	margin: 0 0 8px 0;
+}

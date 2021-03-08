@@ -1,0 +1,16 @@
+{
+    "returnCode": 0, 
+    "data": [
+        {
+            "name": "201907181400", 
+            "src": "images/cloud/201907181400.png",
+            "type": "1"
+        },
+         {
+            "name": "201907181500", 
+            "src": "images/cloud/201907181500.png",
+            "type": "1"
+        }
+        
+    ]
+}

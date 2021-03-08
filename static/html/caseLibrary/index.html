@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>个例库</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="lib/plot/plottingol.css">
+
+    <script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="lib/v6.1.1-dist/ol.min.js"></script>
+    <script type="text/javascript" src="lib/olcesium.js"></script>
+    <script type="text/javascript" src="lib/OlWind.js"></script>
+    <script type="text/javascript" src="lib/Tdrag.js"></script>
+    <script type="text/javascript" src="lib/My97DatePicker/WdatePicker.js"></script>
+    <script src="../../tools/http.js"></script>
+    <script type="text/javascript" src="lib/plot/plottingol.min.js"></script>
+    <script type="text/javascript" src="lib/polyfill.js"></script>
+    <script type="text/javascript" src="lib/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="lib/swiper.min.js"></script>
+    <script type="text/javascript" src="lib/layer.js"></script>
+    <script type="text/javascript" src="lib/common/gisCommon.js"></script>
+    <script type="text/javascript" src="lib/common/common.js"></script>
+    <script type="text/javascript" src="lib/ssd.min.js"></script>
+
+    <script type="text/javascript" src="lib/TDT.js"></script>
+    <script type="text/javascript" src="lib/turf.min.js"></script>
+    <script type="text/javascript" src="js/datastyle.js"></script>
+    <script type="text/javascript" src="js/dataPopup.js"></script>
+    <script type="text/javascript" src="js/drawplot.js"></script>
+
+    <script type="text/javascript" src="config/config.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/baseTool.js"></script>
+</head>
+<style>
+    .reservoirImgShowDetailDiv{
+        font-size: 0;
+        position: absolute;
+        right: 11px;
+        bottom: 295px;
+    }
+</style>
+<body>
+    <div class="page" id="allPage">
+        <div class="header">
+            <div class="headerL">
+				<div class="headMenu" style="margin-left: 20px;cursor: pointer;">
+					<img src="images/menuBtn.png" alt="">
+				</div>
+            </div>
+        </div>
+        <div class="pageContent">
+			<div id ="map" style="position: absolute;width: 100%;height: 100%;"></div>
+            <div class="mapTool changeZ">
+                <div class="mapToolTitle">
+                    <img class="boxClose" src="images/expand.png" alt="">
+                </div>
+                <ul class="mapToolIcon">
+                    <li>
+                        <span class="size-c" title="粗细(小)" type="o-size">
+                            <img src="images/toolIcon1.png" alt="">
+                        </span>
+                        <span class="size-c" type="t-size" title="粗细(中)">
+                            <img src="images/toolIcon3.png" alt="">
+                        </span>
+                        <span class="size-c" title="粗细(大)" type="td-size">
+                            <img src="images/toolIcon5.png" alt="">
+                        </span>
+                       <!-- <span type="celiang" title="测量">
+                            <img src="images/toolIcon2.png" alt="">
+                        </span>-->
+                        <!--<span type="MARKER" title="标注点">
+                           <img src="images/toolIcon4.png" alt="">
+                       </span>-->
+                    </li>
+                    <li>
+                        <span type="POLYLINE" title="线">
+                            <img src="images/toolIcon6.png" alt="">
+                        </span>
+
+                        <span type="Text" title="文字">
+                            <img src="images/toolIcon7.png" alt="">
+                        </span>
+                        <span type="STRAIGHT_ARROW" title="直箭头">
+                            <img src="images/toolIcon8.png" alt="">
+                        </span>
+
+                        <span type="CIRCLE" title="圆" class="bxIcon">
+                            <img src="images/toolIcon9.png" alt="">
+                        </span>
+                        <span type="RECTANGLE" title="矩形">
+                            <img src="images/toolIcon10.png" alt="">
+                        </span>
+
+                        <span type="FREEHAND_POLYGON" title="自由面" class="bxIcon">
+                            <img src="images/toolIcon11.png" alt="">
+                        </span>
+                        <span type="FREEHAND_LINE" title="自由线">
+                            <img src="images/toolIcon12.png" alt="">
+                        </span>
+
+                       <!-- <span >
+                            <img src="images/toolIcon13.png" alt="">
+                        </span>-->
+                        <span type="undo" title="撤销">
+                            <img src="images/toolIcon14.png" alt="">
+                        </span>
+
+                        <span type="delete" title="删除" class="bxIcon">
+                            <img src="images/toolIcon15.png" alt="">
+                        </span>
+                        <span type="save" title="保存" class="bxIcon">
+                            <img src="images/toolIcon16.png" alt="">
+                        </span>
+
+                        <span type="remove" title="移除">
+                            <img src="images/toolIcon17.png" alt="">
+                        </span>
+                    </li>
+                </ul>
+                <ul class="mapToolColor">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <!--<li></li>-->
+                </ul>
+            </div>
+            <div class="menuDetail changeZ">
+                <ul class="levelOneBtn">
+                    <li class="liActive">
+                        <img src="images/menuIcin4.png" alt="">
+                        <img src="images/menuIcin4Active.png" alt="">
+                        <p>案例库</p>
+
+                    </li>
+                </ul>
+                <ul style="height: 8%">
+                    <li style="float: left;width: 48%;height: 50%;display: flex;align-items: center;margin: 0 1%;">
+                        <span style="color: #FEFEFE;width: 45px;">标题：</span><input type="text" id="title" ></input>
+                    </li>
+                    <li style="float: left;width: 48%;height: 50%;display: flex;align-items: center;margin: 0 1%;">
+                        <span style="color: #FEFEFE;width: 45px;">编号：</span><input type="text" id="caselibno" ></input>
+                    </li>
+                    <li style="float: left;width: 48%;height: 50%;display: flex;align-items: center;margin: 0 1%;">
+                        <span style="color: #FEFEFE;width: 45px;">时间：</span><input type="text" id="warningTime" class="Wdate" onclick="WdatePicker({onpicked:function(){getWarnInfo();},skin:'whyGreen',maxDate:'%y',dateFmt:'yyyy'})">
+                    </li>
+                    <li style="float: left;width: 48%;height: 50%;display: flex;align-items: center;margin: 0 1%;justify-content: center;">
+                        <input type="button" class="" id="getWarnInfo" style="width: 40%;height: 70%;cursor: pointer;" value="查询"></input>
+                    </li>
+                </ul>
+                <div class="levelOneContent">
+                    <div class="itemContent">
+                    </div>
+                </div>
+            </div>
+            <div class="operationMap">
+                <div class="operationMapItem">
+                    <img src="./images/mapType.png" alt="">
+                </div>
+                <div class="operationMapItem" onclick="addZoom()">+</div>
+                <div class="operationMapItem" onclick="subZoom()">-</div>
+
+                <ul class="mapType changeZ">
+                    <li value="vector">queryByList
+                        <img src="./images/mapType1.png" alt="">
+                        <p>矢量</p>
+                    </li>
+                    <li value="image">
+                        <img src="./images/mapType2.png" alt="">
+                        <p>影像</p>
+                    </li>
+                    <li value="terr">
+                        <img src="./images/mapType3.png" alt="">
+                        <p>业务</p>
+                    </li>
+                    <li value="highway">
+                        <img src="./images/mapType4.png" alt="">
+                        <p>交通</p>
+                    </li>
+                    <li>
+                        <img src="./images/mapType5.png" alt="">
+                        <p>电网</p>
+                    </li>
+                    <li>
+                        <img src="./images/mapType6.png" alt="">
+                        <p>河流</p>
+                    </li>
+                </ul>
+                <div class="informationDetail changeZ">
+                    <div class="informationTime">
+                        <span  onclick="chanageTime('pastHour')">〈</span>
+                        <input type="text" id="baseDataListTime1" class="Wdate" onclick="WdatePicker({onpicked:function(){onChangeTime();},skin:'whyGreen',maxDate:'%y-%M-%d %H',dateFmt:'yyyy年MM月dd日 HH时'})">
+                        <span onclick="chanageTime('nextHour')">〉</span>
+                    </div>
+                    <span class="showInformation">
+                        <img src="./images/sortTable.png" alt="">
+                    </span>
+                    <span class="showInformation showColorIn" onclick="colorIn()">填色</span>
+                </div>
+            </div>
+            <!--预案*案例库-->
+            <iframe src="page/caseLibrary.html" id="caseLibrary" frameborder="0" style="display: none;z-index: 99;
+                width: 68.4%;
+                position: absolute;
+                right: 7.8%;
+                height: 374px;
+                bottom: 1%;" scrolling="no">
+            </iframe>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/init.js"></script>
+    <!--截图-->
+    <script type="text/javascript" src="lib/FileSaver.min.js"></script>
+
+</body>
+</html>

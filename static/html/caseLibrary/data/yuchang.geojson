@@ -1,0 +1,16 @@
+{
+"type": "FeatureCollection",
+"name": "yuchang",
+"features": [
+{ "type": "Feature", "properties": { "GEODB_OID": 0, "GB": 0,"FLAG":1, "SOU": 0, "UDATE": "舟山"}, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 125.0, 30.992219924926758 ], [ 121.892646789550781, 30.992219924926758 ] ] ] } },
+{ "type": "Feature", "properties": { "GEODB_OID": 0, "GB": 0,"FLAG":1, "SOU": 0, "UDATE": "舟外"}, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 125.0, 30.992219924926758 ], [ 128.000055005597233, 30.992219924926758 ] ] ] } },
+{ "type": "Feature", "properties": { "GEODB_OID": 0, "GB": 0,"FLAG":0, "SOU": 0, "UDATE": null}, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 128.0, 29.5 ], [ 122.078808428594215, 29.505889709016277 ] ] ] } },
+{ "type": "Feature", "properties": { "GEODB_OID": 0, "GB": 0,"FLAG":2, "SOU": 0, "UDATE": "渔山"}, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 125.0, 28.502981768495296 ], [ 121.864963736605574, 28.502981768495296 ] ] ] } },
+{ "type": "Feature", "properties": { "GEODB_OID": 0, "GB": 0,"FLAG":2, "SOU": 0, "UDATE": "渔外"}, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 127.0, 28.5 ], [125.0, 28.502981768495296 ] ] ] } },
+{ "type": "Feature", "properties": { "GEODB_OID": 0, "GB": 0,"FLAG":3, "SOU": 0, "UDATE": "温台"}, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 125.023839871965407, 27.016847837490367 ], [120.475750703819685, 26.98886768843748] ] ] } },
+{ "type": "Feature", "properties": { "GEODB_OID": 0, "GB": 0,"FLAG":3, "SOU": 0, "UDATE": "温外"}, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 127.0, 27.0 ], [125.023839871965407, 27.016847837490367] ] ] } },
+{ "type": "Feature", "properties": { "GEODB_OID": 0, "GB": 0,"FLAG":0, "SOU": 0, "UDATE": null}, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 125.023839871965407, 27.01684783749036 ], [125.0, 30.992219924926758] ] ] } },
+{ "type": "Feature", "properties": { "GEODB_OID": 0, "GB": 0,"FLAG":0, "SOU": 0, "UDATE": null}, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 127.020207655857035, 26.997812149443714 ], [127.0, 29.5] ] ] } },
+{ "type": "Feature", "properties": { "GEODB_OID": 0, "GB": 0,"FLAG":0, "SOU": 0, "UDATE": null}, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 128.0, 29.5 ], [128.000055005597233, 30.992219924926758] ] ] } }
+]
+}

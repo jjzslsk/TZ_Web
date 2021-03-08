@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>预案过程、详情、细节</title>
+    <link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+    <link rel="stylesheet" href="../css/jquery-ui.min.css">
+    <link rel="stylesheet" href="../lib/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="../css/swiper.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../page/css/caseLibrary.css"/>
+<body>
+<div class="info">
+    <span class="closeBtn">关闭</span>
+
+    <div class="disaster">
+        <div class="disasterCon">
+            <div class="swiper-container swiper-container1" style="height:100%;">
+                <div class="swiper-wrapper" style="height:100%;" id="timeBase">
+                </div>
+            </div>
+            <div class="swiper-button-prev swiper-button-prev1"></div>
+            <div class="swiper-button-next swiper-button-next1"></div>
+        </div>
+    </div>
+    <div class="nullBox"></div>
+    <!--实况图动画-->
+    <div id="timeline_aws_box" >
+        <h3 class="timetitle" id="timeAwsType">实况动画<span class="close_timeline close_timeline_aws">&#10005;</span></h3>
+        <div class="time_line">
+            <div class="time_line_tool">
+                <ul>
+                    <li  id="subtract_aws" onclick="changeAwsImg(this)"><span>-</span></li>
+                    <li class="time_line_play" id="awsPlay"><span>.</span></li>
+                    <li id="add_aws" onclick="changeAwsImg(this)"><span>+</span></li>
+                </ul>
+            </div>
+            <div class="line">
+                <ul id="time_aws_line">
+
+                </ul>
+            </div>
+            <div id="slider-range-max_aws"></div>
+        </div>
+    </div>
+    <ul class="itemEchart">
+        <li style="height: 84%;">
+            <div class="liItemN">
+                <span id="stationName"></span>
+                <span>站点实况</span>
+            </div>
+            <div class="awsItemEchart" id="awsItemEchart"></div>
+        </li>
+    </ul>
+    <div class="warningTips">
+        <p></p>
+        <p></p>
+    </div>
+</div>
+
+<script type="text/javascript" src="../lib/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="../lib/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../lib/layui/layui.js"></script>
+<script type="text/javascript" src="../lib/swiper.min.js"></script>
+<script src="../lib/echarts/echarts.min.js"></script>
+<!--start 配合config引入，无实意-->
+<script type="text/javascript" src="../js/datastyle.js"></script>
+<script type="text/javascript" src="../js/dataPopup.js"></script>
+<script type="text/javascript" src="../config/config.js"></script>
+<!--end-->
+<script src="../../../tools/http.js"></script>
+<script src="../lib/common/common.js"></script>
+<script src="../js/page/caseLibrary.js"></script>
+</body>
+</html>
