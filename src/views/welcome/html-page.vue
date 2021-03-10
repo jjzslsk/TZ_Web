@@ -26,11 +26,11 @@ export default {
         { name: "/3d", url: "http://www.baidu.com" },
         {
           name: "/TZ_3D",
-          url: "http://172.21.158.163:6007/TZ_3D/index.html",
+          url: "http://10.137.4.37:6007/TZ_3D/index.html",
         },
         {
           name: "/TZ_typhoon",
-          url: "http://172.21.158.163:6007/TZ_typhoon/index.html",
+          url: "http://10.137.4.37:6007/TZ_typhoon/index.html",
         },
         {
           name: "/forecast",

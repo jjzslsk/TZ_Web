@@ -25,7 +25,7 @@
       <el-menu-item index="/remindergis" path="/html-page">实况监控(地图)</el-menu-item>
       <el-menu-item index="/reminder" path="/html-page">实况监控</el-menu-item>
       <el-menu-item index="/TZ_typhoon" path="/html-page">台风服务</el-menu-item>
-      <el-menu-item index="/TZ_3D" path="/html-page">3D监测</el-menu-item>
+      <el-menu-item index="/TZ_3D" path="/html-page">综合观测</el-menu-item>
       <el-menu-item index="/forecast" path="/html-page">数值预报</el-menu-item>
       <el-menu-item index="/situation-page" path="/situation-page">天气概览</el-menu-item>
     </el-menu>

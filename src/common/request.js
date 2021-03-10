@@ -173,7 +173,7 @@ function timingLogin(config){
         }
     }
 
-        if(config.url == '/integration/system/ssd-sys-user/login' || config.url == '/integration/system/ssd-sys-user/logout' || cut.indexOf(url1) != -1  || cut.indexOf(url2) != -1){
+        if(config.url == '/integration/system/ssd-sys-user/login' || config.url == '/integration/system/ssd-sys-user/logout' || pathCheck()){
             resolve('resolve')
         }else{
             timingLoginFn()
@@ -182,19 +182,68 @@ function timingLogin(config){
 }
 
 
+//路径过滤 true 为包含过滤
+function pathCheck (){
+    const filterUrl = [
+        '/#/welcome-login',
+        '/#/welcome-login?key=%2Flogin',
+        '/#/html-page',
+
+        '/#/situation-page',
+        '/#/situation-page?key=%2Fsituation-page',
+        '/#/html-page?key=%2Fforecast',
+        '/#/html-page?key=%2FTZ_3D',
+        '/#/html-page?key=%2FTZ_typhoon',
+        '/#/html-page?key=%2Freminder',
+        '/#/html-page?key=%2Fremindergis',
+        '/#/html-page?key=%2FsuddenWeather',
+        '/#/html-page?key=%2FQJT',
+
+        '/#/welcome-trace/alarm'
+    ]
+    let indexKey = window.location.href.indexOf("/#/")
+    let cut = window.location.href.substring(indexKey)
+    let routeUrl = filterUrl.find(item => {
+        return cut.indexOf(item) != -1 == true
+    });
+    return routeUrl? true:false
+}
+console.log('pathCheck:',pathCheck())
+
+// targetHour   目标时间  小时
+// targetSec   目标时间  分钟
+function setRegular(targetHour,targetSec){
+var timeInterval,nowTime,nowSeconds,targetSeconds
+nowTime = new Date()
+// 计算当前时间的秒数
+nowSeconds = nowTime.getHours() * 3600 + nowTime.getMinutes() * 60 + nowTime.getSeconds()
+// 计算目标时间对应的秒数
+targetSeconds =  targetHour * 3600 + targetSec * 60
+//  判断是否已超过今日目标小时，若超过，时间间隔设置为距离明天目标小时的距离
+timeInterval = targetSeconds > nowSeconds ? targetSeconds - nowSeconds: targetSeconds + 24 * 3600 - nowSeconds
+setTimeout(getProductFileList,timeInterval * 1000)
+}
+function getProductFileList(){
+console.log('时间到啦')
+setTimeout(getProductFileList,24*3600 * 1000)//之后每天调用一次
+
+//退出操作
+if(!pathCheck()){
+    alert("登录超时，请重新登录！0750")
+    sessionStorage.clear()
+    window.location.href="/";
+}
+}
+setRegular(7,50);
+
+
 function overtime10(config){
     return new Promise((resolve, reject) => {
-        const indexKey = window.location.href.indexOf("/#/")
-        let cut = window.location.href.substring(indexKey)
-        let url1 = '/#/situation-page?key=%2Fsituation-page'
-        let url2 = '/#/welcome-trace/alarm'
         //10小时超时登录 （分钟 60*1000）（小时 60*60*1000）（天 24*60*60*1000）
         function checkTimeout10() {
             let timeOut = 10 * 60*60*1000  //设置超时时间: 10小时
             let currentTime = new Date().getTime()//更新当前时间
             let lastTime = localStorage.getItem("lastTime10");//登录时间
-            // console.log(currentTime - lastTime);
-            // console.log(timeOut);
             if (currentTime - lastTime > timeOut) {
                 alert("登录超时，请重新登录！010")
                 sessionStorage.clear()
@@ -204,7 +253,7 @@ function overtime10(config){
                 resolve('resolve')
             }
         }
-        if(config.url == '/integration/system/ssd-sys-user/login' || config.url == '/integration/system/ssd-sys-user/logout' || cut.indexOf(url1) != -1  || cut.indexOf(url2) != -1){
+        if(config.url == '/integration/system/ssd-sys-user/login' || config.url == '/integration/system/ssd-sys-user/logout' || pathCheck()){
             resolve('resolve')
         }else{
             checkTimeout10()
@@ -214,10 +263,6 @@ function overtime10(config){
 
 function overtime04(config){
     return new Promise((resolve, reject) => {
-        const indexKey = window.location.href.indexOf("/#/")
-        let cut = window.location.href.substring(indexKey)
-        let url1 = '/#/situation-page?key=%2Fsituation-page'
-        let url2 = '/#/welcome-trace/alarm'
         //4小时超时登录 （分钟 60*1000）（小时 60*60*1000）（天 24*60*60*1000）
         function checkTimeout04() {
             let timeOut = 4 * 60*60*1000  //设置超时时间: 10小时
@@ -234,7 +279,7 @@ function overtime04(config){
                 resolve('resolve')
             }
         }
-        if(config.url == '/integration/system/ssd-sys-user/login' || config.url == '/integration/system/ssd-sys-user/logout' || cut.indexOf(url1) != -1  || cut.indexOf(url2) != -1){
+        if(config.url == '/integration/system/ssd-sys-user/login' || config.url == '/integration/system/ssd-sys-user/logout' || pathCheck()){
             resolve('resolve')
         }else{
             checkTimeout04()
