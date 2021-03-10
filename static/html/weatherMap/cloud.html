@@ -5,21 +5,48 @@
 		<title></title>
 	</head>
 	<body style="width: 100%;height: 100%;">
-		<div style="width: 100%;height: 100%;" class="img-wrap">
+		<div style="width: 100%;height: 100%;position: relative;" class="img-wrap">
 			<div class="top-border"></div>
 			<img id="cloud"/>
+            <div class="playSuspend" id="isPlay">
+                <img src="../../images/play.png" >
+            </div>
 		</div>
 	</body>
 	<script src="/static/tools/jquery-3.5.1.js"></script>
+    <script src="../../tools/http.js"></script>
 	<script>
+        var imgArr = [], imgIndex = 0, timer = null, isPlay = true;
 		$.ajax({
 			type:'get',
-			url:'http://10.137.4.30:6001/integration/main/ssd-reminder-live-data/getRadarCloudImg?type=cloud',
+			url:main_url + '/ssd-reminder-live-data/getRadarCloudImgList?type=cloud&page=10',
 			success:function(result){
-				var imgUrl = result.imgUrl;
-				$('#cloud').attr('src',imgUrl);
+				imgUrl = result;
+                $('#cloud').attr('src',imgArr[imgIndex]);
 			}
 		})
+
+        $('#isPlay').on('click',function(){
+            if(imgArr.length != 0){
+                if(isPlay){
+                    $(this).find('img').attr('src','../../images/suspend.png');
+                    timer = setInterval(imgInterval,1500)
+                    isPlay = false
+                }else{
+                    $(this).find('img').attr('src','../../images/play.png');
+                    clearInterval(timer)
+                    isPlay = true
+                }
+            }
+        })
+
+        function imgInterval(){
+            imgIndex++
+            if(imgIndex >= imgArr.length){
+                imgIndex = 0;
+            }
+            $('#cloud').attr('src',imgArr[imgIndex]);
+        }
 	</script>
 </html>
 <style>
@@ -35,8 +62,28 @@
 		width: 100%;
 		background-color: #409eff;
 	}
-	.img-wrap img{
+	.img-wrap>img{
 		width: 100%;
 		height: calc(100% - 5px);
 	}
+    .playSuspend{
+        position: absolute;
+        bottom: 3%;
+        left: 3%;
+        width: 11%;
+        height: 7%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(4,210,210,0.6);
+        max-width: 67px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    .playSuspend>img{
+        width: 30%;
+    }
+    .playSuspend:hover{
+        background: rgba(4,210,210,1);
+    }
 </style>

@@ -5,21 +5,48 @@
 		<title></title>
 	</head>
 	<body style="width: 100%;height: 100%;">
-		<div style="width: 100%;height: 100%;" class="img-wrap">
+		<div style="width: 100%;height: 100%;position: relative;" class="img-wrap">
 			<div class="top-border"></div>
 			<img id="radar"/>
+            <div class="playSuspend" id="isPlay">
+                <img src="../../images/play.png" >
+            </div>
 		</div>
 	</body>
+    <script src="../../tools/http.js"></script>
 	<script src="/static/tools/jquery-3.5.1.js"></script>
 	<script>
+        var imgArr = [], imgIndex = 0, timer = null, isPlay = true;
 		$.ajax({
 			type:'get',
-			url:'http://10.137.4.30:6001/integration/main/ssd-reminder-live-data/getRadarCloudImg?type=radar',
+			url:main_url + '/ssd-reminder-live-data/getRadarCloudImgList?type=radar&page=10',
 			success:function(result){
-				var imgUrl = result.imgUrl;
-				$('#radar').attr('src',imgUrl);
+				imgUrl = result;
+				$('#radar').attr('src',imgArr[imgIndex]);
 			}
 		})
+
+        $('#isPlay').on('click',function(){
+            if(imgArr.length != 0){
+                if(isPlay){
+                    $(this).find('img').attr('src','../../images/suspend.png');
+                    timer = setInterval(imgInterval,1500)
+                    isPlay = false
+                }else{
+                    $(this).find('img').attr('src','../../images/play.png');
+                    clearInterval(timer)
+                    isPlay = true
+                }
+            }
+        })
+
+        function imgInterval(){
+            imgIndex++
+            if(imgIndex >= imgArr.length){
+                imgIndex = 0;
+            }
+            $('#radar').attr('src',imgArr[imgIndex]);
+        }
 	</script>
 </html>
 <style>
